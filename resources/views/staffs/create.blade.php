@@ -1,0 +1,185 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+        <div>
+            <h6 class="fw-semibold mb-4">Create Staff</h6>
+            <p class="mb-0 text-secondary-light">Create a staff account and assign a role.</p>
+        </div>
+        <a href="{{ route('staffs.index') }}" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-2">
+            <i class="ri-arrow-left-line"></i>
+            Back to Staffs
+        </a>
+    </div>
+
+    <form action="{{ route('staffs.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+
+        <div class="row gy-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row gy-4">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label fw-semibold">Name <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" id="name" name="name" value="{{ old('name') }}"
+                                    class="form-control form-control-sm @error('name') is-invalid @enderror"
+                                    placeholder="Enter staff name">
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="email" class="form-label fw-semibold">Email <span
+                                        class="text-danger">*</span></label>
+                                <input type="email" id="email" name="email" value="{{ old('email') }}"
+                                    class="form-control form-control-sm @error('email') is-invalid @enderror"
+                                    placeholder="Enter email address">
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label fw-semibold">Phone</label>
+                                <input type="text" id="phone" name="phone" value="{{ old('phone') }}"
+                                    class="form-control form-control-sm @error('phone') is-invalid @enderror"
+                                    placeholder="Enter phone number">
+                                @error('phone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="role_id" class="form-label fw-semibold">Role <span
+                                        class="text-danger">*</span></label>
+                                <select id="role_id" name="role_id"
+                                    class="form-control form-control-sm @error('role_id') is-invalid @enderror">
+                                    <option value="">Select role</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                                            {{ $role->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('role_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="password" class="form-label fw-semibold">Password <span
+                                        class="text-danger">*</span></label>
+                                <input type="password" id="password" name="password" autocomplete="new-password"
+                                    class="form-control form-control-sm @error('password') is-invalid @enderror"
+                                    placeholder="Enter password">
+                                @error('password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="image" class="form-label fw-semibold">Image</label>
+                                <div class="staff-file-upload @error('image') is-invalid @enderror">
+                                    <input type="file" id="image" name="image" class="staff-file-upload__input"
+                                        accept="image/png,image/jpeg,image/webp" data-file-input>
+                                    <label for="image" class="staff-file-upload__label">
+                                        <span class="staff-file-upload__icon">
+                                            <i class="ri-image-add-line"></i>
+                                        </span>
+                                        <span class="staff-file-upload__text" data-file-name>Choose image</span>
+                                    </label>
+                                </div>
+                                @error('image')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                    <button type="submit" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2">
+                        <i class="ri-save-line"></i>
+                        Save Staff
+                    </button>
+                    <a href="{{ route('staffs.index') }}" class="btn btn-sm btn-outline-secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </form>
+@endsection
+
+@section('script')
+    <script>
+        document.querySelectorAll('[data-file-input]').forEach(function(input) {
+            input.addEventListener('change', function() {
+                const fileName = input.files?.[0]?.name || 'Choose image';
+                input.closest('.staff-file-upload')?.querySelector('[data-file-name]').textContent = fileName;
+            });
+        });
+    </script>
+@endsection
+
+@section('style')
+    <style>
+        .staff-file-upload {
+            width: 100%;
+        }
+
+        .staff-file-upload__input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .staff-file-upload__label {
+            min-height: 42px;
+            width: 100%;
+            border: 1px solid var(--input-form-light);
+            border-radius: 8px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 12px;
+            margin-bottom: 0;
+            cursor: pointer;
+            color: var(--text-secondary-light);
+        }
+
+        .staff-file-upload__icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: var(--primary-50);
+            color: var(--primary-600);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .staff-file-upload__text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .staff-file-upload.is-invalid .staff-file-upload__label {
+            border-color: var(--danger-main) !important;
+        }
+
+        .form-control::placeholder {
+            font-size: 13px !important;
+            opacity: 0.7 !important;
+        }
+    </style>
+@endsection

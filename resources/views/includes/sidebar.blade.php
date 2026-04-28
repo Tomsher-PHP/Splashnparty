@@ -1,0 +1,78 @@
+<aside class="sidebar">
+    <button type="button" class="sidebar-close-btn">
+        <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
+    </button>
+    <div>
+        <a href="index.html" class="sidebar-logo">
+            <img src="{{ asset('assets/images/logo.png') }}" alt="site logo" class="light-logo">
+            <img src="{{ asset('assets/images/logo.png') }}" alt="site logo" class="dark-logo">
+            <img src="{{ asset('assets/images/logo.png') }}" alt="site logo" class="logo-icon">
+        </a>
+    </div>
+    <div class="sidebar-menu-area">
+        <ul class="sidebar-menu" id="sidebar-menu">
+            <li>
+                <a href="{{ route('dashboard') }}" class="active-page">
+                    <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-group-title">Settings</li>
+            @can('view_banners')
+                <li>
+                    <a href="{{ route('banners.index') }}">
+                        <i class="ri-image-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Banners</span>
+                    </a>
+                </li>
+            @endcan
+
+            <li class="sidebar-menu-group-title">Staff Management</li>
+            @can('view_staff')
+                <li>
+                    <a href="{{ route('staffs.index') }}">
+                        <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
+                        <span>Staffs</span>
+                    </a>
+                </li>
+            @endcan
+            @can('roles.view')
+                <li>
+                    <a href="{{ route('roles.index') }}">
+                        <i class="ri-user-settings-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Roles & Permissions</span>
+                    </a>
+                </li>
+            @endcan
+
+
+            {{-- <li class="dropdown">
+                <a href="javascript:void(0)">
+                    <iconify-icon icon="hugeicons:invoice-03" class="menu-icon"></iconify-icon>
+                    <span>Invoice</span>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li>
+                        <a href="invoice-list.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>
+                            List</a>
+                    </li>
+                    <li>
+                        <a href="invoice-preview.html"><i
+                                class="ri-circle-fill circle-icon text-warning-main w-auto"></i>
+                            Preview</a>
+                    </li>
+                    <li>
+                        <a href="invoice-add.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Add
+                            new</a>
+                    </li>
+                    <li>
+                        <a href="invoice-edit.html"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i>
+                            Edit</a>
+                    </li>
+                </ul>
+            </li> --}}
+
+
+        </ul>
+    </div>
+</aside>
