@@ -10,8 +10,9 @@
         <div class="auth-right py-32 px-24 d-flex flex-column justify-content-center">
             <div class="max-w-464-px mx-auto w-100">
                 <div class="text-center">
-                    <a href="index.html" class="mb-40 max-w-290-px">
-                        <img src="{{ asset('assets/images/logo.png') }}" alt="Image">
+                    <a href="{{ route('login') }}" class="mb-40 max-w-290-px">
+                        <img src="{{ $generalSettings?->logo ? asset('storage/' . $generalSettings->logo) : asset('assets/images/logo.png') }}"
+                            alt="{{ $generalSettings?->site_name ?: 'Logo' }}">
                     </a>
                     <h4 class="mb-12">Sign In to your Account</h4>
                     <p class="mb-32 text-secondary-light text-lg">Welcome back! please enter your detail</p>
