@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\ClientLogoController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\GeneralSettingController;
 use App\Http\Controllers\Admin\StaffController;
@@ -25,6 +26,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::patch('banners/{banner}/status', [BannerController::class, 'updateStatus'])->name('banners.update-status');
     Route::resource('banners', BannerController::class)->except(['show']);
+
+    Route::patch('client-logos/{clientLogo}/status', [ClientLogoController::class, 'updateStatus'])->name('client-logos.update-status');
+    Route::resource('client-logos', ClientLogoController::class)->parameters(['client-logos' => 'clientLogo'])->except(['show']);
 
     Route::get('general-settings', [GeneralSettingController::class, 'edit'])->name('general-settings.edit');
     Route::put('general-settings', [GeneralSettingController::class, 'update'])->name('general-settings.update');

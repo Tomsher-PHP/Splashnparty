@@ -37,6 +37,14 @@
                     </a>
                 </li>
             @endcan
+            @can('view_client_logos')
+                <li>
+                    <a href="{{ route('client-logos.index') }}">
+                        <i class="ri-layout-grid-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Client Logos</span>
+                    </a>
+                </li>
+            @endcan
 
             <li class="sidebar-menu-group-title">Staff Management</li>
             @can('view_staff')
