@@ -102,6 +102,11 @@
                                                 <span class="staff-file-upload__text" data-file-name>Choose image</span>
                                             </label>
                                         </div>
+                                        <div class="staff-selected-file d-none mt-12" data-selected-file-wrap>
+                                            <img src="" alt="Selected image preview" class="d-none"
+                                                data-selected-image-preview>
+                                            <span class="staff-selected-file__name" data-selected-file-name></span>
+                                        </div>
                                         @error('image')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -128,11 +133,42 @@
 
 @section('script')
     <script>
-        document.querySelectorAll('[data-file-input]').forEach(function(input) {
-            input.addEventListener('change', function() {
-                const fileName = input.files?.[0]?.name || 'Choose image';
-                input.closest('.staff-file-upload')?.querySelector('[data-file-name]').textContent = fileName;
-            });
+        document.addEventListener('change', function(event) {
+            if (!event.target.matches('[data-file-input]')) {
+                return;
+            }
+
+            const input = event.target;
+            const file = input.files?.[0] || null;
+            const fileName = file ? file.name : 'Choose image';
+            const fieldWrap = input.closest('.flex-grow-1');
+            const selectedWrap = fieldWrap?.querySelector('[data-selected-file-wrap]');
+            const selectedName = fieldWrap?.querySelector('[data-selected-file-name]');
+            const imagePreview = fieldWrap?.querySelector('[data-selected-image-preview]');
+            const fileNameElement = input.closest('.staff-file-upload')?.querySelector('[data-file-name]');
+
+            if (fileNameElement) {
+                fileNameElement.textContent = fileName;
+            }
+
+            if (selectedWrap && selectedName) {
+                selectedName.textContent = file ? fileName : '';
+                selectedWrap.classList.toggle('d-none', !file);
+            }
+
+            if (imagePreview) {
+                imagePreview.classList.add('d-none');
+                imagePreview.removeAttribute('src');
+            }
+
+            const imageExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+            const extension = fileName.split('.').pop()?.toLowerCase();
+            const isImage = file && (file.type.startsWith('image/') || imageExtensions.includes(extension));
+
+            if (isImage && imagePreview) {
+                imagePreview.src = URL.createObjectURL(file);
+                imagePreview.classList.remove('d-none');
+            }
         });
     </script>
 @endsection
@@ -207,6 +243,31 @@
 
         .staff-file-upload.is-invalid .staff-file-upload__label {
             border-color: var(--danger-main) !important;
+        }
+
+        .staff-selected-file {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            color: var(--text-secondary-light);
+            font-size: 13px;
+        }
+
+        .staff-selected-file img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #f8fafc;
+            border: 1px solid var(--input-form-light);
+            flex-shrink: 0;
+        }
+
+        .staff-selected-file__name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .form-control::placeholder {

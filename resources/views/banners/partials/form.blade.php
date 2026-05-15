@@ -97,6 +97,11 @@
                 <span class="banner-file-upload__text" data-file-name>Choose file</span>
             </label>
         </div>
+        <div class="banner-selected-file d-none mt-12" data-selected-file-wrap>
+            <img src="" alt="Selected file preview" class="d-none" data-selected-image-preview>
+            <video src="" class="d-none" muted data-selected-video-preview></video>
+            <span class="banner-selected-file__name" data-selected-file-name></span>
+        </div>
         <div class="text-secondary-light text-xxs mt-2" data-file-help>
             Images: JPG, PNG, WEBP up to 4 MB. Videos: MP4, WEBM, MOV, OGG up to 50 MB.
         </div>

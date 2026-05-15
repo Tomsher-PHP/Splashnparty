@@ -55,7 +55,11 @@
                 return;
             }
 
-            if (file && preview && file.type.indexOf('image/') === 0) {
+            var imageExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
+            var extension = fileName.split('.').pop().toLowerCase();
+            var isImage = file && (file.type.indexOf('image/') === 0 || imageExtensions.indexOf(extension) !== -1);
+
+            if (isImage && preview) {
                 var reader = new FileReader();
                 reader.onload = function(loadEvent) {
                     preview.src = loadEvent.target.result;
