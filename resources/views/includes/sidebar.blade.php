@@ -46,6 +46,15 @@
                 </li>
             @endcan
 
+            @can('view_faqs')
+                <li>
+                    <a href="{{ route('faqs.index') }}">
+                        <i class="ri-layout-grid-line text-xl me-14 d-flex w-auto"></i>
+                        <span>FAQs</span>
+                    </a>
+                </li>
+            @endcan
+
             <li class="sidebar-menu-group-title">Staff Management</li>
             @can('view_staff')
                 <li>

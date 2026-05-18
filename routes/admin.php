@@ -1,13 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ClientLogoController;
-use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GeneralSettingController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StaffController;
+use Illuminate\Support\Facades\Route;
+
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
@@ -32,5 +34,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('general-settings', [GeneralSettingController::class, 'edit'])->name('general-settings.edit');
     Route::put('general-settings', [GeneralSettingController::class, 'update'])->name('general-settings.update');
+
+    // FAQ MODULE
+    Route::get('faqs', [FaqController::class, 'index'])->name('faqs.index');
+    Route::get('faqs/create', [FaqController::class, 'create'])->name('faqs.create');
+    Route::post('faqs', [FaqController::class, 'store'])->name('faqs.store');
+    Route::get('faqs/{faq}/edit', [FaqController::class, 'edit'])->name('faqs.edit');
+    Route::put('faqs/{faq}', [FaqController::class, 'update'])->name('faqs.update');
+    Route::delete('faqs/{faq}', [FaqController::class, 'destroy'])->name('faqs.destroy');
 
 });
