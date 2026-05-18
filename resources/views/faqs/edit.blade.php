@@ -3,9 +3,9 @@
 @section('content')
 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
     <div>
-        <h6 class="fw-semibold mb-4">Create FAQs</h6>
+        <h6 class="fw-semibold mb-4">Edit FAQs</h6>
         <p class="mb-0 text-secondary-light">
-            Add a category with multiple questions and answers.
+            Update FAQ questions and answers.
         </p>
     </div>
 
@@ -16,22 +16,17 @@
     </a>
 </div>
 
-<form action="{{ route('faqs.store') }}" method="POST">
+<form action="{{ route('faqs.update', $faq->id) }}" method="POST">
     @csrf
+    @method('PUT')
 
     <div class="card">
         <div class="card-body">
 
             @include('faqs.partials.form', [
-                'details' => old('faqs', [
-                    [
-                        'question' => '',
-                        'answer' => '',
-                        'sort_order' => 0,
-                        'status' => 1,
-                    ]
-                ]),
-                'isEdit' => false
+                'faq' => $faq,
+                'details' => old('faqs', $faq->details ?? []),
+                'isEdit' => true
             ])
 
         </div>
@@ -45,14 +40,16 @@
             </button>
 
             <div class="d-flex gap-2">
+
                 <a href="{{ route('faqs.index') }}"
                     class="btn btn-sm btn-outline-secondary">
                     Cancel
                 </a>
 
                 <button type="submit" class="btn btn-sm btn-primary-600">
-                    Save FAQ
+                    Update FAQs
                 </button>
+
             </div>
 
         </div>

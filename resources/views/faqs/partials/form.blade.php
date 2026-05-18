@@ -1,0 +1,267 @@
+{{-- CATEGORY --}}
+<div class="row g-3 mb-4">
+
+    <div class="col-md-8">
+        <label class="form-label fw-semibold">Category</label>
+
+        <input type="text"
+            name="category"
+            class="form-control"
+            value="{{ old('category', $isEdit ? $faq->category : '') }}"
+            required>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">Category Status</label>
+
+        <select name="status" class="form-select">
+
+            <option value="1"
+                {{ old('status', $isEdit ? $faq->status : 1) == 1 ? 'selected' : '' }}>
+                Active
+            </option>
+
+            <option value="0"
+                {{ old('status', $isEdit ? $faq->status : 1) == 0 ? 'selected' : '' }}>
+                Inactive
+            </option>
+
+        </select>
+    </div>
+
+</div>
+
+<div id="faqWrapper" class="mt-3">
+
+
+    @foreach($details as $index => $item)
+
+    <div class="faq-item border rounded p-3 mb-3">
+        <div class="faq-header d-flex align-items-center gap-2 mb-3">
+            <span class="badge bg-primary-600 faq-sl-no">{{ $index + 1 }}</span>
+            <strong>FAQ Item</strong>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-8">
+                <label class="form-label fw-semibold">Question</label>
+                <input type="text"
+                    name="faqs[{{ $index }}][question]"
+                    class="form-control"
+                    value="{{ $item['question'] ?? '' }}"
+                    required>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Sort</label>
+                <input type="number"
+                    name="faqs[{{ $index }}][sort_order]"
+                    class="form-control"
+                    value="{{ $item['sort_order'] ?? 0 }}">
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Status</label>
+                <select name="faqs[{{ $index }}][status]"
+                    class="form-select">
+                    <option value="1"
+                        {{ ($item['status'] ?? 1) == 1 ? 'selected' : '' }}>
+                        Active
+                    </option>
+                    <option value="0"
+                        {{ ($item['status'] ?? 1) == 0 ? 'selected' : '' }}>
+                        Inactive
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label fw-semibold">Answer</label>
+                <div class="faq-answer-block">
+                    <textarea
+                        name="faqs[{{ $index }}][answer]"
+                        class="form-control ck-editor"
+                        id="answer_{{ $index }}"
+                        rows="4">{{ $item['answer'] ?? '' }}</textarea>
+                </div>
+            </div>
+
+            <div class="col-md-12 d-flex justify-content-end">
+                <button type="button"
+                    class="btn btn-light-danger btn-sm removeFaqBtn">
+                    <i class="ri-delete-bin-line text-danger"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    @endforeach
+
+</div>
+
+@section('script')
+<script>
+    let faqIndex = {{ count($details) }};
+
+    document.getElementById('addFaqBtn').addEventListener('click', function() {
+
+        let wrapper = document.getElementById('faqWrapper');
+
+        let newItem = document.createElement('div');
+
+        newItem.classList.add('faq-item', 'border', 'rounded', 'p-3', 'mb-3');
+
+        newItem.innerHTML = `
+
+            <div class="faq-header d-flex align-items-center gap-2 mb-3">
+
+                <span class="badge bg-primary-600 faq-sl-no">-</span>
+
+                <strong>FAQ Item</strong>
+
+            </div>
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <label class="form-label fw-semibold">Question</label>
+
+                    <input type="text"
+                        name="faqs[\${faqIndex}][question]"
+                        class="form-control"
+                        required>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Sort</label>
+
+                    <input type="number"
+                        name="faqs[\${faqIndex}][sort_order]"
+                        class="form-control"
+                        value="0">
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold">Status</label>
+
+                    <select name="faqs[\${faqIndex}][status]" class="form-select">
+                        <option value="1" selected>Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-md-12">
+
+                    <label class="form-label fw-semibold">Answer</label>
+
+                    <textarea
+                        name="faqs[\${faqIndex}][answer]"
+                        class="form-control ck-editor"
+                        id="answer_new_\${faqIndex}"
+                    ></textarea>
+
+                </div>
+                <div class="col-md-12 d-flex justify-content-end">
+
+                <button type="button"
+                    class="btn btn-light-danger btn-sm removeFaqBtn">
+                    <i class="ri-delete-bin-line text-danger"></i>
+                </button>
+
+            </div>
+
+            </div>
+        `;
+
+        wrapper.appendChild(newItem);
+
+        setTimeout(() => {
+            initCKEditors(newItem);
+        }, 200);
+
+        updateSlNos();
+
+        faqIndex++;
+    });
+
+    document.addEventListener('click', function(e) {
+
+        if (
+            e.target.classList.contains('removeFaqBtn') ||
+            e.target.closest('.removeFaqBtn')
+        ) {
+            e.target.closest('.faq-item').remove();
+            updateSlNos();
+        }
+
+    });
+
+    let ckEditors = {};
+
+    function initCKEditors(context = document) {
+
+        context.querySelectorAll('.ck-editor').forEach((textarea) => {
+
+            if (textarea.dataset.ckeditorInit) return;
+
+            ClassicEditor
+                .create(textarea, {
+                    toolbar: [
+                        'heading',
+                        '|',
+                        'bold', 'italic', 'link',
+                        'bulletedList', 'numberedList',
+                        'undo', 'redo'
+                    ]
+                })
+                .then(editor => {
+
+                    ckEditors[textarea.id] = editor;
+
+                    // sync to textarea
+                    editor.model.document.on('change:data', () => {
+                        textarea.value = editor.getData();
+                    });
+
+                    textarea.dataset.ckeditorInit = "1";
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => {
+            initCKEditors();
+        }, 200);
+        updateSlNos();
+    });
+
+    document.addEventListener('click', function(e) {
+
+        if (e.target.closest('.removeFaqBtn')) {
+
+            let item = e.target.closest('.faq-item');
+
+            // destroy CKEditor instance if exists
+            let textarea = item.querySelector('.ck-editor');
+
+            if (textarea && ckEditors[textarea.id]) {
+                ckEditors[textarea.id].destroy();
+                delete ckEditors[textarea.id];
+            }
+
+            item.remove();
+        }
+    });
+
+    function updateSlNos() {
+        document.querySelectorAll('#faqWrapper .faq-item').forEach((item, index) => {
+            let badge = item.querySelector('.faq-sl-no');
+
+            if (badge) {
+                badge.innerText = index + 1;
+            }
+        });
+    }
+</script>
+@endsection

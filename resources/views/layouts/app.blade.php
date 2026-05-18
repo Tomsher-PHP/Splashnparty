@@ -272,8 +272,9 @@
     <!-- prism js -->
     <script src="{{ asset('assets/js/lib/prism.js') }}"></script>
 
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
     <!-- main js -->
-    <script src="{{ asset('assets/js/app.js') }}"></script>
+
     <script>
         (function() {
             const modalElement = document.getElementById('globalConfirmActionModal');

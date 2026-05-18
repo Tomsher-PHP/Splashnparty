@@ -8,9 +8,15 @@ class Faq extends Model
 {
     protected $fillable = [
         'category',
-        'question',
-        'answer',
+        'details',
         'sort_order',
-        'status'
+        'status',
+        'created_by',
+        'updated_by',
+    ];
+
+    protected $casts = [
+        'details' => 'array',
+        'status' => 'boolean',
     ];
 }

@@ -20,11 +20,10 @@ class FaqController extends Controller
 
         $query = Faq::orderBy('sort_order')->latest();
 
-        // SEARCH (question / answer / category)
+        // SEARCH ( details( q&a ) / category)
         if ($search = request('search')) {
             $query->where(function ($faqQuery) use ($search) {
-                $faqQuery->where('question', 'like', '%' . $search . '%')
-                    ->orWhere('answer', 'like', '%' . $search . '%')
+                $faqQuery->where('details', 'like', '%' . $search . '%')
                     ->orWhere('category', 'like', '%' . $search . '%');
             });
         }
@@ -57,51 +56,72 @@ class FaqController extends Controller
     {
         $request->validate([
             'category' => 'required|string|max:255',
-
-            'faqs' => 'required|array',
-            'faqs.*.question' => 'required|string|max:255',
+            'faqs' => 'required|array|min:1',
+            'faqs.*.question' => 'required|string',
             'faqs.*.answer' => 'required|string',
-            'faqs.*.sort_order' => 'nullable|integer',
         ]);
 
-        $category = $request->category;
+        $details = collect($request->faqs)->map(function ($faq) {
 
-        foreach ($request->faqs as $faq) {
-            Faq::create([
-                'category' => $category,
+            return [
                 'question' => $faq['question'],
                 'answer' => $faq['answer'],
                 'sort_order' => $faq['sort_order'] ?? 0,
-                'created_by' => auth()->id(),
-            ]);
-        }
+                'status' => $faq['status'] ?? 1,
+            ];
 
-        return redirect()->route('faqs.index')
+        })->values()->toArray();
+
+        Faq::create([
+            'category' => $request->category,
+            'details' => $details,
+            'status' => $request->status ?? 1,
+            'sort_order' => 0,
+            'created_by' => auth()->id(),
+        ]);
+
+        return redirect()
+            ->route('faqs.index')
             ->with('success', 'FAQ created successfully.');
     }
 
     public function edit(Faq $faq)
     {
-        return view('faqs.edit', compact('faq'));
+        return view('faqs.edit', [
+            'faq' => $faq,
+            'details' => $faq->details ?? []
+        ]);
     }
 
     public function update(Request $request, Faq $faq)
     {
         $request->validate([
-            'title' => 'nullable|string|max:255',
-            'question' => 'required|string|max:255',
-            'answer' => 'required|string',
-            'sort_order' => 'nullable|integer',
+            'category' => 'required|string|max:255',
+            'faqs' => 'required|array|min:1',
+            'faqs.*.question' => 'required|string',
+            'faqs.*.answer' => 'required|string',
         ]);
+
+        $details = collect($request->faqs)->map(function ($faqItem) {
+
+            return [
+                'question' => $faqItem['question'],
+                'answer' => $faqItem['answer'],
+                'sort_order' => $faqItem['sort_order'] ?? 0,
+                'status' => $faqItem['status'] ?? 1,
+            ];
+
+        })->values()->toArray();
 
         $faq->update([
-            'title' => $request->title,
-            'question' => $request->question,
-            'answer' => $request->answer,
-            'sort_order' => $request->sort_order ?? 0,
+            'category' => $request->category,
+            'details' => $details,
+            'status' => $request->status ?? 1,
+            'updated_by' => auth()->id(),
         ]);
 
-        return redirect()->route('faqs.index')
+        return redirect()
+            ->route('faqs.index')
             ->with('success', 'FAQ updated successfully.');
     }
 

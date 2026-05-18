@@ -36,11 +36,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::put('general-settings', [GeneralSettingController::class, 'update'])->name('general-settings.update');
 
     // FAQ MODULE
-    Route::get('faqs', [FaqController::class, 'index'])->name('faqs.index');
-    Route::get('faqs/create', [FaqController::class, 'create'])->name('faqs.create');
-    Route::post('faqs', [FaqController::class, 'store'])->name('faqs.store');
-    Route::get('faqs/{faq}/edit', [FaqController::class, 'edit'])->name('faqs.edit');
-    Route::put('faqs/{faq}', [FaqController::class, 'update'])->name('faqs.update');
-    Route::delete('faqs/{faq}', [FaqController::class, 'destroy'])->name('faqs.destroy');
+    Route::resource('faqs', FaqController::class)->parameters(['faqs' => 'faq'])->except(['show']);
 
 });
