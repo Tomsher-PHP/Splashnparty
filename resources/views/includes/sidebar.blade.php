@@ -3,10 +3,13 @@
         <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
     </button>
     <div>
-        <a href="index.html" class="sidebar-logo">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="site logo" class="light-logo">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="site logo" class="dark-logo">
-            <img src="{{ asset('assets/images/logo.png') }}" alt="site logo" class="logo-icon">
+        <a href="{{ route('dashboard') }}" class="sidebar-logo">
+            <img src="{{ $generalSettings?->logo ? asset('storage/' . $generalSettings->logo) : asset('assets/images/logo.png') }}"
+                alt="{{ $generalSettings?->site_name ?: 'site logo' }}" class="light-logo">
+            <img src="{{ $generalSettings?->logo ? asset('storage/' . $generalSettings->logo) : asset('assets/images/logo.png') }}"
+                alt="{{ $generalSettings?->site_name ?: 'site logo' }}" class="dark-logo">
+            <img src="{{ $generalSettings?->logo ? asset('storage/' . $generalSettings->logo) : asset('assets/images/logo.png') }}"
+                alt="{{ $generalSettings?->site_name ?: 'site logo' }}" class="logo-icon">
         </a>
     </div>
     <div class="sidebar-menu-area">
@@ -18,11 +21,36 @@
                 </a>
             </li>
             <li class="sidebar-menu-group-title">Settings</li>
+            @can('view_general_settings')
+                <li>
+                    <a href="{{ route('general-settings.edit') }}">
+                        <i class="ri-settings-3-line text-xl me-14 d-flex w-auto"></i>
+                        <span>General Settings</span>
+                    </a>
+                </li>
+            @endcan
             @can('view_banners')
                 <li>
                     <a href="{{ route('banners.index') }}">
                         <i class="ri-image-line text-xl me-14 d-flex w-auto"></i>
                         <span>Banners</span>
+                    </a>
+                </li>
+            @endcan
+            @can('view_client_logos')
+                <li>
+                    <a href="{{ route('client-logos.index') }}">
+                        <i class="ri-layout-grid-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Client Logos</span>
+                    </a>
+                </li>
+            @endcan
+
+            @can('view_faqs')
+                <li>
+                    <a href="{{ route('faqs.index') }}">
+                        <i class="ri-layout-grid-line text-xl me-14 d-flex w-auto"></i>
+                        <span>FAQs</span>
                     </a>
                 </li>
             @endcan

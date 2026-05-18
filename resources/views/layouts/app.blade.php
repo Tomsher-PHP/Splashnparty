@@ -7,9 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex, nofollow">
-    <title>{{ $title ?? env('APP_NAME') }}</title>
+    <title>{{ $title ?? $generalSettings?->meta_title ?? $generalSettings?->site_name ?? env('APP_NAME') }}</title>
+    @if ($generalSettings?->meta_description)
+        <meta name="description" content="{{ $generalSettings->meta_description }}">
+    @endif
 
-    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" sizes="16x16">
+    <link rel="icon"
+        href="{{ $generalSettings?->favicon ? asset('storage/' . $generalSettings->favicon) : asset('assets/images/favicon.ico') }}"
+        sizes="16x16">
     <!-- remix icon font css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">
     <!-- BootStrap css -->
@@ -267,8 +272,9 @@
     <!-- prism js -->
     <script src="{{ asset('assets/js/lib/prism.js') }}"></script>
 
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
     <!-- main js -->
-    <script src="{{ asset('assets/js/app.js') }}"></script>
+
     <script>
         (function() {
             const modalElement = document.getElementById('globalConfirmActionModal');

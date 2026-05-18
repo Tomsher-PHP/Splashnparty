@@ -49,5 +49,17 @@ class PermissionSeeder extends Seeder
                 ['parent_id' => $banners->id]
             );
         }
+
+        $settings = Permission::firstOrCreate(
+            ['name' => 'settings', 'guard_name' => 'web'],
+            ['parent_id' => null]
+        );
+
+        foreach (['view_general_settings', 'edit_general_settings'] as $permission) {
+            Permission::firstOrCreate(
+                ['name' => $permission, 'guard_name' => 'web'],
+                ['parent_id' => $settings->id]
+            );
+        }
     }
 }
