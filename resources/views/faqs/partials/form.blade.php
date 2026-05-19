@@ -124,7 +124,7 @@
                     <label class="form-label fw-semibold">Question</label>
 
                     <input type="text"
-                        name="faqs[\${faqIndex}][question]"
+                        name="faqs[${faqIndex}][question]"
                         class="form-control"
                         required>
                 </div>
@@ -133,7 +133,7 @@
                     <label class="form-label fw-semibold">Sort</label>
 
                     <input type="number"
-                        name="faqs[\${faqIndex}][sort_order]"
+                        name="faqs[${faqIndex}][sort_order]"
                         class="form-control"
                         value="0">
                 </div>
@@ -141,7 +141,7 @@
                 <div class="col-md-2">
                     <label class="form-label fw-semibold">Status</label>
 
-                    <select name="faqs[\${faqIndex}][status]" class="form-select">
+                    <select name="faqs[${faqIndex}][status]" class="form-select">
                         <option value="1" selected>Active</option>
                         <option value="0">Inactive</option>
                     </select>
@@ -152,9 +152,9 @@
                     <label class="form-label fw-semibold">Answer</label>
 
                     <textarea
-                        name="faqs[\${faqIndex}][answer]"
+                        name="faqs[${faqIndex}][answer]"
                         class="form-control ck-editor"
-                        id="answer_new_\${faqIndex}"
+                        id="answer_new_${faqIndex}"
                     ></textarea>
 
                 </div>
