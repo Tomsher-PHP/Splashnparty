@@ -14467,11 +14467,16 @@ td.fc-header-center {
 .ql-container.ql-snow {
   border: 0 !important;
   border-radius: inherit !important;
+  height:150px !important;
 }
 
 .ql-editor {
+  min-height: 150px !important;
   border-radius: 12px;
-  min-height: 600px;
+}
+
+.ql-editor:focus{
+    outline: none;
 }
 
 .ql-picker-label, .ql-formats {
@@ -15834,7 +15839,7 @@ td.fc-header-center {
 
 .sidebar-menu li.dropdown > a::after {
   position: absolute;
-  content: "\ea6e";
+  /* content: "\ea6e"; */
   font-family: remixicon;
   font-style: normal;
   inset-block-start: 50%;
@@ -15843,6 +15848,124 @@ td.fc-header-center {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
   font-size: 1.125rem;
+}
+
+.submenu .submenu-item a {
+    padding-left: 48px !important;
+}
+
+.video-item {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 15px;
+    background: #fff;
+}
+
+.sortable-item {
+    cursor: move;
+}
+
+.sortable-ghost {
+    opacity: .4;
+}
+
+.sortable-chosen {
+    transform: scale(0.97);
+}
+
+.gallery-edit-image{
+    height: 180px;
+    object-fit: cover;
+    cursor: move;
+    transition: .2s ease;
+}
+
+.gallery-edit-image:hover{
+    transform: scale(1.02);
+}
+
+
+/* outdoor events page */
+
+.outdoor-scroll-wrapper {
+    max-height: 650px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+
+.outdoor-image {
+    width:150px;
+    height: 100px;
+    object-fit: cover;
+    cursor: move;
+    transition: .2s ease;
+}
+
+.outdoor-image:hover {
+    transform: scale(1.02);
+}
+
+.outdoor-scroll-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.outdoor-scroll-wrapper::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 20px;
+}
+
+/* OG IMAGE */
+
+.og-image-wrapper {
+    width: 140px;
+    height: 140px;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.og-image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: .25s ease;
+}
+
+.og-image-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.45);
+  opacity: 0;
+  transition: .25s ease;
+  cursor: pointer;
+}
+
+.og-image-overlay button {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+}
+
+.og-image-wrapper:hover .og-image-overlay {
+  opacity: 1;
+}
+
+.og-image-wrapper:hover .og-image-preview {
+  transform: scale(1.03);
+  opacity: .45;
+}
+
+
+/* Thumb image */
+.thumb-image {
+    width:150px;
+    height: 100px;
+    object-fit: cover;
+    cursor: move;
+    transition: .2s ease;
 }
 
 @media (min-width: 1650px) {

@@ -2,12 +2,17 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\CakeController;
 use App\Http\Controllers\Admin\ClientLogoController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GeneralSettingController;
+use App\Http\Controllers\Admin\ImageGalleryController;
+use App\Http\Controllers\Admin\OutDoorEventsController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\VideoGalleryController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -37,5 +42,23 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     // FAQ MODULE
     Route::resource('faqs', FaqController::class)->parameters(['faqs' => 'faq'])->except(['show']);
+
+    // Image and video gallery
+    Route::resource('image-gallery', ImageGalleryController::class);
+    Route::resource('video-gallery', VideoGalleryController::class);
+
+    Route::post('/image-gallery/sort', [ImageGalleryController::class, 'sort'])
+    ->name('image-gallery.sort');
+
+    Route::post('/video-gallery/sort', [VideoGalleryController::class, 'sort'])
+    ->name('video-gallery.sort');
+
+    Route::resource('outdoor-events', OutDoorEventsController::class);
+    Route::post('/outdoor-events/sort', [OutDoorEventsController::class, 'sort'])
+    ->name('outdoor-events.sort');
+
+    Route::resource('branches', BranchController::class);
+
+    Route::resource('cakes', CakeController::class);
 
 });
