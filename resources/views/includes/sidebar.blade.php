@@ -41,6 +41,46 @@
                 </a>
             </li>
             @endcan
+
+            <li class="nav-item dropdown">
+                @php
+                    $cafeMenuPermission =
+                        auth()->user()->can('view_cafe_menu_categories') ||
+                        auth()->user()->can('view_cafe_menus');
+                @endphp
+
+                @if($cafeMenuPermission)
+                    <a href="javascript:void(0)"
+                        class="nav-link dropdown-toggle {{ request()->routeIs('cafe-menu-categories.*') || request()->routeIs('cafe-menus.*') ? '' : 'collapsed' }}"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#cafeMenu"
+                        aria-expanded="false">
+                        <i class="ri-restaurant-2-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Cafe Menu</span>
+                    </a>
+
+                    <ul class="collapse submenu {{ request()->routeIs('cafe-menu-categories.*') || request()->routeIs('cafe-menus.*') ? 'show' : '' }}"
+                        id="cafeMenu">
+                        @can('view_cafe_menu_categories')
+                            <li class="submenu-item">
+                                <a href="{{ route('cafe-menu-categories.index') }}">
+                                    <i class="ri-folder-line me-2"></i>
+                                    Categories
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('view_cafe_menus')
+                            <li class="submenu-item">
+                                <a href="{{ route('cafe-menus.index') }}">
+                                    <i class="ri-restaurant-line me-2"></i>
+                                    Menus
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                @endif
+            </li>
             
             <li class="sidebar-menu-group-title">Settings</li>
             @can('view_general_settings')
