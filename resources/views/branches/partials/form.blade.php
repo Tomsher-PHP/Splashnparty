@@ -60,7 +60,7 @@
                 </label>
                 <textarea name="description"
                           rows="5"
-                          class="form-control ck-editor">{{ old('description', $model->description ?? '') }}</textarea>
+                          class="form-control">{{ old('description', $model->description ?? '') }}</textarea>
             </div>
 
             <div class="col-md-12 mb-20">
@@ -119,7 +119,7 @@
                 </label>
                 <textarea name="address"
                         rows="4"
-                        class="form-control form-control-sm">{{ old('address', $model->address ?? '') }}</textarea>
+                        class="form-control">{{ old('address', $model->address ?? '') }}</textarea>
             </div>
 
             <div class="col-md-6 mb-20">
@@ -128,7 +128,7 @@
                 </label>
                 <textarea name="working_hours"
                         rows="4"
-                        class="form-control form-control-sm">{{ old('working_hours', $model->working_hours ?? '') }}</textarea>
+                        class="form-control">{{ old('working_hours', $model->working_hours ?? '') }}</textarea>
             </div>
         </div>
 

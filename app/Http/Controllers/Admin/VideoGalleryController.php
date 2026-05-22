@@ -81,18 +81,12 @@ class VideoGalleryController extends Controller
 
         // OG IMAGE
         $ogImage = null;
-
         if ($request->hasFile('og_image')) {
-
-            $fileName = time() . '_og.' .
-                $request->og_image->extension();
-
-            $request->og_image->move(
-                public_path('uploads/seo'),
-                $fileName
+            $path = $request->file('og_image')->store(
+                'uploads/seo',
+                'public'
             );
-
-            $ogImage = 'uploads/seo/' . $fileName;
+            $ogImage = 'storage/' . $path;
         }
 
         VideoGallery::create([
@@ -214,12 +208,12 @@ class VideoGalleryController extends Controller
             $fileName = time() . '_og.' .
                 $request->og_image->extension();
 
-            $request->og_image->move(
-                public_path('uploads/seo'),
-                $fileName
+            $path = $request->file('og_image')->store(
+                'uploads/seo',
+                'public'
             );
 
-            $ogImage = 'uploads/seo/' . $fileName;
+            $ogImage = 'storage/' . $path;
         }
 
         $video_gallery->update([

@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class BranchController extends Controller
 {
-
     private function authorizeBranchPermission(string $permission): void
     {
         abort_unless(auth()->user()?->can($permission), 403);
@@ -18,9 +17,23 @@ class BranchController extends Controller
     {
         $this->authorizeBranchPermission('view_branches');
 
-        $branches = Branch::orderBy('sort_order')
+        $query = Branch::query();
+
+        // SEARCH TITLE
+        if ($search = request('title')) {
+
+            $query->where(
+                'title',
+                'like',
+                '%' . $search . '%'
+            );
+        }
+
+        $branches = $query
+            ->orderBy('sort_order')
             ->latest()
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view(
             'branches.index',
@@ -34,6 +47,7 @@ class BranchController extends Controller
     public function create()
     {
         $this->authorizeBranchPermission('create_branches');
+
         return view('branches.create');
     }
 
@@ -63,14 +77,13 @@ class BranchController extends Controller
 
         $image = null;
         if ($request->hasFile('image')) {
-            $fileName = time() . '.' .
-                $request->image->extension();
 
-            $request->image->move(
-                public_path('uploads/branches'),
-                $fileName
+            $path = $request->image->store(
+                'uploads/branches',
+                'public'
             );
-            $image = 'uploads/branches/' . $fileName;
+
+            $image = 'storage/' . $path;
         }
 
         Branch::create([
@@ -133,20 +146,22 @@ class BranchController extends Controller
 
         $image = $branch->image;
         if ($request->hasFile('image')) {
+
             // DELETE OLD IMAGE
-            if ($branch->image && file_exists(public_path($branch->image))) {
+            if (
+                $branch->image &&
+                file_exists(public_path($branch->image))
+            ) {
+
                 unlink(public_path($branch->image));
             }
 
-            $fileName = time() . '.' .
-                $request->image->extension();
-
-            $request->image->move(
-                public_path('uploads/branches'),
-                $fileName
+            $path = $request->image->store(
+                'uploads/branches',
+                'public'
             );
 
-            $image = 'uploads/branches/' . $fileName;
+            $image = 'storage/' . $path;
         }
 
         $branch->update([
@@ -178,11 +193,17 @@ class BranchController extends Controller
     public function destroy(Branch $branch)
     {
         $this->authorizeBranchPermission('delete_branches');
-        if ($branch->image && file_exists(public_path($branch->image))) {
+
+        if (
+            $branch->image &&
+            file_exists(public_path($branch->image))
+        ) {
+
             unlink(public_path($branch->image));
         }
 
         $branch->delete();
+
         return back()->with(
             'success',
             'Deleted successfully'

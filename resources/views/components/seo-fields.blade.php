@@ -24,7 +24,7 @@
                 </label>
                 <textarea name="meta_description"
                     rows="2"
-                    class="form-control form-control-sm"
+                    class="form-control"
                     placeholder="Meta Description">{{ old('meta_description', $model->meta_description ?? '') }}</textarea>
             </div>
 
@@ -60,7 +60,7 @@
                 </label>
                 <textarea name="og_description"
                     rows="2"
-                    class="form-control form-control-sm"
+                    class="form-control"
                     placeholder="OG Description">{{ old('og_description', $model->og_description ?? '') }}</textarea>
             </div>
 
@@ -116,7 +116,7 @@
                 </label>
                 <textarea name="twitter_description"
                     rows="2"
-                    class="form-control form-control-sm"
+                    class="form-control"
                     placeholder="Twitter Description">{{ old('twitter_description', $model->twitter_description ?? '') }}</textarea>
             </div>
         </div>

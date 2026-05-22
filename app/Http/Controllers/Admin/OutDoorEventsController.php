@@ -86,16 +86,12 @@ class OutDoorEventsController extends Controller
         $ogImage = null;
 
         if ($request->hasFile('og_image')) {
-
-            $fileName = time() . '_og.' .
-                $request->og_image->extension();
-
-            $request->og_image->move(
-                public_path('uploads/seo'),
-                $fileName
+            $path = $request->og_image->store(
+                'uploads/seo',
+                'public'
             );
 
-            $ogImage = 'uploads/seo/' . $fileName;
+            $ogImage = 'storage/' . $path;
         }
 
         OutdoorEvent::create([
@@ -247,15 +243,12 @@ class OutDoorEventsController extends Controller
                 );
             }
 
-            $fileName = time() . '_og.' .
-                $request->og_image->extension();
-
-            $request->og_image->move(
-                public_path('uploads/seo'),
-                $fileName
+            $path = $request->og_image->store(
+                'uploads/seo',
+                'public'
             );
 
-            $ogImage = 'uploads/seo/' . $fileName;
+            $ogImage = 'storage/' . $path;
         }
 
         $outdoor_event->update([

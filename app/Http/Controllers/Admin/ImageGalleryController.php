@@ -76,14 +76,12 @@ class ImageGalleryController extends Controller
                     continue;
                 }
 
-                $fileName = time() . '_' . uniqid() . '.' . $image->extension();
-
-                $image->move(
-                    public_path('uploads/gallery'),
-                    $fileName
+                $path = $image->store(
+                    'uploads/gallery',
+                    'public'
                 );
 
-                $uploadedImages[] = 'uploads/gallery/' . $fileName;
+                $uploadedImages[] = 'storage/' . $path;
 
                 // STORE HASH
                 $imageHashes[] = $newHash;
@@ -92,12 +90,11 @@ class ImageGalleryController extends Controller
 
         $ogImage = null;
         if ($request->hasFile('og_image')) {
-            $fileName = time() . '_og.' . $request->og_image->extension();
-            $request->og_image->move(
-                public_path('uploads/seo'),
-                $fileName
+            $path = $request->og_image->store(
+                'uploads/seo',
+                'public'
             );
-            $ogImage = 'uploads/seo/' . $fileName;
+            $ogImage = 'storage/' . $path;
         }
 
         ImageGallery::create([
@@ -179,14 +176,12 @@ class ImageGalleryController extends Controller
                     continue;
                 }
 
-                $fileName = time() . '_' . uniqid() . '.' . $image->extension();
-
-                $image->move(
-                    public_path('uploads/gallery'),
-                    $fileName
+                $path = $image->store(
+                    'uploads/gallery',
+                    'public'
                 );
 
-                $uploadedImages[] = 'uploads/gallery/' . $fileName;
+                $uploadedImages[] = 'storage/' . $path;
 
                 // STORE HASH
                 $imageHashes[] = $newHash;
@@ -218,13 +213,12 @@ class ImageGalleryController extends Controller
                 unlink(public_path($image_gallery->og_image));
             }
 
-            $fileName = time() . '_og.' . $request->og_image->extension();
-            $request->og_image->move(
-                public_path('uploads/seo'),
-                $fileName
+            $path = $request->og_image->store(
+                'uploads/seo',
+                'public'
             );
 
-            $ogImage = 'uploads/seo/' . $fileName;
+            $ogImage = 'storage/' . $path;
         }
 
         // UPDATE
