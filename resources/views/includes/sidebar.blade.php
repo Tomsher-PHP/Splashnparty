@@ -30,6 +30,17 @@
                 </a>
             </li>
             @endcan
+
+            @can('view_cakes')
+            <li>
+                <a href="{{ route('cakes.index') }}">
+                    <iconify-icon
+                        icon="mdi:cake-variant" class="menu-icon">
+                    </iconify-icon>
+                    Cakes
+                </a>
+            </li>
+            @endcan
             
             <li class="sidebar-menu-group-title">Settings</li>
             @can('view_general_settings')

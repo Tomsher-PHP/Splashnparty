@@ -15896,7 +15896,7 @@ td.fc-header-center {
 
 .outdoor-image {
     width:150px;
-    height: 150px;
+    height: 100px;
     object-fit: cover;
     cursor: move;
     transition: .2s ease;
@@ -15959,6 +15959,14 @@ td.fc-header-center {
 }
 
 
+/* Thumb image */
+.thumb-image {
+    width:150px;
+    height: 100px;
+    object-fit: cover;
+    cursor: move;
+    transition: .2s ease;
+}
 
 @media (min-width: 1650px) {
   .sidebar-menu li.dropdown > a::after {

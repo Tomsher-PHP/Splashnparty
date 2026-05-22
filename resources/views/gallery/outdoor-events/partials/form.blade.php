@@ -86,16 +86,7 @@
     position: relative;
 }
 
-.outdoor-image {
-    height: 180px;
-    object-fit: cover;
-    cursor: move;
-    transition: .2s ease;
-}
 
-.outdoor-image:hover {
-    transform: scale(1.02);
-}
 
 .outdoor-remove-btn {
     position: absolute;

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\CakeController;
 use App\Http\Controllers\Admin\ClientLogoController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
@@ -57,5 +58,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     ->name('outdoor-events.sort');
 
     Route::resource('branches', BranchController::class);
+
+    Route::resource('cakes', CakeController::class);
 
 });

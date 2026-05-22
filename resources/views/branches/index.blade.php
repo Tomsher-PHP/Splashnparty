@@ -18,8 +18,8 @@
 </div>
 
 <div class="card border-0 shadow-sm">
-    <div class="card-body">
-        <form method="GET" action="{{ route('branches.index') }}" class="mb-20">
+    <div class="card-header">
+        <form method="GET" action="{{ route('branches.index') }}">
             <div class="d-flex flex-wrap align-items-end gap-3">
                 <div>
                     <input type="text"
@@ -40,6 +40,8 @@
                 </div>
             </div>
         </form>
+    </div>
+    <div class="card-body">
         <div class="overflow-x-auto">
             <table class="table bordered-table mb-0">
                 <thead class="bg-light">

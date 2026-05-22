@@ -1,8 +1,17 @@
 <div class="card border-0 shadow-sm rounded-4">
-    <div class="card-header bg-white py-3">
-        <h5 class="mb-0">
-            Branch Details
-        </h5>
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">
+                Branch Details
+            </h6>
+            <div>
+                <a href="{{ route('branches.index') }}"
+                    class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-2">
+                    <i class="ri-arrow-left-line"></i>
+                    Back
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="card-body">
@@ -136,6 +145,10 @@
             <button type="submit"
                     class="btn btn-primary-600">
                 {{ $buttonText }}
+            </button>
+            <button type="reset"
+                    class="btn btn-sm btn-outline-secondary">
+                Cancel
             </button>
         </div>
     </div>
