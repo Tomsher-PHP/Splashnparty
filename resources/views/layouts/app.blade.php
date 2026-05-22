@@ -32,6 +32,9 @@
     <!-- prism css -->
     <link rel="stylesheet" href="{{ asset('assets/css/lib/prism.css') }}">
 
+    <!-- quill css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/lib/quill.snow.css') }}">
+
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
@@ -220,7 +223,7 @@
 
         </div>
     </div>
-
+    
     @include('includes.sidebar')
 
     <main class="dashboard-main">
@@ -272,7 +275,12 @@
     <!-- prism js -->
     <script src="{{ asset('assets/js/lib/prism.js') }}"></script>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
+    <!-- quill js -->
+    <script src="{{ asset('assets/js/lib/quill.js') }}"></script>
+
+    <!-- sortable js -->
+    <script src="{{ asset('assets/js/lib/sortable.js') }}"></script>
+
     <!-- main js -->
 
     <script>
@@ -339,6 +347,8 @@
             });
         })();
     </script>
+
+    
 
     @yield('script')
 </body>

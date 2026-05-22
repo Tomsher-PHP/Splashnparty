@@ -170,7 +170,7 @@
                     <tr>
                         <td colspan="7" class="text-center py-32">
                             <div class="text-secondary-light">
-                                <i class="ri-question-line text-3xl d-block mb-8"></i>
+                                <i class="ri-question-answer-line text-3xl d-block mb-8"></i>
                                 No FAQs found.
                             </div>
                         </td>
@@ -194,6 +194,21 @@
             </div>
         </div>
         @endif
+
+    </div>
+    <div class="card-footer bg-white border-0">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+            <div>
+                <small class="text-muted">
+                    Showing {{ $faqs->firstItem() }} to {{ $faqs->lastItem() }} of {{ $faqs->total() }} entries
+                </small>
+            </div>
+            <div>
+                {{ $faqs->links() }}
+            </div>
+        </div>
 
     </div>
 </div>

@@ -20,6 +20,17 @@
                     <span>Dashboard</span>
                 </a>
             </li>
+
+            @can('view_branches')
+            <li class="nav-item">
+                <a href="{{ route('branches.index') }}"
+                class="nav-link">
+                    <i class="ri-map-pin-line text-xl me-14 d-flex w-auto"></i>
+                    <span>Branches</span>
+                </a>
+            </li>
+            @endcan
+            
             <li class="sidebar-menu-group-title">Settings</li>
             @can('view_general_settings')
                 <li>
@@ -49,11 +60,91 @@
             @can('view_faqs')
                 <li>
                     <a href="{{ route('faqs.index') }}">
-                        <i class="ri-layout-grid-line text-xl me-14 d-flex w-auto"></i>
+                        <i class="ri-question-answer-line text-xl me-14 d-flex w-auto"></i>
                         <span>FAQs</span>
                     </a>
                 </li>
             @endcan
+
+            <li class="nav-item dropdown">
+
+                @php
+                    $galleryPermission =
+                        auth()->user()->can('view_image_gallery') ||
+                        auth()->user()->can('view_video_gallery') ||
+                        auth()->user()->can('view_outdoor_events');
+                @endphp
+
+                @if($galleryPermission)
+
+                    <a href="javascript:void(0)"
+                        class="nav-link dropdown-toggle {{ request()->routeIs('image-gallery.*') || request()->routeIs('video-gallery.*') || request()->routeIs('outdoor-events.*') ? '' : 'collapsed' }}"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#galleryMenu"
+                        aria-expanded="false">
+
+                        <i class="ri-image-2-line text-xl me-14 d-flex w-auto"></i>
+
+                        <span>Gallery</span>
+
+                    </a>
+
+                    <ul class="collapse submenu {{ request()->routeIs('image-gallery.*') || request()->routeIs('video-gallery.*') || request()->routeIs('outdoor-events.*') ? 'show' : '' }}"
+                        id="galleryMenu">
+
+                        @can('view_image_gallery')
+
+                            <li class="submenu-item">
+
+                                <a href="{{ route('image-gallery.index') }}">
+
+                                    <i class="ri-image-line me-2"></i>
+
+                                    Image Gallery
+
+                                </a>
+
+                            </li>
+
+                        @endcan
+
+                        @can('view_video_gallery')
+
+                            <li class="submenu-item">
+
+                                <a href="{{ route('video-gallery.index') }}">
+
+                                    <i class="ri-video-line me-2"></i>
+
+                                    Video Gallery
+
+                                </a>
+
+                            </li>
+
+                        @endcan
+
+                        @can('view_outdoor_events')
+
+                            <li class="submenu-item">
+
+                                <a href="{{ route('outdoor-events.index') }}">
+
+                                    <i class="ri-landscape-line me-2"></i>
+
+                                    Outdoor Events
+
+                                </a>
+
+                            </li>
+
+                        @endcan
+
+                    </ul>
+
+                @endif
+
+            </li>
 
             <li class="sidebar-menu-group-title">Staff Management</li>
             @can('view_staff')
