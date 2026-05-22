@@ -94,14 +94,17 @@
                                     </a>
                                     @endcan
                                     @can('delete_branches')
-                                    <form action="{{ route('branches.destroy', $branch) }}"
-                                        method="POST"
-                                        class="d-inline">
+                                    <form action="{{ route('branches.destroy', $branch) }}" method="POST"
+                                    class="delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                                class="bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
-                                            <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                            class="branch-icon-btn remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle"
+                                            data-confirm-title="Delete Branch"
+                                            data-confirm-message="Are you sure you want to delete this Branch?"
+                                            title="Delete">
+                                            <iconify-icon icon="fluent:delete-24-regular"
+                                                class="menu-icon"></iconify-icon>
                                         </button>
                                     </form>
                                     @endcan
@@ -134,4 +137,24 @@
         </div>
     </div>
 </div>
+<script>
+
+    document.querySelectorAll('.delete-form button[type="submit"]').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const form = button.closest('form');
+
+        window.openAppConfirm({
+            title: button.dataset.confirmTitle || 'Delete',
+            message: button.dataset.confirmMessage || 'Are you sure you want to continue?',
+            buttonText: 'Yes, Delete',
+            buttonClass: 'btn btn-sm btn-danger',
+            onConfirm: function() {
+                form.submit();
+            }
+        });
+    });
+});
+
+</script>
 @endsection
