@@ -94,8 +94,8 @@
                         </div>
                     </div>
                     <input type="hidden"
-                            name="remove_image"
-                            id="remove_image"
+                            name="remove_thumbnail"
+                            id="remove_thumbnail"
                             value="0">
                 @endif
             </div>
@@ -159,7 +159,7 @@
                 return;
             }
 
-            document.getElementById('remove_image').value = 1;
+            document.getElementById('remove_thumbnail').value = 1;
             e.target.closest('.branch-image-wrapper').remove();
         }
     });
