@@ -81,6 +81,46 @@
                     </ul>
                 @endif
             </li>
+
+            <li class="nav-item dropdown">
+                @php
+                    $RentalPermission =
+                        auth()->user()->can('view_rental_categories') ||
+                        auth()->user()->can('view_rental_items');
+                @endphp
+
+                @if($RentalPermission)
+                    <a href="javascript:void(0)"
+                        class="nav-link dropdown-toggle {{ request()->routeIs('rental-categories.*') || request()->routeIs('rental-items.*') ? '' : 'collapsed' }}"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#rentals"
+                        aria-expanded="false">
+                        <i class="ri-building-4-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Rentals</span>
+                    </a>
+
+                    <ul class="collapse submenu {{ request()->routeIs('rental-categories.*') || request()->routeIs('rental-items.*') ? 'show' : '' }}"
+                        id="rentals">
+                        @can('view_rental_categories')
+                            <li class="submenu-item">
+                                <a href="{{ route('rental-categories.index') }}">
+                                    <i class="ri-folder-2-line me-2"></i>
+                                    Categories
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('view_rental_items')
+                            <li class="submenu-item">
+                                <a href="{{ route('rental-items.index') }}">
+                                    <i class="ri-home-gear-line me-2"></i>
+                                    Items
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                @endif
+            </li>
             
             <li class="sidebar-menu-group-title">Settings</li>
             @can('view_general_settings')

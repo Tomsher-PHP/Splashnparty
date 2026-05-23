@@ -100,9 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
 
     document.addEventListener('DOMContentLoaded', function () {
-
         const sortableGallery = document.getElementById('sortable-edit-gallery');
-
         const hiddenInput = document.getElementById('existing-images-input');
 
         if (!sortableGallery || !hiddenInput) {
@@ -111,80 +109,50 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // UPDATE HIDDEN FIELD
         function updateImageOrder() {
-
             let orderedImages = [];
-
             sortableGallery.querySelectorAll('.sortable-item').forEach(function(item) {
-
                 orderedImages.push(
                     item.getAttribute('data-image')
                 );
-
             });
 
             hiddenInput.value = JSON.stringify(orderedImages);
-
             console.log(hiddenInput.value);
-
         }
 
         // SORTABLE
         new Sortable(sortableGallery, {
-
             animation: 200,
-
             handle: '.drag-handle',
-
             onEnd: function () {
-
                 updateImageOrder();
-
             }
-
         });
 
         // REMOVE IMAGE
         document.addEventListener('click', function(e) {
-
             const removeBtn = e.target.closest('.remove-image-btn');
-
             if (!removeBtn) return;
-
             const item = removeBtn.closest('.sortable-item');
-
             window.openAppConfirm({
-
                 title: 'Remove Image',
-
                 message: 'Are you sure you want to remove this image?',
-
                 buttonText: 'Yes, Remove',
-
                 buttonClass: 'btn btn-sm btn-danger',
-
                 onConfirm: function() {
-
                     item.remove();
-
                     updateImageOrder();
-
                 }
-
             });
-
         });
 
-        // IMPORTANT
         // UPDATE BEFORE FORM SUBMIT
         document.querySelector('form').addEventListener('submit', function () {
-
             updateImageOrder();
-
         });
 
         // INITIAL LOAD
         updateImageOrder();
-
     });
 
 </script>

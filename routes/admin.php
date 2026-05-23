@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GeneralSettingController;
 use App\Http\Controllers\Admin\ImageGalleryController;
 use App\Http\Controllers\Admin\OutDoorEventsController;
+use App\Http\Controllers\Admin\RentalCategoryController;
+use App\Http\Controllers\Admin\RentalItemController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\VideoGalleryController;
@@ -63,14 +65,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::resource('cakes', CakeController::class);
 
-    Route::resource(
-    'cafe-menu-categories',
-    CafeMenuCategoryController::class
-    );
+    Route::resource('cafe-menu-categories', CafeMenuCategoryController::class);
 
-    Route::resource(
-        'cafe-menus',
-        CafeMenuController::class
-    );
+    Route::resource('cafe-menus', CafeMenuController::class);
+
+    Route::resource('rental-categories', RentalCategoryController::class);
+
+    Route::resource('rental-items', RentalItemController::class);
 
 });

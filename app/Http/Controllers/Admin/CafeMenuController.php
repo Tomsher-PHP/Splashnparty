@@ -22,72 +22,89 @@ class CafeMenuController extends Controller
     }
 
     public function index()
-{
-    $this->authorizeCafeMenuPermission(
-        'view_cafe_menus'
-    );
+    {
+        $this->authorizeCafeMenuPermission(
+            'view_cafe_menus'
+        );
 
-    $query = CafeMenu::with([
-        'branch',
-        'category'
-    ])->latest();
+        $query = CafeMenu::with([
+            'branch',
+            'category'
+        ])->latest();
+       
+        // KEYWORD SEARCH
+        if ($keyword = request('keyword')) {
 
-    // KEYWORD SEARCH
-    if ($keyword = request('keyword')) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where(
+                    'title',
+                    'like',
+                    '%' . $keyword . '%'
+                )
+                ->orWhere(
+                    'description',
+                    'like',
+                    '%' . $keyword . '%'
+                )
+                ->orWhereHas('branch', function ($branchQuery) use ($keyword) {
 
-        $query->where(function ($q) use ($keyword) {
+                    $branchQuery->where(
+                        'title',
+                        'like',
+                        '%' . $keyword . '%'
+                    );
 
-            $q->where(
-                'title',
-                'like',
-                '%' . $keyword . '%'
-            )
-            ->orWhere(
-                'description',
-                'like',
-                '%' . $keyword . '%'
+                })
+                ->orWhereHas('category', function ($categoryQuery) use ($keyword) {
+
+                    $categoryQuery->where(
+                        'title',
+                        'like',
+                        '%' . $keyword . '%'
+                    );
+
+                });
+            });
+        }
+
+        // FILTER CATEGORY
+        if ($category = request('category')) {
+
+            $query->where(
+                'cafe_menu_category_id',
+                $category
             );
-        });
-    }
+        }
 
-    // FILTER CATEGORY
-    if ($category = request('category')) {
+        // FILTER BRANCH
+        if ($branch = request('branch')) {
 
-        $query->where(
-            'cafe_menu_category_id',
-            $category
+            $query->where(
+                'branch_id',
+                $branch
+            );
+        }
+
+        $menus = $query
+            ->paginate(10)
+            ->withQueryString();
+
+        // FILTER DROPDOWNS
+        $categories = CafeMenuCategory::orderBy('title')
+            ->get();
+
+        $branches = Branch::orderBy('title')
+            ->get();
+
+        return view(
+            'cafe-menus.index',
+            compact(
+                'menus',
+                'categories',
+                'branches'
+            )
         );
     }
-
-    // FILTER BRANCH
-    if ($branch = request('branch')) {
-
-        $query->where(
-            'branch_id',
-            $branch
-        );
-    }
-
-    $menus = $query
-        ->paginate(10)
-        ->withQueryString();
-
-    // FILTER DROPDOWNS
-    $categories = CafeMenuCategory::orderBy('title')
-        ->get();
-
-    $branches = Branch::orderBy('title')
-        ->get();
-
-    return view(
-        'cafe-menus.index',
-        compact(
-            'menus',
-            'categories',
-            'branches'
-        )
-    );
-}
 
     public function create()
     {
