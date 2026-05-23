@@ -52,7 +52,9 @@
                         <th>Slug</th>
                         <th>Sort Order</th>
                         <th>Status</th>
+                        @if (auth()->user()?->can('edit_rental_categories') || auth()->user()?->can('delete_rental_categories'))
                         <th class="text-end pe-4">Action</th>
+                        @endif
                     </tr>
                 </thead>
 
@@ -71,7 +73,7 @@
                         <td>
                             {{ $item->status ? 'Active' : 'Inactive' }}
                         </td>
-
+                        @if (auth()->user()?->can('edit_rental_categories') || auth()->user()?->can('delete_rental_categories'))
                         <td class="text-end pe-4">
                             <div class="d-flex justify-content-end align-items-center gap-2">
                                 @can('edit_rental_categories')
@@ -97,6 +99,7 @@
                                 @endcan
                             </div>
                         </td>
+                        @endif
                     </tr>
 
                     @endforeach

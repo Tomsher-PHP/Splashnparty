@@ -121,6 +121,57 @@
                     </ul>
                 @endif
             </li>
+
+            <li class="nav-item dropdown">
+                @php
+                    $birthdayPackagePermission =
+                        auth()->user()->can('view_balloon_decorations') ||
+                        auth()->user()->can('view_birthday_packages');
+                @endphp
+
+                @if($birthdayPackagePermission)
+                    <a href="javascript:void(0)"
+                        class="nav-link dropdown-toggle {{ request()->routeIs('balloon-decorations.*') || request()->routeIs('birthday-packages.*') ? '' : 'collapsed' }}"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#birthdayPackagesMenu"
+                        aria-expanded="false">
+                        {{-- MAIN ICON --}}
+                        <i class="ri-cake-3-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Birthday Packages</span>
+                    </a>
+
+                    <ul class="collapse submenu {{ request()->routeIs('balloon-decorations.*') || request()->routeIs('birthday-packages.*') ? 'show' : '' }}"
+                        id="birthdayPackagesMenu">
+                        @can('view_balloon_decorations')
+                            <li class="submenu-item">
+                                <a href="{{ route('balloon-decorations.index') }}">
+                                    {{-- BALLOON ICON --}}
+                                    <i class="ri-bubble-chart-line me-2"></i>
+                                    Balloon Decorations
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('view_birthday_packages')
+                            <li class="submenu-item">
+                                <a href="{{ route('birthday-packages.index') }}">
+                                    {{-- PACKAGE ICON --}}
+                                    <i class="ri-gift-2-line me-2"></i>
+                                    Packages
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                @endif
+            </li>
+            @can('view_events')
+                <li>
+                    <a href="{{ route('events.index') }}">
+                        <i class="ri-question-answer-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Events</span>
+                    </a>
+                </li>
+            @endcan
             
             <li class="sidebar-menu-group-title">Settings</li>
             @can('view_general_settings')

@@ -1,13 +1,16 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BalloonDecorationController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\BirthdayPackageController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CafeMenuCategoryController;
 use App\Http\Controllers\Admin\CafeMenuController;
 use App\Http\Controllers\Admin\CakeController;
 use App\Http\Controllers\Admin\ClientLogoController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GeneralSettingController;
 use App\Http\Controllers\Admin\ImageGalleryController;
@@ -72,5 +75,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('rental-categories', RentalCategoryController::class);
 
     Route::resource('rental-items', RentalItemController::class);
+
+    Route::resource('balloon-decorations', BalloonDecorationController::class);
+
+    Route::resource('birthday-packages', BirthdayPackageController::class);
+
+    Route::resource('events', EventController::class)->parameters(['events' => 'event'])->except(['show']);
 
 });
