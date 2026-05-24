@@ -3,13 +3,13 @@
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-24">
-    <h6 class="fw-semibold mb-0">Menu Categories</h6>
+    <h6 class="fw-semibold mb-0">Rental Categories</h6>
     <div class="d-flex align-items-center gap-2">
         <span class="bg-primary-50 text-primary-600 px-20 py-8 rounded fw-medium text-sm">
             {{ $categories->total() }} Total Categories
         </span>
-        @can('create_cafe_menu_categories')
-        <a href="{{ route('cafe-menu-categories.create') }}"
+        @can('create_rental_categories')
+        <a href="{{ route('rental-categories.create') }}"
             class="btn btn-primary-600 btn-sm">
             <i class="ri-add-line"></i>
             Add Category
@@ -20,7 +20,7 @@
 
 <div class="card border-0 shadow-sm">
     <div class="card-header">
-        <form method="GET" action="{{ route('cafe-menu-categories.index') }}">
+        <form method="GET" action="{{ route('rental-categories.index') }}">
             <div class="d-flex flex-wrap align-items-end gap-3">
                 <div>
                     <input type="text"
@@ -34,7 +34,7 @@
                         <i class="ri-search-line"></i> Filter
                     </button>
 
-                    <a href="{{ route('cafe-menu-categories.index') }}"
+                    <a href="{{ route('rental-categories.index') }}"
                         class="btn btn-sm btn-outline-secondary">
                         Reset
                     </a>
@@ -52,7 +52,7 @@
                         <th>Slug</th>
                         <th>Sort Order</th>
                         <th>Status</th>
-                        @if (auth()->user()?->can('edit_cafe_menu_categories') || auth()->user()?->can('delete_cafe_menu_categories'))
+                        @if (auth()->user()?->can('edit_rental_categories') || auth()->user()?->can('delete_rental_categories'))
                         <th class="text-end pe-4">Action</th>
                         @endif
                     </tr>
@@ -73,22 +73,22 @@
                         <td>
                             {{ $item->status ? 'Active' : 'Inactive' }}
                         </td>
-                        @if (auth()->user()?->can('edit_cafe_menu_categories') || auth()->user()?->can('delete_cafe_menu_categories'))
+                        @if (auth()->user()?->can('edit_rental_categories') || auth()->user()?->can('delete_rental_categories'))
                         <td class="text-end pe-4">
                             <div class="d-flex justify-content-end align-items-center gap-2">
-                                @can('edit_cafe_menu_categories')
-                                <a href="{{ route('cafe-menu-categories.edit', $item) }}"
+                                @can('edit_rental_categories')
+                                <a href="{{ route('rental-categories.edit', $item) }}"
                                 class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></g></svg>
                                 </a>
                                 @endcan
-                                @can('delete_cafe_menu_categories')
-                                <form action="{{ route('cafe-menu-categories.destroy', $item) }}" method="POST"
+                                @can('delete_rental_categories')
+                                <form action="{{ route('rental-categories.destroy', $item) }}" method="POST"
                                     class="delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="cafe-category-icon-btn remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle"
+                                        class="rental-category-icon-btn remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle"
                                         data-confirm-title="Delete Category"
                                         data-confirm-message="Are you sure you want to delete this Category?"
                                         title="Delete">

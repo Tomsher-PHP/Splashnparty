@@ -55,7 +55,9 @@
                         <th>Price</th>
                         <th>Sort</th>
                         <th>Status</th>
+                        @if (auth()->user()?->can('edit_cakes') || auth()->user()?->can('delete_cakes'))
                         <th class="text-end">Action</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -98,6 +100,7 @@
                             @endif
                         </td>
 
+                        @if (auth()->user()?->can('edit_cakes') || auth()->user()?->can('delete_cakes'))
                         <td>
                             <div class="d-flex justify-content-end align-items-center gap-2">
                                 @can('edit_cakes')
@@ -127,6 +130,7 @@
                                 @endcan
                             </div>
                         </td>
+                        @endif
                     </tr>
                     @empty
                     <tr>

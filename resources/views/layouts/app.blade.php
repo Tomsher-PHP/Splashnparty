@@ -282,6 +282,9 @@
     <!-- sortable js -->
     <script src="{{ asset('assets/js/lib/sortable.js') }}"></script>
 
+    <!-- app js -->
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+
     <!-- main js -->
 
     <script>

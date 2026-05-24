@@ -240,30 +240,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // REMOVE THUMBNAIL
     document.addEventListener('click', function(e){
-
         if(e.target.closest('.remove-thumbnail-image')){
-
             if(!confirm('Remove image?')){
                 return;
             }
-
-            document.getElementById(
-                'remove_thumbnail'
-            ).value = 1;
-
-            e.target.closest('.position-relative')
-                .remove();
+            document.getElementById('remove_thumbnail').value = 1;
+            e.target.closest('.position-relative').remove();
         }
-
     });
 
     // REMOVE GALLERY IMAGE
     document.addEventListener('click', function(e){
-
         let btn = e.target.closest(
             '.remove-gallery-image'
         );
-
         if(!btn){
             return;
         }

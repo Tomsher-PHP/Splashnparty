@@ -1,18 +1,23 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BalloonDecorationController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\BirthdayPackageController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CafeMenuCategoryController;
 use App\Http\Controllers\Admin\CafeMenuController;
 use App\Http\Controllers\Admin\CakeController;
 use App\Http\Controllers\Admin\ClientLogoController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GeneralSettingController;
 use App\Http\Controllers\Admin\ImageGalleryController;
 use App\Http\Controllers\Admin\OutDoorEventsController;
 use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\RentalCategoryController;
+use App\Http\Controllers\Admin\RentalItemController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\VideoGalleryController;
@@ -70,14 +75,18 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::resource('cakes', CakeController::class);
 
-    Route::resource(
-    'cafe-menu-categories',
-    CafeMenuCategoryController::class
-    );
+    Route::resource('cafe-menu-categories', CafeMenuCategoryController::class);
 
-    Route::resource(
-        'cafe-menus',
-        CafeMenuController::class
-    );
+    Route::resource('cafe-menus', CafeMenuController::class);
+
+    Route::resource('rental-categories', RentalCategoryController::class);
+
+    Route::resource('rental-items', RentalItemController::class);
+
+    Route::resource('balloon-decorations', BalloonDecorationController::class);
+
+    Route::resource('birthday-packages', BirthdayPackageController::class);
+
+    Route::resource('events', EventController::class)->parameters(['events' => 'event'])->except(['show']);
 
 });

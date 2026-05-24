@@ -144,23 +144,25 @@ class BranchController extends Controller
             'status'        => 'required|boolean',
         ]);
 
+        // IMAGE
         $image = $branch->image;
+
+        // REMOVE THUMBNAIL
+        if ($request->remove_thumbnail == 1 && $branch->image) {
+            $oldPath = public_path($branch->image);
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
+            }
+            $image = null;
+        }
+
+        // NEW IMAGE
         if ($request->hasFile('image')) {
-
-            // DELETE OLD IMAGE
-            if (
-                $branch->image &&
-                file_exists(public_path($branch->image))
-            ) {
-
+            if ($branch->image && file_exists(public_path($branch->image))) {
                 unlink(public_path($branch->image));
             }
 
-            $path = $request->image->store(
-                'uploads/branches',
-                'public'
-            );
-
+            $path = $request->file('image')->store('uploads/branches', 'public');
             $image = 'storage/' . $path;
         }
 

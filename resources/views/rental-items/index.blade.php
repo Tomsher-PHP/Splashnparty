@@ -3,17 +3,17 @@
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-24">
-    <h6 class="fw-semibold mb-0">Cafe Menus</h6>
+    <h6 class="fw-semibold mb-0">Rental Items</h6>
 
     <div class="d-flex align-items-center gap-2">
         <span class="bg-primary-50 text-primary-600 px-20 py-8 rounded fw-medium text-sm">
-            {{ $menus->total() }} Total Menus
+            {{ $items->total() }} Total Items
         </span>
-        @can('create_cafe_menus')
-        <a href="{{ route('cafe-menus.create') }}"
+        @can('create_rental_items')
+        <a href="{{ route('rental-items.create') }}"
             class="btn btn-primary-600 btn-sm">
             <i class="ri-add-line"></i>
-            Add Menu
+            Add Item
         </a>
         @endcan
     </div>
@@ -22,7 +22,7 @@
 
 <div class="card">
     <div class="card-header">
-        <form method="GET" action="{{ route('cafe-menus.index') }}">
+        <form method="GET" action="{{ route('rental-items.index') }}">
             <div class="d-flex flex-wrap align-items-end gap-3">
                 {{-- KEYWORD SEARCH --}}
                 <div>
@@ -55,31 +55,14 @@
                     </select>
                 </div>
 
-                {{-- BRANCH --}}
-                <div>
-                    <label class="form-label form-label-sm">
-                        Branch
-                    </label>
-                    <select name="branch"
-                        class="form-select form-select-sm">
-                        <option value="">
-                            All Branches
-                        </option>
-                        @foreach($branches as $branch)
-                            <option value="{{ $branch->id }}"
-                                {{ request('branch') == $branch->id ? 'selected' : '' }}>
-                                {{ $branch->title }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+                
                 {{-- BUTTONS --}}
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary-600">
                         <i class="ri-search-line"></i>
                         Filter
                     </button>
-                    <a href="{{ route('cafe-menus.index') }}"
+                    <a href="{{ route('rental-items.index') }}"
                         class="btn btn-sm btn-outline-secondary">
                         Reset
                     </a>
@@ -95,77 +78,64 @@
                         <th width="60">#</th>
                         <th>Image</th>
                         <th>Title</th>
-                        <th>Branch</th>
                         <th>Category</th>
                         <th>Price</th>
-                        <th>Type</th>
-                        <th>Food</th>
+                        <th>Sort Order</th>
                         <th>Status</th>
-                        @if (auth()->user()?->can('edit_cafe_menus') || auth()->user()?->can('delete_cafe_menus'))
+                        @if (auth()->user()?->can('edit_rental_items') || auth()->user()?->can('delete_rental_items'))
                         <th class="text-end">Action</th>
                         @endif
                     </tr>
                 </thead>
 
                 <tbody>
-
-                    @forelse($menus as $key => $item)
-
+                    @forelse($items as $key => $item)
                     <tr>
-
                         <td>
                             {{ $key + 1 }}
                         </td>
                         <td width="80">
-
                             @if($item->image)
-
                             <img src="{{ asset($item->image) }}"
                                 class="rounded"
                                 width="60">
-
                             @endif
-
                         </td>
 
                         <td>{{ $item->title }}</td>
-
-                        <td>{{ $item->branch?->title }}</td>
 
                         <td>{{ $item->category?->title }}</td>
 
                         <td>{{ $item->price }}</td>
 
-                        <td>{{ ucfirst($item->menu_type) }}</td>
-
-                        <td>{{ ucfirst(str_replace('_', ' ', $item->food_type)) }}</td>
+                        <td>{{ $item->sort_order }}</td>
 
                         <td>
                             {{ $item->status ? 'Active' : 'Inactive' }}
                         </td>
 
-                        @if (auth()->user()?->can('edit_cafe_menus') || auth()->user()?->can('delete_cafe_menus'))
+                        @if (auth()->user()?->can('edit_rental_items') || auth()->user()?->can('delete_rental_items'))
                         <td class="text-end pe-4">
                             <div class="d-flex justify-content-end align-items-center gap-2">
-                                @can('edit_cafe_menus')
-                                <a href="{{ route('cafe-menus.edit', $item->id) }}"
+                                @can('edit_rental_items')
+                                <a href="{{ route('rental-items.edit', $item->id) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></g></svg>
                                 </a>
                                 @endcan
-                                @can('delete_cafe_menus')
+                                @can('delete_rental_items')
 
-                                <form action="{{ route('cafe-menus.destroy', $item->id) }}"
+                                <form action="{{ route('rental-items.destroy', $item->id) }}"
                                     method="POST" class="delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="menu-icon-btn remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle"
-                                        data-confirm-title="Delete Menu"
-                                        data-confirm-message="Are you sure you want to delete this Menu?"
+                                        class="item-icon-btn remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle"
+                                        data-confirm-title="Delete Item"
+                                        data-confirm-message="Are you sure you want to delete this Item?"
                                         title="Delete">
                                         <iconify-icon icon="fluent:delete-24-regular"
-                                            class="menu-icon"></iconify-icon>
+                                            class="item-icon"></iconify-icon>
                                     </button>
                                 </form>
                                 @endcan
@@ -177,7 +147,7 @@
                     @empty
 
                     <tr>
-                        <td colspan="9"
+                        <td colspan="8"
                             class="text-center">
                             No records found
                         </td>
@@ -194,11 +164,11 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
                 <small class="text-muted">
-                    Showing {{ $menus->firstItem() }} to {{ $menus->lastItem() }} of {{ $menus->total() }} entries
+                    Showing {{ $items->firstItem() }} to {{ $items->lastItem() }} of {{ $items->total() }} entries
                 </small>
             </div>
             <div>
-                {{ $menus->links() }}
+                {{ $items->links() }}
             </div>
         </div>
     </div>
