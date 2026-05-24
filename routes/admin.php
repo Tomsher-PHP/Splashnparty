@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\CafeMenuCategoryController;
+use App\Http\Controllers\Admin\CafeMenuController;
 use App\Http\Controllers\Admin\CakeController;
 use App\Http\Controllers\Admin\ClientLogoController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -64,5 +66,15 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('branches', BranchController::class);
 
     Route::resource('cakes', CakeController::class);
+
+    Route::resource(
+    'cafe-menu-categories',
+    CafeMenuCategoryController::class
+    );
+
+    Route::resource(
+        'cafe-menus',
+        CafeMenuController::class
+    );
 
 });

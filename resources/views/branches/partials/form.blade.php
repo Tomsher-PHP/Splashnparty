@@ -72,22 +72,21 @@
                           class="form-control">{{ old('description', $model->description ?? '') }}</textarea>
             </div>
 
-            <div class="col-md-12 mb-20">
+            <div class="col-md-6 mb-20">
                 <label class="form-label fw-semibold">
                     Branch Image
                 </label>
                 <input type="file"
                        name="image"
                        class="form-control form-control-sm">
-            </div>
+            
 
-            @if(!empty($model?->image))
-                <div class="col-md-12 mb-20">
-                    <div class="position-relative d-inline-block branch-image-wrapper">
+                @if(!empty($model?->image))
+                    <div class="position-relative d-inline-block branch-image-wrapper thumb-image-wrapper mt-20">
                         <img src="{{ asset($model->image) }}"
-                             class="rounded border"
-                             style="width:220px;height:160px;object-fit:cover;opacity:.7;">
-                        <div class="branch-image-overlay remove-branch-image">
+                                class="rounded border thumb-image"
+                                >
+                        <div class="branch-image-overlay thumb-image-overlay remove-branch-image">
                             <button type="button"
                                     class="btn btn-danger rounded-circle">
                                 <i class="ri-delete-bin-line"></i>
@@ -95,14 +94,13 @@
                         </div>
                     </div>
                     <input type="hidden"
-                           name="remove_image"
-                           id="remove_image"
-                           value="0">
-                </div>
-            @endif
+                            name="remove_image"
+                            id="remove_image"
+                            value="0">
+                @endif
+            </div>
         
-
-            <div class="col-md-6 mb-20">
+            <div class="col-md-3 mb-20">
                 <label class="form-label fw-semibold">
                     Phone
                 </label>
@@ -112,7 +110,7 @@
                     value="{{ old('phone', $model->phone ?? '') }}">
             </div>
 
-            <div class="col-md-6 mb-20">
+            <div class="col-md-3 mb-20">
                 <label class="form-label fw-semibold">
                     Email
                 </label>
@@ -143,7 +141,7 @@
 
         <div class="text-end mt-5">
             <button type="submit"
-                    class="btn btn-primary-600">
+                    class="btn btn-sm btn-primary-600">
                 {{ $buttonText }}
             </button>
             <button type="reset"
@@ -153,28 +151,6 @@
         </div>
     </div>
 </div>
-
-<style>
-.branch-image-wrapper {
-    overflow: hidden;
-}
-
-.branch-image-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: .2s ease;
-    background: rgba(0,0,0,.35);
-}
-
-.branch-image-wrapper:hover .branch-image-overlay {
-    opacity: 1;
-}
-
-</style>
 
 <script>
     document.addEventListener('click', function(e) {
