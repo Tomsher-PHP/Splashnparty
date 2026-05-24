@@ -24,10 +24,10 @@
                                 </span>
                             </div>
                         </div>
-                        
+{{--                         
                         <p class="text-secondary-light mb-24 text-sm">
                             Configure content fields, custom sections, image galleries, and repeatable lists on the {{ $page->title }} page.
-                        </p>
+                        </p> --}}
 
                         <div class="d-flex align-items-center justify-content-between pt-16 border-top border-neutral-100">
                             <span class="text-secondary-light text-xs fw-medium">

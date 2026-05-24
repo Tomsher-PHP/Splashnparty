@@ -156,24 +156,6 @@
                                                 <div class="d-flex align-items-center justify-content-between mb-16 border-bottom border-neutral-100 pb-12">
                                                     <span class="fw-semibold text-secondary-light">{{ $field['label'] }}</span>
                                                     <div class="d-flex align-items-center gap-2">
-                                                        @php
-                                                            $hasImageSubfield = false;
-                                                            foreach ($field['fields'] as $subField) {
-                                                                if ($subField['type'] === 'image') {
-                                                                    $hasImageSubfield = true;
-                                                                    break;
-                                                                }
-                                                            }
-                                                        @endphp
-                                                        
-                                                        @if ($hasImageSubfield)
-                                                            <button type="button" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-2 repeater-bulk-btn" 
-                                                                data-repeater-name="{{ $fieldName }}">
-                                                                <i class="ri-images-line"></i> Bulk Add Images
-                                                            </button>
-                                                            <input type="file" id="bulk-file-{{ $fieldName }}" class="d-none" multiple accept="image/*">
-                                                        @endif
-
                                                         <button type="button" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2 repeater-add-btn" 
                                                             data-repeater-name="{{ $fieldName }}">
                                                             <i class="ri-add-line"></i> Add Item
@@ -483,56 +465,6 @@
                 container.append($html);
                 $html.hide().fadeIn(300);
 
-                reindexRepeater(container);
-                checkRepeaterEmptyState(container);
-            });
-
-            // Handle Bulk Image Upload
-            $(document).on('click', '.repeater-bulk-btn', function() {
-                const name = $(this).data('repeater-name');
-                $('#bulk-file-' + name).click();
-            });
-
-            $(document).on('change', 'input[id^="bulk-file-"]', function(event) {
-                const input = this;
-                const files = input.files;
-                if (!files || files.length === 0) return;
-
-                const repeaterName = input.id.replace('bulk-file-', '');
-                const container = $('#container-' + repeaterName);
-                const template = $('#template-' + repeaterName).html();
-
-                // Loop through selected files
-                Array.from(files).forEach(function(file) {
-                    // Get new index
-                    const newIndex = container.find('.repeater-row').length;
-
-                    // Replace placeholders in template
-                    let html = template.replace(/__INDEX__/g, newIndex);
-                    html = html.replace(/__NUMBER__/g, newIndex + 1);
-
-                    // Hide empty state if visible
-                    container.find('.repeater-empty').hide();
-
-                    const $row = $(html);
-                    container.append($row);
-
-                    // Find the file input in the newly added row and set programmatically
-                    const fileInput = $row.find('input[type="file"]').first();
-                    if (fileInput.length) {
-                        const dataTransfer = new DataTransfer();
-                        dataTransfer.items.add(file);
-                        fileInput[0].files = dataTransfer.files;
-
-                        // Trigger file upload change event to render the preview automatically!
-                        fileInput.trigger('change');
-                    }
-                });
-
-                // Clear the bulk input value
-                input.value = '';
-
-                // Re-index all repeater elements
                 reindexRepeater(container);
                 checkRepeaterEmptyState(container);
             });

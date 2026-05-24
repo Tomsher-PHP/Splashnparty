@@ -365,5 +365,264 @@ return [
                 ]
             ]
         ]
+    ],
+    'kids-meal' => [
+        'title' => 'Kids Meal',
+        'sections' => [
+            [
+                'title' => 'Header Banner',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Kids Meal Heading & Description',
+                'fields' => [
+                    [
+                        'name' => 'heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Bottom Section',
+                'fields' => [
+                    [
+                        'name' => 'bottom_heading',
+                        'label' => 'Bottom Section Heading',
+                        'type' => 'text',
+                        'placeholder' => 'Enter bottom section heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'bottom_image',
+                        'label' => 'Bottom Section Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'bottom_description',
+                        'label' => 'Bottom Section Description',
+                        'type' => 'wysiwyg',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'adult-platters' => [
+        'title' => 'Adult Platters',
+        'sections' => [
+            [
+                'title' => 'Header Banner',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Adult Platters Heading & Description',
+                'fields' => [
+                    [
+                        'name' => 'heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'rental-services' => [
+        'title' => 'Rental Services',
+        'sections' => [
+            [
+                'title' => 'Header Banner',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Rental Services Heading & Description',
+                'fields' => [
+                    [
+                        'name' => 'heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Bottom Section',
+                'fields' => [
+                    [
+                        'name' => 'bottom_title',
+                        'label' => 'Bottom Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter bottom section title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'bottom_description',
+                        'label' => 'Bottom Section Description',
+                        'type' => 'wysiwyg',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Services Repeater Section',
+                'fields' => [
+                    [
+                        'name' => 'services_items',
+                        'label' => 'Services Repeater Items',
+                        'type' => 'repeater',
+                        'fields' => [
+                            [
+                                'name' => 'title',
+                                'label' => 'Item Title',
+                                'type' => 'text',
+                                'placeholder' => 'Enter item title',
+                                'rules' => ['required', 'string', 'max:255'],
+                            ],
+                            [
+                                'name' => 'description',
+                                'label' => 'Item Description',
+                                'type' => 'textarea',
+                                'placeholder' => 'Enter item description',
+                                'rules' => ['required', 'string'],
+                            ],
+                            [
+                                'name' => 'image',
+                                'label' => 'Item Image',
+                                'type' => 'image',
+                                'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'outdoor-events' => [
+        'title' => 'Outdoor Events',
+        'sections' => [
+            [
+                'title' => 'Header Banner',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Outdoor Events Heading & Description',
+                'fields' => [
+                    [
+                        'name' => 'heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Events Content Section',
+                'fields' => [
+                    [
+                        'name' => 'image',
+                        'label' => 'Section Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'body_content',
+                        'label' => 'Content',
+                        'type' => 'wysiwyg',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ]
+        ]
     ]
 ];
