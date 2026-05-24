@@ -19,9 +19,9 @@
                             </div>
                             <div>
                                 <h6 class="text-md fw-semibold mb-4 text-dark">{{ $page->title }}</h6>
-                                <span class="bg-neutral-100 text-neutral-600 px-12 py-4 rounded-pill fw-medium text-xs">
+                                {{-- <span class="bg-neutral-100 text-neutral-600 px-12 py-4 rounded-pill fw-medium text-xs">
                                     Slug: {{ $page->slug }}
-                                </span>
+                                </span> --}}
                             </div>
                         </div>
 {{--                         
