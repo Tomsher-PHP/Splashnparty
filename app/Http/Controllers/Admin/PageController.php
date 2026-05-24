@@ -33,9 +33,6 @@ class PageController extends Controller
         return view('pages.index', compact('pages'));
     }
 
-    /**
-     * Show the form for editing the specified page.
-     */
     public function edit(Page $page)
     {
         $this->authorizePagePermission('edit_pages');
@@ -46,12 +43,12 @@ class PageController extends Controller
             abort(404, 'Page schema configuration not found.');
         }
 
+        // Dynamically append the common SEO section to all pages
+        $schema['sections'][] = $this->getSeoSectionSchema();
+
         return view('pages.edit', compact('page', 'schema'));
     }
 
-    /**
-     * Update the specified page in storage.
-     */
     public function update(Request $request, Page $page)
     {
         $this->authorizePagePermission('edit_pages');
@@ -61,6 +58,9 @@ class PageController extends Controller
         if (!$schema) {
             abort(404, 'Page schema configuration not found.');
         }
+
+        // Dynamically append the common SEO section to all pages
+        $schema['sections'][] = $this->getSeoSectionSchema();
 
         // Build validation rules dynamically
         $rules = [];
@@ -190,5 +190,73 @@ class PageController extends Controller
     private function authorizePagePermission(string $permission): void
     {
         abort_unless(auth()->user()?->can($permission), 403);
+    }
+
+    /**
+     * Get the common SEO & Social Sharing metadata section schema.
+     */
+    private function getSeoSectionSchema(): array
+    {
+        return [
+            'title' => 'SEO Details',
+            'description' => 'Manage page search engine optimization, keywords, and appearance on social sharing platforms (Facebook, WhatsApp, Twitter, etc.)',
+            'fields' => [
+                [
+                    'name' => 'meta_title',
+                    'label' => 'Meta Title',
+                    'type' => 'text',
+                    'placeholder' => 'Enter SEO meta title',
+                    'rules' => ['nullable', 'string', 'max:255'],
+                ],
+                [
+                    'name' => 'meta_description',
+                    'label' => 'Meta Description',
+                    'type' => 'textarea',
+                    'placeholder' => 'Enter SEO meta description',
+                    'rules' => ['nullable', 'string'],
+                ],
+                [
+                    'name' => 'keywords',
+                    'label' => 'Meta Keywords',
+                    'type' => 'text',
+                    'placeholder' => 'Enter SEO keywords (comma separated, e.g. birthday, cake, waterpark)',
+                    'rules' => ['nullable', 'string', 'max:255'],
+                ],
+                [
+                    'name' => 'twitter_title',
+                    'label' => 'Twitter Title',
+                    'type' => 'text',
+                    'placeholder' => 'Enter custom Twitter card title',
+                    'rules' => ['nullable', 'string', 'max:255'],
+                ],
+                [
+                    'name' => 'twitter_description',
+                    'label' => 'Twitter Description',
+                    'type' => 'textarea',
+                    'placeholder' => 'Enter custom Twitter card description',
+                    'rules' => ['nullable', 'string'],
+                ],
+                [
+                    'name' => 'og_title',
+                    'label' => 'OG Title',
+                    'type' => 'text',
+                    'placeholder' => 'Enter custom social sharing title',
+                    'rules' => ['nullable', 'string', 'max:255'],
+                ],
+                [
+                    'name' => 'og_description',
+                    'label' => 'OG Description',
+                    'type' => 'textarea',
+                    'placeholder' => 'Enter custom social sharing description',
+                    'rules' => ['nullable', 'string'],
+                ],
+                [
+                    'name' => 'og_image',
+                    'label' => 'OG Image',
+                    'type' => 'image',
+                    'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                ]
+            ]
+        ];
     }
 }
