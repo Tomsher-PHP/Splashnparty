@@ -77,6 +77,15 @@
                 </li>
             @endcan
 
+            @can('view_testimonials')
+                <li>
+                    <a href="{{ route('testimonials.index') }}">
+                        <i class="ri-chat-quote-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Testimonials</span>
+                    </a>
+                </li>
+            @endcan
+
             <li class="nav-item dropdown">
 
                 @php
