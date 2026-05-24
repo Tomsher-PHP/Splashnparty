@@ -91,6 +91,14 @@
                     </a>
                 </li>
             @endcan
+            @can('view_pages')
+                <li>
+                    <a href="{{ route('pages.index') }}" class="{{ request()->routeIs('pages.*') ? 'active-page' : '' }}">
+                        <i class="ri-pages-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Page Management</span>
+                    </a>
+                </li>
+            @endcan
             @can('view_banners')
                 <li>
                     <a href="{{ route('banners.index') }}">

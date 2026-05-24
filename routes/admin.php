@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\VideoGalleryController;
+use App\Http\Controllers\Admin\PageController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -64,6 +65,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     ->name('outdoor-events.sort');
 
     Route::resource('branches', BranchController::class);
+
+    Route::resource('pages', PageController::class)->only(['index', 'edit', 'update']);
 
     Route::resource('cakes', CakeController::class);
 
