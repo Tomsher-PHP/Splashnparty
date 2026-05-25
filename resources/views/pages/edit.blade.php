@@ -675,11 +675,13 @@
             border: none !important;
             font-family: inherit;
             font-size: 14px;
+            height: 300px !important;
+            min-height: 250px !important;
         }
 
         .quill-editor-wrapper .ql-editor {
-            height: 500px !important;
-            min-height: 450px;
+            height: 300px !important;
+            min-height: 250px !important;
             padding: 16px;
         }
 
