@@ -678,8 +678,8 @@
         }
 
         .quill-editor-wrapper .ql-editor {
-            height: 380px !important;
-            min-height: 300px;
+            height: 500px !important;
+            min-height: 450px;
             padding: 16px;
         }
 

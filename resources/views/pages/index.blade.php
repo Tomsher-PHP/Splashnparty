@@ -13,33 +13,29 @@
             <div class="col-xl-4 col-md-6">
                 <div class="card h-100 shadow-sm border-0 page-card-hover">
                     <div class="card-body p-24">
-                        <div class="d-flex align-items-center gap-16 mb-20">
+                        <div class="d-flex align-items-center gap-16">
                             <div class="page-card-icon bg-primary-50 text-primary-600 rounded-12 d-flex align-items-center justify-content-center">
                                 <i class="ri-pages-line text-2xl"></i>
                             </div>
                             <div>
                                 <h6 class="text-md fw-semibold mb-4 text-dark">{{ $page->title }}</h6>
+                                <span class="text-secondary-light text-xs fw-medium">
+                                    Last updated: {{ $page->updated_at ? $page->updated_at->diffForHumans() : 'Never' }}
+                                </span>
                                 {{-- <span class="bg-neutral-100 text-neutral-600 px-12 py-4 rounded-pill fw-medium text-xs">
                                     Slug: {{ $page->slug }}
                                 </span> --}}
                             </div>
+                            <div class="ms-auto">
+                                @can('edit_pages')
+                                    <a href="{{ route('pages.edit', $page->id) }}" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2">
+                                        <i class="ri-edit-line"></i>
+                                        Edit
+                                    </a>
+                                @endcan
+                            </div>
                         </div>
-{{--                         
-                        <p class="text-secondary-light mb-24 text-sm">
-                            Configure content fields, custom sections, image galleries, and repeatable lists on the {{ $page->title }} page.
-                        </p> --}}
 
-                        <div class="d-flex align-items-center justify-content-between pt-16 border-top border-neutral-100">
-                            <span class="text-secondary-light text-xs fw-medium">
-                                Last updated: {{ $page->updated_at ? $page->updated_at->diffForHumans() : 'Never' }}
-                            </span>
-                            @can('edit_pages')
-                                <a href="{{ route('pages.edit', $page->id) }}" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2">
-                                    <i class="ri-edit-line"></i>
-                                    Manage Content
-                                </a>
-                            @endcan
-                        </div>
                     </div>
                 </div>
             </div>
