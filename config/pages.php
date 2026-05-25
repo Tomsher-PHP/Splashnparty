@@ -898,5 +898,97 @@ return [
                 ]
             ]
         ]
+    ],
+    'contact-us' => [
+        'title' => 'Contact Us',
+        'sections' => [
+            [
+                'title' => 'Header Banner',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Heading & Description',
+                'fields' => [
+                    [
+                        'name' => 'heading',
+                        'label' => 'Heading',
+                        'type' => 'text',
+                        'placeholder' => 'Enter main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Form Section',
+                'fields' => [
+                    [
+                        'name' => 'form_section_title',
+                        'label' => 'Form Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter form section title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'form_section_description',
+                        'label' => 'Form Section Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter form section description',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'form_section_image',
+                        'label' => 'Form Section Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Form Categories',
+                'fields' => [
+                    [
+                        'name' => 'form_categories',
+                        'label' => 'Form Categories',
+                        'type' => 'repeater',
+                        'fields' => [
+                            [
+                                'name' => 'title',
+                                'label' => 'Category Title',
+                                'type' => 'text',
+                                'placeholder' => 'Enter category title',
+                                'rules' => ['required', 'string', 'max:255'],
+                            ],
+                            [
+                                'name' => 'icon',
+                                'label' => 'Category Icon',
+                                'type' => 'image',
+                                'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
     ]
 ];
