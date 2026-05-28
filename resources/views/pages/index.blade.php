@@ -30,7 +30,7 @@
                                 @can('edit_pages')
                                     <a href="{{ route('pages.edit', $page->id) }}" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2">
                                         <i class="ri-edit-line"></i>
-                                        Edit
+                                        
                                     </a>
                                 @endcan
                             </div>

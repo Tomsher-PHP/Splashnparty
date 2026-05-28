@@ -46,6 +46,24 @@ class PageController extends Controller
         // Dynamically append the common SEO section to all pages
         $schema['sections'][] = $this->getSeoSectionSchema();
 
+        // Dynamically populate options if needed
+        foreach ($schema['sections'] as &$section) {
+            foreach ($section['fields'] as &$field) {
+                if (isset($field['options_source'])) {
+                    if ($field['options_source'] === 'banners') {
+                        $field['options'] = \App\Models\Banner::where('status', true)->get()->map(function ($banner) {
+                            return [
+                                'value' => $banner->id,
+                                'label' => $banner->title ?: 'Banner #' . $banner->id,
+                                'image' => $banner->file ? asset('storage/' . $banner->file) : null,
+                                'type' => $banner->banner_type
+                            ];
+                        })->toArray();
+                    }
+                }
+            }
+        }
+
         return view('pages.edit', compact('page', 'schema'));
     }
 
@@ -80,6 +98,18 @@ class PageController extends Controller
                         if ($subField['type'] === 'image') {
                             // If it's an image, a new upload is validated, otherwise it can be empty (meaning keep existing)
                             $rules["{$fieldName}.*.{$subName}"] = ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'];
+                        } elseif ($subField['type'] === 'repeater') {
+                            $rules["{$fieldName}.*.{$subName}"] = ['nullable', 'array'];
+                            foreach ($subField['fields'] as $nestedSubField) {
+                                $nestedSubName = $nestedSubField['name'];
+                                $nestedSubRules = $nestedSubField['rules'] ?? [];
+                                if ($nestedSubField['type'] === 'image') {
+                                    $rules["{$fieldName}.*.{$subName}.*.{$nestedSubName}"] = ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'];
+                                } else {
+                                    $rules["{$fieldName}.*.{$subName}.*.{$nestedSubName}"] = $nestedSubRules;
+                                }
+                                $messages["{$fieldName}.*.{$subName}.*.{$nestedSubName}.required"] = "The :attribute field is required inside nested " . ($subField['label'] ?? 'items') . ".";
+                            }
                         } else {
                             $rules["{$fieldName}.*.{$subName}"] = $subRules;
                         }
@@ -146,6 +176,31 @@ class PageController extends Controller
                                     // Retain existing image
                                     $savedRow[$subName] = $request->input("{$fieldName}.{$index}.{$subName}_existing") ?: null;
                                 }
+                            } elseif ($subField['type'] === 'repeater') {
+                                $nestedRepeaterInput = $rowInput[$subName] ?? [];
+                                $nestedSavedRows = [];
+                                foreach ($nestedRepeaterInput as $nestedIndex => $nestedRowInput) {
+                                    $nestedSavedRow = [];
+                                    foreach ($subField['fields'] as $nestedSubField) {
+                                        $nestedSubName = $nestedSubField['name'];
+                                        if ($nestedSubField['type'] === 'image') {
+                                            $nestedFileKey = "{$fieldName}.{$index}.{$subName}.{$nestedIndex}.{$nestedSubName}";
+                                            if ($request->hasFile($nestedFileKey)) {
+                                                $nestedSavedRow[$nestedSubName] = $request->file($nestedFileKey)->store("pages/{$page->slug}", 'public');
+                                                $nestedOldImagePath = $request->input("{$fieldName}.{$index}.{$subName}.{$nestedIndex}.{$nestedSubName}_existing");
+                                                if ($nestedOldImagePath && $nestedOldImagePath !== $nestedSavedRow[$nestedSubName]) {
+                                                    Storage::disk('public')->delete($nestedOldImagePath);
+                                                }
+                                            } else {
+                                                $nestedSavedRow[$nestedSubName] = $request->input("{$fieldName}.{$index}.{$subName}.{$nestedIndex}.{$nestedSubName}_existing") ?: null;
+                                            }
+                                        } else {
+                                            $nestedSavedRow[$nestedSubName] = $nestedRowInput[$nestedSubName] ?? null;
+                                        }
+                                    }
+                                    $nestedSavedRows[] = $nestedSavedRow;
+                                }
+                                $savedRow[$subName] = $nestedSavedRows;
                             } else {
                                 $savedRow[$subName] = $rowInput[$subName] ?? null;
                             }
