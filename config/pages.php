@@ -1392,6 +1392,52 @@ return [
                         ]
                     ]
                 ]
+            ],
+            [
+                'title' => 'Latest Offers & Camps Section',
+                'description' => 'Manage the section title, description, and list of camp/offer promotion images',
+                'fields' => [
+                    [
+                        'name' => 'offers_camps_title',
+                        'label' => 'Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter section title (e.g. Latest Offers & Camps)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'offers_camps_description',
+                        'label' => 'Section Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter section description...',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'offers_camps_images',
+                        'label' => 'Camp & Offer Images',
+                        'type' => 'gallery',
+                        'rules' => ['nullable', 'array'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Testimonials Section',
+                'description' => 'Manage the section title and description',
+                'fields' => [
+                    [
+                        'name' => 'testimonials_title',
+                        'label' => 'Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter section title (e.g. What Our Guests Say)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'testimonials_description',
+                        'label' => 'Section Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter section description...',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
             ]
         ]
     ]
