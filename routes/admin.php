@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\VideoGalleryController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\HeaderMenuController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -72,6 +73,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('branches', BranchController::class);
 
     Route::resource('pages', PageController::class)->only(['index', 'edit', 'update']);
+
+    Route::post('header-menus/reorder', [HeaderMenuController::class, 'reorder'])->name('header-menus.reorder');
+    Route::patch('header-menus/{headerMenu}/status', [HeaderMenuController::class, 'updateStatus'])->name('header-menus.update-status');
+    Route::resource('header-menus', HeaderMenuController::class)->except(['show']);
 
     Route::resource('cakes', CakeController::class);
 

@@ -182,6 +182,14 @@
                     </a>
                 </li>
             @endcan
+            @can('view_header_menus')
+                <li>
+                    <a href="{{ route('header-menus.index') }}" class="{{ request()->routeIs('header-menus.*') ? 'active-page' : '' }}">
+                        <i class="ri-menu-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Header Menu</span>
+                    </a>
+                </li>
+            @endcan
             @can('view_pages')
                 <li>
                     <a href="{{ route('pages.index') }}" class="{{ request()->routeIs('pages.*') ? 'active-page' : '' }}">
