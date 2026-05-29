@@ -1438,6 +1438,93 @@ return [
                         'rules' => ['nullable', 'string'],
                     ]
                 ]
+            ],
+            [
+                'title' => 'CTA Banner Section',
+                'description' => 'Manage the Call to Action banner background image, title, description, and redirect buttons',
+                'fields' => [
+                    [
+                        'name' => 'cta_bg_image',
+                        'label' => 'Background Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'cta_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title (e.g. Ready to Plan Your Perfect Day?)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'cta_description',
+                        'label' => 'Banner Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter banner description...',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'cta_btn1_text',
+                        'label' => 'Button 1 Text',
+                        'type' => 'text',
+                        'placeholder' => 'Enter first button text (e.g. Enquire Now)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'cta_btn1_link',
+                        'label' => 'Button 1 Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter first button redirect URL',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'cta_btn2_text',
+                        'label' => 'Button 2 Text',
+                        'type' => 'text',
+                        'placeholder' => 'Enter second button text (e.g. Buy Day Passes)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'cta_btn2_link',
+                        'label' => 'Button 2 Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter second button redirect URL',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Our Partners Section',
+                'description' => 'Manage the section title',
+                'fields' => [
+                    [
+                        'name' => 'partners_title',
+                        'label' => 'Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter section title (e.g. Our Partners)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Instagram Section',
+                'description' => 'Manage the Instagram section title and description',
+                'fields' => [
+                    [
+                        'name' => 'instagram_title',
+                        'label' => 'Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter section title (e.g. Follow Us On Instagram)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'instagram_description',
+                        'label' => 'Section Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter section description...',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
             ]
         ]
     ]
