@@ -42,7 +42,7 @@
                             Status
                         </label>
                         <select name="status"
-                            class="form-select">
+                            class="form-select form-select-sm">
                             <option value="1"
                                 {{ old('status', $gallery->status ?? 1) == 1 ? 'selected' : '' }}>
                                 Active
@@ -100,7 +100,7 @@
                                     </div>
                                     <input type="text"
                                         name="youtube_link[]"
-                                        class="form-control"
+                                        class="form-control form-control-sm"
                                         placeholder="Paste YouTube link"
                                         value="{{ $link }}">
                                 </div>
@@ -192,7 +192,7 @@
                         </div>
                         <input type="text"
                             name="youtube_link[]"
-                            class="form-control"
+                            class="form-control form-control-sm"
                             placeholder="Paste YouTube link">
                     </div>
                 </div>

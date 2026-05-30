@@ -4,34 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EventBranchDetail extends Model
+class FoodMenu extends Model
 {
     protected $fillable = [
-
-        'event_id',
-
+        'title',
         'branch_id',
-
-        'weekday_price',
-        
-        'weekend_price',
-
+        'type',
+        'food_type',
+        'price',
         'description',
-
-        'highlighted_description',
-
+        'image',
         'sort_order',
-
         'status',
     ];
 
     public function branch()
     {
         return $this->belongsTo(Branch::class);
-    }
-
-    public function event()
-    {
-        return $this->belongsTo(Event::class);
     }
 }
