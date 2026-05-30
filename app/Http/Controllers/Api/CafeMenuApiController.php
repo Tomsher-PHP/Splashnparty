@@ -63,7 +63,9 @@ class CafeMenuApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $categories
+            'message' => 'Successfully retrieved.',
+            'data' => $categories,
+            'page_content' => \App\Models\Page::getPageContent('cafe-menu'),
         ]);
     }
 }

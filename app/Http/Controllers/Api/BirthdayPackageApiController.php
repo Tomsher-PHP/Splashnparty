@@ -69,6 +69,8 @@ class BirthdayPackageApiController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => 'Birthday packages retrieved successfully.',
+            'page_content' => \App\Models\Page::getPageContent('birthday-packages'),
             'data' => $packages
         ]);
     }

@@ -15,17 +15,82 @@ return [
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
-                        'name' => 'banner_description',
-                        'label' => 'Banner Description',
-                        'type' => 'textarea',
-                        'placeholder' => 'Enter banner description',
-                        'rules' => ['nullable', 'string'],
-                    ],
-                    [
                         'name' => 'banner_image',
                         'label' => 'Banner Image',
                         'type' => 'image',
                         'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ],
+             [
+                'title' => 'Dubai\'s Most Exciting Waterpark',
+                'fields' => [
+                    [
+                        'name' => 'waterpark_title',
+                        'label' => 'Common Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter section common title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'waterpark_description',
+                        'label' => 'Common Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter section common description',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'waterpark_items',
+                        'label' => 'Repeating Items',
+                        'type' => 'repeater',
+                        'fields' => [
+                            [
+                                'name' => 'title',
+                                'label' => 'Item Title',
+                                'type' => 'text',
+                                'placeholder' => 'Enter item title',
+                                'rules' => ['required', 'string', 'max:255'],
+                            ],
+                            [
+                                'name' => 'icon',
+                                'label' => 'Item Icon / Image',
+                                'type' => 'image',
+                                'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Location Section',
+                'fields' => [
+                    [
+                        'name' => 'location_heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'location_description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description',
+                        'rules' => ['nullable', 'string'],
                     ]
                 ]
             ],
@@ -121,45 +186,7 @@ return [
                     ]
                 ]
             ],
-            [
-                'title' => 'Dubai\'s Most Exciting Waterpark',
-                'fields' => [
-                    [
-                        'name' => 'waterpark_title',
-                        'label' => 'Common Title',
-                        'type' => 'text',
-                        'placeholder' => 'Enter section common title',
-                        'rules' => ['nullable', 'string', 'max:255'],
-                    ],
-                    [
-                        'name' => 'waterpark_description',
-                        'label' => 'Common Description',
-                        'type' => 'textarea',
-                        'placeholder' => 'Enter section common description',
-                        'rules' => ['nullable', 'string'],
-                    ],
-                    [
-                        'name' => 'waterpark_items',
-                        'label' => 'Repeating Items',
-                        'type' => 'repeater',
-                        'fields' => [
-                            [
-                                'name' => 'title',
-                                'label' => 'Item Title',
-                                'type' => 'text',
-                                'placeholder' => 'Enter item title',
-                                'rules' => ['required', 'string', 'max:255'],
-                            ],
-                            [
-                                'name' => 'icon',
-                                'label' => 'Item Icon / Image',
-                                'type' => 'image',
-                                'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+           
         ]
     ],
     'birthday-packages' => [
