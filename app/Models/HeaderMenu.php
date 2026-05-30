@@ -10,6 +10,7 @@ class HeaderMenu extends Model
         'parent_id',
         'title',
         'url',
+        'icon',
         'sort_order',
         'status'
     ];

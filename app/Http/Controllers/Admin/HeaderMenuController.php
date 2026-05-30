@@ -61,10 +61,15 @@ class HeaderMenuController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'url' => ['nullable', 'string', 'max:2048'],
+            'icon' => ['nullable', 'file', 'image', 'mimes:png,webp,svg', 'max:2048'],
             'parent_id' => ['nullable', 'exists:header_menus,id'],
             'sort_order' => ['required', 'integer', 'min:0'],
             'status' => ['required', 'boolean'],
         ]);
+
+        if ($request->hasFile('icon')) {
+            $validated['icon'] = $request->file('icon')->store('header_menus', 'public');
+        }
 
         HeaderMenu::create($validated);
 
@@ -96,6 +101,7 @@ class HeaderMenuController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'url' => ['nullable', 'string', 'max:2048'],
+            'icon' => ['nullable', 'file', 'image', 'mimes:png,webp,svg', 'max:2048'],
             'parent_id' => ['nullable', 'exists:header_menus,id'],
             'sort_order' => ['required', 'integer', 'min:0'],
             'status' => ['required', 'boolean'],
@@ -104,6 +110,13 @@ class HeaderMenuController extends Controller
         // Prevent circular reference (setting itself as parent)
         if ($validated['parent_id'] == $headerMenu->id) {
             $validated['parent_id'] = null;
+        }
+
+        if ($request->hasFile('icon')) {
+            if ($headerMenu->icon) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($headerMenu->icon);
+            }
+            $validated['icon'] = $request->file('icon')->store('header_menus', 'public');
         }
 
         $headerMenu->update($validated);
@@ -168,6 +181,10 @@ class HeaderMenuController extends Controller
     public function destroy(HeaderMenu $headerMenu)
     {
         $this->authorizeHeaderMenuPermission('delete_header_menus');
+
+        if ($headerMenu->icon) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($headerMenu->icon);
+        }
 
         $headerMenu->delete();
 
