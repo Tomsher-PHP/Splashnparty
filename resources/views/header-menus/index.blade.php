@@ -162,7 +162,7 @@
     <!-- Right Column: Add Menu Item Form -->
     <div class="col-lg-4">
         <div class="card modern-card border-0 shadow-lg position-sticky" style="top: 24px;">
-            <div class="card-header modern-card-header py-20 px-24 border-bottom bg-gradient-premium">
+            <div class="card-header modern-card-header py-10 px-24 border-bottom bg-gradient-premium">
                 <div class="d-flex align-items-center gap-2">
                     <span class="modern-header-icon text-white"><i class="ri-add-circle-fill"></i></span>
                     <h6 class="text-md fw-bold mb-0 text-white">Add Menu Node</h6>
@@ -177,7 +177,7 @@
                     <div class="mb-20">
                         <label for="title" class="form-label fw-bold text-secondary text-xs text-uppercase tracking-wider">Label / Title <span class="text-danger">*</span></label>
                         <div class="input-group-modern">
-                            <span class="input-icon"><i class="ri-bookmark-line"></i></span>
+                            {{-- <span class="input-icon"><i class="ri-bookmark-line"></i></span> --}}
                             <input type="text" id="title" name="title" value="{{ old('title') }}" required
                                 class="form-control form-control-sm @error('title') is-invalid @enderror" placeholder="e.g. Home, About Us">
                         </div>
@@ -189,7 +189,7 @@
                     <div class="mb-20">
                         <label for="url" class="form-label fw-bold text-secondary text-xs text-uppercase tracking-wider">Link / URL</label>
                         <div class="input-group-modern">
-                            <span class="input-icon"><i class="ri-link"></i></span>
+                            {{-- <span class="input-icon"><i class="ri-link"></i></span> --}}
                             <input type="text" id="url" name="url" value="{{ old('url') }}"
                                 class="form-control form-control-sm @error('url') is-invalid @enderror" placeholder="e.g. /, /about-us">
                         </div>
@@ -201,7 +201,7 @@
                     <div class="mb-20">
                         <label for="parent_id" class="form-label fw-bold text-secondary text-xs text-uppercase tracking-wider">Parent Menu</label>
                         <div class="input-group-modern">
-                            <span class="input-icon"><i class="ri-folder-open-line"></i></span>
+                            {{-- <span class="input-icon"><i class="ri-folder-open-line"></i></span> --}}
                             <select id="parent_id" name="parent_id" class="form-select @error('parent_id') is-invalid @enderror">
                                 <option value="">-- Main Menu Item (No Parent) --</option>
                                 @foreach ($headerMenus as $parent)
@@ -218,7 +218,7 @@
                     <div class="mb-20">
                         <label for="sort_order" class="form-label fw-bold text-secondary text-xs text-uppercase tracking-wider">Sort Order <span class="text-danger">*</span></label>
                         <div class="input-group-modern">
-                            <span class="input-icon"><i class="ri-sort-asc"></i></span>
+                            {{-- <span class="input-icon"><i class="ri-sort-asc"></i></span> --}}
                             <input type="number" id="sort_order" name="sort_order" value="{{ old('sort_order', 0) }}" min="0" required
                                 class="form-control form-control-sm @error('sort_order') is-invalid @enderror">
                         </div>
@@ -230,7 +230,7 @@
                     <div class="mb-32">
                         <label for="status" class="form-label fw-bold text-secondary text-xs text-uppercase tracking-wider">Status <span class="text-danger">*</span></label>
                         <div class="input-group-modern">
-                            <span class="input-icon"><i class="ri-toggle-line"></i></span>
+                            {{-- <span class="input-icon"><i class="ri-toggle-line"></i></span> --}}
                             <select id="status" name="status" class="form-select @error('status') is-invalid @enderror" required>
                                 <option value="1" {{ old('status', '1') === '1' ? 'selected' : '' }}>Active</option>
                                 <option value="0" {{ old('status', '1') === '0' ? 'selected' : '' }}>Inactive</option>
@@ -495,7 +495,7 @@
 
             // Switch to Edit Mode style (Emerald color scheme)
             formTitle.text('Edit Menu Node: ' + title);
-            formHeader.removeClass('bg-gradient-premium').css('background', 'linear-gradient(135deg, #10b981 0%, #059669 100%)');
+            // formHeader.removeClass('bg-gradient-premium').css('background', 'linear-gradient(135deg, #10b981 0%, #059669 100%)');
             formHeaderIcon.removeClass('ri-add-circle-fill').addClass('ri-edit-box-fill');
 
             // Update form properties

@@ -136,15 +136,21 @@
                 <div class="dropdown">
                     <button class="d-flex justify-content-center align-items-center rounded-circle" type="button"
                         data-bs-toggle="dropdown">
-                        <img src="{{ asset('assets/images/user.png') }}" alt="image"
-                            class="w-40-px h-40-px object-fit-cover rounded-circle">
+                        @if (auth()->user()->image)
+                            <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="image"
+                                class="w-40-px h-40-px object-fit-cover rounded-circle">
+                        @else
+                            <span class="w-40-px h-40-px bg-primary-50 text-primary-600 rounded-circle d-flex justify-content-center align-items-center fw-semibold text-sm flex-shrink-0 border">
+                                {{ collect(explode(' ', auth()->user()->name))->map(fn($w) => strtoupper(substr($w, 0, 1)))->implode('') }}
+                            </span>
+                        @endif
                     </button>
                     <div class="dropdown-menu to-top dropdown-menu-sm">
                         <div
                             class="py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
                             <div>
-                                <h6 class="text-lg text-primary-light fw-semibold mb-2">Robiul Hasan</h6>
-                                <span class="text-secondary-light fw-medium text-sm">Admin</span>
+                                <h6 class="text-lg text-primary-light fw-semibold mb-2">{{ auth()->user()->name }}</h6>
+                                <span class="text-secondary-light fw-medium text-sm">{{ auth()->user()->email }}</span>
                             </div>
                             <button type="button" class="hover-text-danger">
                                 <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
@@ -153,12 +159,12 @@
                         <ul class="to-top-list">
                             <li>
                                 <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
-                                    href="view-profile.html">
+                                    href="#">
                                     <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon>
                                     My Profile
                                 </a>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
                                     href="email.html">
                                     <iconify-icon icon="tabler:message-check" class="icon text-xl">
@@ -171,10 +177,10 @@
                                     <iconify-icon icon="icon-park-outline:setting-two" class="icon text-xl">
                                     </iconify-icon> Setting
                                 </a>
-                            </li>
+                            </li> --}}
                             <li>
                                 <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
-                                    href="javascript:void(0)">
+                                    href="{{ route('logout') }}">
                                     <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log
                                     Out
                                 </a>
