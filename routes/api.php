@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/home-page', [PageApiController::class, 'HomePageContent']);
 Route::get('/about-us', [PageApiController::class, 'aboutUs']);
+Route::get('/contact-us', [PageApiController::class, 'contactUs']);
+Route::get('/privacy-policy', [PageApiController::class, 'privacyPolicy']);
+Route::get('/terms-and-conditions', [PageApiController::class, 'termsAndConditions']);
+Route::get('/refund-policy', [PageApiController::class, 'refundPolicy']);
+Route::get('/faqs', [PageApiController::class, 'faqs']);
 
 
 Route::get('/image-gallery',[GalleryApiController::class, 'imageGallery']);

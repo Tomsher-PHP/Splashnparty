@@ -79,7 +79,7 @@
                         </td>
 
                         <td>
-                            <span class="badge bg-primary-50 text-primary-700">
+                            <span class="badge bg-primary-50 text-sm text-primary-700">
                                 {{ $faq->category }}
                             </span>
                         </td>
