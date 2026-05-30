@@ -44,6 +44,21 @@
     </div>
 
     <div class="col-md-6">
+        <label for="icon" class="form-label fw-semibold">Icon Image</label>
+        <input type="file" id="icon" name="icon"
+            class="form-control form-control-sm @error('icon') is-invalid @enderror">
+        @if(isset($headerMenu) && $headerMenu->icon)
+            <div class="mt-2">
+                <img src="{{ asset('storage/' . $headerMenu->icon) }}" alt="Current Icon" class="w-32-px h-32-px object-fit-cover rounded border">
+                <span class="text-xs text-secondary ms-2">Current Icon</span>
+            </div>
+        @endif
+        @error('icon')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="col-md-6">
         <label for="status" class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
         <select id="status" name="status"
             class="form-control form-control-sm @error('status') is-invalid @enderror">

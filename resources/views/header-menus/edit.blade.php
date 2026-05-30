@@ -16,7 +16,7 @@
     </a>
 </div>
 
-<form action="{{ route('header-menus.update', $headerMenu) }}" method="POST">
+<form action="{{ route('header-menus.update', $headerMenu) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
