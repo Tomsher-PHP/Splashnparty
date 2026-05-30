@@ -67,7 +67,7 @@
         </label>
 
         <select name="status"
-            class="form-select">
+            class="form-select form-select-sm">
 
             <option value="1"
                 {{ old('status', $isEdit ? $cake->status : 1) == 1 ? 'selected' : '' }}>

@@ -93,6 +93,10 @@ class BirthdayPackageController extends Controller
             'sort_order' => 'nullable|integer',
 
             'status' => 'required|boolean',
+            'minimum_kids' => 'nullable|string|max:255',
+            'duration' => 'nullable|string|max:255',
+            'weekday_rate' => 'nullable|numeric|min:0',
+            'weekend_rate' => 'nullable|numeric|min:0',
         ]);
 
         $image = null;
@@ -202,6 +206,11 @@ class BirthdayPackageController extends Controller
             'sort_order' => 'nullable|integer',
 
             'status' => 'required|boolean',
+
+            'minimum_kids' => 'nullable|string|max:255',
+            'duration' => 'nullable|string|max:255',
+            'weekday_rate' => 'nullable|numeric|min:0',
+            'weekend_rate' => 'nullable|numeric|min:0',
         ]);
 
         $image = $birthday_package->image;
@@ -273,6 +282,11 @@ class BirthdayPackageController extends Controller
             'sort_order' => $request->sort_order ?? 0,
 
             'status' => $request->status,
+
+            'minimum_kids' => $request->minimum_kids,
+            'duration' => $request->duration,
+            'weekday_rate' => $request->weekday_rate,
+            'weekend_rate' => $request->weekend_rate,
         ]);
 
         return redirect()

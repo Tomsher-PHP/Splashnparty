@@ -22,7 +22,7 @@
                     Category
                 </label>
                 <select name="rental_category_id"
-                    class="form-select"
+                    class="form-select form-select-sm"
                     required>
                     <option value="">
                         Select Category
@@ -70,7 +70,7 @@
                 </label>
                 <input type="text"
                     name="title"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('title', $rental_item->title ?? '') }}"
                     required>
             </div>
@@ -81,7 +81,7 @@
                 </label>
                 <input type="text" 
                     name="price"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('price', $rental_item->price ?? '') }}">
             </div>
 
@@ -90,7 +90,7 @@
                     Status
                 </label>
                 <select name="status"
-                    class="form-select">
+                    class="form-select form-select-sm">
                     <option value="1"
                         {{ old('status', $rental_item->status ?? 1) == 1 ? 'selected' : '' }}>
                         Active
@@ -107,7 +107,7 @@
                 </label>
                 <input type="number"
                     name="sort_order"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('sort_order', $rental_item->sort_order ?? 0) }}">
             </div>
             <div class="col-md-12 mb-3">
@@ -116,7 +116,7 @@
                 </label>
                 <textarea name="description"
                     rows="4"
-                    class="form-control">{{ old('description', $rental_item->description ?? '') }}</textarea>
+                    class="form-control form-control-sm">{{ old('description', $rental_item->description ?? '') }}</textarea>
             </div>
         </div>
         <div class="text-end mt-5">

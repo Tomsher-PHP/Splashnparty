@@ -110,6 +110,7 @@ class ImageGalleryController extends Controller
             'og_image' => $ogImage,
             'twitter_title'      => $request->twitter_title,
             'twitter_description' => $request->twitter_description,
+            
             'status'        => $request->status,
 
         ]);

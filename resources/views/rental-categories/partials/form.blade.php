@@ -26,7 +26,7 @@
                     <input type="text"
                         name="title"
                         id="title"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         value="{{ old('title', $category->title ?? '') }}"
                         required>
                 </div>
@@ -39,7 +39,7 @@
                     <input type="text"
                         name="slug"
                         id="slug"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         value="{{ old('slug', $category->slug ?? '') }}"
                         required>
                 </div>
@@ -49,13 +49,13 @@
                 <label>Sort Order</label>
                 <input type="number"
                     name="sort_order"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('sort_order', $category->sort_order ?? 0) }}">
             </div>
 
             <div class="col-md-6 mb-3">
                 <label>Status</label>
-                <select name="status" class="form-select">
+                <select name="status" class="form-select form-select-sm">
                     <option value="1"
                         {{ old('status', $category->status ?? 1) == 1 ? 'selected' : '' }}>
                         Active
