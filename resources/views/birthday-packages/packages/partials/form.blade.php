@@ -26,7 +26,7 @@ $isEdit = isset($package);
                 </label>
 
                 <select name="branch_id"
-                    class="form-select">
+                    class="form-select form-select-sm">
 
                     <option value="">
                         Select Branch
@@ -57,7 +57,7 @@ $isEdit = isset($package);
                 <input type="text"
                     name="title"
                     id="title"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('title', $package->title ?? '') }}"
                     required>
 
@@ -73,7 +73,7 @@ $isEdit = isset($package);
                 <input type="text"
                     name="slug"
                     id="slug"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('slug', $package->slug ?? '') }}"
                     required>
 
@@ -88,7 +88,7 @@ $isEdit = isset($package);
 
                 <input type="text"
                     name="price"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('price', $package->price ?? '') }}">
 
             </div>
@@ -102,7 +102,7 @@ $isEdit = isset($package);
 
                 <input type="file"
                     name="image"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     {{ $isEdit ? '' : 'required' }}>
 
                 @if(!empty($package?->image))
@@ -121,99 +121,108 @@ $isEdit = isset($package);
 
             {{-- BANNER IMAGE --}}
             <div class="col-md-6">
-
                 <label class="form-label fw-semibold">
                     Banner Image
                 </label>
-
                 <input type="file"
                     name="banner_image"
-                    class="form-control">
-
+                    class="form-control form-control-sm">
                 @if(!empty($package?->banner_image))
-
                 <div class="mt-2">
-
                     <img src="{{ asset($package->banner_image) }}"
                         width="160"
                         class="rounded border">
-
                 </div>
-
                 @endif
-
             </div>
 
-            {{-- HIGHLIGHTED DESCRIPTION --}}
-            <div class="col-md-12">
-
+            {{-- MINIMUM KIDS --}}
+            <div class="col-md-3">
                 <label class="form-label fw-semibold">
-                    Highlighted Description
+                    Minimum Kids
                 </label>
-
-                <textarea name="highlighted_description"
-                    rows="3"
-                    class="form-control">{{ old('highlighted_description', $package->highlighted_description ?? '') }}</textarea>
-
+                <input type="text"
+                    name="minimum_kids"
+                    class="form-control form-control-sm"
+                    placeholder="Mon-Thurs: 10 kids / Fri-Sun: 15 kids"
+                    value="{{ old('minimum_kids', $package->minimum_kids ?? '') }}">
             </div>
 
-            {{-- DESCRIPTION --}}
-            <div class="col-md-12">
-
+            {{-- DURATION --}}
+            <div class="col-md-3">
                 <label class="form-label fw-semibold">
-                    Description
+                    Duration
                 </label>
+                <input type="text"
+                    name="duration"
+                    class="form-control form-control-sm"
+                    placeholder="1 hour 45 minutes"
+                    value="{{ old('duration', $package->duration ?? '') }}">
+            </div>
 
-                <textarea name="description"
-                    rows="5"
-                    class="form-control">{{ old('description', $package->description ?? '') }}</textarea>
+            {{-- WEEKDAY RATE --}}
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">
+                    Weekday Rate
+                </label>
+                <input type="text"
+                    name="weekday_rate"
+                    class="form-control form-control-sm"
+                    value="{{ old('weekday_rate', $package->weekday_rate ?? '') }}">
+            </div>
 
+            {{-- WEEKEND RATE --}}
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">
+                    Weekend Rate
+                </label>
+                <input type="text"
+                    name="weekend_rate"
+                    class="form-control form-control-sm"
+                    value="{{ old('weekend_rate', $package->weekend_rate ?? '') }}">
             </div>
 
             {{-- SORT ORDER --}}
             <div class="col-md-6">
-
                 <label class="form-label fw-semibold">
                     Sort Order
                 </label>
-
                 <input type="number"
                     name="sort_order"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('sort_order', $package->sort_order ?? 0) }}">
-
             </div>
 
             {{-- STATUS --}}
             <div class="col-md-6">
-
                 <label class="form-label fw-semibold">
                     Status
                 </label>
 
                 <select name="status"
-                    class="form-select">
-
+                    class="form-select form-select-sm">
                     <option value="1"
                         {{ old('status', $package->status ?? 1) == 1 ? 'selected' : '' }}>
-
                         Active
-
                     </option>
 
                     <option value="0"
                         {{ old('status', $package->status ?? 1) == 0 ? 'selected' : '' }}>
-
                         Inactive
-
                     </option>
-
                 </select>
-
             </div>
 
+            {{-- DESCRIPTION --}}
+            <div class="col-md-12">
+                <label class="form-label fw-semibold">
+                    Description
+                </label>
+                <textarea name="description"
+                    rows="5"
+                    class="form-control form-control-sm">{{ old('description', $package->description ?? '') }}</textarea>
+            </div>
         </div>
-
     </div>
 
     <div class="card-footer text-end">

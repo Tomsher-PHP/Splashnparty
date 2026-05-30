@@ -22,7 +22,7 @@
             </label>
             <input type="file"
                    name="images[]"
-                   class="form-control"
+                   class="form-control form-control-sm"
                    multiple>
         </div>
 

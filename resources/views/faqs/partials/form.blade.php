@@ -6,7 +6,7 @@
 
         <input type="text"
             name="category"
-            class="form-control"
+            class="form-control form-control-sm"
             value="{{ old('category', $isEdit ? $faq->category : '') }}"
             required>
     </div>
@@ -14,7 +14,7 @@
     <div class="col-md-4">
         <label class="form-label fw-semibold">Category Status</label>
 
-        <select name="status" class="form-select">
+        <select name="status" class="form-select form-select-sm">
 
             <option value="1"
                 {{ old('status', $isEdit ? $faq->status : 1) == 1 ? 'selected' : '' }}>
@@ -47,7 +47,7 @@
                 <label class="form-label fw-semibold">Question</label>
                 <input type="text"
                     name="faqs[{{ $index }}][question]"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ $item['question'] ?? '' }}"
                     required>
             </div>
@@ -56,14 +56,14 @@
                 <label class="form-label fw-semibold">Sort</label>
                 <input type="number"
                     name="faqs[{{ $index }}][sort_order]"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ $item['sort_order'] ?? 0 }}">
             </div>
 
             <div class="col-md-2">
                 <label class="form-label fw-semibold">Status</label>
                 <select name="faqs[{{ $index }}][status]"
-                    class="form-select">
+                    class="form-select form-select-sm">
                     <option value="1"
                         {{ ($item['status'] ?? 1) == 1 ? 'selected' : '' }}>
                         Active
@@ -125,19 +125,19 @@
                     <label class="form-label fw-semibold">Question</label>
                     <input type="text"
                         name="faqs[${faqIndex}][question]"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         required>
                 </div>
                 <div class="col-md-2">
                     <label class="form-label fw-semibold">Sort</label>
                     <input type="number"
                         name="faqs[${faqIndex}][sort_order]"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         value="0">
                 </div>
                 <div class="col-md-2">
                     <label class="form-label fw-semibold">Status</label>
-                    <select name="faqs[${faqIndex}][status]" class="form-select">
+                    <select name="faqs[${faqIndex}][status]" class="form-select form-select-sm">
                         <option value="1" selected>Active</option>
                         <option value="0">Inactive</option>
                     </select>

@@ -97,6 +97,9 @@ class EventController extends Controller
             'branch_details.*.sort_order' => 'nullable|integer',
 
             'branch_details.*.status' => 'required|boolean',
+
+            'branch_details.*.weekday_price' => 'nullable|string|max:255',
+            'branch_details.*.weekend_price' => 'nullable|string|max:255',
         ]);
 
         $image = null;
@@ -145,6 +148,10 @@ class EventController extends Controller
                 'event_id' => $event->id,
 
                 'branch_id' => $detail['branch_id'],
+
+                'weekday_price' => $detail['weekday_price'] ?? null,
+
+                'weekend_price' => $detail['weekend_price'] ?? null,
 
                 'description' => $detail['description'],
 
@@ -220,6 +227,10 @@ class EventController extends Controller
             'branch_details.*.sort_order' => 'nullable|integer',
 
             'branch_details.*.status' => 'required|boolean',
+
+            'branch_details.*.weekday_price' => 'nullable|string|max:255',
+
+            'branch_details.*.weekend_price' => 'nullable|string|max:255',
         ]);
 
         $image = $event->image;
@@ -287,6 +298,10 @@ class EventController extends Controller
                 'event_id' => $event->id,
 
                 'branch_id' => $detail['branch_id'],
+
+                'weekday_price' => $detail['weekday_price'] ?? null,
+
+                'weekend_price' => $detail['weekend_price'] ?? null,
 
                 'description' => $detail['description'],
 

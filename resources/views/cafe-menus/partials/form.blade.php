@@ -21,7 +21,7 @@
                     Branch
                 </label>
                 <select name="branch_id"
-                    class="form-select"
+                    class="form-select form-select-sm"
                     required>
                     <option value="">
                         Select Branch
@@ -40,7 +40,7 @@
                     Category
                 </label>
                 <select name="cafe_menu_category_id"
-                    class="form-select"
+                    class="form-select form-select-sm"
                     required>
                     <option value="">
                         Select Category
@@ -90,7 +90,7 @@
                 </label>
                 <input type="text"
                     name="title"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('title', $cafe_menu->title ?? '') }}"
                     required>
             </div>
@@ -102,7 +102,7 @@
                 <input type="number"
                     step="0.01"
                     name="price"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('price', $cafe_menu->price ?? '') }}">
             </div>
 
@@ -111,7 +111,7 @@
                     Status
                 </label>
                 <select name="status"
-                    class="form-select">
+                    class="form-select form-select-sm">
                     <option value="1"
                         {{ old('status', $cafe_menu->status ?? 1) == 1 ? 'selected' : '' }}>
                         Active
@@ -128,7 +128,7 @@
                 </label>
                 <input type="number"
                     name="sort_order"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('sort_order', $cafe_menu->sort_order ?? 0) }}">
             </div>
 
@@ -137,7 +137,7 @@
                     Menu Type
                 </label>
                 <select name="menu_type"
-                    class="form-select">
+                    class="form-select form-select-sm">
                     <option value="adult"
                         {{ old('menu_type', $cafe_menu->menu_type ?? '') == 'adult' ? 'selected' : '' }}>
                         Adult
@@ -153,7 +153,7 @@
                 <label class="form-label fw-semibold">
                     Food Type
                 </label>
-                <select name="food_type" class="form-select">
+                <select name="food_type" class="form-select form-select-sm">
                     <option value="veg"
                         {{ old('food_type', $cafe_menu->food_type ?? '') == 'veg' ? 'selected' : '' }}>
                         Veg
@@ -170,7 +170,7 @@
                 </label>
                 <textarea name="description"
                     rows="4"
-                    class="form-control">{{ old('description', $cafe_menu->description ?? '') }}</textarea>
+                    class="form-control form-control-sm">{{ old('description', $cafe_menu->description ?? '') }}</textarea>
             </div>
         </div>
         <div class="text-end mt-5">
