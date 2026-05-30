@@ -118,6 +118,7 @@
     @include('includes.toast')
 
     <button type="button"
+    
         class="theme-customization__button w-48-px h-48-px bg-primary-600 text-white rounded-circle d-flex justify-content-center align-items-center position-fixed end-0 bottom-0 mb-40 me-40 text-2xxl bg-hover-primary-700">
         <i class="ri-settings-3-line animate-spin"></i>
     </button>

@@ -256,8 +256,6 @@
   //     .classList.add("active");
   // }
 
-  const colorPickerButtons = document.querySelectorAll(".color-picker-btn");
-
   const colors = {
     blue: "#2563eb",
     red: "#dc2626",
@@ -267,10 +265,106 @@
     violet: "#7c3aed",
   };
 
+  const colorPalettes = {
+    blue: {
+      "50": "#E4F1FF",
+      "100": "#BFDCFF",
+      "200": "#95C7FF",
+      "300": "#6BB1FF",
+      "400": "#519FFF",
+      "500": "#458EFF",
+      "600": "#2563eb",
+      "700": "#1d4ed8",
+      "800": "#1e40af",
+      "900": "#1e3a8a",
+      "light": "rgba(37, 99, 235, 0.15)",
+      "light-white": "rgba(37, 99, 235, 0.25)"
+    },
+    red: {
+      "50": "#FEF2F2",
+      "100": "#FEE2E2",
+      "200": "#FECACA",
+      "300": "#FCA5A5",
+      "400": "#F87171",
+      "500": "#EF4444",
+      "600": "#DC2626",
+      "700": "#B91C1C",
+      "800": "#991B1B",
+      "900": "#7F1D1D",
+      "light": "rgba(220, 38, 38, 0.15)",
+      "light-white": "rgba(220, 38, 38, 0.25)"
+    },
+    green: {
+      "50": "#F0FDF4",
+      "100": "#DCFCE7",
+      "200": "#BBF7D0",
+      "300": "#86EFAC",
+      "400": "#4ADE80",
+      "500": "#22C55E",
+      "600": "#16A34A",
+      "700": "#15803D",
+      "800": "#166534",
+      "900": "#14532D",
+      "light": "rgba(22, 163, 74, 0.15)",
+      "light-white": "rgba(22, 163, 74, 0.25)"
+    },
+    yellow: {
+      "50": "#FEFCE8",
+      "100": "#FEF9C3",
+      "200": "#FEF08A",
+      "300": "#FDE047",
+      "400": "#FACC15",
+      "500": "#EAB308",
+      "600": "#FF9F29",
+      "700": "#f39016",
+      "800": "#e58209",
+      "900": "#d77907",
+      "light": "rgba(255, 159, 41, 0.15)",
+      "light-white": "rgba(255, 159, 41, 0.25)"
+    },
+    cyan: {
+      "50": "#e2f5fb",
+      "100": "#DAF6FF",
+      "200": "#85daf4",
+      "300": "#6cb5fc",
+      "400": "#48cef7",
+      "500": "#2bc9f9",
+      "600": "#00b8f2",
+      "700": "#03a9dc",
+      "800": "#049dcb",
+      "900": "#0390bb",
+      "light": "rgba(0, 184, 242, 0.15)",
+      "light-white": "rgba(0, 184, 242, 0.25)"
+    },
+    violet: {
+      "50": "#f5f3ff",
+      "100": "#ede9fe",
+      "200": "#ddd6fe",
+      "300": "#c4b5fd",
+      "400": "#a78bfa",
+      "500": "#8b5cf6",
+      "600": "#7c3aed",
+      "700": "#6d28d9",
+      "800": "#5b21b6",
+      "900": "#4c1d95",
+      "light": "rgba(124, 58, 237, 0.15)",
+      "light-white": "rgba(124, 58, 237, 0.25)"
+    }
+  };
+
   function applyColor(color) {
-    document.documentElement.style.setProperty("--primary-600", colors[color]);
+    if (colorPalettes[color]) {
+      const palette = colorPalettes[color];
+      Object.keys(palette).forEach((shade) => {
+        document.documentElement.style.setProperty(`--primary-${shade}`, palette[shade]);
+      });
+    } else {
+      document.documentElement.style.setProperty("--primary-600", colors[color]);
+    }
     localStorage.setItem("templateColor", color);
   }
+
+  const colorPickerButtons = document.querySelectorAll(".color-picker-btn");
 
   colorPickerButtons.forEach((btn) => {
     btn.addEventListener("click", () => {

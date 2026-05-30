@@ -200,6 +200,22 @@
                     </a>
                 </li>
             @endcan
+            @can('view_header_menus')
+                <li>
+                    <a href="{{ route('header-menus.index') }}" class="{{ request()->routeIs('header-menus.*') ? 'active-page' : '' }}">
+                        <i class="ri-menu-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Header Menu</span>
+                    </a>
+                </li>
+            @endcan
+            @can('view_pages')
+                <li>
+                    <a href="{{ route('pages.index') }}" class="{{ request()->routeIs('pages.*') ? 'active-page' : '' }}">
+                        <i class="ri-pages-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Page Management</span>
+                    </a>
+                </li>
+            @endcan
             @can('view_banners')
                 <li>
                     <a href="{{ route('banners.index') }}">
@@ -222,6 +238,15 @@
                     <a href="{{ route('faqs.index') }}">
                         <i class="ri-question-answer-line text-xl me-14 d-flex w-auto"></i>
                         <span>FAQs</span>
+                    </a>
+                </li>
+            @endcan
+
+            @can('view_testimonials')
+                <li>
+                    <a href="{{ route('testimonials.index') }}">
+                        <i class="ri-chat-quote-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Testimonials</span>
                     </a>
                 </li>
             @endcan
