@@ -220,7 +220,7 @@ $isEdit = isset($package);
                 </label>
                 <textarea name="description"
                     rows="5"
-                    class="form-control form-control-sm">{{ old('description', $package->description ?? '') }}</textarea>
+                    class="form-control">{{ old('description', $package->description ?? '') }}</textarea>
             </div>
         </div>
     </div>

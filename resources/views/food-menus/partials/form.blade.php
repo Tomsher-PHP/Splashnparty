@@ -170,7 +170,7 @@
 
                 <textarea name="description"
                     rows="5"
-                    class="form-control form-control-sm">{{ old('description', $foodMenu->description ?? '') }}</textarea>
+                    class="form-control">{{ old('description', $foodMenu->description ?? '') }}</textarea>
 
             </div>
 

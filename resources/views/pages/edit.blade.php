@@ -67,7 +67,7 @@
 
                                         @elseif ($fieldType === 'textarea')
                                             <textarea id="{{ $fieldName }}" name="{{ $fieldName }}" rows="4"
-                                                class="form-control form-control-sm @error($fieldName) is-invalid @enderror"
+                                                class="form-control @error($fieldName) is-invalid @enderror"
                                                 placeholder="{{ $field['placeholder'] ?? '' }}">{{ $fieldValue }}</textarea>
 
                                         @elseif ($fieldType === 'image')
@@ -251,7 +251,7 @@
 
                                                                             @elseif ($subType === 'textarea')
                                                                                 <textarea name="{{ $fieldName }}[{{ $index }}][{{ $subName }}]" rows="4"
-                                                                                    class="form-control form-control-sm"
+                                                                                    class="form-control"
                                                                                     placeholder="{{ $subField['placeholder'] ?? '' }}">{{ $subValue }}</textarea>
 
                                                                             @elseif ($subType === 'image')
@@ -479,7 +479,7 @@
 
                                         @elseif ($subType === 'textarea')
                                             <textarea name="{{ $field['name'] }}[__INDEX__][{{ $subName }}]" rows="4"
-                                                class="form-control form-control-sm"
+                                                class="form-control"
                                                 placeholder="{{ $subField['placeholder'] ?? '' }}"></textarea>
 
                                         @elseif ($subType === 'image')
