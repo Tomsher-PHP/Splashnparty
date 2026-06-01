@@ -140,7 +140,7 @@
 
                                 <form action="{{ route('image-gallery.destroy', $gallery) }}"
                                     method="POST"
-                                    class="image-gallery-delete-form">
+                                    class="delete-form">
 
                                     @csrf
                                     @method('DELETE')
@@ -239,8 +239,7 @@
 
 @section('script')
 <script>
-    
-    document.querySelectorAll('.image-gallery-delete-form button[type="submit"]').forEach(function(button) {
+    document.querySelectorAll('.delete-form button[type="submit"]').forEach(function(button) {
         button.addEventListener('click', function(event) {
             event.preventDefault();
             const form = button.closest('form');

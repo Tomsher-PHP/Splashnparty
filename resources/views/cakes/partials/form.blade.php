@@ -183,56 +183,27 @@
     </div>
 </div>
 
-<style>
-.image-overlay{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,.45);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    opacity:0;
-    transition:.2s;
-    border-radius:.5rem;
-}
-
-.position-relative:hover .image-overlay{
-    opacity:1;
-}
-</style>
-
 @section('script')
 
 <script>
 
 document.addEventListener('DOMContentLoaded', function () {
-
     // QUILL
     const quill = new Quill('.quill-editor', {
-
         theme: 'snow',
-
         modules: {
-
             toolbar: [
-
                 [{ header: [1, 2, 3, false] }],
-
                 ['bold', 'italic', 'underline'],
-
                 [{ list: 'ordered' }, { list: 'bullet' }],
-
                 [{ color: [] }, { background: [] }],
-
                 ['link'],
-
                 ['clean']
             ]
         }
     });
 
     quill.on('text-change', function () {
-
         document.getElementById(
             'description_editor'
         ).value = quill.root.innerHTML;
@@ -257,28 +228,20 @@ document.addEventListener('DOMContentLoaded', function () {
         if(!btn){
             return;
         }
-
         if(!confirm('Remove image?')){
             return;
         }
-
         let image = btn.dataset.image;
-
         let input = document.getElementById(
             'existing_gallery_images'
         );
-
         let images = JSON.parse(input.value);
-
         images = images.filter(
             item => item !== image
         );
-
         input.value = JSON.stringify(images);
-
         btn.closest('.gallery-image-item')
             .remove();
-
     });
 
 });

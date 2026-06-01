@@ -18,8 +18,8 @@
         @endcan
     </div>
 </div>
-<div class="card">
 
+<div class="card">
     <div class="card-header">
         <form method="GET" action="{{ route('cakes.index') }}">
             <div class="row">

@@ -76,20 +76,21 @@ $isEdit = isset($partyExtra);
                     class="form-control form-control-sm">
                 @if(!empty($partyExtra?->thumbnail_image))
                 <div class="mt-3">
-                    <div class="thumbnail-image-wrapper position-relative d-inline-block">
+                    <div class="position-relative d-inline-block">
                         <img src="{{ asset($partyExtra->thumbnail_image) }}"
-                            class="rounded border thumbnail-image-preview">
-                        <div class="thumbnail-image-overlay remove-thumbnail-image">
+                            width="140"
+                            class="rounded border thumb-image">
+                        <div class="image-overlay remove-thumbnail-image">
                             <button type="button"
-                                    class="btn btn-danger rounded-circle d-flex align-items-center justify-content-center">
+                                class="btn btn-danger rounded-circle">
                                 <i class="ri-delete-bin-line"></i>
                             </button>
                         </div>
                     </div>
                 </div>
                 <input type="hidden"
-                    name="remove_thumbnail_image"
-                    id="remove_thumbnail_image"
+                    name="remove_thumbnail"
+                    id="remove_thumbnail"
                     value="0">
                 @endif
             </div>
@@ -111,6 +112,31 @@ $isEdit = isset($partyExtra);
                     name="gallery_images[]"
                     multiple
                     class="form-control form-control-sm">
+
+                <div class="d-flex gap-2 mt-3">
+                    {{-- EXISTING GALLERY --}}
+                    @if($isEdit && !empty($partyExtra->gallery_images))
+                        @foreach($partyExtra->gallery_images as $image)
+                            <div class="gallery-image-item">
+                                <div class="position-relative">
+                                    <img src="{{ asset($image) }}"
+                                        class="img-fluid rounded border" width="140">
+                                    <div class="image-overlay remove-gallery-image"
+                                        data-image="{{ $image }}">
+                                        <button type="button"
+                                            class="btn btn-danger rounded-circle">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                        <input type="hidden"
+                            name="existing_gallery_images"
+                            id="existing_gallery_images"
+                            value='@json($partyExtra->gallery_images)'>
+                    @endif
+                </div>
             </div>
 
             <div class="col-md-6 d-none"
@@ -142,38 +168,36 @@ $isEdit = isset($partyExtra);
                 </select>
             </div>
         </div>
+
+        <!-- SEO  COMPONENT -->
+        @include('components.seo-fields', [
+            'model' => $partyExtra ?? null
+        ])
+    </div>
+    <div class="card-footer text-end">
+        <button class="btn btn-sm btn-primary">
+            {{ $isEdit ? 'Update' : 'Save' }}
+        </button>
+        <button type="reset"
+                class="btn btn-sm btn-outline-secondary">
+            Cancel
+        </button>
     </div>
 </div>
-
-<!-- SEO  COMPONENT -->
-@include('components.seo-fields', [
-    'model' => $partyExtra ?? null
-])
-
-<div class="mt-3 text-end">
-    <button class="btn btn-primary">
-        {{ $isEdit ? 'Update' : 'Save' }}
-    </button>
-</div>
-
 
 @section('script')
 
 <script>
     document.getElementById('title').addEventListener('keyup', function() {
-
         document.getElementById('slug').value = this.value
             .toLowerCase()
             .trim()
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-+|-+$/g, '');
-
     });
 
     function toggleTypeFields() {
-
         let type = document.getElementById('type').value;
-
         document.getElementById('galleryWrapper')
             .classList.toggle(
                 'd-none',
@@ -189,8 +213,49 @@ $isEdit = isset($partyExtra);
 
     document.getElementById('type')
         .addEventListener('change', toggleTypeFields);
-
     toggleTypeFields();
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // REMOVE THUMBNAIL
+        document.addEventListener('click', function(e){
+            if(e.target.closest('.remove-thumbnail-image')){
+                window.openAppConfirm({
+                    title: 'Remove Image',
+                    message: 'Are you sure you want to remove this image?',
+                    buttonText: 'Yes, Remove',
+                    buttonClass: 'btn btn-sm btn-danger',
+                    onConfirm: function() {
+                        document.getElementById('remove_thumbnail').value = 1;
+                        e.target.closest('.position-relative').remove();
+                    }
+                });
+            }
+        });
+    });
+
+// REMOVE GALLERY IMAGE
+    document.addEventListener('click', function(e){
+        let btn = e.target.closest(
+            '.remove-gallery-image'
+        );
+        if(!btn){
+            return;
+        }
+        if(!confirm('Remove image?')){
+            return;
+        }
+        let image = btn.dataset.image;
+        let input = document.getElementById(
+            'existing_gallery_images'
+        );
+        let images = JSON.parse(input.value);
+        images = images.filter(
+            item => item !== image
+        );
+        input.value = JSON.stringify(images);
+        btn.closest('.gallery-image-item')
+            .remove();
+    });
 </script>
 
 @endsection

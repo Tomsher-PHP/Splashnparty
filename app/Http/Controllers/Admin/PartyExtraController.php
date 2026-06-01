@@ -30,14 +30,32 @@ class PartyExtraController extends Controller
             'view_party_extras'
         );
 
-        $query = PartyExtras::latest();
+        $query = PartyExtras::query()->latest();
 
-        if ($keyword = request('title')) {
+        // Title Filter
+        if ($title = request('title')) {
 
             $query->where(
                 'title',
                 'like',
-                '%' . $keyword . '%'
+                '%' . $title . '%'
+            );
+        }
+
+        // Category Filter
+        if ($category = request('category')) {
+            $query->where(
+                'category',
+                'like',
+                '%' . $category . '%'
+            );
+        }
+
+        // Type Filter
+        if ($type = request('type')) {
+            $query->where(
+                'type',
+                $type
             );
         }
 
@@ -167,14 +185,22 @@ class PartyExtraController extends Controller
             );
     }
 
-     /**
+    
+    /**
      * Show edit page
      */
     public function edit($id)
     {
+        $this->authorizePartyExtraPermission(
+            'edit_party_extras'
+        );
+
         $partyExtra = PartyExtras::findOrFail($id);
 
-        return view('party-extras.edit', compact('partyExtra'));
+        return view(
+            'party-extras.edit',
+            compact('partyExtra')
+        );
     }
 
     /**
@@ -182,119 +208,263 @@ class PartyExtraController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorizePartyExtraPermission(
+            'edit_party_extras'
+        );
+
         $partyExtra = PartyExtras::findOrFail($id);
 
         $request->validate([
-            'category'      => 'required|string|max:255',
-            'title'         => 'required|string|max:255',
-            'type' => 'required',
-            'video_link'    => 'nullable|url',
-            'images.*'      => 'nullable|image|mimes:jpg,jpeg,png,webp',
-            'thumbnail'     => 'nullable|image|mimes:jpg,jpeg,png,webp',
-            'status'        => 'required|boolean',
-            'sort_order'    => 'nullable|integer',
 
-            'meta_title'          => 'nullable|string|max:255',
-            'meta_description'    => 'nullable|string',
-            'meta_keywords'       => 'nullable|string',
+            'category' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'slug' => 'required|unique:party_extras,slug,' . $id,
+            'type' => 'required|in:image_gallery,video_link',
 
-            'og_title'            => 'nullable|string|max:255',
-            'og_description'      => 'nullable|string',
-            'og_image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'video_link' => 'required_if:type,videolink|nullable|url',
+            'thumbnail_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'remove_thumbnail' => 'nullable|boolean',
+            'remove_og_image' => 'nullable|boolean',
+            'sort_order' => 'nullable|integer',
+            'status' => 'required|in:0,1',
 
-            'twitter_title'       => 'nullable|string|max:255',
+            // SEO
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string',
+
+            'og_title' => 'nullable|string|max:255',
+            'og_description' => 'nullable|string',
+            'og_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+
+            'twitter_title' => 'nullable|string|max:255',
             'twitter_description' => 'nullable|string',
         ]);
 
-        // Basic fields
-        $partyExtra->category    = $request->category;
-        $partyExtra->title       = $request->title;
-        $partyExtra->type        = $request->type;
-        $partyExtra->status      = $request->status;
-        $partyExtra->sort_order  = $request->sort_order;
-        $partyExtra->slug        = Str::slug($request->title);
+        // Basic Details
+        $partyExtra->category = $request->category;
+        $partyExtra->title = $request->title;
+        $partyExtra->slug = $request->slug;
+        $partyExtra->type = $request->type;
+        $partyExtra->sort_order = $request->sort_order;
+        $partyExtra->status = $request->status;
 
-        // Video link (only if videolink type)
+        // Video Link
         $partyExtra->video_link = $request->type === 'videolink'
             ? $request->video_link
             : null;
 
-        // Thumbnail update
-        if ($request->hasFile('thumbnail')) {
-            if ($partyExtra->thumbnail) {
-                Storage::delete($partyExtra->thumbnail);
+        /* Thumbnail Image */
+        $thumbnailImage = $partyExtra->thumbnail_image;
+
+        // Remove Thumbnail
+        if (
+            $request->remove_thumbnail == 1 &&
+            $partyExtra->thumbnail_image
+        ) {
+
+            if (
+                file_exists(
+                    public_path($partyExtra->thumbnail_image)
+                )
+            ) {
+                unlink(
+                    public_path($partyExtra->thumbnail_image)
+                );
             }
 
-            $partyExtra->thumbnail = $request->file('thumbnail')
-                ->store('party_extras/thumbnails');
+            $thumbnailImage = null;
         }
 
-        // Image gallery update
-        if ($request->type === 'image_gallery' && $request->hasFile('images')) {
-            $images = $partyExtra->images ?? [];
+        // Upload New Thumbnail
+        if ($request->hasFile('thumbnail_image')) {
 
-            foreach ($request->file('images') as $image) {
-                $images[] = $image->store('party_extras/gallery');
+            if (
+                $partyExtra->thumbnail_image &&
+                file_exists(
+                    public_path($partyExtra->thumbnail_image)
+                )
+            ) {
+                unlink(
+                    public_path($partyExtra->thumbnail_image)
+                );
             }
 
-            $partyExtra->images = $images;
+            $path = $request
+                ->file('thumbnail_image')
+                ->store(
+                    'uploads/party-extras/thumb',
+                    'public'
+                );
+
+            $thumbnailImage = 'storage/' . $path;
         }
 
-        // OG IMAGE
-        $ogImage = $partyExtra->og_image ?? null;
+        $partyExtra->thumbnail_image = $thumbnailImage;
 
-        // REMOVE EXISTING OG IMAGE
+        /* Gallery Images */
+        if (
+            $request->type === 'image_gallery' &&
+            $request->hasFile('gallery_images')
+        ) {
+
+            $galleryImages = $partyExtra->gallery_images ?? [];
+
+            foreach (
+                $request->file('gallery_images')
+                as $image
+            ) {
+
+                $path = $image->store(
+                    'uploads/party-extras/gallery',
+                    'public'
+                );
+
+                $galleryImages[] = 'storage/' . $path;
+            }
+
+            $partyExtra->gallery_images = $galleryImages;
+        }
+
+        /* OG Image */
+        $ogImage = $partyExtra->og_image;
+
+        // Remove Existing OG Image
         if (
             $request->remove_og_image == 1 &&
             $partyExtra->og_image
         ) {
-            if (file_exists(public_path($partyExtra->og_image))) {
-                unlink(public_path($partyExtra->og_image));
+
+            if (
+                file_exists(
+                    public_path($partyExtra->og_image)
+                )
+            ) {
+                unlink(
+                    public_path($partyExtra->og_image)
+                );
             }
 
             $ogImage = null;
         }
 
-        // NEW OG IMAGE UPLOAD
+        // Upload New OG Image
         if ($request->hasFile('og_image')) {
-            // DELETE OLD IMAGE
+
             if (
                 $partyExtra->og_image &&
-                file_exists(public_path($partyExtra->og_image))
+                file_exists(
+                    public_path($partyExtra->og_image)
+                )
             ) {
-                unlink(public_path($partyExtra->og_image));
+                unlink(
+                    public_path($partyExtra->og_image)
+                );
             }
 
-            $path = $request->og_image->store(
-                'uploads/party-extras/seo',
-                'public'
-            );
+            $path = $request
+                ->file('og_image')
+                ->store(
+                    'uploads/party-extras/seo',
+                    'public'
+                );
 
             $ogImage = 'storage/' . $path;
         }
 
-        
-        // SEO
-        $partyExtra->meta_title        = $request->meta_title;
-        $partyExtra->meta_description  = $request->meta_description;
-        $partyExtra->meta_keywords     = $request->meta_keywords;
-        $partyExtra->og_title          = $request->og_title;
-        $partyExtra->og_description    = $request->og_description;
         $partyExtra->og_image = $ogImage;
-        $partyExtra->twitter_title     = $request->twitter_title;
+
+        /* SEO */
+        $partyExtra->meta_title = $request->meta_title;
+        $partyExtra->meta_description = $request->meta_description;
+        $partyExtra->meta_keywords = $request->meta_keywords;
+
+        $partyExtra->og_title = $request->og_title;
+        $partyExtra->og_description = $request->og_description;
+
+        $partyExtra->twitter_title = $request->twitter_title;
         $partyExtra->twitter_description = $request->twitter_description;
 
         $partyExtra->save();
 
         return redirect()
             ->route('party-extras.index')
-            ->with('success', 'Party Extra updated successfully.');
+            ->with(
+                'success',
+                'Party Extra updated successfully.'
+            );
     }
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(PartyExtras $partyExtra)
     {
-        //
+        $this->authorizePartyExtraPermission(
+            'delete_party_extras'
+        );
+
+        // DELETE THUMBNAIL
+        if (
+            $partyExtra->thumbnail_image &&
+            file_exists(
+                public_path(
+                    $partyExtra->thumbnail_image
+                )
+            )
+        ) {
+
+            unlink(
+                public_path(
+                    $partyExtra->thumbnail_image
+                )
+            );
+        }
+
+        // DELETE GALLERY IMAGES
+        if (!empty($partyExtra->gallery_images)) {
+
+            foreach (
+                $partyExtra->gallery_images
+                as $image
+            ) {
+
+                if (
+                    file_exists(
+                        public_path($image)
+                    )
+                ) {
+
+                    unlink(
+                        public_path($image)
+                    );
+                }
+            }
+        }
+
+        // DELETE OG IMAGE
+        if (
+            $partyExtra->og_image &&
+            file_exists(
+                public_path(
+                    $partyExtra->og_image
+                )
+            )
+        ) {
+
+            unlink(
+                public_path(
+                    $partyExtra->og_image
+                )
+            );
+        }
+
+        $partyExtra->delete();
+
+        return back()->with(
+            'success',
+            'Party Extra deleted successfully.'
+        );
     }
 }
