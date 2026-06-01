@@ -66,7 +66,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->title }}</td>
                         <td>{{ $item->branch->title ?? '' }}</td>
-                        <td>{{ $item->food_type == 'veg' ? 'Veg' : 'Non Veg' }}</td>
+                        <td>{{ $item->food_type == 'with_food' ? 'With Food' : 'Without Food' }}</td>
                         <td>
                             {{ $item->status ? 'Active' : 'Inactive' }}
                         </td>

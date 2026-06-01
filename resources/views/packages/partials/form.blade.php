@@ -42,14 +42,14 @@
 
             <option value="">Select Food Type</option>
 
-            <option value="veg"
-                {{ old('food_type', $isEdit ? $package->food_type : '') == 'veg' ? 'selected' : '' }}>
-                Veg
+            <option value="with_food"
+                {{ old('food_type', $isEdit ? $package->food_type : '') == 'with_food' ? 'selected' : '' }}>
+                With Food
             </option>
 
-            <option value="non_veg"
-                {{ old('food_type', $isEdit ? $package->food_type : '') == 'non_veg' ? 'selected' : '' }}>
-                Non Veg
+            <option value="without_food"
+                {{ old('food_type', $isEdit ? $package->food_type : '') == 'without_food' ? 'selected' : '' }}>
+                Without Food
             </option>
 
         </select>
@@ -162,7 +162,7 @@
     
 
     {{-- START DATE --}}
-    <div class="col-md-3">
+    <div class="col-md-6">
         <label class="form-label fw-semibold">
             Start Date
         </label>
@@ -174,7 +174,7 @@
     </div>
 
     {{-- END DATE --}}
-    <div class="col-md-3">
+    <div class="col-md-6">
         <label class="form-label fw-semibold">
             End Date
         </label>
@@ -187,49 +187,50 @@
 
     {{-- DAYS --}}
     @php
-    $selectedDays = old(
-        'days',
-        $isEdit ? ($package->days ?? []) : []
-    );
-    
+        $selectedDays = old(
+            'days',
+            $isEdit ? ($package->days ?? []) : []
+        );
 
-    $days = [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
-    ];
-@endphp
+        $days = [
+            'Sunday' => 'Sunday',
+            'Monday' => 'Monday',
+            'Tuesday' => 'Tuesday',
+            'Wednesday' => 'Wednesday',
+            'Thursday' => 'Thursday',
+            'Friday' => 'Friday',
+            'Saturday' => 'Saturday',
+        ];
+    @endphp
 
-<div class="col-md-6">
+    <div class="col-md-12">
+        <label class="form-label fw-semibold">
+            Days
+        </label>
+        <div class="d-flex flex-wrap gap-2">
+            @foreach($days as $key => $label)
+                <div class="mb-2">
+                    <div class="form-check d-flex gap-1 align-items-center">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="days[]"
+                            value="{{ $key }}"
+                            id="day_{{ strtolower($key) }}"
+                            {{ in_array($key, $selectedDays) ? 'checked' : '' }}>
 
-    <label class="form-label fw-semibold">
-        Days
-    </label>
+                        <label class="form-check-label mx-4"
+                            for="day_{{ strtolower($key) }}">
+                            {{ $label }}
+                        </label>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <small class="text-muted">
+            ( If no days are selected, the package will be considered valid for all days. )
+        </small>
 
-    <select name="days[]"
-        class="form-select"
-        multiple
-        size="7"
-        style="height:auto;">
-
-        @foreach($days as $day)
-            <option value="{{ $day }}"
-                {{ in_array($day, $selectedDays) ? 'selected' : '' }}>
-                {{ $day }}
-            </option>
-        @endforeach
-
-    </select>
-
-    <small class="text-muted">
-        Hold Ctrl (Windows) / Cmd (Mac) to select multiple days. Leave empty for all days.
-    </small>
-
-</div>
+    </div>
 
     {{-- SORT ORDER --}}
     <div class="col-md-6">
