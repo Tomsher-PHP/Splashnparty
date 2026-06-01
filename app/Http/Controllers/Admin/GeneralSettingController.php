@@ -134,6 +134,16 @@ class GeneralSettingController extends Controller
                 'sort_order' => 50,
             ],
             [
+                'group' => 'enquiry_settings',
+                'group_title' => 'Enquiry Settings',
+                'key' => 'enquiry_email',
+                'label' => 'Contact Enquiries Email',
+                'type' => 'email',
+                'placeholder' => 'Enter email where website contact enquiries should be forwarded',
+                'rules' => ['nullable', 'email', 'max:255'],
+                'sort_order' => 95,
+            ],
+            [
                 'group' => 'contact',
                 'group_title' => 'Contact Details',
                 'key' => 'phone',

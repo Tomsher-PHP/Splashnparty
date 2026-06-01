@@ -208,6 +208,15 @@
                     </a>
                 </li>
             @endcan
+
+            @can('view_contact_enquiries')
+                <li>
+                    <a href="{{ route('contact-enquiries.index') }}" class="{{ request()->routeIs('contact-enquiries.*') ? 'active-page' : '' }}">
+                        <i class="ri-mail-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Contact Enquiries</span>
+                    </a>
+                </li>
+            @endcan
             
             <li class="sidebar-menu-group-title">Settings</li>
             @can('view_general_settings')
