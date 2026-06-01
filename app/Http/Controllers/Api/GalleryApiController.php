@@ -16,11 +16,7 @@ class GalleryApiController extends Controller
             50
         );
 
-        $query = ImageGallery::where(
-            'status',
-            1
-        );
-
+        $query = ImageGallery::where('status', 1);
         // CATEGORY FILTER
         if ($category = request('category')) {
 
@@ -55,6 +51,7 @@ class GalleryApiController extends Controller
 
         return response()->json([
             'success' => true,
+            'page_content' => \App\Models\Page::getPageContent('image-gallery'),
             'data' => $galleries
         ]);
     }
@@ -66,10 +63,7 @@ class GalleryApiController extends Controller
             50
         );
 
-        $query = VideoGallery::where(
-            'status',
-            1
-        );
+        $query = VideoGallery::where('status', 1);
 
         // CATEGORY FILTER
         if ($category = request('category')) {
@@ -87,7 +81,9 @@ class GalleryApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $videos
+            'message' => 'Videos found.',
+            'data' => $videos,
+            'page_content' => \App\Models\Page::getPageContent('video-gallery'),
         ]);
     }
 
@@ -116,7 +112,9 @@ class GalleryApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $events
+            'message' => 'Events found.',
+            'data' => $events,
+            'page_content' => \App\Models\Page::getPageContent('outdoor-events'),
         ]);
     }
 }

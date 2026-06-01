@@ -184,7 +184,7 @@ $details = old(
                             <textarea
                                 name="branch_details[{{ $index }}][highlighted_description]"
                                 rows="3"
-                                class="form-control form-control-sm">{{ $detail['highlighted_description'] ?? '' }}</textarea>
+                                class="form-control">{{ $detail['highlighted_description'] ?? '' }}</textarea>
                         </div>
 
                         <div class="col-md-6">
@@ -192,7 +192,7 @@ $details = old(
                             <textarea
                                 name="branch_details[{{ $index }}][description]"
                                 rows="3"
-                                class="form-control form-control-sm">{{ $detail['description'] ?? '' }}</textarea>
+                                class="form-control">{{ $detail['description'] ?? '' }}</textarea>
                         </div>
                         <div class="col-md-12 text-end">
                             <button type="button" class="btn btn-light-danger btn-sm removeBranchBtn badge bg-danger">
@@ -409,7 +409,7 @@ $details = old(
                     <textarea
                         name="branch_details[${branchIndex}][highlighted_description]"
                         rows="3"
-                        class="form-control form-control-sm"></textarea>
+                        class="form-control"></textarea>
                 </div>
 
                 <div class="col-md-6">
@@ -419,7 +419,7 @@ $details = old(
                     <textarea
                         name="branch_details[${branchIndex}][description]"
                         rows="3"
-                        class="form-control form-control-sm"></textarea>
+                        class="form-control"></textarea>
                 </div>
 
                 <div class="col-md-12 text-end">

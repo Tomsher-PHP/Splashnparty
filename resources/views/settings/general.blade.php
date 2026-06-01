@@ -35,7 +35,7 @@
 
                                         @if ($type === 'textarea')
                                             <textarea id="{{ $key }}" name="{{ $key }}" rows="3"
-                                                class="form-control form-control-sm @error($key) is-invalid @enderror"
+                                                class="form-control @error($key) is-invalid @enderror"
                                                 placeholder="{{ $field['placeholder'] ?? '' }}">{{ $value }}</textarea>
                                         @elseif ($type === 'file')
                                             @if (!empty($settingValues[$key]))

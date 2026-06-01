@@ -137,7 +137,7 @@
                         aria-expanded="false">
                         {{-- MAIN ICON --}}
                         <i class="ri-cake-3-line text-xl me-14 d-flex w-auto"></i>
-                        <span>Birthdays</span>
+                        <span>Birthday Party</span>
                     </a>
 
                     <ul class="collapse submenu {{ request()->routeIs('balloon-decorations.*') || request()->routeIs('birthday-packages.*') ? 'show' : '' }}"
@@ -161,6 +161,23 @@
                                 </a>
                             </li>
                         @endcan
+                        @can('view_food_menus')
+                            <li class="submenu-item">
+                                <a href="{{ route('food-menus.index') }}">
+                                    <i class="ri-restaurant-line text-xl me-14 d-flex w-auto"></i>
+                                    <span>Food Menus</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('view_party_extras')
+                            <li class="submenu-item">
+                                <a href="{{ route('party-extras.index') }}">
+                                    <i class="ri-magic-line text-xl me-14 d-flex w-auto"></i>
+                                    <span>Party Extras</span>
+                                </a>
+                            </li>
+                        @endcan
+            
                     </ul>
                 @endif
             </li>
@@ -169,15 +186,6 @@
                     <a href="{{ route('events.index') }}">
                         <i class="ri-question-answer-line text-xl me-14 d-flex w-auto"></i>
                         <span>Events</span>
-                    </a>
-                </li>
-            @endcan
-
-            @can('view_food_menus')
-                <li>
-                    <a href="{{ route('food-menus.index') }}">
-                        <i class="ri-restaurant-line text-xl me-14 d-flex w-auto"></i>
-                        <span>Food Menus</span>
                     </a>
                 </li>
             @endcan

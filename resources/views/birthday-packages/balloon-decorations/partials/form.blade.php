@@ -95,7 +95,7 @@
                 </label>
                 <textarea name="description"
                     rows="4"
-                    class="form-control form-control-sm">{{ old('description', $balloon_decoration->description ?? '') }}</textarea>
+                    class="form-control">{{ old('description', $balloon_decoration->description ?? '') }}</textarea>
             </div>
         </div>
         <div class="text-end mt-5">

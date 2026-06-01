@@ -170,7 +170,7 @@
                 </label>
                 <textarea name="description"
                     rows="4"
-                    class="form-control form-control-sm">{{ old('description', $cafe_menu->description ?? '') }}</textarea>
+                    class="form-control">{{ old('description', $cafe_menu->description ?? '') }}</textarea>
             </div>
         </div>
         <div class="text-end mt-5">

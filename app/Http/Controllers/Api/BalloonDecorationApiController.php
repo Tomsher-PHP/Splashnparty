@@ -46,6 +46,8 @@ class BalloonDecorationApiController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => 'Balloon decorations retrieved successfully.',
+            'page_content' => \App\Models\Page::getPageContent('balloon-decorations'),
             'data' => $decorations
         ]);
     }

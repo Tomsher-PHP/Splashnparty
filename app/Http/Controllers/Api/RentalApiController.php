@@ -57,7 +57,9 @@ class RentalApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $categories
+            'message' => 'Rental categories found.',
+            'data' => $categories,
+            'page_content' => \App\Models\Page::getPageContent('rental-services'),
         ]);
     }
 }

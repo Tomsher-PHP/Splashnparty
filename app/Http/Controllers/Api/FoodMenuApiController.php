@@ -76,6 +76,8 @@ public function foodMenus()
 
     return response()->json([
         'success' => true,
+        'message' => 'Food menus retrieved successfully.',
+        'page_content' => ($type == 'adult') ? \App\Models\Page::getPageContent('adult-platters') : \App\Models\Page::getPageContent('kids-meal'),
         'data' => $menus
     ]);
 }

@@ -1,7 +1,7 @@
 {{-- CATEGORY --}}
 <div class="row g-3 mb-4">
 
-    <div class="col-md-8">
+    <div class="col-md-6">
         <label class="form-label fw-semibold">Category</label>
 
         <input type="text"
@@ -11,7 +11,17 @@
             required>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <label class="form-label fw-semibold">Sort Order</label>
+
+        <input type="number"
+            name="sort_order"
+            class="form-control form-control-sm"
+            value="{{ old('sort_order', $isEdit ? $faq->sort_order : 0) }}"
+            min="0">
+    </div>
+
+    <div class="col-md-3">
         <label class="form-label fw-semibold">Category Status</label>
 
         <select name="status" class="form-select form-select-sm">

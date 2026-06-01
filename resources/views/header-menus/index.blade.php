@@ -38,7 +38,12 @@
                                     @endcan
                                     <div>
                                         <div class="d-flex align-items-center flex-wrap gap-2 mb-4">
-                                            <span class="fw-bold text-dark text-sm menu-title-text">{{ $menu->title }}</span>
+                                            <span class="fw-bold text-dark text-sm menu-title-text">
+                                                @if($menu->icon)
+                                                    <img src="{{ asset('storage/' . $menu->icon) }}" alt="" class="w-24-px h-24-px object-fit-cover rounded me-8 align-middle border">
+                                                @endif
+                                                {{ $menu->title }}
+                                            </span>
                                             {{-- <span class="badge badge-premium-primary text-xs px-10 py-2 rounded-pill type-badge">Main Menu</span> --}}
                                             @if(!$menu->status)
                                                 <span class="badge badge-premium-danger text-xs px-10 py-2 rounded-pill">Inactive</span>
@@ -62,6 +67,7 @@
                                             data-parent-id="{{ $menu->parent_id }}"
                                             data-sort-order="{{ $menu->sort_order }}"
                                             data-status="{{ $menu->status }}"
+                                            data-icon="{{ $menu->icon }}"
                                             data-update-url="{{ route('header-menus.update', $menu) }}"
                                             title="Edit Item">
                                             <iconify-icon icon="lucide:edit" class="menu-icon text-sm"></iconify-icon>
@@ -99,7 +105,13 @@
                                             @endcan
                                             <div>
                                                 <div class="d-flex align-items-center flex-wrap gap-2 mb-4">
-                                                    <span class="fw-semibold text-secondary text-sm menu-title-text"><i class="ri-corner-down-right-line text-primary me-4"></i> {{ $child->title }}</span>
+                                                    <span class="fw-semibold text-secondary text-sm menu-title-text">
+                                                        <i class="ri-corner-down-right-line text-primary me-4"></i> 
+                                                        @if($child->icon)
+                                                            <img src="{{ asset('storage/' . $child->icon) }}" alt="" class="w-20-px h-20-px object-fit-cover rounded me-8 align-middle border">
+                                                        @endif
+                                                        {{ $child->title }}
+                                                    </span>
                                                     {{-- <span class="badge badge-premium-secondary text-xs px-8 py-2 rounded-pill type-badge">Sub-menu</span> --}}
                                                     @if(!$child->status)
                                                         <span class="badge badge-premium-danger text-xs px-8 py-2 rounded-pill">Inactive</span>
@@ -122,6 +134,7 @@
                                                     data-parent-id="{{ $child->parent_id }}"
                                                     data-sort-order="{{ $child->sort_order }}"
                                                     data-status="{{ $child->status }}"
+                                                    data-icon="{{ $child->icon }}"
                                                     data-update-url="{{ route('header-menus.update', $child) }}"
                                                     title="Edit Item">
                                                     <iconify-icon icon="lucide:edit" class="menu-icon text-sm"></iconify-icon>
@@ -162,7 +175,7 @@
     <!-- Right Column: Add Menu Item Form -->
     <div class="col-lg-4">
         <div class="card modern-card border-0 shadow-lg position-sticky" style="top: 24px;">
-            <div class="card-header modern-card-header py-20 px-24 border-bottom bg-gradient-premium">
+            <div class="card-header modern-card-header py-10 px-24 border-bottom bg-gradient-premium">
                 <div class="d-flex align-items-center gap-2">
                     <span class="modern-header-icon text-white"><i class="ri-add-circle-fill"></i></span>
                     <h6 class="text-md fw-bold mb-0 text-white">Add Menu Node</h6>
@@ -171,13 +184,13 @@
             
             <div class="card-body p-24">
                 @can('create_header_menus')
-                <form action="{{ route('header-menus.store') }}" method="POST" class="modern-form">
+                <form action="{{ route('header-menus.store') }}" method="POST" class="modern-form" enctype="multipart/form-data">
                     @csrf
                     
                     <div class="mb-20">
                         <label for="title" class="form-label fw-bold text-secondary text-xs text-uppercase tracking-wider">Label / Title <span class="text-danger">*</span></label>
                         <div class="input-group-modern">
-                            <span class="input-icon"><i class="ri-bookmark-line"></i></span>
+                            {{-- <span class="input-icon"><i class="ri-bookmark-line"></i></span> --}}
                             <input type="text" id="title" name="title" value="{{ old('title') }}" required
                                 class="form-control form-control-sm @error('title') is-invalid @enderror" placeholder="e.g. Home, About Us">
                         </div>
@@ -189,7 +202,7 @@
                     <div class="mb-20">
                         <label for="url" class="form-label fw-bold text-secondary text-xs text-uppercase tracking-wider">Link / URL</label>
                         <div class="input-group-modern">
-                            <span class="input-icon"><i class="ri-link"></i></span>
+                            {{-- <span class="input-icon"><i class="ri-link"></i></span> --}}
                             <input type="text" id="url" name="url" value="{{ old('url') }}"
                                 class="form-control form-control-sm @error('url') is-invalid @enderror" placeholder="e.g. /, /about-us">
                         </div>
@@ -199,9 +212,23 @@
                     </div>
 
                     <div class="mb-20">
+                                                        <label for="icon" class="form-label fw-bold text-secondary text-xs text-uppercase tracking-wider">Icon Image</label>
+                                                        <div class="input-group-modern">
+                                                            <input type="file" id="icon" name="icon" class="form-control form-control-sm @error('icon') is-invalid @enderror">
+                                                        </div>
+                                                        <div id="icon-preview-container" class="mt-8 d-none">
+                                                            <img id="icon-preview" src="" alt="Icon Preview" class="w-32-px h-32-px object-fit-cover rounded border">
+                                                            <span class="text-xs text-secondary ms-2">Current Icon</span>
+                                                        </div>
+                                                        @error('icon')
+                                                            <div class="invalid-feedback d-block mt-4">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
+                    <div class="mb-20">
                         <label for="parent_id" class="form-label fw-bold text-secondary text-xs text-uppercase tracking-wider">Parent Menu</label>
                         <div class="input-group-modern">
-                            <span class="input-icon"><i class="ri-folder-open-line"></i></span>
+                            {{-- <span class="input-icon"><i class="ri-folder-open-line"></i></span> --}}
                             <select id="parent_id" name="parent_id" class="form-select @error('parent_id') is-invalid @enderror">
                                 <option value="">-- Main Menu Item (No Parent) --</option>
                                 @foreach ($headerMenus as $parent)
@@ -218,7 +245,7 @@
                     <div class="mb-20">
                         <label for="sort_order" class="form-label fw-bold text-secondary text-xs text-uppercase tracking-wider">Sort Order <span class="text-danger">*</span></label>
                         <div class="input-group-modern">
-                            <span class="input-icon"><i class="ri-sort-asc"></i></span>
+                            {{-- <span class="input-icon"><i class="ri-sort-asc"></i></span> --}}
                             <input type="number" id="sort_order" name="sort_order" value="{{ old('sort_order', 0) }}" min="0" required
                                 class="form-control form-control-sm @error('sort_order') is-invalid @enderror">
                         </div>
@@ -230,7 +257,7 @@
                     <div class="mb-32">
                         <label for="status" class="form-label fw-bold text-secondary text-xs text-uppercase tracking-wider">Status <span class="text-danger">*</span></label>
                         <div class="input-group-modern">
-                            <span class="input-icon"><i class="ri-toggle-line"></i></span>
+                            {{-- <span class="input-icon"><i class="ri-toggle-line"></i></span> --}}
                             <select id="status" name="status" class="form-select @error('status') is-invalid @enderror" required>
                                 <option value="1" {{ old('status', '1') === '1' ? 'selected' : '' }}>Active</option>
                                 <option value="0" {{ old('status', '1') === '0' ? 'selected' : '' }}>Inactive</option>
@@ -491,11 +518,12 @@
             const parentId = btn.data('parent-id');
             const sortOrder = btn.data('sort-order');
             const status = btn.data('status');
+            const icon = btn.data('icon');
             const updateUrl = btn.data('update-url');
 
             // Switch to Edit Mode style (Emerald color scheme)
             formTitle.text('Edit Menu Node: ' + title);
-            formHeader.removeClass('bg-gradient-premium').css('background', 'linear-gradient(135deg, #10b981 0%, #059669 100%)');
+            // formHeader.removeClass('bg-gradient-premium').css('background', 'linear-gradient(135deg, #10b981 0%, #059669 100%)');
             formHeaderIcon.removeClass('ri-add-circle-fill').addClass('ri-edit-box-fill');
 
             // Update form properties
@@ -507,6 +535,12 @@
             // Populate fields
             rightForm.find('#title').val(title);
             rightForm.find('#url').val(url || '');
+            if (icon) {
+                $('#icon-preview').attr('src', '/storage/' + icon);
+                $('#icon-preview-container').removeClass('d-none');
+            } else {
+                $('#icon-preview-container').addClass('d-none');
+            }
             rightForm.find('#sort_order').val(sortOrder);
             rightForm.find('#status').val(status);
 
@@ -544,6 +578,9 @@
             // Clear values
             rightForm.find('#title').val('');
             rightForm.find('#url').val('');
+            rightForm.find('#icon').val('');
+            $('#icon-preview-container').addClass('d-none');
+            $('#icon-preview').attr('src', '');
             rightForm.find('#sort_order').val('0');
             rightForm.find('#status').val('1');
 

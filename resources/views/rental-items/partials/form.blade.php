@@ -116,7 +116,7 @@
                 </label>
                 <textarea name="description"
                     rows="4"
-                    class="form-control form-control-sm">{{ old('description', $rental_item->description ?? '') }}</textarea>
+                    class="form-control">{{ old('description', $rental_item->description ?? '') }}</textarea>
             </div>
         </div>
         <div class="text-end mt-5">

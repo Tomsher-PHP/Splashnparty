@@ -4,468 +4,391 @@
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
         <h6 class="fw-semibold mb-0">Dashboard</h6>
         <ul class="d-flex align-items-center gap-2">
-            {{-- <li class="fw-medium">
-                <a href="{{ route('dashboard') }}" class="d-flex align-items-center gap-1 hover-text-primary">
-                    <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
-                    Dashboard
-                </a>
+            <li class="fw-medium">
+                <span class="text-secondary-light">System Overview</span>
             </li>
-            <li>-</li>
-            <li class="fw-medium">AI</li> --}}
         </ul>
     </div>
 
-    <div class="row row-cols-xxxl-5 row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4">
+    <!-- Stats Cards Row -->
+    <div class="row row-cols-xxl-6 row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4">
+        <!-- Birthday Packages -->
         <div class="col">
             <div class="card shadow-none border bg-gradient-start-1 h-100">
                 <div class="card-body p-20">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                         <div>
-                            <p class="fw-medium text-primary-light mb-1">Total Users</p>
-                            <h6 class="mb-0">20,000</h6>
+                            <p class="fw-medium text-primary-light mb-1">Birthday Packages</p>
+                            <h6 class="mb-0">{{ number_format($stats['birthday_package_count']) }}</h6>
                         </div>
-                        <div
-                            class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="gridicons:multiple-users" class="text-white text-2xl mb-0">
-                            </iconify-icon>
+                        <div class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
+                            <iconify-icon icon="solar:gift-bold" class="text-white text-2xl mb-0"></iconify-icon>
                         </div>
                     </div>
-                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-success-main">
-                            <iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon> +5000
-                        </span>
-                        Last 30 days users
+                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0">
+                        Active packages catalog
                     </p>
                 </div>
-            </div><!-- card end -->
+            </div>
         </div>
+
+        <!-- Events -->
         <div class="col">
             <div class="card shadow-none border bg-gradient-start-2 h-100">
                 <div class="card-body p-20">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                         <div>
-                            <p class="fw-medium text-primary-light mb-1">Total Subscription</p>
-                            <h6 class="mb-0">15,000</h6>
+                            <p class="fw-medium text-primary-light mb-1">Events & Parties</p>
+                            <h6 class="mb-0">{{ number_format($stats['event_count']) }}</h6>
                         </div>
-                        <div
-                            class="w-50-px h-50-px bg-purple rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="fa-solid:award" class="text-white text-2xl mb-0"></iconify-icon>
+                        <div class="w-50-px h-50-px bg-purple rounded-circle d-flex justify-content-center align-items-center">
+                            <iconify-icon icon="solar:clapperboard-play-bold" class="text-white text-2xl mb-0"></iconify-icon>
                         </div>
                     </div>
-                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-danger-main">
-                            <iconify-icon icon="bxs:down-arrow" class="text-xs"></iconify-icon> -800
-                        </span>
-                        Last 30 days subscription
+                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0">
+                        Organized events
                     </p>
                 </div>
-            </div><!-- card end -->
+            </div>
         </div>
+
+        <!-- Cafe Menus -->
         <div class="col">
             <div class="card shadow-none border bg-gradient-start-3 h-100">
                 <div class="card-body p-20">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                         <div>
-                            <p class="fw-medium text-primary-light mb-1">Total Free Users</p>
-                            <h6 class="mb-0">5,000</h6>
+                            <p class="fw-medium text-primary-light mb-1">Cafe Items</p>
+                            <h6 class="mb-0">{{ number_format($stats['cafe_menu_count']) }}</h6>
                         </div>
-                        <div
-                            class="w-50-px h-50-px bg-info rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="fluent:people-20-filled" class="text-white text-2xl mb-0">
-                            </iconify-icon>
+                        <div class="w-50-px h-50-px bg-info rounded-circle d-flex justify-content-center align-items-center">
+                            <iconify-icon icon="solar:cup-hot-bold" class="text-white text-2xl mb-0"></iconify-icon>
                         </div>
                     </div>
-                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-success-main">
-                            <iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon> +200
-                        </span>
-                        Last 30 days users
+                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0">
+                        Dishes & drinks
                     </p>
                 </div>
-            </div><!-- card end -->
+            </div>
         </div>
+
+        <!-- Cakes -->
         <div class="col">
             <div class="card shadow-none border bg-gradient-start-4 h-100">
                 <div class="card-body p-20">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                         <div>
-                            <p class="fw-medium text-primary-light mb-1">Total Income</p>
-                            <h6 class="mb-0">$42,000</h6>
+                            <p class="fw-medium text-primary-light mb-1">Cake Designs</p>
+                            <h6 class="mb-0">{{ number_format($stats['cake_count']) }}</h6>
                         </div>
-                        <div
-                            class="w-50-px h-50-px bg-success-main rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="solar:wallet-bold" class="text-white text-2xl mb-0">
-                            </iconify-icon>
+                        <div class="w-50-px h-50-px bg-success-main rounded-circle d-flex justify-content-center align-items-center">
+                            <iconify-icon icon="solar:crown-minimalistic-bold" class="text-white text-2xl mb-0"></iconify-icon>
                         </div>
                     </div>
-                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-success-main">
-                            <iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon> +$20,000
-                        </span>
-                        Last 30 days income
+                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0">
+                        Custom cake models
                     </p>
                 </div>
-            </div><!-- card end -->
+            </div>
         </div>
+
+        <!-- Rental Items -->
         <div class="col">
             <div class="card shadow-none border bg-gradient-start-5 h-100">
                 <div class="card-body p-20">
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                         <div>
-                            <p class="fw-medium text-primary-light mb-1">Total Expense</p>
-                            <h6 class="mb-0">$30,000</h6>
+                            <p class="fw-medium text-primary-light mb-1">Rental Items</p>
+                            <h6 class="mb-0">{{ number_format($stats['rental_item_count']) }}</h6>
                         </div>
                         <div class="w-50-px h-50-px bg-red rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="fa6-solid:file-invoice-dollar" class="text-white text-2xl mb-0">
-                            </iconify-icon>
+                            <iconify-icon icon="solar:box-bold" class="text-white text-2xl mb-0"></iconify-icon>
                         </div>
                     </div>
-                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-success-main">
-                            <iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon> +$5,000
-                        </span>
-                        Last 30 days expense
+                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0">
+                        Party rentals & decor
                     </p>
                 </div>
-            </div><!-- card end -->
+            </div>
+        </div>
+
+        <!-- Branches -->
+        <div class="col">
+            <div class="card shadow-none border bg-gradient-start-1 h-100">
+                <div class="card-body p-20">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                        <div>
+                            <p class="fw-medium text-primary-light mb-1">Active Branches</p>
+                            <h6 class="mb-0">{{ number_format($stats['branch_count']) }}</h6>
+                        </div>
+                        <div class="w-50-px h-50-px bg-orange rounded-circle d-flex justify-content-center align-items-center">
+                            <iconify-icon icon="solar:map-point-bold" class="text-white text-2xl mb-0"></iconify-icon>
+                        </div>
+                    </div>
+                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0">
+                        Locations & parks
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row gy-4 mt-1">
+    <!-- Charts & Analytics Section -->
+    <div class="row gy-4 mt-4">
+        <!-- Catalog Distribution Chart -->
         <div class="col-xxl-6 col-xl-12">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between">
-                        <h6 class="text-lg mb-0">Sales Statistic</h6>
-                        <select class="form-select bg-base form-select-sm w-auto radius-8">
-                            <option>Yearly</option>
-                            <option>Monthly</option>
-                            <option>Weekly</option>
-                            <option>Today</option>
-                        </select>
-                    </div>
-                    <div class="d-flex flex-wrap align-items-center gap-2 mt-8">
-                        <h6 class="mb-0">$27,200</h6>
-                        <span
-                            class="text-sm fw-semibold rounded-pill bg-success-focus text-success-main border br-success px-8 py-4 line-height-1 d-flex align-items-center gap-1">
-                            10% <iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon>
-                        </span>
-                        <span class="text-xs fw-medium">+ $1500 Per Day</span>
-                    </div>
-                    <div id="chart" class="pt-28 apexcharts-tooltip-style-1"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xxl-3 col-xl-6">
             <div class="card h-100 radius-8 border">
                 <div class="card-body p-24">
-                    <h6 class="mb-12 fw-semibold text-lg mb-16">Total Subscriber</h6>
-                    <div class="d-flex align-items-center gap-2 mb-20">
-                        <h6 class="fw-semibold mb-0">5,000</h6>
-                        <p class="text-sm mb-0">
-                            <span
-                                class="bg-danger-focus border br-danger px-8 py-2 rounded-pill fw-semibold text-danger-main text-sm d-inline-flex align-items-center gap-1">
-                                10%
-                                <iconify-icon icon="iconamoon:arrow-down-2-fill" class="icon"></iconify-icon>
-                            </span>
-                            - 20 Per Day
-                        </p>
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                        <h6 class="text-lg mb-0">Catalog Asset Breakdown</h6>
+                        <span class="text-xs fw-semibold text-secondary-light">System Distribution</span>
                     </div>
-
-                    <div id="barChart" class="barChart"></div>
-
+                    <div id="catalogDistributionChart" class="pt-28"></div>
                 </div>
             </div>
         </div>
-        <div class="col-xxl-3 col-xl-6">
-            <div class="card h-100 radius-8 border-0 overflow-hidden">
+
+        <!-- Gallery & Support Metrics -->
+        <div class="col-xxl-6 col-xl-12">
+            <div class="card h-100 radius-8 border">
                 <div class="card-body p-24">
-                    <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                        <h6 class="mb-2 fw-bold text-lg">Users Overview</h6>
-                        <div class="">
-                            <select class="form-select form-select-sm w-auto bg-base border text-secondary-light radius-8">
-                                <option>Today</option>
-                                <option>Weekly</option>
-                                <option>Monthly</option>
-                                <option>Yearly</option>
-                            </select>
+                    <h6 class="mb-2 fw-bold text-lg">System Metrics Quick-Glance</h6>
+                    <p class="text-sm text-secondary-light mb-24">Overview of supportive settings and multimedia counts</p>
+                    
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="p-16 border rounded bg-base d-flex align-items-center gap-3">
+                                <div class="w-40-px h-40-px rounded bg-primary-50 text-primary-600 d-flex justify-content-center align-items-center">
+                                    <iconify-icon icon="solar:camera-bold" class="text-xl"></iconify-icon>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">{{ $stats['gallery_count'] }}</h6>
+                                    <span class="text-xs text-secondary-light">Gallery Assets</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="p-16 border rounded bg-base d-flex align-items-center gap-3">
+                                <div class="w-40-px h-40-px rounded bg-success-50 text-success-main d-flex justify-content-center align-items-center">
+                                    <iconify-icon icon="solar:chat-square-like-bold" class="text-xl"></iconify-icon>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">{{ $stats['testimonial_count'] }}</h6>
+                                    <span class="text-xs text-secondary-light">Customer Testimonials</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="p-16 border rounded bg-base d-flex align-items-center gap-3">
+                                <div class="w-40-px h-40-px rounded bg-warning-50 text-warning-main d-flex justify-content-center align-items-center">
+                                    <iconify-icon icon="solar:question-square-bold" class="text-xl"></iconify-icon>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">{{ $stats['faq_count'] }}</h6>
+                                    <span class="text-xs text-secondary-light">FAQ Entries</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="p-16 border rounded bg-base d-flex align-items-center gap-3">
+                                <div class="w-40-px h-40-px rounded bg-danger-50 text-danger-main d-flex justify-content-center align-items-center">
+                                    <iconify-icon icon="solar:gallery-bold" class="text-xl"></iconify-icon>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">{{ $stats['banner_count'] }}</h6>
+                                    <span class="text-xs text-secondary-light">Homepage Banners</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-
-                    <div id="userOverviewDonutChart" class="apexcharts-tooltip-z-none"></div>
-
-                    <ul class="d-flex flex-wrap align-items-center justify-content-between mt-3 gap-3">
-                        <li class="d-flex align-items-center gap-2">
-                            <span class="w-12-px h-12-px radius-2 bg-primary-600"></span>
-                            <span class="text-secondary-light text-sm fw-normal">New:
-                                <span class="text-primary-light fw-semibold">500</span>
-                            </span>
-                        </li>
-                        <li class="d-flex align-items-center gap-2">
-                            <span class="w-12-px h-12-px radius-2 bg-yellow"></span>
-                            <span class="text-secondary-light text-sm fw-normal">Subscribed:
-                                <span class="text-primary-light fw-semibold">300</span>
-                            </span>
-                        </li>
-                    </ul>
-
+                    <div class="mt-24 p-16 bg-neutral-50 rounded border dark:bg-neutral-900">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-2">
+                                <iconify-icon icon="solar:settings-bold" class="text-xl text-primary-600"></iconify-icon>
+                                <span class="fw-medium text-primary-light">System Control Room</span>
+                            </div>
+                            <a href="{{ route('general-settings.edit') }}" class="btn btn-primary-600 btn-sm py-6 px-12">Edit Settings</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-xxl-9 col-xl-12">
-            <div class="card h-100">
-                <div class="card-body p-24">
+    </div>
 
-                    <div class="d-flex flex-wrap align-items-center gap-1 justify-content-between mb-16">
-                        <ul class="nav border-gradient-tab nav-pills mb-0" id="pills-tab" role="tablist">
+    <!-- Data Tables & Team Section -->
+    <div class="row gy-4 mt-4">
+        <!-- Recent Catalog Assets Tabs -->
+        <div class="col-xxl-8 col-xl-12">
+            <div class="card h-100 radius-8 border">
+                <div class="card-body p-24">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-16 gap-3">
+                        <ul class="nav border-gradient-tab nav-pills mb-0" id="recentAssetsTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link d-flex align-items-center active" id="pills-to-do-list-tab"
-                                    data-bs-toggle="pill" data-bs-target="#pills-to-do-list" type="button" role="tab"
-                                    aria-controls="pills-to-do-list" aria-selected="true">
-                                    Latest Registered
-                                    <span
-                                        class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">35</span>
+                                <button class="nav-link active d-flex align-items-center" id="birthday-tab" data-bs-toggle="pill" data-bs-target="#birthday-panel" type="button" role="tab" aria-controls="birthday-panel" aria-selected="true">
+                                    Birthday Packages
+                                    <span class="badge bg-neutral-500 rounded-pill text-white ms-8">{{ count($recent_birthday_packages) }}</span>
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link d-flex align-items-center" id="pills-recent-leads-tab"
-                                    data-bs-toggle="pill" data-bs-target="#pills-recent-leads" type="button" role="tab"
-                                    aria-controls="pills-recent-leads" aria-selected="false" tabindex="-1">
-                                    Latest Subscribe
-                                    <span
-                                        class="text-sm fw-semibold py-6 px-12 bg-neutral-500 rounded-pill text-white line-height-1 ms-12 notification-alert">35</span>
+                                <button class="nav-link d-flex align-items-center" id="cafe-tab" data-bs-toggle="pill" data-bs-target="#cafe-panel" type="button" role="tab" aria-controls="cafe-panel" aria-selected="false">
+                                    Cafe Menu
+                                    <span class="badge bg-neutral-500 rounded-pill text-white ms-8">{{ count($recent_cafe_menus) }}</span>
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link d-flex align-items-center" id="events-tab" data-bs-toggle="pill" data-bs-target="#events-panel" type="button" role="tab" aria-controls="events-panel" aria-selected="false">
+                                    Events
+                                    <span class="badge bg-neutral-500 rounded-pill text-white ms-8">{{ count($recent_events) }}</span>
                                 </button>
                             </li>
                         </ul>
-                        <a href="javascript:void(0)"
-                            class="text-primary-600 hover-text-primary d-flex align-items-center gap-1">
-                            View All
-                            <iconify-icon icon="solar:alt-arrow-right-linear" class="icon"></iconify-icon>
-                        </a>
                     </div>
 
-                    <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade show active" id="pills-to-do-list" role="tabpanel"
-                            aria-labelledby="pills-to-do-list-tab" tabindex="0">
-                            <div class="table-responsive scroll-sm">
+                    <div class="tab-content" id="recentAssetsTabContent">
+                        <!-- Birthday Packages Panel -->
+                        <div class="tab-pane fade show active" id="birthday-panel" role="tabpanel" aria-labelledby="birthday-tab">
+                            <div class="table-responsive">
                                 <table class="table bordered-table sm-table mb-0">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Users </th>
-                                            <th scope="col">Registered On</th>
-                                            <th scope="col">Plan</th>
-                                            <th scope="col" class="text-center">Status</th>
+                                            <th>Title</th>
+                                            <th>Branch</th>
+                                            <th>Price</th>
+                                            <th class="text-center">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('assets/images/users/user1.png') }}" alt="Image"
-                                                        class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="text-md mb-0 fw-medium">Dianne Russell</h6>
-                                                        <span
-                                                            class="text-sm text-secondary-light fw-medium">redaniel@gmail.com</span>
+                                        @forelse ($recent_birthday_packages as $package)
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        @if ($package->image)
+                                                            <img src="{{ asset('storage/' . $package->image) }}" alt="" class="w-40-px h-40-px rounded flex-shrink-0 me-12 object-fit-cover">
+                                                        @else
+                                                            <div class="w-40-px h-40-px bg-neutral-100 rounded d-flex justify-content-center align-items-center me-12 flex-shrink-0">
+                                                                <iconify-icon icon="solar:gift-bold" class="text-secondary-light"></iconify-icon>
+                                                            </div>
+                                                        @endif
+                                                        <div class="flex-grow-1">
+                                                            <h6 class="text-md mb-0 fw-medium">{{ $package->title }}</h6>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td>27 Mar 2024</td>
-                                            <td>Free</td>
-                                            <td class="text-center">
-                                                <span
-                                                    class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('assets/images/users/user2.png') }}" alt="Image"
-                                                        class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="text-md mb-0 fw-medium">Wade Warren</h6>
-                                                        <span
-                                                            class="text-sm text-secondary-light fw-medium">xterris@gmail.com</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>27 Mar 2024</td>
-                                            <td>Basic</td>
-                                            <td class="text-center">
-                                                <span
-                                                    class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('assets/images/users/user3.png') }}" alt="Image"
-                                                        class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="text-md mb-0 fw-medium">Albert Flores</h6>
-                                                        <span
-                                                            class="text-sm text-secondary-light fw-medium">seannand@mail.ru</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>27 Mar 2024</td>
-                                            <td>Standard</td>
-                                            <td class="text-center">
-                                                <span
-                                                    class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('assets/images/users/user4.png') }}" alt="Image"
-                                                        class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="text-md mb-0 fw-medium">Bessie Cooper </h6>
-                                                        <span
-                                                            class="text-sm text-secondary-light fw-medium">igerrin@gmail.com</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>27 Mar 2024</td>
-                                            <td>Business</td>
-                                            <td class="text-center">
-                                                <span
-                                                    class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('assets/images/users/user5.png') }}" alt="Image"
-                                                        class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="text-md mb-0 fw-medium">Arlene McCoy</h6>
-                                                        <span
-                                                            class="text-sm text-secondary-light fw-medium">fellora@mail.ru</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>27 Mar 2024</td>
-                                            <td>Enterprise </td>
-                                            <td class="text-center">
-                                                <span
-                                                    class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td>{{ $package->branch?->name ?? 'Global' }}</td>
+                                                <td><span class="fw-semibold text-primary-600">{{ $package->price ? 'AED ' . $package->price : 'N/A' }}</span></td>
+                                                <td class="text-center">
+                                                    @if($package->status)
+                                                        <span class="bg-success-focus text-success-main px-16 py-4 rounded-pill fw-medium text-xs">Active</span>
+                                                    @else
+                                                        <span class="bg-neutral-100 text-neutral-600 px-16 py-4 rounded-pill fw-medium text-xs">Inactive</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="4" class="text-center py-24 text-secondary-light">No birthday packages registered yet.</td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="pills-recent-leads" role="tabpanel"
-                            aria-labelledby="pills-recent-leads-tab" tabindex="0">
-                            <div class="table-responsive scroll-sm">
+
+                        <!-- Cafe Panel -->
+                        <div class="tab-pane fade" id="cafe-panel" role="tabpanel" aria-labelledby="cafe-tab">
+                            <div class="table-responsive">
                                 <table class="table bordered-table sm-table mb-0">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Users </th>
-                                            <th scope="col">Registered On</th>
-                                            <th scope="col">Plan</th>
-                                            <th scope="col" class="text-center">Status</th>
+                                            <th>Dish / Drink</th>
+                                            <th>Category</th>
+                                            <th>Price</th>
+                                            <th class="text-center">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('assets/images/users/user1.png') }}" alt="Image"
-                                                        class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="text-md mb-0 fw-medium">Dianne Russell</h6>
-                                                        <span
-                                                            class="text-sm text-secondary-light fw-medium">redaniel@gmail.com</span>
+                                        @forelse ($recent_cafe_menus as $menu)
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        @if ($menu->image)
+                                                            <img src="{{ asset('storage/' . $menu->image) }}" alt="" class="w-40-px h-40-px rounded flex-shrink-0 me-12 object-fit-cover">
+                                                        @else
+                                                            <div class="w-40-px h-40-px bg-neutral-100 rounded d-flex justify-content-center align-items-center me-12 flex-shrink-0">
+                                                                <iconify-icon icon="solar:cup-hot-bold" class="text-secondary-light"></iconify-icon>
+                                                            </div>
+                                                        @endif
+                                                        <div class="flex-grow-1">
+                                                            <h6 class="text-md mb-0 fw-medium">{{ $menu->title }}</h6>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td>27 Mar 2024</td>
-                                            <td>Free</td>
-                                            <td class="text-center">
-                                                <span
-                                                    class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td>{{ $menu->category?->name ?? 'General' }}</td>
+                                                <td><span class="fw-semibold text-primary-600">{{ $menu->price ? 'AED ' . $menu->price : 'N/A' }}</span></td>
+                                                <td class="text-center">
+                                                    @if($menu->status)
+                                                        <span class="bg-success-focus text-success-main px-16 py-4 rounded-pill fw-medium text-xs">Active</span>
+                                                    @else
+                                                        <span class="bg-neutral-100 text-neutral-600 px-16 py-4 rounded-pill fw-medium text-xs">Inactive</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="4" class="text-center py-24 text-secondary-light">No cafe items registered yet.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Events Panel -->
+                        <div class="tab-pane fade" id="events-panel" role="tabpanel" aria-labelledby="events-tab">
+                            <div class="table-responsive">
+                                <table class="table bordered-table sm-table mb-0">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('assets/images/users/user2.png') }}" alt="Image"
-                                                        class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="text-md mb-0 fw-medium">Wade Warren</h6>
-                                                        <span
-                                                            class="text-sm text-secondary-light fw-medium">xterris@gmail.com</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>27 Mar 2024</td>
-                                            <td>Basic</td>
-                                            <td class="text-center">
-                                                <span
-                                                    class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                                            </td>
+                                            <th>Event Name</th>
+                                            <th>Created At</th>
+                                            <th class="text-center">Status</th>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('assets/images/users/user3.png') }}" alt="Image"
-                                                        class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="text-md mb-0 fw-medium">Albert Flores</h6>
-                                                        <span
-                                                            class="text-sm text-secondary-light fw-medium">seannand@mail.ru</span>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($recent_events as $event)
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        @if ($event->image)
+                                                            <img src="{{ asset('storage/' . $event->image) }}" alt="" class="w-40-px h-40-px rounded flex-shrink-0 me-12 object-fit-cover">
+                                                        @else
+                                                            <div class="w-40-px h-40-px bg-neutral-100 rounded d-flex justify-content-center align-items-center me-12 flex-shrink-0">
+                                                                <iconify-icon icon="solar:clapperboard-play-bold" class="text-secondary-light"></iconify-icon>
+                                                            </div>
+                                                        @endif
+                                                        <div class="flex-grow-1">
+                                                            <h6 class="text-md mb-0 fw-medium">{{ $event->title }}</h6>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td>27 Mar 2024</td>
-                                            <td>Standard</td>
-                                            <td class="text-center">
-                                                <span
-                                                    class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('assets/images/users/user4.png') }}" alt="Image"
-                                                        class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="text-md mb-0 fw-medium">Bessie Cooper </h6>
-                                                        <span
-                                                            class="text-sm text-secondary-light fw-medium">igerrin@gmail.com</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>27 Mar 2024</td>
-                                            <td>Business</td>
-                                            <td class="text-center">
-                                                <span
-                                                    class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('assets/images/users/user5.png') }}" alt="Image"
-                                                        class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                                    <div class="flex-grow-1">
-                                                        <h6 class="text-md mb-0 fw-medium">Arlene McCoy</h6>
-                                                        <span
-                                                            class="text-sm text-secondary-light fw-medium">fellora@mail.ru</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>27 Mar 2024</td>
-                                            <td>Enterprise </td>
-                                            <td class="text-center">
-                                                <span
-                                                    class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td>{{ $event->created_at?->format('d M Y') ?? 'N/A' }}</td>
+                                                <td class="text-center">
+                                                    @if($event->status)
+                                                        <span class="bg-success-focus text-success-main px-16 py-4 rounded-pill fw-medium text-xs">Active</span>
+                                                    @else
+                                                        <span class="bg-neutral-100 text-neutral-600 px-16 py-4 rounded-pill fw-medium text-xs">Inactive</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="3" class="text-center py-24 text-secondary-light">No events registered yet.</td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -474,295 +397,39 @@
                 </div>
             </div>
         </div>
-        <div class="col-xxl-3 col-xl-12">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                        <h6 class="mb-2 fw-bold text-lg mb-0">Top Performer</h6>
-                        <a href="javascript:void(0)"
-                            class="text-primary-600 hover-text-primary d-flex align-items-center gap-1">
-                            View All
+
+        <!-- Staff Members List -->
+        <div class="col-xxl-4 col-xl-12">
+            <div class="card h-100 radius-8 border">
+                <div class="card-body p-24">
+                    <div class="d-flex align-items-center justify-content-between mb-20">
+                        <h6 class="fw-bold text-lg mb-0">Active Team Members</h6>
+                        <a href="{{ route('staffs.index') }}" class="text-primary-600 hover-text-primary d-flex align-items-center gap-1 text-sm fw-medium">
+                            Manage Staff
                             <iconify-icon icon="solar:alt-arrow-right-linear" class="icon"></iconify-icon>
                         </a>
                     </div>
 
-                    <div class="mt-32">
-
-                        <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
-                            <div class="d-flex align-items-center">
-                                <img src="{{ asset('assets/images/users/user1.png') }}" alt="Image"
-                                    class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Dianne Russell</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
+                    <div class="d-flex flex-column gap-20">
+                        @forelse ($staff_members as $member)
+                            <div class="d-flex align-items-center justify-content-between gap-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="w-40-px h-40-px bg-primary-50 rounded-circle d-flex justify-content-center align-items-center me-12 flex-shrink-0">
+                                        <iconify-icon icon="solar:user-bold" class="text-primary-600 text-xl"></iconify-icon>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="text-md mb-0 fw-medium">{{ $member->name }}</h6>
+                                        <span class="text-xs text-secondary-light">{{ $member->email }}</span>
+                                    </div>
                                 </div>
+                                <span class="badge bg-primary-50 text-primary-600 text-xs px-12 py-6 rounded-pill">
+                                    {{ $member->roles->first()?->name ?? 'Staff' }}
+                                </span>
                             </div>
-                            <span class="text-primary-light text-md fw-medium">$20</span>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
-                            <div class="d-flex align-items-center">
-                                <img src="{{ asset('assets/images/users/user2.png') }}" alt="Image"
-                                    class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Wade Warren</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
-                                </div>
-                            </div>
-                            <span class="text-primary-light text-md fw-medium">$20</span>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
-                            <div class="d-flex align-items-center">
-                                <img src="{{ asset('assets/images/users/user3.png') }}" alt="Image"
-                                    class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Albert Flores</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
-                                </div>
-                            </div>
-                            <span class="text-primary-light text-md fw-medium">$30</span>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
-                            <div class="d-flex align-items-center">
-                                <img src="{{ asset('assets/images/users/user4.png') }}" alt="Image"
-                                    class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Bessie Cooper</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
-                                </div>
-                            </div>
-                            <span class="text-primary-light text-md fw-medium">$40</span>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
-                            <div class="d-flex align-items-center">
-                                <img src="{{ asset('assets/images/users/user5.png') }}" alt="Image"
-                                    class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Arlene McCoy</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
-                                </div>
-                            </div>
-                            <span class="text-primary-light text-md fw-medium">$10</span>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between gap-3">
-                            <div class="d-flex align-items-center">
-                                <img src="{{ asset('assets/images/users/user1.png') }}" alt="Image"
-                                    class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Arlene McCoy</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">Agent ID: 36254</span>
-                                </div>
-                            </div>
-                            <span class="text-primary-light text-md fw-medium">$10</span>
-                        </div>
-
+                        @empty
+                            <p class="text-center text-secondary-light py-24">No registered staff found.</p>
+                        @endforelse
                     </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-xxl-6 col-xl-12">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between mb-20">
-                        <h6 class="mb-2 fw-bold text-lg mb-0">Top Countries</h6>
-                        <select class="form-select form-select-sm w-auto bg-base border text-secondary-light radius-8">
-                            <option>Today</option>
-                            <option>Weekly</option>
-                            <option>Monthly</option>
-                            <option>Yearly</option>
-                        </select>
-                    </div>
-
-                    <div class="row gy-4">
-                        <div class="col-lg-6">
-                            <div id="world-map" class="h-100 border radius-8"></div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="h-100 border p-16 pe-0 radius-8">
-                                <div class="max-h-266-px overflow-y-auto scroll-sm pe-16">
-                                    <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
-                                        <div class="d-flex align-items-center w-100">
-                                            <img src="{{ asset('assets/images/flags/flag1.png') }}" alt="Image"
-                                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                            <div class="flex-grow-1">
-                                                <h6 class="text-sm mb-0">USA</h6>
-                                                <span class="text-xs text-secondary-light fw-medium">1,240
-                                                    Users</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 w-100">
-                                            <div class="w-100 max-w-66 ms-auto">
-                                                <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                    aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100">
-                                                    <div class="progress-bar bg-primary-600 rounded-pill"
-                                                        style="width: 80%;"></div>
-                                                </div>
-                                            </div>
-                                            <span class="text-secondary-light font-xs fw-semibold">80%</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
-                                        <div class="d-flex align-items-center w-100">
-                                            <img src="{{ asset('assets/images/flags/flag2.png') }}" alt="Image"
-                                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                            <div class="flex-grow-1">
-                                                <h6 class="text-sm mb-0">Japan</h6>
-                                                <span class="text-xs text-secondary-light fw-medium">1,240
-                                                    Users</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 w-100">
-                                            <div class="w-100 max-w-66 ms-auto">
-                                                <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                    aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100">
-                                                    <div class="progress-bar bg-orange rounded-pill" style="width: 60%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <span class="text-secondary-light font-xs fw-semibold">60%</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
-                                        <div class="d-flex align-items-center w-100">
-                                            <img src="{{ asset('assets/images/flags/flag3.png') }}" alt="Image"
-                                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                            <div class="flex-grow-1">
-                                                <h6 class="text-sm mb-0">France</h6>
-                                                <span class="text-xs text-secondary-light fw-medium">1,240
-                                                    Users</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 w-100">
-                                            <div class="w-100 max-w-66 ms-auto">
-                                                <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                    aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100">
-                                                    <div class="progress-bar bg-yellow rounded-pill" style="width: 49%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <span class="text-secondary-light font-xs fw-semibold">49%</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
-                                        <div class="d-flex align-items-center w-100">
-                                            <img src="{{ asset('assets/images/flags/flag4.png') }}" alt="Image"
-                                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                            <div class="flex-grow-1">
-                                                <h6 class="text-sm mb-0">Germany</h6>
-                                                <span class="text-xs text-secondary-light fw-medium">1,240
-                                                    Users</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 w-100">
-                                            <div class="w-100 max-w-66 ms-auto">
-                                                <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                    aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100">
-                                                    <div class="progress-bar bg-success-main rounded-pill"
-                                                        style="width: 100%;"></div>
-                                                </div>
-                                            </div>
-                                            <span class="text-secondary-light font-xs fw-semibold">100%</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex align-items-center justify-content-between gap-3 mb-12 pb-2">
-                                        <div class="d-flex align-items-center w-100">
-                                            <img src="{{ asset('assets/images/flags/flag5.png') }}" alt="Image"
-                                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                            <div class="flex-grow-1">
-                                                <h6 class="text-sm mb-0">South Korea</h6>
-                                                <span class="text-xs text-secondary-light fw-medium">1,240
-                                                    Users</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 w-100">
-                                            <div class="w-100 max-w-66 ms-auto">
-                                                <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                    aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100">
-                                                    <div class="progress-bar bg-info-main rounded-pill" style="width: 30%;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <span class="text-secondary-light font-xs fw-semibold">30%</span>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-between gap-3">
-                                        <div class="d-flex align-items-center w-100">
-                                            <img src="{{ asset('assets/images/flags/flag1.png') }}" alt="Image"
-                                                class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12">
-                                            <div class="flex-grow-1">
-                                                <h6 class="text-sm mb-0">USA</h6>
-                                                <span class="text-xs text-secondary-light fw-medium">1,240
-                                                    Users</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 w-100">
-                                            <div class="w-100 max-w-66 ms-auto">
-                                                <div class="progress progress-sm rounded-pill" role="progressbar"
-                                                    aria-label="Success example" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100">
-                                                    <div class="progress-bar bg-primary-600 rounded-pill"
-                                                        style="width: 80%;"></div>
-                                                </div>
-                                            </div>
-                                            <span class="text-secondary-light font-xs fw-semibold">80%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xxl-6">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                        <h6 class="mb-2 fw-bold text-lg mb-0">Generated Content</h6>
-                        <select class="form-select form-select-sm w-auto bg-base border text-secondary-light radius-8">
-                            <option>Today</option>
-                            <option>Weekly</option>
-                            <option>Monthly</option>
-                            <option>Yearly</option>
-                        </select>
-                    </div>
-
-                    <ul class="d-flex flex-wrap align-items-center mt-3 gap-3">
-                        <li class="d-flex align-items-center gap-2">
-                            <span class="w-12-px h-12-px rounded-circle bg-primary-600"></span>
-                            <span class="text-secondary-light text-sm fw-semibold">Word:
-                                <span class="text-primary-light fw-bold">500</span>
-                            </span>
-                        </li>
-                        <li class="d-flex align-items-center gap-2">
-                            <span class="w-12-px h-12-px rounded-circle bg-yellow"></span>
-                            <span class="text-secondary-light text-sm fw-semibold">Image:
-                                <span class="text-primary-light fw-bold">300</span>
-                            </span>
-                        </li>
-                    </ul>
-
-                    <div class="mt-40">
-                        <div id="paymentStatusChart" class="margin-16-minus"></div>
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -772,6 +439,82 @@
 @section('script')
     <!-- Apex Chart js -->
     <script src="{{ asset('assets/js/lib/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/js/homeOneChart.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var options = {
+                series: [{
+                    name: 'Items Count',
+                    data: [
+                        {{ $stats['birthday_package_count'] }},
+                        {{ $stats['event_count'] }},
+                        {{ $stats['cafe_menu_count'] }},
+                        {{ $stats['cake_count'] }},
+                        {{ $stats['rental_item_count'] }}
+                    ]
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    toolbar: {
+                        show: false
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 8,
+                        horizontal: false,
+                        columnWidth: '45%',
+                        endingShape: 'rounded'
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
+                xaxis: {
+                    categories: ['Birthday Packages', 'Events', 'Cafe Menu', 'Cakes', 'Rental Items'],
+                    labels: {
+                        style: {
+                            colors: '#888',
+                            fontSize: '12px'
+                        }
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Record Counts',
+                        style: {
+                            color: '#888'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            colors: '#888'
+                        }
+                    }
+                },
+                fill: {
+                    opacity: 1,
+                    colors: ['#2563eb']
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val + " records"
+                        }
+                    }
+                },
+                grid: {
+                    borderColor: '#f1f1f1',
+                }
+            };
 
+            var chart = new ApexCharts(document.querySelector("#catalogDistributionChart"), options);
+            chart.render();
+        });
+    </script>
 @endsection

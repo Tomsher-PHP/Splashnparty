@@ -56,6 +56,7 @@ class FaqController extends Controller
     {
         $request->validate([
             'category' => 'required|string|max:255',
+            'sort_order' => 'nullable|integer|min:0',
             'faqs' => 'required|array|min:1',
             'faqs.*.question' => 'required|string',
             'faqs.*.answer' => 'required|string',
@@ -76,7 +77,7 @@ class FaqController extends Controller
             'category' => $request->category,
             'details' => $details,
             'status' => $request->status ?? 1,
-            'sort_order' => 0,
+            'sort_order' => $request->sort_order ?? 0,
             'created_by' => auth()->id(),
         ]);
 
@@ -97,6 +98,7 @@ class FaqController extends Controller
     {
         $request->validate([
             'category' => 'required|string|max:255',
+            'sort_order' => 'nullable|integer|min:0',
             'faqs' => 'required|array|min:1',
             'faqs.*.question' => 'required|string',
             'faqs.*.answer' => 'required|string',
@@ -117,6 +119,7 @@ class FaqController extends Controller
             'category' => $request->category,
             'details' => $details,
             'status' => $request->status ?? 1,
+            'sort_order' => $request->sort_order ?? 0,
             'updated_by' => auth()->id(),
         ]);
 
