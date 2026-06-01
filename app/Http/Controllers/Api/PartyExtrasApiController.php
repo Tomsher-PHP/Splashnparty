@@ -61,10 +61,10 @@ class PartyExtrasApiController extends Controller
         });
 
         return response()->json([
-
             'success' => true,
-
-            'data' => $extras
+            'message' => 'Party Extras data fetched successfully',
+            'data' => $extras,
+            'page_content' => \App\Models\Page::getPageContent('party-extras'),
 
         ]);
     }

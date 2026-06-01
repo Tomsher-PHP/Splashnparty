@@ -59,7 +59,9 @@ class PackageApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $packages
+            'message' => 'Package details fetched successfully',
+            'data' => $packages,
+            'page_content' => \App\Models\Page::getPageContent('packages'),
         ]);
     }
 
@@ -69,6 +71,7 @@ class PackageApiController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => 'Package details fetched successfully',
             'data' => [
                 'id' => $package->id,
                 'branch_id' => $package->branch_id,
@@ -96,7 +99,8 @@ class PackageApiController extends Controller
                 'end_date' => $package->end_date,
 
                 'days' => $package->days ?? [],
-            ]
+            ],
+            'page_content' => \App\Models\Page::getPageContent('packages'),
         ]);
     }
 }

@@ -39,11 +39,9 @@ class GeneralAccessApiController extends Controller
         return response()->json([
 
             'success' => true,
-
             'message' => 'General Access data fetched successfully',
-
+            'page_content' => \App\Models\Page::getPageContent('general-access'),
             'data' => $data->items(),
-
             'pagination' => [
                 'current_page' => $data->currentPage(),
                 'last_page' => $data->lastPage(),
