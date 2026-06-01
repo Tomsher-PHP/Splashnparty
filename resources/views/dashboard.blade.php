@@ -172,6 +172,11 @@
     .thumbnail-container:hover .thumbnail-img {
         transform: scale(1.2);
     }
+    a.glass-card {
+        color: inherit !important;
+        text-decoration: none !important;
+        display: block !important;
+    }
 </style>
 @endsection
 @section('content')
@@ -201,8 +206,8 @@
     <div class="row row-cols-xxl-6 row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4 mb-28">
         <!-- KPI 1: Birthday Packages -->
         <div class="col">
-            <div class="card glass-card gradient-primary-glow h-100 border-0">
-                <div class="card-body p-20 d-flex flex-column justify-content-between">
+            <a href="{{ route('birthday-packages.index') }}" class="card glass-card gradient-primary-glow h-100 border-0 text-decoration-none">
+                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
                     <div>
                         <div class="d-flex align-items-center justify-content-between mb-16">
                             <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Birthday Packages</span>
@@ -213,21 +218,14 @@
                         <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['birthday_package_count']) }}</h4>
                         <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Active packages catalog</p>
                     </div>
-                    <div class="mt-16 pt-12 border-top border-neutral-100 dark:border-neutral-800 d-flex align-items-center justify-content-between">
-                        <a href="{{ route('birthday-packages.index') }}" class="text-xs fw-bold text-primary-600 hover-text-primary-700 d-inline-flex align-items-center gap-1">
-                            Manage
-                            <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>
-                        </a>
-                        <span class="text-2xs text-neutral-400">Total Live</span>
-                    </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <!-- KPI 2: Events & Parties -->
         <div class="col">
-            <div class="card glass-card gradient-purple-glow h-100 border-0">
-                <div class="card-body p-20 d-flex flex-column justify-content-between">
+            <a href="{{ route('events.index') }}" class="card glass-card gradient-purple-glow h-100 border-0 text-decoration-none">
+                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
                     <div>
                         <div class="d-flex align-items-center justify-content-between mb-16">
                             <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Events & Parties</span>
@@ -238,21 +236,14 @@
                         <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['event_count']) }}</h4>
                         <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Organized events</p>
                     </div>
-                    <div class="mt-16 pt-12 border-top border-neutral-100 dark:border-neutral-800 d-flex align-items-center justify-content-between">
-                        <a href="{{ route('events.index') }}" class="text-xs fw-bold text-purple-600 hover-text-purple-700 d-inline-flex align-items-center gap-1">
-                            Manage
-                            <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>
-                        </a>
-                        <span class="text-2xs text-neutral-400">Published</span>
-                    </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <!-- KPI 3: Cafe Menu Items -->
         <div class="col">
-            <div class="card glass-card gradient-info-glow h-100 border-0">
-                <div class="card-body p-20 d-flex flex-column justify-content-between">
+            <a href="{{ route('cafe-menus.index') }}" class="card glass-card gradient-info-glow h-100 border-0 text-decoration-none">
+                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
                     <div>
                         <div class="d-flex align-items-center justify-content-between mb-16">
                             <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Cafe Items</span>
@@ -263,21 +254,14 @@
                         <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['cafe_menu_count']) }}</h4>
                         <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Dishes & beverages</p>
                     </div>
-                    <div class="mt-16 pt-12 border-top border-neutral-100 dark:border-neutral-800 d-flex align-items-center justify-content-between">
-                        <a href="{{ route('cafe-menus.index') }}" class="text-xs fw-bold text-cyan hover-text-cyan-800 d-inline-flex align-items-center gap-1">
-                            Manage
-                            <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>
-                        </a>
-                        <span class="text-2xs text-neutral-400">In Cafe</span>
-                    </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <!-- KPI 4: Custom Cake Designs -->
         <div class="col">
-            <div class="card glass-card gradient-success-glow h-100 border-0">
-                <div class="card-body p-20 d-flex flex-column justify-content-between">
+            <a href="{{ route('cakes.index') }}" class="card glass-card gradient-success-glow h-100 border-0 text-decoration-none">
+                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
                     <div>
                         <div class="d-flex align-items-center justify-content-between mb-16">
                             <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Cake Designs</span>
@@ -288,21 +272,14 @@
                         <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['cake_count']) }}</h4>
                         <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Custom cake models</p>
                     </div>
-                    <div class="mt-16 pt-12 border-top border-neutral-100 dark:border-neutral-800 d-flex align-items-center justify-content-between">
-                        <a href="{{ route('cakes.index') }}" class="text-xs fw-bold text-success-main hover-text-success-700 d-inline-flex align-items-center gap-1">
-                            Manage
-                            <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>
-                        </a>
-                        <span class="text-2xs text-neutral-400">Deluxe Designs</span>
-                    </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <!-- KPI 5: Rental Gear & Decor -->
         <div class="col">
-            <div class="card glass-card gradient-danger-glow h-100 border-0">
-                <div class="card-body p-20 d-flex flex-column justify-content-between">
+            <a href="{{ route('rental-items.index') }}" class="card glass-card gradient-danger-glow h-100 border-0 text-decoration-none">
+                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
                     <div>
                         <div class="d-flex align-items-center justify-content-between mb-16">
                             <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Rental Items</span>
@@ -313,21 +290,14 @@
                         <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['rental_item_count']) }}</h4>
                         <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Party rentals & decor</p>
                     </div>
-                    <div class="mt-16 pt-12 border-top border-neutral-100 dark:border-neutral-800 d-flex align-items-center justify-content-between">
-                        <a href="{{ route('rental-items.index') }}" class="text-xs fw-bold text-danger-600 hover-text-danger-700 d-inline-flex align-items-center gap-1">
-                            Manage
-                            <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>
-                        </a>
-                        <span class="text-2xs text-neutral-400">Inventory</span>
-                    </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <!-- KPI 6: Active Venue Branches -->
         <div class="col">
-            <div class="card glass-card gradient-warning-glow h-100 border-0">
-                <div class="card-body p-20 d-flex flex-column justify-content-between">
+            <a href="{{ route('branches.index') }}" class="card glass-card gradient-warning-glow h-100 border-0 text-decoration-none">
+                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
                     <div>
                         <div class="d-flex align-items-center justify-content-between mb-16">
                             <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Active Branches</span>
@@ -338,15 +308,8 @@
                         <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['branch_count']) }}</h4>
                         <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Locations & venues</p>
                     </div>
-                    <div class="mt-16 pt-12 border-top border-neutral-100 dark:border-neutral-800 d-flex align-items-center justify-content-between">
-                        <a href="{{ route('branches.index') }}" class="text-xs fw-bold text-warning-main hover-text-warning-700 d-inline-flex align-items-center gap-1">
-                            Manage
-                            <iconify-icon icon="solar:alt-arrow-right-linear"></iconify-icon>
-                        </a>
-                        <span class="text-2xs text-neutral-400">Venues</span>
-                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 
@@ -406,13 +369,13 @@
                     <p class="text-sm text-secondary-light dark:text-neutral-400 mb-20">Operational metrics and data nodes status.</p>
 
                     <div class="d-flex flex-column gap-16">
-                        <div class="d-flex align-items-center justify-content-between p-12 bg-neutral-50 dark:bg-neutral-900 bg-opacity-40 rounded-10">
+                        {{-- <div class="d-flex align-items-center justify-content-between p-12 bg-neutral-50 dark:bg-neutral-900 bg-opacity-40 rounded-10">
                             <div class="d-flex align-items-center gap-3">
                                 <span class="pulse-glow-green"></span>
                                 <span class="text-xs fw-semibold text-neutral-900 dark:text-white">Database Server Node</span>
                             </div>
                             <span class="badge bg-success-focus text-success-main text-2xs px-8 py-4 rounded fw-semibold">ONLINE</span>
-                        </div>
+                        </div> --}}
 
                         <div class="d-flex align-items-center justify-content-between p-12 bg-neutral-50 dark:bg-neutral-900 bg-opacity-40 rounded-10">
                             <div class="d-flex align-items-center gap-3">
