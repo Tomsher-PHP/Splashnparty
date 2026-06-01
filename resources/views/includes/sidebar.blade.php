@@ -217,6 +217,15 @@
                     </a>
                 </li>
             @endcan
+
+            @can('view_attractions')
+                <li>
+                    <a href="{{ route('attractions.index') }}" class="{{ request()->routeIs('attractions.*') ? 'active-page' : '' }}">
+                        <i class="ri-water-flash-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Waterpark Attractions & Adventures</span>
+                    </a>
+                </li>
+            @endcan
             
             <li class="sidebar-menu-group-title">Settings</li>
             @can('view_general_settings')

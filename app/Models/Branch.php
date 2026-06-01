@@ -20,4 +20,14 @@ class Branch extends Model
         'status',
 
     ];
+
+    /**
+     * Get the attractions/adventures that belong to this branch.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function attractions()
+    {
+        return $this->belongsToMany(Attraction::class, 'attraction_branch');
+    }
 }
