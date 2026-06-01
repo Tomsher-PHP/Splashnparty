@@ -25,17 +25,50 @@
 
         <form method="GET" action="{{ route('party-extras.index') }}">
             <div class="d-flex flex-wrap align-items-end gap-3">
-                <div>
 
+                {{-- Category --}}
+                <div>
+                    <label class="form-label mb-1">Category</label>
+                    <input type="text"
+                        name="category"
+                        value="{{ request('category') }}"
+                        class="form-control form-control-sm"
+                        placeholder="Category">
+                </div>
+
+                {{-- Title --}}
+                <div>
+                    <label class="form-label mb-1">Title</label>
                     <input type="text"
                         name="title"
                         value="{{ request('title') }}"
                         class="form-control form-control-sm"
                         placeholder="Search title">
                 </div>
+
+                {{-- Type --}}
+                <div>
+                    <label class="form-label mb-1">Type</label>
+                    <select name="type"
+                        class="form-select form-select-sm">
+                        <option value="">All Types</option>
+
+                        <option value="image_gallery"
+                            {{ request('type') == 'image_gallery' ? 'selected' : '' }}>
+                            Image Gallery
+                        </option>
+
+                        <option value="videolink"
+                            {{ request('type') == 'videolink' ? 'selected' : '' }}>
+                            Video Link
+                        </option>
+                    </select>
+                </div>
+
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary-600">
-                        <i class="ri-search-line"></i> Filter
+                        <i class="ri-search-line"></i>
+                        Filter
                     </button>
 
                     <a href="{{ route('party-extras.index') }}"
@@ -43,6 +76,7 @@
                         Reset
                     </a>
                 </div>
+
             </div>
         </form>
     </div>
@@ -125,28 +159,39 @@
                         @endif
                     </tr>
                     @empty
-
                     <tr>
-
                         <td colspan="7"
                             class="text-center">
                             No records found
                         </td>
-
                     </tr>
-
                     @endforelse
-
                 </tbody>
-
             </table>
-
         </div>
-
         {{ $partyExtras->links() }}
-
     </div>
-
 </div>
+@endsection
 
+@section('script')
+<script>
+    
+    document.querySelectorAll('.delete-form button[type="submit"]').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const form = button.closest('form');
+
+            window.openAppConfirm({
+                title: button.dataset.confirmTitle || 'Delete',
+                message: button.dataset.confirmMessage || 'Are you sure you want to continue?',
+                buttonText: 'Yes, Delete',
+                buttonClass: 'btn btn-sm btn-danger',
+                onConfirm: function() {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 @endsection

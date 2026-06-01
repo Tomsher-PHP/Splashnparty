@@ -190,8 +190,32 @@
                 </li>
             @endcan
 
-            
+            @can('view_party_extras')
+                <li>
+                    <a href="{{ route('party-extras.index') }}">
+                        <i class="ri-magic-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Party Extras</span>
+                    </a>
+                </li>
+            @endcan
 
+            @can('view_general_access')
+                <li>
+                    <a href="{{ route('general-access.index') }}">
+                        <i class="ri-ticket-2-line text-xl me-14 d-flex w-auto"></i>
+                        <span>General Access</span>
+                    </a>
+                </li>
+            @endcan
+
+            @can('view_packages')
+                <li>
+                    <a href="{{ route('packages.index') }}">
+                        <i class="ri-ticket-2-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Packages</span>
+                    </a>
+                </li>
+            @endcan
             
             <li class="sidebar-menu-group-title">Settings</li>
             @can('view_general_settings')

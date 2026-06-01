@@ -13105,6 +13105,10 @@ select option {
   background-color: var(--white);
 }
 
+select option:selected {
+  background-color: var(--primary-900);
+}
+
 .was-validated .form-mobile-field .form-control {
   padding-inline-start: 5.9375rem;
 }

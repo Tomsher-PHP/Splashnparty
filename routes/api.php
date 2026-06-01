@@ -7,6 +7,9 @@ use App\Http\Controllers\Api\CafeMenuApiController;
 use App\Http\Controllers\Api\CakeApiController;
 use App\Http\Controllers\Api\FoodMenuApiController;
 use App\Http\Controllers\Api\GalleryApiController;
+use App\Http\Controllers\Api\GeneralAccessApiController;
+use App\Http\Controllers\Api\PackageApiController;
+use App\Http\Controllers\Api\PartyExtrasApiController;
 use App\Http\Controllers\Api\PageApiController;
 use App\Http\Controllers\Api\RentalApiController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +35,7 @@ Route::get('/balloon-decorations',[BalloonDecorationApiController::class, 'ballo
 Route::get('/birthday-packages',[BirthdayPackageApiController::class, 'birthdayPackages']);
 Route::get('/food-menus',[FoodMenuApiController::class, 'foodMenus']);
 
-Route::middleware('auth:sanctum')->group(function () {
-
-});
+Route::get('/party-extras', [PartyExtrasApiController::class, 'partyExtras']);
+Route::get('/general-access', [GeneralAccessApiController::class, 'generalAccess']);
+Route::get('/packages', [PackageApiController::class, 'index']);
+Route::get('/packages/{id}', [PackageApiController::class, 'show']);
