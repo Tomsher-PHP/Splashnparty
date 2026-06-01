@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->string('title');
 
-            $table->enum('food_type', ['veg', 'non_veg'])->nullable();
+            $table->enum('food_type', ['with_food', 'without_food'])->nullable();
 
             /*
             |--------------------------------------------------------------------------

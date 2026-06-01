@@ -56,7 +56,7 @@ class PackageController extends Controller
         $request->validate([
             'branch_id' => 'nullable|exists:branches,id',
             'title' => 'required|max:255',
-            'food_type' => 'nullable|in:veg,non_veg',
+            'food_type' => 'nullable|in:with_food,without_food',
 
             // With Food Prices
             'child_weekday_price_with_food' => 'nullable|numeric',
@@ -133,7 +133,7 @@ class PackageController extends Controller
         $request->validate([
             'branch_id' => 'nullable|exists:branches,id',
             'title' => 'required|max:255',
-            'food_type' => 'nullable|in:veg,non_veg',
+            'food_type' => 'nullable|in:with_food,without_food',
 
             // With Food Prices
             'child_weekday_price_with_food' => 'nullable|numeric',
