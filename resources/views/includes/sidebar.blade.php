@@ -190,15 +190,7 @@
                 </li>
             @endcan
 
-            @can('view_party_extras')
-                <li>
-                    <a href="{{ route('party-extras.index') }}">
-                        <i class="ri-magic-line text-xl me-14 d-flex w-auto"></i>
-                        <span>Party Extras</span>
-                    </a>
-                </li>
-            @endcan
-
+         
             @can('view_general_access')
                 <li>
                     <a href="{{ route('general-access.index') }}">
