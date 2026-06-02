@@ -294,6 +294,20 @@
 
 @section('style')
     <style>
+        /* Responsive Table Fit Override */
+        #dataTable.bordered-table {
+            min-width: 0 !important;
+            width: 100% !important;
+            table-layout: auto !important;
+        }
+
+        #dataTable.bordered-table th,
+        #dataTable.bordered-table td {
+            white-space: normal !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+        }
+
         .attractions-filter-group {
             min-width: 180px;
         }

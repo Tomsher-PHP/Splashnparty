@@ -19,7 +19,7 @@
 </div>
 
 <!-- Filters Panel Card -->
-<div class="card mb-24 border-0 shadow-sm">
+<div class="card mb-24 border-0 shadow-sm" style="opacity: 0; transition: opacity 0.15s ease;" id="enquiryFiltersCard">
     <div class="card-body p-20">
         <form method="GET" action="{{ route('contact-enquiries.index') }}">
             <div class="row align-items-center g-3">
@@ -185,6 +185,12 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // Prevent Flash of Unstyled Filters Panel by fading it in
+        const filtersCard = document.getElementById('enquiryFiltersCard');
+        if (filtersCard) {
+            filtersCard.style.opacity = '1';
+        }
+
         document.querySelectorAll('.delete-form').forEach(function(form) {
             const button = form.querySelector('button[type="submit"]');
             button.addEventListener('click', function(event) {
