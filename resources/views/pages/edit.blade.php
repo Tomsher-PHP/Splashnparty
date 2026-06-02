@@ -230,7 +230,7 @@
                                                                             if ($subType === 'image' && empty($subValue) && !empty($row[$subName . '_existing'])) {
                                                                                 $subValue = $row[$subName . '_existing'];
                                                                             }
-                                                                            $subCol = in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6';
+                                                                            $subCol = $subField['col'] ?? (in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6');
                                                                         @endphp
 
                                                                         <div class="{{ $subCol }}">
@@ -250,7 +250,7 @@
                                                                                     placeholder="{{ $subField['placeholder'] ?? '' }}">
 
                                                                             @elseif ($subType === 'textarea')
-                                                                                <textarea name="{{ $fieldName }}[{{ $index }}][{{ $subName }}]" rows="4"
+                                                                                <textarea name="{{ $fieldName }}[{{ $index }}][{{ $subName }}]" rows="{{ $subField['rows'] ?? 4 }}"
                                                                                     class="form-control"
                                                                                     placeholder="{{ $subField['placeholder'] ?? '' }}">{{ $subValue }}</textarea>
 
@@ -458,7 +458,7 @@
                                     @php
                                         $subName = $subField['name'];
                                         $subType = $subField['type'];
-                                        $subCol = in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6';
+                                        $subCol = $subField['col'] ?? (in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6');
                                     @endphp
 
                                     <div class="{{ $subCol }}">
@@ -478,9 +478,9 @@
                                                 placeholder="{{ $subField['placeholder'] ?? '' }}">
 
                                         @elseif ($subType === 'textarea')
-                                            <textarea name="{{ $field['name'] }}[__INDEX__][{{ $subName }}]" rows="4"
-                                                class="form-control"
-                                                placeholder="{{ $subField['placeholder'] ?? '' }}"></textarea>
+                                             <textarea name="{{ $field['name'] }}[__INDEX__][{{ $subName }}]" rows="{{ $subField['rows'] ?? 4 }}"
+                                                 class="form-control"
+                                                 placeholder="{{ $subField['placeholder'] ?? '' }}"></textarea>
 
                                         @elseif ($subType === 'image')
                                             <div class="settings-file-upload">
@@ -1020,6 +1020,39 @@
 
 @section('style')
     <style>
+        /* Compact FAQ Repeater Overrides */
+        #container-faqs .repeater-row {
+            margin-bottom: 12px !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            background: var(--neutral-50) !important;
+            border: 1px solid var(--neutral-200) !important;
+        }
+
+        #container-faqs .repeater-row .card-header {
+            padding: 8px 16px !important;
+            background-color: var(--neutral-100) !important;
+            border-bottom: 1px solid var(--neutral-200) !important;
+        }
+
+        #container-faqs .repeater-row .card-body {
+            padding: 12px 16px !important;
+        }
+
+        #container-faqs .repeater-row .form-control {
+            border-radius: 6px !important;
+            border: 1px solid var(--input-form-light) !important;
+        }
+
+        #container-faqs .repeater-row label {
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            margin-bottom: 4px !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary-light) !important;
+        }
+
         textarea.form-control,
         textarea.form-control-sm {
             height: auto !important;
