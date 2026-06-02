@@ -24,6 +24,7 @@ Route::get('/terms-and-conditions', [PageApiController::class, 'termsAndConditio
 Route::get('/refund-policy', [PageApiController::class, 'refundPolicy']);
 Route::get('/faqs', [PageApiController::class, 'faqs']);
 Route::post('/contact-submit', [ContactApiController::class, 'submitContactForm']);
+Route::get('/waterpark', [PageApiController::class, 'waterpark']);
 
 
 Route::get('/image-gallery',[GalleryApiController::class, 'imageGallery']);

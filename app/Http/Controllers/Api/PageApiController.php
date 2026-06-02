@@ -214,4 +214,63 @@ class PageApiController extends Controller
             'page_content' => $page
         ]);
     }
+
+    public function waterpark()
+    {
+        $data = [];
+        $page = Page::getPageContent('waterpark');
+
+        if (!$page) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Page not found.'
+            ], 200);
+        }
+
+        $data['branches'] = Branch::where('status', 1)
+            ->orderBy('sort_order', 'asc')
+            ->get()
+            ->map(function ($branch) {
+                // Get all active attractions and adventures associated with this branch, ordered by sort_order
+                $associated = $branch->attractions()
+                    ->where('status', 1)
+                    ->orderBy('sort_order', 'asc')
+                    ->get()
+                    ->map(function ($item) {
+                        return [
+                            'id' => $item->id,
+                            'title' => $item->title,
+                            'description' => $item->description,
+                            'image' => $item->image ? asset($item->image) : null,
+                            'type' => $item->type
+                        ];
+                    });
+
+                // Differentiate into attractions and adventures
+                $attractions = $associated->where('type', 'attraction')->values()->all();
+                $adventures = $associated->where('type', 'adventure')->values()->all();
+
+                return [
+                    'id' => $branch->id,
+                    'title' => $branch->title,
+                    'description' => $branch->description,
+                    'image' => $branch->image ? asset($branch->image) : null,
+                    'location_link' => $branch->location_link,
+                    'address' => $branch->address,
+                    'phone' => $branch->phone,
+                    'email' => $branch->email,
+                    'working_hours' => $branch->working_hours,
+                    'attractions' => $attractions,
+                    'adventures' => $adventures
+                ];
+            });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Page found.',
+            'data' => $data,
+            'page_content' => $page
+        ]);
+    }
+
 }

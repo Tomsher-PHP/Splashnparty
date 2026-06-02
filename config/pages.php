@@ -378,10 +378,10 @@ return [
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
-                        'name' => 'bottom_image',
-                        'label' => 'Bottom Section Image',
-                        'type' => 'image',
-                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                        'name' => 'bottom_images',
+                        'label' => 'Bottom Section Images',
+                        'type' => 'gallery',
+                        'rules' => ['nullable', 'array'],
                     ],
                     [
                         'name' => 'bottom_description',
@@ -444,10 +444,10 @@ return [
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
-                        'name' => 'bottom_image',
-                        'label' => 'Bottom Section Image',
-                        'type' => 'image',
-                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                        'name' => 'bottom_images',
+                        'label' => 'Bottom Section Images',
+                        'type' => 'gallery',
+                        'rules' => ['nullable', 'array'],
                     ],
                     [
                         'name' => 'bottom_description',
@@ -703,10 +703,10 @@ return [
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
-                        'name' => 'bottom_image',
-                        'label' => 'Bottom Section Image',
-                        'type' => 'image',
-                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                        'name' => 'bottom_images',
+                        'label' => 'Bottom Section Images',
+                        'type' => 'gallery',
+                        'rules' => ['nullable', 'array'],
                     ],
                     [
                         'name' => 'bottom_description',
@@ -1756,5 +1756,97 @@ return [
                 ]
             ]
         ]
+    ],
+    'footer' => [
+        'title' => 'Footer Settings',
+        'sections' => [
+            [
+                'title' => 'Footer Menus',
+                'description' => 'Configure footer menus (maximum 3 repeatable sections, each with up to 6 links)',
+                'fields' => [
+                    [
+                        'name' => 'menu_sections',
+                        'label' => 'Menu Sections',
+                        'type' => 'repeater',
+                        'rules' => ['nullable', 'array', 'max:3'],
+                        'fields' => [
+                            [
+                                'name' => 'main_title',
+                                'label' => 'Main Title',
+                                'type' => 'text',
+                                'placeholder' => 'e.g. Quick Links',
+                                'rules' => ['required', 'string', 'max:255'],
+                            ],
+                            [
+                                'name' => 'links',
+                                'label' => 'Links List',
+                                'type' => 'repeater',
+                                'rules' => ['nullable', 'array', 'max:6'],
+                                'fields' => [
+                                    [
+                                        'name' => 'link_name',
+                                        'label' => 'Link Name',
+                                        'type' => 'text',
+                                        'placeholder' => 'e.g. About Us',
+                                        'rules' => ['required', 'string', 'max:255'],
+                                    ],
+                                    [
+                                        'name' => 'link_url',
+                                        'label' => 'Link / URL',
+                                        'type' => 'text',
+                                        'placeholder' => 'e.g. /about-us',
+                                        'rules' => ['required', 'string', 'max:255'],
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Social Media Info',
+                'description' => 'Configure social media title and repeatable networks list with SVG icons',
+                'fields' => [
+                    [
+                        'name' => 'social_title',
+                        'label' => 'Social Media Main Title',
+                        'type' => 'text',
+                        'placeholder' => 'e.g. Follow Us',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'social_links',
+                        'label' => 'Social Media Links',
+                        'type' => 'repeater',
+                        'rules' => ['nullable', 'array'],
+                        'fields' => [
+                            [
+                                'name' => 'name',
+                                'label' => 'Social Media Name',
+                                'type' => 'text',
+                                'placeholder' => 'e.g. Facebook',
+                                'rules' => ['required', 'string', 'max:255'],
+                            ],
+                            [
+                                'name' => 'svg_code',
+                                'label' => 'SVG Code',
+                                'type' => 'textarea',
+                                'placeholder' => 'Paste raw SVG code here',
+                                'rules' => ['required', 'string'],
+                                'rows' => 4,
+                            ],
+                            [
+                                'name' => 'link',
+                                'label' => 'Social Media Link',
+                                'type' => 'text',
+                                'placeholder' => 'https://facebook.com/...',
+                                'rules' => ['required', 'url', 'max:255'],
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
     ]
 ];
+
