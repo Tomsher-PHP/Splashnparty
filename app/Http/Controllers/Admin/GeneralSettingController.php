@@ -174,6 +174,16 @@ class GeneralSettingController extends Controller
                 'sort_order' => 90,
             ],
             [
+                'group' => 'vat',
+                'group_title' => 'Vat Percentage',
+                'key' => 'vat_percentage',
+                'label' => 'Vat Percentage',
+                'type' => 'number',
+                'placeholder' => 'Enter vat percentage',
+                'rules' => ['nullable', 'numeric', 'min:0', 'max:100'],
+                'sort_order' => 95,
+            ],
+            [
                 'group' => 'social',
                 'group_title' => 'Social Links',
                 'key' => 'facebook_url',

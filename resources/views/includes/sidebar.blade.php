@@ -216,6 +216,15 @@
                     </a>
                 </li>
             @endcan
+
+            @if(auth()->user()->can('view_bookings'))
+                <li class="nav-item">
+                    <a href="{{ route('bookings.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-check"></i>
+                        <p>Bookings</p>
+                    </a>
+                </li>
+            @endif
             
             <li class="sidebar-menu-group-title">Settings</li>
             @can('view_general_settings')

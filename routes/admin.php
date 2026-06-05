@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BalloonDecorationController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BirthdayPackageController;
+use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CafeMenuCategoryController;
 use App\Http\Controllers\Admin\CafeMenuController;
@@ -105,4 +106,28 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('general-access', GeneralAccessController::class);
     Route::resource('packages', PackageController::class);
 
+    Route::group(['prefix' => 'bookings'], function () {
+
+        Route::get('/', [
+            BookingController::class,
+            'index'
+        ])->name('bookings.index');
+
+        Route::get('/{booking}', [
+            BookingController::class,
+            'show'
+        ])->name('bookings.show');
+
+        Route::get('/{booking}/invoice', [
+            BookingController::class,
+            'invoice'
+        ])->name('bookings.invoice');
+
+        Route::post('/{booking}/payment-status', [
+            BookingController::class,
+            'updatePaymentStatus'
+        ])->name('bookings.payment-status');
+    });
+
+    
 });

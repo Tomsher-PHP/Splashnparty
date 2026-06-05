@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\PartyExtrasApiController;
 use App\Http\Controllers\Api\PageApiController;
 use App\Http\Controllers\Api\RentalApiController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\BookingApiController;
 
 
 Route::get('/home-page', [PageApiController::class, 'HomePageContent']);
@@ -41,3 +42,10 @@ Route::get('/general-access', [GeneralAccessApiController::class, 'generalAccess
 Route::get('/packages', [PackageApiController::class, 'index']);
 Route::get('/packages/{id}', [PackageApiController::class, 'show']);
 Route::post('/packages/get-booking-price', [PackageApiController::class, 'getBookingPrice']);
+
+Route::post('/bookings', [BookingApiController::class, 'store']);
+
+Route::get(
+    '/bookings/{id}',
+    [BookingApiController::class, 'show']
+);
