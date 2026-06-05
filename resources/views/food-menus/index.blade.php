@@ -98,7 +98,11 @@
                             @endif
                         </td>
                         <td>
-                            {{ $foodMenu->branch?->title }}
+                            @foreach($foodMenu->branches as $branch)
+                                <span class="badge bg-primary">
+                                    {{ $branch->title }}
+                                </span>
+                            @endforeach
                         </td>
                         <td>
                             {{ ucfirst($foodMenu->type) }}

@@ -20,4 +20,12 @@ class Branch extends Model
         'status',
 
     ];
+
+    public function foodMenus()
+    {
+        return $this->belongsToMany(
+            FoodMenu::class,
+            'branch_food_menu'
+        );
+    }
 }

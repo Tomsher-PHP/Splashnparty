@@ -19,17 +19,17 @@
                 height: 50px;
                 border-bottom: 1px solid #ccc;
                 padding-bottom: 20px;
-                margin-bottom: 20px;
+                margin-bottom: 30px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
             }
 
             .card-header h1 {
-                /* margin: 0;
-                width: 50%;
+                margin: 0;
+                /* width: 50%; */
                 float: right;
-                text-align: right; */
+                text-align: right;
             }
 
             .invoice-info {
@@ -114,7 +114,16 @@
     <body>
         <div class="card">
             <div class="card-header">
-                <h1 class="mb-0">
+                @php
+                    $logoPath = $generalSettings?->logo
+                        ? storage_path('app/public/' . $generalSettings->logo)
+                        : public_path('assets/images/logo.png');
+                @endphp
+
+                @if(file_exists($logoPath))
+                    <img src="{{ $logoPath }}" style="max-height:80px;">
+                @endif
+                <h1>
                     Invoice - {{ $booking->booking_reference }}
                 </h1>
             </div>

@@ -80,20 +80,14 @@ class BookingController extends Controller
 
         set_time_limit(300);
 
-        // $upload = Upload::find(get_setting('default_invoice_logo'));
-
-        // $imagePath = $upload && $upload->file_name
-        //     ? public_path('storage/' . $upload->file_name)
-        //     : null;
 
         $pdf = Pdf::loadView('bookings.invoice', [
-                    'booking' => $booking,
-                    'font_family' => $font_family,
-                    'direction' => $direction,
-                    'text_align' => $text_align,
-                    'not_text_align' => $not_text_align,
-                    // 'imagePath' => $imagePath
-                ]);
+            'booking' => $booking,
+            'font_family' => $font_family,
+            'direction' => $direction,
+            'text_align' => $text_align,
+            'not_text_align' => $not_text_align,
+        ]);
         
         return $pdf->download('Invoice-' . $booking->booking_reference . '.pdf');
     }

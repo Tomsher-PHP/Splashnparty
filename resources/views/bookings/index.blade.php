@@ -71,17 +71,26 @@
                         <td>{{ ucfirst($booking->status) }}</td>
 
                         <td>
+                            <div class="d-flex justify-content-end align-items-center gap-2">
+                                @can('view_bookings')
+                                <a href="{{ route('bookings.show',$booking->id) }}"
+                                class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
+                                    <iconify-icon icon="mdi:eye-outline"
+                                            class="menu-icon">
+                                        </iconify-icon>
+                                </a>
+                                @endcan
 
-                            @can('view_bookings')
-                            <a href="{{ route('bookings.show',$booking->id) }}"
-                            class="bg-info-focus text-info-600 bg-hover-info-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
-                                <iconify-icon icon="mdi:eye-outline"
-                                        class="menu-icon">
-                                    </iconify-icon>
-                            </a>
-                            @endcan
+                                @can('generate_invoice')
+                                    <a href="{{ route('bookings.invoice', $booking->id) }}"
+                                    class="bg-info-focus text-info-600 bg-hover-info-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
+                                        <iconify-icon icon="mdi:download-outline"
+                                            class="menu-icon">
+                                        </iconify-icon>
+                                    </a>
+                                @endcan
+                            </div>
                         </td>
-
                     </tr>
 
                     @endforeach

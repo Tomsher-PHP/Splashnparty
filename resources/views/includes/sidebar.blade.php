@@ -211,17 +211,17 @@
             @can('view_packages')
                 <li>
                     <a href="{{ route('packages.index') }}">
-                        <i class="ri-ticket-2-line text-xl me-14 d-flex w-auto"></i>
+                        <i class="ri-gift-line text-xl me-14 d-flex w-auto"></i>
                         <span>Packages</span>
                     </a>
                 </li>
             @endcan
 
             @if(auth()->user()->can('view_bookings'))
-                <li class="nav-item">
-                    <a href="{{ route('bookings.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-calendar-check"></i>
-                        <p>Bookings</p>
+                <li>
+                    <a href="{{ route('bookings.index') }}">
+                        <i class="ri-calendar-check-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Bookings</span>
                     </a>
                 </li>
             @endif
