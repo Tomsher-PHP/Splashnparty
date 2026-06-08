@@ -229,7 +229,7 @@
                 </small>
             </div>
             <div>
-                {{ $galleries->links() }}
+                {{ $galleries->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

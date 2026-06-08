@@ -90,20 +90,19 @@
                     Answer
                 </label>
 
-                <div class="faq-answer-block border rounded-3">
+                <div class="quill-editor-wrapper">
                     {{-- QUILL EDITOR --}}
                     <div class="quill-editor"
-                        data-input="answer_{{ $index }}"
-                        style="height: 220px;">
+                        data-input="answer_{{ $index }}">
                         {!! $item['answer'] ?? '' !!}
                     </div>
-
-                    {{-- HIDDEN TEXTAREA --}}
-                    <textarea
-                        name="faqs[{{ $index }}][answer]"
-                        id="answer_{{ $index }}"
-                        class="d-none">{{ $item['answer'] ?? '' }}</textarea>
                 </div>
+
+                {{-- HIDDEN TEXTAREA --}}
+                <textarea
+                    name="faqs[{{ $index }}][answer]"
+                    id="answer_{{ $index }}"
+                    class="d-none">{{ $item['answer'] ?? '' }}</textarea>
             </div>
             <div class="col-md-12 d-flex justify-content-end">
                 <button type="button"
@@ -154,16 +153,15 @@
                 </div>
                 <div class="col-md-12">
                     <label class="form-label fw-semibold">Answer</label>
-                    <div class="faq-answer-block border rounded-3">
+                    <div class="quill-editor-wrapper">
                         <div class="quill-editor"
-                            data-input="answer_${faqIndex}"
-                            style="height: 220px;">
+                            data-input="answer_${faqIndex}">
                         </div>
-                        <textarea
-                            name="faqs[${faqIndex}][answer]"
-                            id="answer_${faqIndex}"
-                            class="d-none"></textarea>
                     </div>
+                    <textarea
+                        name="faqs[${faqIndex}][answer]"
+                        id="answer_${faqIndex}"
+                        class="d-none"></textarea>
                 </div>
                 <div class="col-md-12 d-flex justify-content-end">
                     <button type="button"

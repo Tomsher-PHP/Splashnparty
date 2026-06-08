@@ -236,7 +236,7 @@
         </div>
 
         <div class="mt-3">
-            {{ $generalAccesses->links() }}
+            {{ $generalAccesses->links('pagination::bootstrap-4') }}
         </div>
 
     </div>

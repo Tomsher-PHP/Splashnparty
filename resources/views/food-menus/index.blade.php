@@ -164,7 +164,7 @@
             </table>
         </div>
         <div class="mt-3">
-            {{ $foodMenus->links() }}
+            {{ $foodMenus->links('pagination::bootstrap-4') }}
         </div>
     </div>
 
@@ -176,7 +176,7 @@
                 </small>
             </div>
             <div>
-                {{ $foodMenus->links() }}
+                {{ $foodMenus->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

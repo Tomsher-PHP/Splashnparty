@@ -51,6 +51,7 @@
             <table class="table bordered-table mb-0">
                 <thead class="bg-light">
                     <tr>
+                        <th>#</th>
                         <th>Title</th>
                         <th>Publish Date</th>
                         <th>Status</th>
@@ -65,6 +66,7 @@
 
                     @foreach($newsUpdates as $item)
                         <tr>
+                            <td>{{ $loop->iteration + $newsUpdates->firstItem() - 1 }}</td>
                             <td>{{ $item->title }}</td>
                             <td>{{ $item->publish_date }}</td>
                             <td>
@@ -125,7 +127,7 @@
                 </small>
             </div>
             <div>
-                {{ $newsUpdates->links() }}
+                {{ $newsUpdates->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

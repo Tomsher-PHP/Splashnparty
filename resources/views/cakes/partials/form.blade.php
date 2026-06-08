@@ -172,10 +172,11 @@
             Description
         </label>
 
-        <div class="quill-editor"
-            data-input="description_editor"
-            style="height:250px;">
-            {!! old('description', $isEdit ? $cake->description : '') !!}
+        <div class="quill-editor-wrapper">
+            <div class="quill-editor"
+                data-input="description_editor">
+                {!! old('description', $isEdit ? $cake->description : '') !!}
+            </div>
         </div>
         <textarea name="description"
             id="description_editor"

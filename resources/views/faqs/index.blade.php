@@ -206,7 +206,7 @@
                 </small>
             </div>
             <div>
-                {{ $faqs->links() }}
+                {{ $faqs->links('pagination::bootstrap-4') }}
             </div>
         </div>
 

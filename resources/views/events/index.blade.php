@@ -157,7 +157,7 @@
                 </small>
             </div>
             <div>
-                {{ $events->links() }}
+                {{ $events->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

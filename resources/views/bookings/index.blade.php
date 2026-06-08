@@ -106,7 +106,7 @@
                 </small>
             </div>
             <div>
-                {{ $bookings->links() }}
+                {{ $bookings->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

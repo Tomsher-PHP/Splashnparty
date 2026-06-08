@@ -198,7 +198,7 @@
                 </small>
             </div>
             <div>
-                {{ $menus->links() }}
+                {{ $menus->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

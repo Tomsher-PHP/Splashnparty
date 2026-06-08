@@ -147,7 +147,7 @@
                 </small>
             </div>
             <div>
-                {{ $decorations->links() }}
+                {{ $decorations->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>
