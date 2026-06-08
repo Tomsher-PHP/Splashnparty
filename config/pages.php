@@ -1848,6 +1848,88 @@ return [
                 ]
             ]
         ]
+    ],
+    'news-updates' => [
+        'title' => 'News & Updates',
+        'sections' => [
+            [
+                'title' => 'Header Banner',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'News & Updates Heading & Description',
+                'fields' => [
+                    [
+                        'name' => 'heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'news-updates-details' => [
+        'title' => 'News & Updates Details',
+        'sections' => [
+            [
+                'title' => 'Header Banner',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Details Section',
+                'fields' => [
+                    [
+                        'name' => 'related_content_title',
+                        'label' => 'Related Content Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter related content title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ]
+        ]
     ]
 ];
 

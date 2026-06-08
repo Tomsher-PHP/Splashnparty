@@ -18,10 +18,9 @@ class PageController extends Controller
         $this->authorizePagePermission('view_pages');
 
         $configPages = config('pages', []);
-        $pages = [];
 
         foreach ($configPages as $slug => $schema) {
-            $pages[] = Page::firstOrCreate(
+            Page::firstOrCreate(
                 ['slug' => $slug],
                 [
                     'title' => $schema['title'],
@@ -29,6 +28,8 @@ class PageController extends Controller
                 ]
             );
         }
+
+        $pages = Page::whereIn('slug', array_keys($configPages))->orderBy('title', 'asc')->get();
 
         return view('pages.index', compact('pages'));
     }
