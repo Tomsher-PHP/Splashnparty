@@ -43,5 +43,7 @@ Route::get('/food-menus',[FoodMenuApiController::class, 'foodMenus']);
 
 Route::get('/party-extras', [PartyExtrasApiController::class, 'partyExtras']);
 Route::get('/general-access', [GeneralAccessApiController::class, 'generalAccess']);
+
 Route::get('/packages', [PackageApiController::class, 'index']);
 Route::get('/packages/{id}', [PackageApiController::class, 'show']);
+Route::post('/packages/get-booking-price', [PackageApiController::class, 'getBookingPrice']);
