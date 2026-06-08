@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\VideoGalleryController;
+use App\Http\Controllers\Admin\NewsUpdateController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -128,6 +129,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             'updatePaymentStatus'
         ])->name('bookings.payment-status');
     });
+
+    Route::resource(
+        'news-updates',
+        NewsUpdateController::class
+    );
 
     
 });

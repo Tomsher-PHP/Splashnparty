@@ -225,6 +225,15 @@
                     </a>
                 </li>
             @endif
+
+            @if(auth()->user()->can('view_news_updates'))
+                <li>
+                    <a href="{{ route('news-updates.index') }}">
+                        <i class="ri-newspaper-line text-xl me-14 d-flex w-auto"></i>
+                        <span>News & Updates</span>
+                    </a>
+                </li>
+            @endif
             
             <li class="sidebar-menu-group-title">Settings</li>
             @can('view_general_settings')

@@ -51,20 +51,6 @@ class BookingController extends Controller
         );
     }
 
-    // public function invoice()
-    // {
-        
-
-    //     $pdf = Pdf::loadView(
-    //         'bookings.invoice',
-    //         compact('booking')
-    //     );
-
-    //     return $pdf->download(
-    //         'Invoice-' . $booking->booking_reference . '.pdf'
-    //     );
-    // }
-
     public function invoice(Booking $booking)
     {
         $this->authorizeBookingPermission(
