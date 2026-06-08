@@ -31,16 +31,14 @@ return new class extends Migration
                 ]);
         }
 
-        Schema::table('food_menus', function (Blueprint $table) {
+        if (Schema::hasColumn('food_menus', 'branch_id')) {
 
             try {
-                $table->dropForeign(['branch_id']);
+                DB::statement('ALTER TABLE food_menus DROP FOREIGN KEY food_menus_branch_id_foreign');
             } catch (\Exception $e) {
-                // Foreign key does not exist
+                // FK does not exist
             }
-        });
 
-        if (Schema::hasColumn('food_menus', 'branch_id')) {
             Schema::table('food_menus', function (Blueprint $table) {
                 $table->dropColumn('branch_id');
             });
