@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\NewsUpdateApiController;
 use App\Http\Controllers\Api\PackageApiController;
 use App\Http\Controllers\Api\PageApiController;
 use App\Http\Controllers\Api\PartyExtrasApiController;
+use App\Http\Controllers\Api\ContactApiController;
 use App\Http\Controllers\Api\RentalApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,11 @@ Route::get('/privacy-policy', [PageApiController::class, 'privacyPolicy']);
 Route::get('/terms-and-conditions', [PageApiController::class, 'termsAndConditions']);
 Route::get('/refund-policy', [PageApiController::class, 'refundPolicy']);
 Route::get('/faqs', [PageApiController::class, 'faqs']);
+Route::post('/contact-submit', [ContactApiController::class, 'submitContactForm']);
+Route::get('/waterpark', [PageApiController::class, 'waterpark']);
+Route::get('/footer', [PageApiController::class, 'footerSettings']);
+Route::get('/settings', [PageApiController::class, 'settings']);
+
 
 
 Route::get('/image-gallery',[GalleryApiController::class, 'imageGallery']);

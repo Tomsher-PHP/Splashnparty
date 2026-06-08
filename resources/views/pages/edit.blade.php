@@ -193,7 +193,15 @@
                                                     <span class="fw-semibold text-secondary-light">{{ $field['label'] }}</span>
                                                     <div class="d-flex align-items-center gap-2">
                                                         <button type="button" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2 repeater-add-btn" 
-                                                            data-repeater-name="{{ $fieldName }}">
+                                                            data-repeater-name="{{ $fieldName }}"
+                                                            @if(isset($field['rules']))
+                                                                @foreach($field['rules'] as $rule)
+                                                                    @if(is_string($rule) && str_starts_with($rule, 'max:'))
+                                                                        data-max="{{ substr($rule, 4) }}"
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
+                                                        >
                                                             <i class="ri-add-line"></i> Add Item
                                                         </button>
                                                     </div>
@@ -230,7 +238,7 @@
                                                                             if ($subType === 'image' && empty($subValue) && !empty($row[$subName . '_existing'])) {
                                                                                 $subValue = $row[$subName . '_existing'];
                                                                             }
-                                                                            $subCol = in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6';
+                                                                            $subCol = $subField['col'] ?? (in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6');
                                                                         @endphp
 
                                                                         <div class="{{ $subCol }}">
@@ -239,6 +247,9 @@
                                                                                     {{ $subField['label'] }}
                                                                                     @if (in_array('required', $subField['rules'] ?? []))
                                                                                         <span class="text-danger-main">*</span>
+                                                                                    @endif
+                                                                                    @if (isset($subField['description']))
+                                                                                        <span class="text-xxs text-neutral-400 d-block fw-normal mt-4"><i class="ri-information-line me-1 align-middle text-sm"></i>{{ $subField['description'] }}</span>
                                                                                     @endif
                                                                                 </label>
                                                                             @endif
@@ -250,7 +261,7 @@
                                                                                     placeholder="{{ $subField['placeholder'] ?? '' }}">
 
                                                                             @elseif ($subType === 'textarea')
-                                                                                <textarea name="{{ $fieldName }}[{{ $index }}][{{ $subName }}]" rows="4"
+                                                                                <textarea name="{{ $fieldName }}[{{ $index }}][{{ $subName }}]" rows="{{ $subField['rows'] ?? 4 }}"
                                                                                     class="form-control"
                                                                                     placeholder="{{ $subField['placeholder'] ?? '' }}">{{ $subValue }}</textarea>
 
@@ -293,7 +304,15 @@
                                                                                         <button type="button" class="btn btn-xs btn-primary-600 d-inline-flex align-items-center gap-1 nested-repeater-add-btn" 
                                                                                             data-parent-repeater="{{ $fieldName }}"
                                                                                             data-parent-index="{{ $index }}"
-                                                                                            data-nested-repeater="{{ $subName }}">
+                                                                                            data-nested-repeater="{{ $subName }}"
+                                                                                            @if(isset($subField['rules']))
+                                                                                                @foreach($subField['rules'] as $rule)
+                                                                                                    @if(is_string($rule) && str_starts_with($rule, 'max:'))
+                                                                                                        data-max="{{ substr($rule, 4) }}"
+                                                                                                    @endif
+                                                                                                @endforeach
+                                                                                            @endif
+                                                                                        >
                                                                                             <i class="ri-add-line"></i> Add {{ $isSingleField ? 'Point' : 'Item' }}
                                                                                         </button>
                                                                                     </div>
@@ -458,7 +477,7 @@
                                     @php
                                         $subName = $subField['name'];
                                         $subType = $subField['type'];
-                                        $subCol = in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6';
+                                        $subCol = $subField['col'] ?? (in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6');
                                     @endphp
 
                                     <div class="{{ $subCol }}">
@@ -466,9 +485,12 @@
                                             <label class="form-label text-xs fw-semibold text-secondary-light">
                                                 {{ $subField['label'] }}
                                                 @if (in_array('required', $subField['rules'] ?? []))
-                                                    <span class="text-danger-main">*</span>
-                                                @endif
-                                            </label>
+                                                     <span class="text-danger-main">*</span>
+                                                 @endif
+                                                 @if (isset($subField['description']))
+                                                     <span class="text-xxs text-neutral-400 d-block fw-normal mt-4"><i class="ri-information-line me-1 align-middle text-sm"></i>{{ $subField['description'] }}</span>
+                                                 @endif
+                                             </label>
                                         @endif
 
                                         @if ($subType === 'text')
@@ -478,9 +500,9 @@
                                                 placeholder="{{ $subField['placeholder'] ?? '' }}">
 
                                         @elseif ($subType === 'textarea')
-                                            <textarea name="{{ $field['name'] }}[__INDEX__][{{ $subName }}]" rows="4"
-                                                class="form-control"
-                                                placeholder="{{ $subField['placeholder'] ?? '' }}"></textarea>
+                                             <textarea name="{{ $field['name'] }}[__INDEX__][{{ $subName }}]" rows="{{ $subField['rows'] ?? 4 }}"
+                                                 class="form-control"
+                                                 placeholder="{{ $subField['placeholder'] ?? '' }}"></textarea>
 
                                         @elseif ($subType === 'image')
                                             <div class="settings-file-upload">
@@ -508,9 +530,17 @@
                                                 <div class="d-flex align-items-center justify-content-between mb-12 {{ $isSingleField ? '' : 'border-bottom border-neutral-200 pb-8' }}">
                                                     <span class="fw-semibold text-secondary-light text-xs">{{ $subField['label'] }}</span>
                                                     <button type="button" class="btn btn-xs btn-primary-600 d-inline-flex align-items-center gap-1 nested-repeater-add-btn" 
-                                                        data-parent-repeater="{{ $field['name'] }}"
-                                                        data-parent-index="__INDEX__"
-                                                        data-nested-repeater="{{ $subName }}">
+                                                         data-parent-repeater="{{ $field['name'] }}"
+                                                         data-parent-index="__INDEX__"
+                                                         data-nested-repeater="{{ $subName }}"
+                                                         @if(isset($subField['rules']))
+                                                             @foreach($subField['rules'] as $rule)
+                                                                 @if(is_string($rule) && str_starts_with($rule, 'max:'))
+                                                                     data-max="{{ substr($rule, 4) }}"
+                                                                 @endif
+                                                             @endforeach
+                                                         @endif
+                                                     >
                                                         <i class="ri-add-line"></i> Add {{ $isSingleField ? 'Point' : 'Item' }}
                                                     </button>
                                                 </div>
@@ -725,9 +755,22 @@
             });
 
             // Handle Repeater Item Adding
-            $('.repeater-add-btn').on('click', function() {
+            $('.repeater-add-btn').on('click', function(e) {
                 const repeaterName = $(this).data('repeater-name');
                 const container = $('#container-' + repeaterName);
+                const max = $(this).data('max');
+
+                if (max && container.find('.repeater-row').length >= parseInt(max)) {
+                    e.preventDefault();
+                    const label = $(this).closest('.repeater-widget').find('.fw-semibold').first().text() || 'items';
+                    if (window.appToast) {
+                        window.appToast('error', 'You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    } else {
+                        alert('You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    }
+                    return false;
+                }
+
                 const template = $('#template-' + repeaterName).html();
 
                 // Get new index
@@ -823,13 +866,25 @@
             }
 
             // Handle Nested Repeater Item Adding
-            $(document).on('click', '.nested-repeater-add-btn', function() {
+            $(document).on('click', '.nested-repeater-add-btn', function(e) {
                 const btn = $(this);
                 const parentRepeater = btn.data('parent-repeater');
                 const parentIndex = btn.closest('.repeater-row').attr('data-index') || btn.data('parent-index');
                 const nestedRepeater = btn.data('nested-repeater');
+                const max = btn.data('max');
                 
                 const container = $('#nested-container-' + parentRepeater + '-' + parentIndex + '-' + nestedRepeater);
+                if (max && container.find('.nested-repeater-row').length >= parseInt(max)) {
+                    e.preventDefault();
+                    const label = btn.siblings('span').text() || 'items';
+                    if (window.appToast) {
+                        window.appToast('error', 'You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    } else {
+                        alert('You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    }
+                    return false;
+                }
+
                 const template = $('#nested-template-' + parentRepeater + '-' + nestedRepeater).html();
 
                 if (!container.length || !template) return;
@@ -1020,6 +1075,39 @@
 
 @section('style')
     <style>
+        /* Compact FAQ Repeater Overrides */
+        #container-faqs .repeater-row {
+            margin-bottom: 12px !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            background: var(--neutral-50) !important;
+            border: 1px solid var(--neutral-200) !important;
+        }
+
+        #container-faqs .repeater-row .card-header {
+            padding: 8px 16px !important;
+            background-color: var(--neutral-100) !important;
+            border-bottom: 1px solid var(--neutral-200) !important;
+        }
+
+        #container-faqs .repeater-row .card-body {
+            padding: 12px 16px !important;
+        }
+
+        #container-faqs .repeater-row .form-control {
+            border-radius: 6px !important;
+            border: 1px solid var(--input-form-light) !important;
+        }
+
+        #container-faqs .repeater-row label {
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            margin-bottom: 4px !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary-light) !important;
+        }
+
         textarea.form-control,
         textarea.form-control-sm {
             height: auto !important;

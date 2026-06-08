@@ -15,7 +15,7 @@
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
             <li>
-                <a href="{{ route('dashboard') }}" class="active-page">
+                <a href="{{ route('dashboard') }}" class="">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
                 </a>
@@ -190,15 +190,7 @@
                 </li>
             @endcan
 
-            @can('view_party_extras')
-                <li>
-                    <a href="{{ route('party-extras.index') }}">
-                        <i class="ri-magic-line text-xl me-14 d-flex w-auto"></i>
-                        <span>Party Extras</span>
-                    </a>
-                </li>
-            @endcan
-
+         
             @can('view_general_access')
                 <li>
                     <a href="{{ route('general-access.index') }}">
@@ -234,6 +226,23 @@
                     </a>
                 </li>
             @endif
+            @can('view_contact_enquiries')
+                <li>
+                    <a href="{{ route('contact-enquiries.index') }}" class="{{ request()->routeIs('contact-enquiries.*') ? 'active-page' : '' }}">
+                        <i class="ri-mail-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Contact Enquiries</span>
+                    </a>
+                </li>
+            @endcan
+
+            @can('view_attractions')
+                <li>
+                    <a href="{{ route('attractions.index') }}" class="{{ request()->routeIs('attractions.*') ? 'active-page' : '' }}">
+                        <i class="ri-water-flash-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Waterpark Attractions & Adventures</span>
+                    </a>
+                </li>
+            @endcan
             
             <li class="sidebar-menu-group-title">Settings</li>
             @can('view_general_settings')
@@ -253,8 +262,22 @@
                 </li>
             @endcan
             @can('view_pages')
+                @php
+                    $footerPage = \App\Models\Page::where('slug', 'footer')->first();
+                @endphp
+                @if($footerPage)
+                    <li>
+                        <a href="{{ route('pages.edit', $footerPage->id) }}" class="{{ request()->is("admin/pages/{$footerPage->id}/edit") ? 'active-page' : '' }}">
+                            <i class="ri-layout-bottom-line text-xl me-14 d-flex w-auto"></i>
+                            <span>Footer Menu</span>
+                        </a>
+                    </li>
+                @endif
+            @endcan
+            @can('view_pages')
+
                 <li>
-                    <a href="{{ route('pages.index') }}" class="{{ request()->routeIs('pages.*') ? 'active-page' : '' }}">
+                    <a href="{{ route('pages.index') }}" class="{{ request()->routeIs('pages.*') && !($footerPage && request()->is("admin/pages/{$footerPage->id}*")) ? 'active-page' : '' }}">
                         <i class="ri-pages-line text-xl me-14 d-flex w-auto"></i>
                         <span>Page Management</span>
                     </a>
