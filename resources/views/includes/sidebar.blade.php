@@ -235,6 +235,15 @@
                 </li>
             @endcan
 
+            @can('view_newsletter_subscriptions')
+                <li>
+                    <a href="{{ route('newsletter-subscriptions.index') }}" class="{{ request()->routeIs('newsletter-subscriptions.*') ? 'active-page' : '' }}">
+                        <i class="ri-mail-open-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Newsletter Subscribers</span>
+                    </a>
+                </li>
+            @endcan
+
             @can('view_attractions')
                 <li>
                     <a href="{{ route('attractions.index') }}" class="{{ request()->routeIs('attractions.*') ? 'active-page' : '' }}">
