@@ -44,8 +44,8 @@ class PageController extends Controller
             abort(404, 'Page schema configuration not found.');
         }
 
-        // Dynamically append the common SEO section to all pages except footer settings
-        if ($page->slug !== 'footer') {
+        // Dynamically append the common SEO section to all pages except footer settings and news-updates-details
+        if ($page->slug !== 'footer' && $page->slug !== 'news-updates-details') {
             $schema['sections'][] = $this->getSeoSectionSchema();
         }
 
@@ -80,8 +80,8 @@ class PageController extends Controller
             abort(404, 'Page schema configuration not found.');
         }
 
-        // Dynamically append the common SEO section to all pages except footer settings
-        if ($page->slug !== 'footer') {
+        // Dynamically append the common SEO section to all pages except footer settings and news-updates-details
+        if ($page->slug !== 'footer' && $page->slug !== 'news-updates-details') {
             $schema['sections'][] = $this->getSeoSectionSchema();
         }
 
