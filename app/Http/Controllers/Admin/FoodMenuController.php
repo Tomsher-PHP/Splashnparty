@@ -73,21 +73,14 @@ class FoodMenuController extends Controller
 
         $request->validate([
             'title' => 'required|string|max:255',
-
-            'branch_id' => 'required|exists:branches,id',
-
+            'branch_ids' => 'required|array',
+            'branch_ids.*' => 'exists:branches,id',
             'type' => 'required|in:adult,kid',
-
             'food_type' => 'required|in:veg,non-veg',
-
             'price' => 'nullable|string|max:255',
-
             'description' => 'nullable|string',
-
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
             'sort_order' => 'nullable|integer',
-
             'status' => 'required|boolean',
         ]);
 
@@ -103,25 +96,18 @@ class FoodMenuController extends Controller
             $image = 'storage/' . $path;
         }
 
-        FoodMenu::create([
+        $foodMenu = FoodMenu::create([
             'title' => $request->title,
-
-            'branch_id' => $request->branch_id,
-
+            'branch_ids' => $request->branch_ids,
             'type' => $request->type,
-
             'food_type' => $request->food_type,
-
             'price' => $request->price,
-
             'description' => $request->description,
-
             'image' => $image,
-
             'sort_order' => $request->sort_order ?? 0,
-
             'status' => $request->status,
         ]);
+        
 
         return redirect()
             ->route('food-menus.index')
@@ -203,20 +189,13 @@ class FoodMenuController extends Controller
 
         $foodMenu->update([
             'title' => $request->title,
-            'branch_id' => $request->branch_id,
-
+            'branch_ids' => $request->branch_ids,
             'type' => $request->type,
-
             'food_type' => $request->food_type,
-
             'price' => $request->price,
-
             'description' => $request->description,
-
             'image' => $image,
-
             'sort_order' => $request->sort_order ?? 0,
-
             'status' => $request->status,
         ]);
 

@@ -21,6 +21,14 @@ class Branch extends Model
 
     ];
 
+    public function foodMenus()
+    {
+        return $this->belongsToMany(
+            FoodMenu::class,
+            'branch_food_menu'
+        );
+    }
+    
     /**
      * Get the attractions/adventures that belong to this branch.
      *

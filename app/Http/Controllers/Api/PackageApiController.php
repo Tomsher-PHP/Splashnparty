@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Package;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 
 class PackageApiController extends Controller
@@ -107,45 +108,56 @@ class PackageApiController extends Controller
     public function getBookingPrice(Request $request)
     {
         $request->validate([
-            'package_title' => 'required|string',
+            'package_id' => 'required|integer',
             'food_type' => 'required|in:with_food,without_food',
             'adult_count' => 'required|integer|min:0',
             'child_count' => 'required|integer|min:0',
             'booking_date' => 'required|date',
         ]);
 
-        $package = Package::where('title', $request->package_title)
+        try {
+
+            $result = self::calculateBookingPrice($request->all());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Booking price calculated successfully',
+                'data' => $result,
+            ]);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
+    }
+
+    public static function calculateBookingPrice(array $data)
+    {
+        $package = Package::where('id', $data['package_id'])
             ->where('status', 1)
             ->first();
 
         if (!$package) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Package not found'
-            ], 404);
+            throw new \Exception('Package not found');
         }
 
-        $bookingDate = \Carbon\Carbon::parse($request->booking_date);
+        $bookingDate = \Carbon\Carbon::parse($data['booking_date']);
 
-        // Date validation
         if (
             $package->start_date &&
             $bookingDate->lt($package->start_date)
         ) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Booking date is before package start date'
-            ], 422);
+            throw new \Exception('Booking date is before package start date');
         }
 
         if (
             $package->end_date &&
             $bookingDate->gt($package->end_date)
         ) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Booking date is after package end date'
-            ], 422);
+            throw new \Exception('Booking date is after package end date');
         }
 
         $dayName = $bookingDate->format('l');
@@ -154,19 +166,12 @@ class PackageApiController extends Controller
             !empty($package->days) &&
             !in_array($dayName, $package->days)
         ) {
-            return response()->json([
-                'success' => false,
-                'message' => "Package is not available on {$dayName}"
-            ], 422);
+            throw new \Exception("Package is not available on {$dayName}");
         }
 
-        $isWeekend = in_array(
-            $dayName,
-            ['Friday', 'Saturday']
-        );
+        $isWeekend = in_array($dayName, ['Friday', 'Saturday']);
 
-        // Select prices
-        if ($request->food_type === 'with_food') {
+        if ($data['food_type'] === 'with_food') {
 
             $childPrice = $isWeekend
                 ? $package->child_weekend_price_with_food
@@ -187,16 +192,13 @@ class PackageApiController extends Controller
                 : $package->adult_weekday_price_without_food;
         }
 
-        $adultCount = (int) $request->adult_count;
-        $childCount = (int) $request->child_count;
+        $adultCount = (int) $data['adult_count'];
+        $childCount = (int) $data['child_count'];
 
         $freeAdults = 0;
 
         if ($package->free_adult_with_child) {
-            $freeAdults = min(
-                $adultCount,
-                $childCount
-            );
+            $freeAdults = min($adultCount, $childCount);
         }
 
         $chargeableAdults = $adultCount - $freeAdults;
@@ -204,26 +206,42 @@ class PackageApiController extends Controller
         $childTotal = $childCount * $childPrice;
         $adultTotal = $chargeableAdults * $adultPrice;
 
-        $grandTotal = $childTotal + $adultTotal;
+        $subtotal = $childTotal + $adultTotal;
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Booking price calculated successfully',
-            'data' => [
-                'package_title' => $package->title,
-                'food_type' => $request->food_type,
-                'booking_date' => $request->booking_date,
-                'day' => $dayName,
-                'adult_count' => $adultCount,
-                'child_count' => $childCount,
-                'free_adults' => $freeAdults,
-                'chargeable_adults' => $chargeableAdults,
-                'adult_price' => $adultPrice,
-                'child_price' => $childPrice,
-                'adult_total' => $adultTotal,
-                'child_total' => $childTotal,
-                'grand_total' => $grandTotal,
-            ]
-        ]);
+
+        $vatPercentage = SiteSetting::where('group', 'vat')->where('key', 'vat_percentage')->first()->value ;
+
+        $vat = round(($subtotal * $vatPercentage) / 100, 2);
+
+        $totalAmount = $subtotal + $vat;
+
+        return [
+            'package_id' => $package->id,
+            'branch_id' => $package->branch_id,
+            'package_title' => $package->title,
+
+            'food_type' => $data['food_type'],
+            'booking_date' => $data['booking_date'],
+            'day' => $dayName,
+
+            'adult_count' => $adultCount,
+            'child_count' => $childCount,
+
+            'free_adults' => $freeAdults,
+            'chargeable_adults' => $chargeableAdults,
+
+            'adult_price' => $adultPrice,
+            'child_price' => $childPrice,
+
+            'adult_total' => $adultTotal,
+            'child_total' => $childTotal,
+
+            'subtotal' => $subtotal,
+
+            'vat_percentage' => $vatPercentage,
+            'vat' => $vat,
+
+            'total_amount' => $totalAmount,
+        ];
     }
 }

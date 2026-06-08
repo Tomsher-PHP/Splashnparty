@@ -203,12 +203,29 @@
             @can('view_packages')
                 <li>
                     <a href="{{ route('packages.index') }}">
-                        <i class="ri-ticket-2-line text-xl me-14 d-flex w-auto"></i>
+                        <i class="ri-gift-line text-xl me-14 d-flex w-auto"></i>
                         <span>Packages</span>
                     </a>
                 </li>
             @endcan
 
+            @if(auth()->user()->can('view_bookings'))
+                <li>
+                    <a href="{{ route('bookings.index') }}">
+                        <i class="ri-calendar-check-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Bookings</span>
+                    </a>
+                </li>
+            @endif
+
+            @if(auth()->user()->can('view_news_updates'))
+                <li>
+                    <a href="{{ route('news-updates.index') }}">
+                        <i class="ri-newspaper-line text-xl me-14 d-flex w-auto"></i>
+                        <span>News & Updates</span>
+                    </a>
+                </li>
+            @endif
             @can('view_contact_enquiries')
                 <li>
                     <a href="{{ route('contact-enquiries.index') }}" class="{{ request()->routeIs('contact-enquiries.*') ? 'active-page' : '' }}">

@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class FoodMenu extends Model
 {
-    protected $fillable = [
-        'title',
-        'branch_id',
+   protected $fillable = [
+        'branch_ids',
         'type',
         'food_type',
         'price',
@@ -18,8 +17,16 @@ class FoodMenu extends Model
         'status',
     ];
 
+    protected $casts = [
+        'branch_ids' => 'array',
+    ];
+
     public function branch()
     {
-        return $this->belongsTo(Branch::class);
+        return \App\Models\Branch::whereIn(
+            'id',
+            $this->branch_ids ?? []
+        )->get();
     }
+
 }
