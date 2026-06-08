@@ -27,7 +27,7 @@ class NewsletterApiController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first(),
-            ], 422);
+            ], 200);
         }
 
         $validated = $validator->validated();
