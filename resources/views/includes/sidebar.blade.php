@@ -15,7 +15,7 @@
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
             <li>
-                <a href="{{ route('dashboard') }}" class="active-page">
+                <a href="{{ route('dashboard') }}" class="">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
                 </a>
@@ -260,7 +260,7 @@
             @can('view_pages')
 
                 <li>
-                    <a href="{{ route('pages.index') }}" class="{{ request()->routeIs('pages.*') ? 'active-page' : '' }}">
+                    <a href="{{ route('pages.index') }}" class="{{ request()->routeIs('pages.*') && !($footerPage && request()->is("admin/pages/{$footerPage->id}*")) ? 'active-page' : '' }}">
                         <i class="ri-pages-line text-xl me-14 d-flex w-auto"></i>
                         <span>Page Management</span>
                     </a>

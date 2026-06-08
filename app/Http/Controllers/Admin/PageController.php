@@ -18,10 +18,9 @@ class PageController extends Controller
         $this->authorizePagePermission('view_pages');
 
         $configPages = config('pages', []);
-        $pages = [];
 
         foreach ($configPages as $slug => $schema) {
-            $pages[] = Page::firstOrCreate(
+            Page::firstOrCreate(
                 ['slug' => $slug],
                 [
                     'title' => $schema['title'],
@@ -29,6 +28,8 @@ class PageController extends Controller
                 ]
             );
         }
+
+        $pages = Page::whereIn('slug', array_keys($configPages))->orderBy('title', 'asc')->get();
 
         return view('pages.index', compact('pages'));
     }
@@ -43,8 +44,8 @@ class PageController extends Controller
             abort(404, 'Page schema configuration not found.');
         }
 
-        // Dynamically append the common SEO section to all pages except footer settings
-        if ($page->slug !== 'footer') {
+        // Dynamically append the common SEO section to all pages except footer settings and news-updates-details
+        if ($page->slug !== 'footer' && $page->slug !== 'news-updates-details') {
             $schema['sections'][] = $this->getSeoSectionSchema();
         }
 
@@ -79,8 +80,8 @@ class PageController extends Controller
             abort(404, 'Page schema configuration not found.');
         }
 
-        // Dynamically append the common SEO section to all pages except footer settings
-        if ($page->slug !== 'footer') {
+        // Dynamically append the common SEO section to all pages except footer settings and news-updates-details
+        if ($page->slug !== 'footer' && $page->slug !== 'news-updates-details') {
             $schema['sections'][] = $this->getSeoSectionSchema();
         }
 
