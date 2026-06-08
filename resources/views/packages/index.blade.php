@@ -125,8 +125,6 @@
         </div>
     </div>
 </div>
-{{ $packages->links() }}
-
 
 <script>
 

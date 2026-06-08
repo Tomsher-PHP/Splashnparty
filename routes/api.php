@@ -2,15 +2,17 @@
 
 use App\Http\Controllers\Api\BalloonDecorationApiController;
 use App\Http\Controllers\Api\BirthdayPackageApiController;
+use App\Http\Controllers\Api\BookingApiController;
 use App\Http\Controllers\Api\BranchApiController;
 use App\Http\Controllers\Api\CafeMenuApiController;
 use App\Http\Controllers\Api\CakeApiController;
 use App\Http\Controllers\Api\FoodMenuApiController;
 use App\Http\Controllers\Api\GalleryApiController;
 use App\Http\Controllers\Api\GeneralAccessApiController;
+use App\Http\Controllers\Api\NewsUpdateApiController;
 use App\Http\Controllers\Api\PackageApiController;
-use App\Http\Controllers\Api\PartyExtrasApiController;
 use App\Http\Controllers\Api\PageApiController;
+use App\Http\Controllers\Api\PartyExtrasApiController;
 use App\Http\Controllers\Api\ContactApiController;
 use App\Http\Controllers\Api\RentalApiController;
 use Illuminate\Support\Facades\Route;
@@ -47,3 +49,24 @@ Route::get('/general-access', [GeneralAccessApiController::class, 'generalAccess
 Route::get('/packages', [PackageApiController::class, 'index']);
 Route::get('/packages/{id}', [PackageApiController::class, 'show']);
 Route::post('/packages/get-booking-price', [PackageApiController::class, 'getBookingPrice']);
+
+Route::post('/bookings', [BookingApiController::class, 'store']);
+
+Route::get(
+    '/bookings/{id}',
+    [BookingApiController::class, 'show']
+);
+
+// News and Updates 
+
+// Listing
+Route::get(
+    '/news-updates',
+    [NewsUpdateApiController::class, 'index']
+);
+
+// Details 
+Route::get(
+    '/news-updates/{slug}',
+    [NewsUpdateApiController::class, 'show']
+);

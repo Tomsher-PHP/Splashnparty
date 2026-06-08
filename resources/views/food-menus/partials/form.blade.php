@@ -34,31 +34,20 @@
             </div>
 
             <div class="col-md-6">
-
-                <label class="form-label fw-semibold">
-                    Branch
-                </label>
-
-                <select name="branch_id"
-                    class="form-select form-select-sm">
-
-                    <option value="">
-                        Select Branch
-                    </option>
+                <label class="form-label fw-semibold">Branch</label>
+                <select
+                    name="branch_ids[]"
+                    class="form-control select2"
+                    multiple>
 
                     @foreach($branches as $branch)
-
-                    <option value="{{ $branch->id }}"
-                        {{ old('branch_id', $foodMenu->branch_id ?? '') == $branch->id ? 'selected' : '' }}>
-
-                        {{ $branch->title }}
-
-                    </option>
-
+                        <option value="{{ $branch->id }}"
+                            {{ isset($foodMenu) && in_array($branch->id, $foodMenu->branch_ids ?? []) ? 'selected' : '' }}>
+                            {{ $branch->title }}
+                        </option>
                     @endforeach
 
                 </select>
-
             </div>
 
             <div class="col-md-3">
