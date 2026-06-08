@@ -210,13 +210,14 @@
                 placeholder: 'Write answer here...',
                 modules: {
                     toolbar: [
-                        [{ font: [] }],
-                        [{ size: ['small', false, 'large', 'huge'] }],
+                        [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
                         ['bold', 'italic', 'underline', 'strike'],
                         [{ color: [] }, { background: [] }],
-                        [{ align: [] }],
+                        
+                        ['blockquote', 'code-block'],
                         [{ list: 'ordered' }, { list: 'bullet' }],
-                        ['blockquote', 'link', 'image'],
+                        [{ indent: '-1' }, { indent: '+1' }],
+                        [{ align: [] }],
                         ['clean']
                     ]
                 }
