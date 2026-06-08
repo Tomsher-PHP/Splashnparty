@@ -43,8 +43,10 @@ class PageController extends Controller
             abort(404, 'Page schema configuration not found.');
         }
 
-        // Dynamically append the common SEO section to all pages
-        $schema['sections'][] = $this->getSeoSectionSchema();
+        // Dynamically append the common SEO section to all pages except footer settings
+        if ($page->slug !== 'footer') {
+            $schema['sections'][] = $this->getSeoSectionSchema();
+        }
 
         // Dynamically populate options if needed
         foreach ($schema['sections'] as &$section) {
@@ -77,8 +79,10 @@ class PageController extends Controller
             abort(404, 'Page schema configuration not found.');
         }
 
-        // Dynamically append the common SEO section to all pages
-        $schema['sections'][] = $this->getSeoSectionSchema();
+        // Dynamically append the common SEO section to all pages except footer settings
+        if ($page->slug !== 'footer') {
+            $schema['sections'][] = $this->getSeoSectionSchema();
+        }
 
         // Build validation rules dynamically
         $rules = [];
@@ -89,7 +93,7 @@ class PageController extends Controller
                 $fieldName = $field['name'];
 
                 if ($field['type'] === 'repeater') {
-                    $rules[$fieldName] = ['nullable', 'array'];
+                    $rules[$fieldName] = $field['rules'] ?? ['nullable', 'array'];
                     
                     foreach ($field['fields'] as $subField) {
                         $subName = $subField['name'];
@@ -99,7 +103,7 @@ class PageController extends Controller
                             // If it's an image, a new upload is validated, otherwise it can be empty (meaning keep existing)
                             $rules["{$fieldName}.*.{$subName}"] = ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'];
                         } elseif ($subField['type'] === 'repeater') {
-                            $rules["{$fieldName}.*.{$subName}"] = ['nullable', 'array'];
+                            $rules["{$fieldName}.*.{$subName}"] = $subField['rules'] ?? ['nullable', 'array'];
                             foreach ($subField['fields'] as $nestedSubField) {
                                 $nestedSubName = $nestedSubField['name'];
                                 $nestedSubRules = $nestedSubField['rules'] ?? [];

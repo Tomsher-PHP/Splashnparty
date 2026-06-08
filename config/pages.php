@@ -1832,7 +1832,8 @@ return [
                                 'label' => 'SVG Code',
                                 'type' => 'textarea',
                                 'placeholder' => 'Paste raw SVG code here',
-                                'rules' => ['required', 'string'],
+                                'description' => 'For best display results, choose/adjust the SVG width and height to 22 (e.g. width="22" height="22").',
+                                'rules' => ['nullable', 'string'],
                                 'rows' => 4,
                             ],
                             [

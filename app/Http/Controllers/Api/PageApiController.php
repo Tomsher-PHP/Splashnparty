@@ -8,6 +8,8 @@ use App\Models\ClientLogo;
 use App\Models\Testimonial;
 use App\Models\Branch;
 use App\Models\Faq;
+use App\Models\HeaderMenu;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 
 class PageApiController extends Controller
@@ -273,4 +275,76 @@ class PageApiController extends Controller
         ]);
     }
 
+    public function footerSettings()
+    {
+        $page = Page::getPageContent('footer');
+
+        if (!$page) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Footer settings not found.'
+            ], 200);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Footer settings retrieved successfully.',
+            'page_content' => $page
+        ]);
+    }
+
+    public function settings()
+    {
+        // 1. Fetch Header Menus
+        $headerMenus = HeaderMenu::whereNull('parent_id')
+            ->where('status', true)
+            ->with(['children' => function($query) {
+                $query->where('status', true)->orderBy('sort_order');
+            }])
+            ->orderBy('sort_order')
+            ->get()
+            ->map(function ($menu) {
+                return [
+                    'id' => $menu->id,
+                    'title' => $menu->title,
+                    'url' => $menu->url,
+                    'icon' => $menu->icon ? asset('storage/' . $menu->icon) : null,
+                    'children' => $menu->children->map(function ($child) {
+                        return [
+                            'id' => $child->id,
+                            'title' => $child->title,
+                            'url' => $child->url,
+                            'icon' => $child->icon ? asset('storage/' . $child->icon) : null,
+                        ];
+                    })
+                ];
+            });
+
+        // 2. Fetch Footer Settings
+        $footerSettings = Page::getPageContent('footer') ?: [];
+
+        // 3. Fetch General Settings
+        $siteSettings = SiteSetting::pluck('value', 'key')->all();
+
+        // Format file inputs to absolute URLs
+        if (!empty($siteSettings['logo'])) {
+            $siteSettings['logo'] = asset('storage/' . $siteSettings['logo']);
+        }
+        if (!empty($siteSettings['favicon'])) {
+            $siteSettings['favicon'] = asset('storage/' . $siteSettings['favicon']);
+        }
+
+        unset($siteSettings['enquiry_email']);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Settings retrieved successfully.',
+            'data' => [
+                'header_menus' => $headerMenus,
+                'footer_settings' => $footerSettings,
+                'general_settings' => $siteSettings
+            ]
+        ]);
+    }
 }
+

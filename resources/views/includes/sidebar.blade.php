@@ -245,6 +245,20 @@
                 </li>
             @endcan
             @can('view_pages')
+                @php
+                    $footerPage = \App\Models\Page::where('slug', 'footer')->first();
+                @endphp
+                @if($footerPage)
+                    <li>
+                        <a href="{{ route('pages.edit', $footerPage->id) }}" class="{{ request()->is("admin/pages/{$footerPage->id}/edit") ? 'active-page' : '' }}">
+                            <i class="ri-layout-bottom-line text-xl me-14 d-flex w-auto"></i>
+                            <span>Footer Menu</span>
+                        </a>
+                    </li>
+                @endif
+            @endcan
+            @can('view_pages')
+
                 <li>
                     <a href="{{ route('pages.index') }}" class="{{ request()->routeIs('pages.*') ? 'active-page' : '' }}">
                         <i class="ri-pages-line text-xl me-14 d-flex w-auto"></i>

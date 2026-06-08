@@ -193,7 +193,15 @@
                                                     <span class="fw-semibold text-secondary-light">{{ $field['label'] }}</span>
                                                     <div class="d-flex align-items-center gap-2">
                                                         <button type="button" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2 repeater-add-btn" 
-                                                            data-repeater-name="{{ $fieldName }}">
+                                                            data-repeater-name="{{ $fieldName }}"
+                                                            @if(isset($field['rules']))
+                                                                @foreach($field['rules'] as $rule)
+                                                                    @if(is_string($rule) && str_starts_with($rule, 'max:'))
+                                                                        data-max="{{ substr($rule, 4) }}"
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
+                                                        >
                                                             <i class="ri-add-line"></i> Add Item
                                                         </button>
                                                     </div>
@@ -239,6 +247,9 @@
                                                                                     {{ $subField['label'] }}
                                                                                     @if (in_array('required', $subField['rules'] ?? []))
                                                                                         <span class="text-danger-main">*</span>
+                                                                                    @endif
+                                                                                    @if (isset($subField['description']))
+                                                                                        <span class="text-xxs text-neutral-400 d-block fw-normal mt-4"><i class="ri-information-line me-1 align-middle text-sm"></i>{{ $subField['description'] }}</span>
                                                                                     @endif
                                                                                 </label>
                                                                             @endif
@@ -293,7 +304,15 @@
                                                                                         <button type="button" class="btn btn-xs btn-primary-600 d-inline-flex align-items-center gap-1 nested-repeater-add-btn" 
                                                                                             data-parent-repeater="{{ $fieldName }}"
                                                                                             data-parent-index="{{ $index }}"
-                                                                                            data-nested-repeater="{{ $subName }}">
+                                                                                            data-nested-repeater="{{ $subName }}"
+                                                                                            @if(isset($subField['rules']))
+                                                                                                @foreach($subField['rules'] as $rule)
+                                                                                                    @if(is_string($rule) && str_starts_with($rule, 'max:'))
+                                                                                                        data-max="{{ substr($rule, 4) }}"
+                                                                                                    @endif
+                                                                                                @endforeach
+                                                                                            @endif
+                                                                                        >
                                                                                             <i class="ri-add-line"></i> Add {{ $isSingleField ? 'Point' : 'Item' }}
                                                                                         </button>
                                                                                     </div>
@@ -466,9 +485,12 @@
                                             <label class="form-label text-xs fw-semibold text-secondary-light">
                                                 {{ $subField['label'] }}
                                                 @if (in_array('required', $subField['rules'] ?? []))
-                                                    <span class="text-danger-main">*</span>
-                                                @endif
-                                            </label>
+                                                     <span class="text-danger-main">*</span>
+                                                 @endif
+                                                 @if (isset($subField['description']))
+                                                     <span class="text-xxs text-neutral-400 d-block fw-normal mt-4"><i class="ri-information-line me-1 align-middle text-sm"></i>{{ $subField['description'] }}</span>
+                                                 @endif
+                                             </label>
                                         @endif
 
                                         @if ($subType === 'text')
@@ -508,9 +530,17 @@
                                                 <div class="d-flex align-items-center justify-content-between mb-12 {{ $isSingleField ? '' : 'border-bottom border-neutral-200 pb-8' }}">
                                                     <span class="fw-semibold text-secondary-light text-xs">{{ $subField['label'] }}</span>
                                                     <button type="button" class="btn btn-xs btn-primary-600 d-inline-flex align-items-center gap-1 nested-repeater-add-btn" 
-                                                        data-parent-repeater="{{ $field['name'] }}"
-                                                        data-parent-index="__INDEX__"
-                                                        data-nested-repeater="{{ $subName }}">
+                                                         data-parent-repeater="{{ $field['name'] }}"
+                                                         data-parent-index="__INDEX__"
+                                                         data-nested-repeater="{{ $subName }}"
+                                                         @if(isset($subField['rules']))
+                                                             @foreach($subField['rules'] as $rule)
+                                                                 @if(is_string($rule) && str_starts_with($rule, 'max:'))
+                                                                     data-max="{{ substr($rule, 4) }}"
+                                                                 @endif
+                                                             @endforeach
+                                                         @endif
+                                                     >
                                                         <i class="ri-add-line"></i> Add {{ $isSingleField ? 'Point' : 'Item' }}
                                                     </button>
                                                 </div>
@@ -725,9 +755,22 @@
             });
 
             // Handle Repeater Item Adding
-            $('.repeater-add-btn').on('click', function() {
+            $('.repeater-add-btn').on('click', function(e) {
                 const repeaterName = $(this).data('repeater-name');
                 const container = $('#container-' + repeaterName);
+                const max = $(this).data('max');
+
+                if (max && container.find('.repeater-row').length >= parseInt(max)) {
+                    e.preventDefault();
+                    const label = $(this).closest('.repeater-widget').find('.fw-semibold').first().text() || 'items';
+                    if (window.appToast) {
+                        window.appToast('error', 'You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    } else {
+                        alert('You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    }
+                    return false;
+                }
+
                 const template = $('#template-' + repeaterName).html();
 
                 // Get new index
@@ -823,13 +866,25 @@
             }
 
             // Handle Nested Repeater Item Adding
-            $(document).on('click', '.nested-repeater-add-btn', function() {
+            $(document).on('click', '.nested-repeater-add-btn', function(e) {
                 const btn = $(this);
                 const parentRepeater = btn.data('parent-repeater');
                 const parentIndex = btn.closest('.repeater-row').attr('data-index') || btn.data('parent-index');
                 const nestedRepeater = btn.data('nested-repeater');
+                const max = btn.data('max');
                 
                 const container = $('#nested-container-' + parentRepeater + '-' + parentIndex + '-' + nestedRepeater);
+                if (max && container.find('.nested-repeater-row').length >= parseInt(max)) {
+                    e.preventDefault();
+                    const label = btn.siblings('span').text() || 'items';
+                    if (window.appToast) {
+                        window.appToast('error', 'You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    } else {
+                        alert('You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    }
+                    return false;
+                }
+
                 const template = $('#nested-template-' + parentRepeater + '-' + nestedRepeater).html();
 
                 if (!container.length || !template) return;
