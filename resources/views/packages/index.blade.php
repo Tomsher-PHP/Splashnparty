@@ -52,10 +52,9 @@
                         <th>#</th>
                         <th>Title</th>
                         <th>Branch</th>
-                        <th>Food Type</th>
                         <th>Status</th>
                         @if (auth()->user()?->can('edit_packages') || auth()->user()?->can('delete_packages'))
-                        <th>Action</th>
+                        <th class="text-end pe-4">Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -66,12 +65,11 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->title }}</td>
                         <td>{{ $item->branch->title ?? '' }}</td>
-                        <td>{{ $item->food_type == 'with_food' ? 'With Food' : 'Without Food' }}</td>
                         <td>
                             {{ $item->status ? 'Active' : 'Inactive' }}
                         </td>
                         @if (auth()->user()?->can('edit_packages') || auth()->user()?->can('delete_packages'))
-                        <td>
+                        <td class="text-end pe-4">
                             <div class="d-flex justify-content-end align-items-center gap-2">
                                 @can('edit_packages')
                                 <a href="{{ route('packages.edit', $item) }}"
