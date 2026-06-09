@@ -21,6 +21,35 @@
                 </a>
             </li>
 
+            @if(auth()->user()->can('view_bookings'))
+                <li>
+                    <a href="{{ route('bookings.index') }}">
+                        <i class="ri-calendar-check-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Bookings</span>
+                    </a>
+                </li>
+            @endif
+
+             @can('view_packages')
+                <li>
+                    <a href="{{ route('packages.index') }}">
+                        <i class="ri-gift-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Packages</span>
+                    </a>
+                </li>
+            @endcan
+
+
+            @can('view_general_access')
+                <li>
+                    <a href="{{ route('general-access.index') }}">
+                        <i class="ri-ticket-2-line text-xl me-14 d-flex w-auto"></i>
+                        <span>General Access</span>
+                    </a>
+                </li>
+            @endcan
+
+           
             @can('view_branches')
             <li class="nav-item">
                 <a href="{{ route('branches.index') }}"
@@ -191,33 +220,6 @@
             @endcan
 
          
-            @can('view_general_access')
-                <li>
-                    <a href="{{ route('general-access.index') }}">
-                        <i class="ri-ticket-2-line text-xl me-14 d-flex w-auto"></i>
-                        <span>General Access</span>
-                    </a>
-                </li>
-            @endcan
-
-            @can('view_packages')
-                <li>
-                    <a href="{{ route('packages.index') }}">
-                        <i class="ri-gift-line text-xl me-14 d-flex w-auto"></i>
-                        <span>Packages</span>
-                    </a>
-                </li>
-            @endcan
-
-            @if(auth()->user()->can('view_bookings'))
-                <li>
-                    <a href="{{ route('bookings.index') }}">
-                        <i class="ri-calendar-check-line text-xl me-14 d-flex w-auto"></i>
-                        <span>Bookings</span>
-                    </a>
-                </li>
-            @endif
-
             @if(auth()->user()->can('view_news_updates'))
                 <li>
                     <a href="{{ route('news-updates.index') }}">

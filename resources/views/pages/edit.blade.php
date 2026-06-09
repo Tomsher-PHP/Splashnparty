@@ -34,7 +34,7 @@
                 <div class="col-12">
                     <div class="card border-0 shadow-sm rounded-12">
                         <div class="card-header bg-base py-16 px-24 border-bottom border-neutral-100">
-                            <h6 class="text-md fw-semibold text-dark mb-0">{{ $section['title'] }}</h6>
+                            <h6 class="text-md fw-semibold  mb-0">{{ $section['title'] }}</h6>
                             @if (!empty($section['description']))
                                 <p class="text-xs text-secondary-light mb-0 mt-4">{{ $section['description'] }}</p>
                             @endif
@@ -126,7 +126,7 @@
                                                                     @endif
                                                                 </div>
                                                                 <div class="p-12 border-top border-neutral-100">
-                                                                    <h6 class="text-xs fw-semibold text-dark mb-0 text-truncate">{{ $option['label'] }}</h6>
+                                                                    <h6 class="text-xs fw-semibold  mb-0 text-truncate">{{ $option['label'] }}</h6>
                                                                     <span class="text-xxs text-neutral-400 text-capitalize">{{ $option['type'] ?? 'image' }} Banner</span>
                                                                 </div>
                                                             </div>
@@ -151,7 +151,7 @@
                                                         <span class="gallery-uploader-icon mb-12 text-primary-600 bg-primary-50 rounded-circle d-flex align-items-center justify-content-center" style="width:48px; height:48px;">
                                                             <i class="ri-upload-cloud-2-line text-2xl"></i>
                                                         </span>
-                                                        <h6 class="text-sm fw-semibold text-dark mb-4">Click to select multiple images at once</h6>
+                                                        <h6 class="text-sm fw-semibold  mb-4">Click to select multiple images at once</h6>
                                                         <p class="text-xs text-secondary-light mb-0">Images will be added as sortable thumbnails below</p>
                                                     </div>
                                                 </div>
