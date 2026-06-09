@@ -20,26 +20,13 @@ class BirthdayPackageApiController extends Controller
                 1
             );
 
-        // TITLE FILTER
-        if ($title = request('title')) {
-
-            $query->where(
-                'title',
-                'like',
-                '%' . $title . '%'
-            );
-        }
-
-        // BRANCH FILTER
         if ($branchId = request('branch_id')) {
-
             $query->where(
                 'branch_id',
                 $branchId
             );
         }
 
-        // SLUG FILTER
         if ($slug = request('slug')) {
 
             $query->where(
