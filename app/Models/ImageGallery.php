@@ -8,6 +8,7 @@ class ImageGallery extends Model
 {
     protected $fillable = [
         'category_name',
+        'slug',
         'images',
         
         'meta_title',

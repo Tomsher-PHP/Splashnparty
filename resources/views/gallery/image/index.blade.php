@@ -61,7 +61,8 @@
                             {{ $key + 1 }}
                         </td>
                         <td>
-                            {{ $gallery->category_name }}
+                            <span class="fw-semibold d-block">{{ $gallery->category_name }}</span>
+                            <span class="text-xs text-secondary-light font-monospace">{{ $gallery->slug }}</span>
                         </td>
                         <td>
                             <div class="d-flex align-items-center flex-wrap gap-2">

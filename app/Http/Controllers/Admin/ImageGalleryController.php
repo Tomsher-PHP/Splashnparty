@@ -43,6 +43,7 @@ class ImageGalleryController extends Controller
 
         $request->validate([
             'category_name' => 'required|string|max:255',
+            'slug'          => 'required|string|max:255|unique:image_galleries,slug',
             'images'        => 'required',
             'images.*'      => 'image|mimes:jpg,jpeg,png,webp|max:2048',
             'status'        => 'required|boolean',
@@ -99,6 +100,7 @@ class ImageGalleryController extends Controller
 
         ImageGallery::create([
             'category_name' => $request->category_name,
+            'slug'          => $request->slug,
             'images'        => $uploadedImages,
 
             // SEO
@@ -131,6 +133,7 @@ class ImageGalleryController extends Controller
         $this->authorizeImageGalleryPermission('edit_image_gallery');
         $request->validate([
             'category_name' => 'required|string|max:255',
+            'slug'          => 'required|string|max:255|unique:image_galleries,slug,' . $image_gallery->id,
             'status'        => 'required|boolean',
             'images.*'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
 
@@ -225,6 +228,7 @@ class ImageGalleryController extends Controller
         // UPDATE
         $image_gallery->update([
             'category_name' => $request->category_name,
+            'slug'          => $request->slug,
             'images'        => array_values($uploadedImages),
 
             // SEO
