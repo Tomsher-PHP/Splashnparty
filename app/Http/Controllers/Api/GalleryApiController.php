@@ -20,7 +20,7 @@ class GalleryApiController extends Controller
       
         // SLUG FILTER
         if ($slug = request('category')) {
-            $query->where('category', $slug);
+            $query->where('slug', $slug);
         }
 
         $galleries = $query
