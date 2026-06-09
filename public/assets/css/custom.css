@@ -88,3 +88,7 @@
     border-color: rgba(255, 255, 255, 0.04) !important;
     color: #475569 !important;
 }
+
+span.selection{
+    width:100%;
+}

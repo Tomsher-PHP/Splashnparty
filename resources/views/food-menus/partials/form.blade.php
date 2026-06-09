@@ -1,5 +1,4 @@
 <div class="card">
-
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
             <h6 class="mb-0">
@@ -156,7 +155,6 @@
                 <label class="form-label fw-semibold">
                     Description
                 </label>
-
                 <textarea name="description"
                     rows="5"
                     class="form-control">{{ old('description', $foodMenu->description ?? '') }}</textarea>
@@ -168,14 +166,23 @@
     </div>
 
     <div class="card-footer text-end">
-
-        <button type="submit"
-            class="btn btn-primary">
-
+        <button type="submit" class="btn btn-sm btn-primary">
             {{ isset($foodMenu) ? 'Update' : 'Save' }}
-
         </button>
-
+        <button type="reset" class="btn btn-sm btn-outline-secondary">
+            Cancel
+        </button>
     </div>
 
 </div>
+
+@section('script')
+<script>
+$(function () {
+    $('.select2').select2({
+        width: '100%',
+        placeholder: 'Select Branches'
+    });
+});
+</script>
+@endsection
