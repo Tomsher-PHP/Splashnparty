@@ -42,8 +42,15 @@ return new class extends Migration
             }
 
             // 3. Drop the old direct foreign key and column
+            try {
+                Schema::table('attractions', function (Blueprint $table) {
+                    $table->dropForeign(['branch_id']);
+                });
+            } catch (\Exception $e) {
+                // Foreign key doesn't exist
+            }
+
             Schema::table('attractions', function (Blueprint $table) {
-                $table->dropForeign(['branch_id']);
                 $table->dropColumn('branch_id');
             });
         }

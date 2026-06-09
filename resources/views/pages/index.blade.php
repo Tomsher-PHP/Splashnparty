@@ -18,7 +18,7 @@
                                 <i class="ri-pages-line text-2xl"></i>
                             </div>
                             <div>
-                                <h6 class="text-md fw-semibold mb-4 text-dark">{{ $page->title }}</h6>
+                                <h6 class="text-md fw-semibold mb-4 ">{{ $page->title }}</h6>
                                 <span class="text-secondary-light text-xs fw-medium">
                                     Last updated: {{ $page->updated_at ? $page->updated_at->diffForHumans() : 'Never' }}
                                 </span>

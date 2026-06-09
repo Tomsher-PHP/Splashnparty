@@ -17,14 +17,10 @@ class GalleryApiController extends Controller
         );
 
         $query = ImageGallery::where('status', 1);
-        // CATEGORY FILTER
-        if ($category = request('category')) {
-
-            $query->where(
-                'category_name',
-                'like',
-                '%' . $category . '%'
-            );
+      
+        // SLUG FILTER
+        if ($slug = request('category')) {
+            $query->where('slug', $slug);
         }
 
         $galleries = $query

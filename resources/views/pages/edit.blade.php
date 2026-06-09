@@ -6,7 +6,10 @@
             <h6 class="fw-semibold mb-4">Edit Page Content: {{ $page->title }}</h6>
             <p class="mb-0 text-secondary-light">Manage sections, text, files, and repeatable details for this page.</p>
         </div>
-        <div>
+        <div class="d-flex align-items-center gap-2">
+            <button type="submit" form="page-edit-form" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2">
+                <i class="ri-save-line"></i> Save Page Content
+            </button>
             <a href="{{ route('pages.index') }}" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-2">
                 <i class="ri-arrow-left-line"></i> Back to Pages
             </a>
@@ -25,7 +28,7 @@
         </div>
     @endif
 
-    <form action="{{ route('pages.update', $page->id) }}" method="POST" enctype="multipart/form-data">
+    <form id="page-edit-form" action="{{ route('pages.update', $page->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -34,7 +37,7 @@
                 <div class="col-12">
                     <div class="card border-0 shadow-sm rounded-12">
                         <div class="card-header bg-base py-16 px-24 border-bottom border-neutral-100">
-                            <h6 class="text-md fw-semibold text-dark mb-0">{{ $section['title'] }}</h6>
+                            <h6 class="text-md fw-semibold  mb-0">{{ $section['title'] }}</h6>
                             @if (!empty($section['description']))
                                 <p class="text-xs text-secondary-light mb-0 mt-4">{{ $section['description'] }}</p>
                             @endif
@@ -126,7 +129,7 @@
                                                                     @endif
                                                                 </div>
                                                                 <div class="p-12 border-top border-neutral-100">
-                                                                    <h6 class="text-xs fw-semibold text-dark mb-0 text-truncate">{{ $option['label'] }}</h6>
+                                                                    <h6 class="text-xs fw-semibold  mb-0 text-truncate">{{ $option['label'] }}</h6>
                                                                     <span class="text-xxs text-neutral-400 text-capitalize">{{ $option['type'] ?? 'image' }} Banner</span>
                                                                 </div>
                                                             </div>
@@ -151,7 +154,7 @@
                                                         <span class="gallery-uploader-icon mb-12 text-primary-600 bg-primary-50 rounded-circle d-flex align-items-center justify-content-center" style="width:48px; height:48px;">
                                                             <i class="ri-upload-cloud-2-line text-2xl"></i>
                                                         </span>
-                                                        <h6 class="text-sm fw-semibold text-dark mb-4">Click to select multiple images at once</h6>
+                                                        <h6 class="text-sm fw-semibold  mb-4">Click to select multiple images at once</h6>
                                                         <p class="text-xs text-secondary-light mb-0">Images will be added as sortable thumbnails below</p>
                                                     </div>
                                                 </div>
@@ -438,8 +441,8 @@
                 </div>
             @endforeach
 
-            <div class="col-12 mt-32">
-                <div class="card border-0 shadow-sm rounded-12 p-20 bg-base">
+            <div class="col-12 mt-32 position-sticky bottom-0" style="z-index: 1000; bottom: 0;">
+                <div class="card border border-neutral-200 shadow-lg rounded-12 p-20 bg-base">
                     <div class="d-flex flex-wrap align-items-center gap-3">
                         <button type="submit" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2">
                             <i class="ri-save-line"></i> Save Page Content
@@ -660,11 +663,14 @@
                     theme: 'snow',
                     modules: {
                         toolbar: [
-                            [{ header: [1, 2, 3, false] }],
-                            ['bold', 'italic', 'underline'],
-                            [{ list: 'ordered' }, { list: 'bullet' }],
+                            [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
                             [{ color: [] }, { background: [] }],
-                            ['link'],
+                            
+                            ['blockquote', 'code-block'],
+                            [{ list: 'ordered' }, { list: 'bullet' }],
+                            [{ indent: '-1' }, { indent: '+1' }],
+                            [{ align: [] }],
                             ['clean']
                         ]
                     }
@@ -1113,38 +1119,6 @@
             height: auto !important;
         }
 
-        .quill-editor-wrapper {
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--input-form-light);
-            background: #fff;
-            transition: border-color 0.2s ease;
-        }
-        
-        .quill-editor-wrapper:focus-within {
-            border-color: var(--primary-600) !important;
-        }
-
-        .quill-editor-wrapper .ql-toolbar.ql-snow {
-            border: none !important;
-            border-bottom: 1px solid var(--input-form-light) !important;
-            background: #f8fafc;
-            padding: 8px 12px;
-        }
-
-        .quill-editor-wrapper .ql-container.ql-snow {
-            border: none !important;
-            font-family: inherit;
-            font-size: 14px;
-            height: 300px !important;
-            min-height: 250px !important;
-        }
-
-        .quill-editor-wrapper .ql-editor {
-            height: 300px !important;
-            min-height: 250px !important;
-            padding: 16px;
-        }
 
         .settings-current-media {
             display: flex;

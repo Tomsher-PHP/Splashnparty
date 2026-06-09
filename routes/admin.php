@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\VideoGalleryController;
 use App\Http\Controllers\Admin\NewsUpdateController;
+use App\Http\Controllers\Admin\NewsletterSubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -140,6 +141,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         'news-updates',
         NewsUpdateController::class
     );
+
+    Route::get('newsletter-subscriptions/export', [NewsletterSubscriptionController::class, 'export'])->name('newsletter-subscriptions.export');
+    Route::resource('newsletter-subscriptions', NewsletterSubscriptionController::class)->only(['index', 'destroy']);
 
     
 });

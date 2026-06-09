@@ -152,7 +152,7 @@
 
         </div>
 
-        {{ $cakes->links() }}
+        {{ $cakes->links('pagination::bootstrap-4') }}
 
     </div>
     <div class="card-footer bg-white border-0">
@@ -163,7 +163,7 @@
                 </small>
             </div>
             <div>
-                {{ $cakes->links() }}
+                {{ $cakes->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

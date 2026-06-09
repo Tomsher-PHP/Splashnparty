@@ -1,27 +1,32 @@
 <div class="row g-3">
     <div class="col-md-12">
-        <label>Title</label>
+        <label class="form-label fw-semibold">Title</label>
         <input
             type="text"
             name="title"
-            class="form-control"
+            class="form-control form-control-sm"
             value="{{ old('title', $newsUpdate->title ?? '') }}">
     </div>
 
     <div class="col-md-12">
-        <label>Description</label>
-        <textarea
-            name="description"
-            rows="8"
-            class="form-control">{{ old('description', $newsUpdate->description ?? '') }}</textarea>
+        <label class="form-label fw-semibold">Description</label>
+        <div class="quill-editor-wrapper">
+            <div class="quill-editor"
+                data-input="description_editor">
+                {!! old('description', $newsUpdate->description ?? '') !!}
+            </div>
+        </div>
+        <textarea name="description"
+            id="description_editor"
+            class="d-none">{{ old('description', $newsUpdate->description ?? '') }}</textarea>
     </div>
 
     <div class="col-md-6">
-        <label>Image</label>
+        <label class="form-label fw-semibold">Image</label>
         <input
             type="file"
             name="image"
-            class="form-control">
+            class="form-control form-control-sm">
 
         @if($isEdit && $newsUpdate->image)
 
@@ -57,18 +62,18 @@
     </div>
 
     <div class="col-md-6">
-        <label>Publish Date</label>
+        <label class="form-label fw-semibold">Publish Date</label>
         <input
             type="date"
             name="publish_date"
-            class="form-control"
+            class="form-control form-control-sm"
             value="{{ old('publish_date', $newsUpdate->publish_date ?? '') }}">
     </div>
 
     <div class="col-md-6">
-        <label>Status</label>
+        <label class="form-label fw-semibold">Status</label>
 
-        <select name="status" class="form-control">
+        <select name="status" class="form-control form-control-sm">
 
             <option value="1"
                 {{ old('status', $newsUpdate->status ?? 1) == 1 ? 'selected' : '' }}>
@@ -84,24 +89,47 @@
     </div>
 </div>
 
-<hr>
-
-<!-- SEO  COMPONENT -->
+<!-- SEO COMPONENT -->
 @include('components.seo-fields', [
 'model' => $newsUpdate ?? null
 ])
 
+
 @section('script')
 <script>
- // REMOVE IMAGE
-document.addEventListener('click', function(e){
-    if(e.target.closest('.remove-image')){
-        if(!confirm('Remove image?')){
-            return;
+document.addEventListener('DOMContentLoaded', function () {
+    // QUILL
+    const quill = new Quill('.quill-editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ color: [] }, { background: [] }],
+                
+                ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ indent: '-1' }, { indent: '+1' }],
+                [{ align: [] }],
+                ['clean']
+            ]
         }
-        document.getElementById('remove_image').value = 1;
-        e.target.closest('.position-relative').remove();
-    }
+    });
+
+    quill.on('text-change', function () {
+        document.getElementById('description_editor').value = quill.root.innerHTML;
+    });
+
+    // REMOVE IMAGE
+    document.addEventListener('click', function(e){
+        if(e.target.closest('.remove-image')){
+            if(!confirm('Remove image?')){
+                return;
+            }
+            document.getElementById('remove_image').value = 1;
+            e.target.closest('.position-relative').remove();
+        }
+    });
 });
 </script>
 @endsection

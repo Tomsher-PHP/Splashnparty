@@ -169,7 +169,7 @@
                 </tbody>
             </table>
         </div>
-        {{ $partyExtras->links() }}
+        {{ $partyExtras->links('pagination::bootstrap-4') }}
     </div>
 </div>
 @endsection

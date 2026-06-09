@@ -96,7 +96,7 @@
             @endforelse
         </div>
         <div class="mt-4">
-            {{ $events->links() }}
+            {{ $events->links('pagination::bootstrap-4') }}
         </div>
     </div>
 </div>

@@ -174,7 +174,7 @@
                 </small>
             </div>
             <div>
-                {{ $packages->links() }}
+                {{ $packages->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

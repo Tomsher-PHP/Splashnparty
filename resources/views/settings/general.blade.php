@@ -31,7 +31,7 @@
 
                                     <div class="{{ $columnClass }}">
                                         <label for="{{ $key }}"
-                                            class="form-label fw-semibold">{{ $field['label'] }}</label>
+                                            class="form-label fw-semibold">{!! $field['label'] !!}</label>
 
                                         @if ($type === 'textarea')
                                             <textarea id="{{ $key }}" name="{{ $key }}" rows="3"

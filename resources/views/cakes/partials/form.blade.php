@@ -172,10 +172,11 @@
             Description
         </label>
 
-        <div class="quill-editor"
-            data-input="description_editor"
-            style="height:250px;">
-            {!! old('description', $isEdit ? $cake->description : '') !!}
+        <div class="quill-editor-wrapper">
+            <div class="quill-editor"
+                data-input="description_editor">
+                {!! old('description', $isEdit ? $cake->description : '') !!}
+            </div>
         </div>
         <textarea name="description"
             id="description_editor"
@@ -193,11 +194,14 @@ document.addEventListener('DOMContentLoaded', function () {
         theme: 'snow',
         modules: {
             toolbar: [
-                [{ header: [1, 2, 3, false] }],
-                ['bold', 'italic', 'underline'],
-                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
                 [{ color: [] }, { background: [] }],
-                ['link'],
+                
+                ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ indent: '-1' }, { indent: '+1' }],
+                [{ align: [] }],
                 ['clean']
             ]
         }

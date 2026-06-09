@@ -221,9 +221,10 @@ class PartyExtraController extends Controller
             'slug' => 'required|unique:party_extras,slug,' . $id,
             'type' => 'required|in:image_gallery,video_link',
 
-            'video_link' => 'required_if:type,videolink|nullable|url',
+            'video_link' => 'required_if:type,video_link|nullable|url',
             'thumbnail_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'existing_gallery_images' => 'nullable|string',
             'remove_thumbnail' => 'nullable|boolean',
             'remove_og_image' => 'nullable|boolean',
             'sort_order' => 'nullable|integer',
@@ -251,7 +252,7 @@ class PartyExtraController extends Controller
         $partyExtra->status = $request->status;
 
         // Video Link
-        $partyExtra->video_link = $request->type === 'videolink'
+        $partyExtra->video_link = $request->type === 'video_link'
             ? $request->video_link
             : null;
 
@@ -304,27 +305,45 @@ class PartyExtraController extends Controller
         $partyExtra->thumbnail_image = $thumbnailImage;
 
         /* Gallery Images */
-        if (
-            $request->type === 'image_gallery' &&
-            $request->hasFile('gallery_images')
-        ) {
+        if ($request->type === 'image_gallery') {
+            $oldGalleryImages = $partyExtra->gallery_images ?? [];
+            $existingGalleryImages = [];
 
-            $galleryImages = $partyExtra->gallery_images ?? [];
+            if ($request->filled('existing_gallery_images')) {
+                $existingGalleryImages = json_decode($request->input('existing_gallery_images'), true);
+                if (!is_array($existingGalleryImages)) {
+                    $existingGalleryImages = [];
+                }
+            }
 
-            foreach (
-                $request->file('gallery_images')
-                as $image
-            ) {
+            // Identify deleted images to remove them from disk
+            $deletedImages = array_diff($oldGalleryImages, $existingGalleryImages);
+            foreach ($deletedImages as $deletedImage) {
+                if ($deletedImage && file_exists(public_path($deletedImage))) {
+                    unlink(public_path($deletedImage));
+                }
+            }
 
-                $path = $image->store(
-                    'uploads/party-extras/gallery',
-                    'public'
-                );
+            $galleryImages = $existingGalleryImages;
 
-                $galleryImages[] = 'storage/' . $path;
+            if ($request->hasFile('gallery_images')) {
+                foreach ($request->file('gallery_images') as $image) {
+                    $path = $image->store('uploads/party-extras/gallery', 'public');
+                    $galleryImages[] = 'storage/' . $path;
+                }
             }
 
             $partyExtra->gallery_images = $galleryImages;
+        } else {
+            // Delete all gallery images if type is changed to video_link
+            if (!empty($partyExtra->gallery_images)) {
+                foreach ($partyExtra->gallery_images as $image) {
+                    if ($image && file_exists(public_path($image))) {
+                        unlink(public_path($image));
+                    }
+                }
+            }
+            $partyExtra->gallery_images = [];
         }
 
         /* OG Image */
