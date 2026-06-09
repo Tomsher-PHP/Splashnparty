@@ -10,6 +10,7 @@ use App\Models\Branch;
 use App\Models\Faq;
 use App\Models\HeaderMenu;
 use App\Models\SiteSetting;
+use App\Models\Banner;
 use Illuminate\Http\Request;
 
 class PageApiController extends Controller
@@ -23,6 +24,34 @@ class PageApiController extends Controller
                 'success' => false,
                 'message' => 'Page not found.'
             ], 200);
+        }
+
+        // Fetch banner details for slider_banners
+        if (isset($page['slider_banners']) && is_array($page['slider_banners']) && !empty($page['slider_banners'])) {
+            $bannerIds = $page['slider_banners'];
+            $banners = Banner::whereIn('id', $bannerIds)
+                ->where('status', true)
+                ->get()
+                ->keyBy('id');
+
+            $sliderBannersDetails = [];
+            foreach ($bannerIds as $id) {
+                if (isset($banners[$id])) {
+                    $banner = $banners[$id];
+                    $sliderBannersDetails[] = [
+                        // 'id' => $banner->id,
+                        'title' => $banner->title,
+                        'subtitle' => $banner->subtitle,
+                        'btn_text' => $banner->btn_text,
+                        'btn_link' => $banner->btn_link,
+                        'banner_type' => $banner->banner_type,
+                        'file' => $banner->file ? asset('storage/' . $banner->file) : null,
+                    ];
+                }
+            }
+            $page['slider_banners'] = $sliderBannersDetails;
+        } else {
+            $page['slider_banners'] = [];
         }
 
         $data['clients'] = ClientLogo::where('status', 1)
@@ -54,7 +83,7 @@ class PageApiController extends Controller
                     'working_hours' => $client->working_hours
                 ];
             });
-            
+
         return response()->json([
             'success' => true,
             'message' => 'Page found.',
