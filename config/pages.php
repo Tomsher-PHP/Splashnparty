@@ -1550,6 +1550,13 @@ return [
                         'type' => 'textarea',
                         'placeholder' => 'Enter section description...',
                         'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'instagram_code',
+                        'label' => 'Elfsight Instagram Feed Code',
+                        'type' => 'textarea',
+                        'placeholder' => 'Paste your Elfsight Instagram feed embed code here...',
+                        'rules' => ['nullable', 'string'],
                     ]
                 ]
             ]
