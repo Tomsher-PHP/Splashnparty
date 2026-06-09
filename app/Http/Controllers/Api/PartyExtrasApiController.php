@@ -20,32 +20,9 @@ class PartyExtrasApiController extends Controller
 
         // Category Filter
         if ($category = request('category')) {
-
-            $query->where(
-                'category',
-                'like',
-                '%' . $category . '%'
-            );
+            $query->where('slug', $category);
         }
 
-        // Title Filter
-        if ($title = request('title')) {
-
-            $query->where(
-                'title',
-                'like',
-                '%' . $title . '%'
-            );
-        }
-
-        // Type Filter
-        if ($type = request('type')) {
-
-            $query->where(
-                'type',
-                $type
-            );
-        }
 
         $extras = $query
             ->orderBy('sort_order')
