@@ -6,7 +6,10 @@
             <h6 class="fw-semibold mb-4">Edit Page Content: {{ $page->title }}</h6>
             <p class="mb-0 text-secondary-light">Manage sections, text, files, and repeatable details for this page.</p>
         </div>
-        <div>
+        <div class="d-flex align-items-center gap-2">
+            <button type="submit" form="page-edit-form" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2">
+                <i class="ri-save-line"></i> Save Page Content
+            </button>
             <a href="{{ route('pages.index') }}" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-2">
                 <i class="ri-arrow-left-line"></i> Back to Pages
             </a>
@@ -25,7 +28,7 @@
         </div>
     @endif
 
-    <form action="{{ route('pages.update', $page->id) }}" method="POST" enctype="multipart/form-data">
+    <form id="page-edit-form" action="{{ route('pages.update', $page->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -438,8 +441,8 @@
                 </div>
             @endforeach
 
-            <div class="col-12 mt-32">
-                <div class="card border-0 shadow-sm rounded-12 p-20 bg-base">
+            <div class="col-12 mt-32 position-sticky bottom-0" style="z-index: 1000; bottom: 0;">
+                <div class="card border border-neutral-200 shadow-lg rounded-12 p-20 bg-base">
                     <div class="d-flex flex-wrap align-items-center gap-3">
                         <button type="submit" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2">
                             <i class="ri-save-line"></i> Save Page Content
