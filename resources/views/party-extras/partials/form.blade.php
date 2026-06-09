@@ -26,6 +26,7 @@ $isEdit = isset($partyExtra);
                 </label>
                 <input type="text"
                     name="category"
+                    id="category"
                     class="form-control form-control-sm"
                     value="{{ old('category',$partyExtra->category ?? '') }}"
                     required>
@@ -188,7 +189,7 @@ $isEdit = isset($partyExtra);
 @section('script')
 
 <script>
-    document.getElementById('title').addEventListener('keyup', function() {
+    document.getElementById('category').addEventListener('keyup', function() {
         document.getElementById('slug').value = this.value
             .toLowerCase()
             .trim()
