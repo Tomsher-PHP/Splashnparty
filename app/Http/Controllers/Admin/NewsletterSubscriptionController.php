@@ -86,7 +86,6 @@ class NewsletterSubscriptionController extends Controller
 
             foreach ($subscribers as $subscriber) {
                 fputcsv($file, [
-                    $subscriber->id,
                     $subscriber->email,
                     $subscriber->created_at ? $subscriber->created_at->format('Y-m-d H:i:s') : 'N/A'
                 ]);

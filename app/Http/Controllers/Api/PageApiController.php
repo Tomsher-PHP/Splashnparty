@@ -38,6 +38,23 @@ class PageApiController extends Controller
         $data['testimonials'] = Testimonial::where('status', 1)
                                         ->orderBy('sort_order', 'asc')
                                         ->get(['name','title','star_rating', 'description']);
+
+         $data['locations'] = Branch::where('status', 1)
+            ->orderBy('sort_order', 'asc')
+            ->get(['title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
+            ->map(function ($client) {
+                return [
+                    'title' => $client->title,
+                    'description' => $client->description,
+                    'image' => $client->image ? asset($client->image) : null,
+                    'location_link' => $client->location_link,
+                    'address' => $client->address,
+                    'phone' => $client->phone,
+                    'email' => $client->email,
+                    'working_hours' => $client->working_hours
+                ];
+            });
+            
         return response()->json([
             'success' => true,
             'message' => 'Page found.',

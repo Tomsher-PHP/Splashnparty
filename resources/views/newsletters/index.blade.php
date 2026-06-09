@@ -23,13 +23,13 @@
     <div class="card-body p-20">
         <form method="GET" action="{{ route('newsletter-subscriptions.index') }}">
             <div class="row align-items-center g-3">
-                <div class="col-md-8">
-                    <input type="text" name="search" class="form-control" 
+                <div class="col-md-6">
+                    <input type="text" name="search" class="form-control form-control-sm" 
                            placeholder="Search by Email..." 
                            value="{{ request('search') }}">
                 </div>
 
-                <div class="col-md-4 d-flex gap-2">
+                <div class="col-md-2 d-flex gap-2">
                     <button class="btn btn-primary-600 btn-sm d-inline-flex align-items-center gap-2 flex-grow-1 justify-content-center">
                         <i class="ri-search-line"></i> Filter
                     </button>
