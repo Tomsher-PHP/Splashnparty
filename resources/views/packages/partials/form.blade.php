@@ -1,4 +1,16 @@
 <div class="row g-3">
+    {{-- TITLE --}}
+    <div class="col-md-12">
+        <label class="form-label fw-semibold">
+            Title
+        </label>
+
+        <input type="text"
+            name="title"
+            class="form-control form-control-sm"
+            value="{{ old('title', $isEdit ? $package->title : '') }}"
+            required>
+    </div>
 
     {{-- BRANCH --}}
     <div class="col-md-6">
@@ -15,43 +27,6 @@
                     {{ $branch->title }}
                 </option>
             @endforeach
-        </select>
-    </div>
-
-    {{-- TITLE --}}
-    <div class="col-md-6">
-        <label class="form-label fw-semibold">
-            Title
-        </label>
-
-        <input type="text"
-            name="title"
-            class="form-control form-control-sm"
-            value="{{ old('title', $isEdit ? $package->title : '') }}"
-            required>
-    </div>
-
-    {{-- FOOD TYPE --}}
-    <div class="col-md-6">
-        <label class="form-label fw-semibold">
-            Food Type
-        </label>
-
-        <select name="food_type"
-            class="form-select form-select-sm">
-
-            <option value="">Select Food Type</option>
-
-            <option value="with_food"
-                {{ old('food_type', $isEdit ? $package->food_type : '') == 'with_food' ? 'selected' : '' }}>
-                With Food
-            </option>
-
-            <option value="without_food"
-                {{ old('food_type', $isEdit ? $package->food_type : '') == 'without_food' ? 'selected' : '' }}>
-                Without Food
-            </option>
-
         </select>
     </div>
 

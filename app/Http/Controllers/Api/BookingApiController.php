@@ -27,7 +27,7 @@ class BookingApiController extends Controller
             ]);
 
             $booking = Booking::create([
-                'booking_reference' => 'BK-' . strtoupper(Str::random(8)),
+                'booking_reference' => '',
                 'package_id' => $priceData['package_id'],
                 'branch_id'  => $priceData['branch_id'],
                 'food_type' => $data['food_type'],
@@ -46,6 +46,9 @@ class BookingApiController extends Controller
                 'status' => 'confirmed',
                 'payment_status' => 'unpaid',
             ]);
+
+            $booking->booking_reference = 'BK-' . str_pad($booking->id, 6, '0', STR_PAD_LEFT);
+            $booking->save();
 
             DB::commit();
 

@@ -89,6 +89,10 @@
     color: #475569 !important;
 }
 
+span.selection{
+    width:100%;
+}
+
 /* Premium Quill Editor Styles */
 .quill-editor-wrapper {
     border-radius: 8px;
