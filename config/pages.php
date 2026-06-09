@@ -760,8 +760,8 @@ return [
             ]
         ]
     ],
-    'admission-rates' => [
-        'title' => 'Admission Rates',
+    'general-access' => [
+        'title' => 'General Access',
         'sections' => [
             [
                 'title' => 'Header Banner',
@@ -805,17 +805,29 @@ return [
                 'fields' => [
                     [
                         'name' => 'general_access_heading',
-                        'label' => 'General Access Heading',
+                        'label' => 'General Access Title',
                         'type' => 'text',
                         'placeholder' => 'Enter general access section heading',
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
                         'name' => 'birthday_packages_heading',
-                        'label' => 'Birthday Packages Heading',
+                        'label' => 'Birthday Packages Title',
                         'type' => 'text',
                         'placeholder' => 'Enter birthday packages section heading',
                         'rules' => ['nullable', 'string', 'max:255'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Bottom Section',
+                'fields' => [
+                    [
+                        'name' => 'bottom_description',
+                        'label' => 'Bottom Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter bottom description details',
+                        'rules' => ['nullable', 'string'],
                     ]
                 ]
             ]
@@ -1218,7 +1230,7 @@ return [
                                 'name' => 'link',
                                 'label' => 'Link / URL',
                                 'type' => 'text',
-                                'placeholder' => 'Enter redirect URL (e.g. /admission-rates)',
+                                'placeholder' => 'Enter redirect URL (e.g. /general-access)',
                                 'rules' => ['nullable', 'string', 'max:255'],
                             ],
                             [
