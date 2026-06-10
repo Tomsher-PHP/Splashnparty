@@ -911,6 +911,20 @@ return [
                         'label' => 'Banner Image',
                         'type' => 'image',
                         'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'heading',
+                        'label' => 'Main Heading',
+                        'type' => 'text',
+                        'placeholder' => 'Enter main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Main Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter main description',
+                        'rules' => ['nullable', 'string'],
                     ]
                 ]
             ]
