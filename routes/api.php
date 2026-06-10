@@ -6,15 +6,16 @@ use App\Http\Controllers\Api\BookingApiController;
 use App\Http\Controllers\Api\BranchApiController;
 use App\Http\Controllers\Api\CafeMenuApiController;
 use App\Http\Controllers\Api\CakeApiController;
+use App\Http\Controllers\Api\ContactApiController;
+use App\Http\Controllers\Api\EventApiController;
 use App\Http\Controllers\Api\FoodMenuApiController;
 use App\Http\Controllers\Api\GalleryApiController;
 use App\Http\Controllers\Api\GeneralAccessApiController;
+use App\Http\Controllers\Api\NewsletterApiController;
 use App\Http\Controllers\Api\NewsUpdateApiController;
 use App\Http\Controllers\Api\PackageApiController;
 use App\Http\Controllers\Api\PageApiController;
 use App\Http\Controllers\Api\PartyExtrasApiController;
-use App\Http\Controllers\Api\ContactApiController;
-use App\Http\Controllers\Api\NewsletterApiController;
 use App\Http\Controllers\Api\RentalApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -71,4 +72,14 @@ Route::get(
 Route::get(
     '/news-updates/{slug}',
     [NewsUpdateApiController::class, 'show']
+);
+
+Route::get(
+    'events',
+    [EventApiController::class, 'index']
+);
+
+Route::get(
+    'events/{id}',
+    [EventApiController::class, 'show']
 );

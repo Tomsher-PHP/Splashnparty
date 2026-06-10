@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Event;
 use App\Models\EventBranchDetail;
+use App\Models\EventBranchFeature;
+use App\Models\EventBranchGallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -140,28 +142,11 @@ class EventController extends Controller
 
             'status' => $request->status,
         ]);
-
-        foreach ($request->branch_details as $detail) {
-
-            EventBranchDetail::create([
-
-                'event_id' => $event->id,
-
-                'branch_id' => $detail['branch_id'],
-
-                'weekday_price' => $detail['weekday_price'] ?? null,
-
-                'weekend_price' => $detail['weekend_price'] ?? null,
-
-                'description' => $detail['description'],
-
-                'highlighted_description' => $detail['highlighted_description'],
-
-                'sort_order' => $detail['sort_order'] ?? 0,
-
-                'status' => $detail['status'],
-            ]);
-        }
+        
+        $this->saveBranchDetails(
+            $event,
+            $request->branch_details
+        );
 
         return redirect()
             ->route('events.index')
@@ -177,7 +162,10 @@ class EventController extends Controller
             'edit_events'
         );
 
-        $event->load('branchDetails');
+        $event->load([
+            'branchDetails.features',
+            'branchDetails.galleries'
+        ]);
 
         $branches = Branch::where(
             'status',
@@ -288,30 +276,21 @@ class EventController extends Controller
             'status' => $request->status,
         ]);
 
-        // DELETE OLD DETAILS
+        
+
+        foreach ($event->branchDetails as $detail)
+        {
+            $detail->features()->delete();
+
+            $detail->galleries()->delete();
+        }
+
         $event->branchDetails()->delete();
 
-        foreach ($request->branch_details as $detail) {
-
-            EventBranchDetail::create([
-
-                'event_id' => $event->id,
-
-                'branch_id' => $detail['branch_id'],
-
-                'weekday_price' => $detail['weekday_price'] ?? null,
-
-                'weekend_price' => $detail['weekend_price'] ?? null,
-
-                'description' => $detail['description'],
-
-                'highlighted_description' => $detail['highlighted_description'],
-
-                'sort_order' => $detail['sort_order'] ?? 0,
-
-                'status' => $detail['status'],
-            ]);
-        }
+        $this->saveBranchDetails(
+            $event,
+            $request->branch_details
+        );
 
         return redirect()
             ->route('events.index')
@@ -343,11 +322,140 @@ class EventController extends Controller
             unlink(public_path($event->banner_image));
         }
 
+        foreach ($event->branchDetails as $detail)
+        {
+            $detail->features()->delete();
+
+            $detail->galleries()->delete();
+        }
+
         $event->delete();
 
         return back()->with(
             'success',
             'Deleted successfully'
         );
+    }
+
+
+    private function saveBranchDetails(Event $event, array $branchDetails)
+    {
+        foreach ($branchDetails as $detail)
+        {
+            $detailImage = null;
+
+            if (
+                isset($detail['image']) &&
+                $detail['image'] instanceof \Illuminate\Http\UploadedFile
+            ) {
+                $path = $detail['image']->store(
+                    'uploads/events/branch-details',
+                    'public'
+                );
+
+                $detailImage = 'storage/' . $path;
+            }
+
+            $middleBanner = null;
+
+            if (
+                isset($detail['middle_banner']) &&
+                $detail['middle_banner'] instanceof \Illuminate\Http\UploadedFile
+            ) {
+                $path = $detail['middle_banner']->store(
+                    'uploads/events/middle-banner',
+                    'public'
+                );
+
+                $middleBanner = 'storage/' . $path;
+            }
+
+            $branchDetail = EventBranchDetail::create([
+
+                'event_id' => $event->id,
+
+                'branch_id' => $detail['branch_id'],
+
+                'title' => $detail['title'] ?? null,
+
+                'description' => $detail['description'] ?? null,
+
+                'image' => $detailImage,
+
+                'middle_banner' => $middleBanner,
+
+                'sort_order' => $detail['sort_order'] ?? 0,
+
+                'status' => $detail['status'] ?? 1,
+            ]);
+
+            // Features
+            foreach ($detail['features'] ?? [] as $feature)
+            {
+                $icon = null;
+
+                if (
+                    isset($feature['icon']) &&
+                    $feature['icon'] instanceof \Illuminate\Http\UploadedFile
+                ) {
+                    $path = $feature['icon']->store(
+                        'uploads/events/features',
+                        'public'
+                    );
+
+                    $icon = 'storage/' . $path;
+                }
+
+                EventBranchFeature::create([
+
+                    'event_branch_detail_id' => $branchDetail->id,
+
+                    'icon' => $icon,
+
+                    'title' => $feature['title'] ?? null,
+
+                    'subtitle' => $feature['subtitle'] ?? null,
+
+                    'content' => $feature['content'] ?? null,
+
+                    'sort_order' => $feature['sort_order'] ?? 0,
+
+                    'status' => $feature['status'] ?? 1,
+                ]);
+            }
+
+            // Gallery
+            foreach ($detail['gallery'] ?? [] as $gallery)
+            {
+                $galleryImage = null;
+
+                if (
+                    isset($gallery['image']) &&
+                    $gallery['image'] instanceof \Illuminate\Http\UploadedFile
+                ) {
+                    $path = $gallery['image']->store(
+                        'uploads/events/gallery',
+                        'public'
+                    );
+
+                    $galleryImage = 'storage/' . $path;
+                }
+
+                EventBranchGallery::create([
+
+                    'event_branch_detail_id' => $branchDetail->id,
+
+                    'title' => $gallery['title'] ?? null,
+
+                    'description' => $gallery['description'] ?? null,
+
+                    'image' => $galleryImage,
+
+                    'sort_order' => $gallery['sort_order'] ?? 0,
+
+                    'status' => $gallery['status'] ?? 1,
+                ]);
+            }
+        }
     }
 }

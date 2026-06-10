@@ -2,10 +2,10 @@
 $isEdit = isset($event);
 
 $details = old(
-    'branch_details',
-    $isEdit
-        ? $event->branchDetails->toArray()
-        : [[]]
+'branch_details',
+$isEdit
+? $event->branchDetails->toArray()
+: [[]]
 );
 @endphp
 
@@ -13,7 +13,7 @@ $details = old(
     <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
             <h6 class="mb-0">
-               {{ $isEdit ? $event->title : 'Add Event' }}
+                {{ $isEdit ? $event->title : 'Add Event' }}
             </h6>
             <div>
                 <a href="{{ route('events.index') }}"
@@ -61,7 +61,7 @@ $details = old(
                     Status
                 </label>
                 <select name="status"
-                        class="form-select form-select-sm">
+                    class="form-select form-select-sm">
                     <option value="1"
                         {{ old('status', $event->status ?? 1) == 1 ? 'selected' : '' }}>
                         Active
@@ -77,17 +77,34 @@ $details = old(
                     Sort Order
                 </label>
                 <input type="number"
-                       name="sort_order"
-                       class="form-control form-control-sm"
-                       value="{{ old('sort_order', $event->sort_order ?? 0) }}">
+                    name="sort_order"
+                    class="form-control form-control-sm"
+                    value="{{ old('sort_order', $event->sort_order ?? 0) }}">
             </div>
             <div class="col-md-6">
-                <label>
-                    Image
-                </label>
+                <label>Image</label>
                 <input type="file"
                     name="image"
                     class="form-control form-control-sm">
+
+                @if($isEdit && !empty($event->image))
+                <div class="mb-2">
+                    <img src="{{ asset($event->image) }}"
+                        class="img-thumbnail"
+                        style="max-height:120px">
+
+                    <div class="form-check mt-1">
+                        <input type="checkbox"
+                            name="remove_event_image"
+                            value="1"
+                            class="form-check-input">
+
+                        <label class="form-check-label">
+                            Remove Image
+                        </label>
+                    </div>
+                </div>
+                @endif
             </div>
 
             <div class="col-md-6">
@@ -98,6 +115,25 @@ $details = old(
                 <input type="file"
                     name="banner_image"
                     class="form-control form-control-sm">
+
+                @if($isEdit && !empty($event->banner_image))
+                <div class="mb-2">
+                    <img src="{{ asset($event->banner_image) }}"
+                        class="img-thumbnail"
+                        style="max-height:120px">
+
+                    <div class="form-check mt-1">
+                        <input type="checkbox"
+                            name="remove_banner_image"
+                            value="1"
+                            class="form-check-input">
+
+                        <label class="form-check-label">
+                            Remove Banner
+                        </label>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
@@ -122,85 +158,324 @@ $details = old(
         <div id="branchDetailsWrapper">
 
             @foreach($details as $index => $detail)
+            <div class="branch-detail-item border rounded p-3 mb-3">
 
-                <div class="branch-detail-item border rounded p-3 mb-3">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label>Branch</label>
-                            <select name="branch_details[{{ $index }}][branch_id]"
-                                class="form-select branch-select"
-                                required>
-                                <option value="">
-                                    Select Branch
-                                </option>
+                <div class="row g-3">
 
-                                @foreach($branches as $branch)
-                                    <option value="{{ $branch->id }}"
-                                        {{ ($detail['branch_id'] ?? '') == $branch->id ? 'selected' : '' }}>
-                                        {{ $branch->title }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label>Weekday Price</label>
-                            <input type="text"
-                                name="branch_details[{{ $index }}][weekday_price]"
-                                class="form-control form-control-sm"
-                                value="{{ $detail['weekday_price'] ?? '' }}">
-                        </div>
+                    {{-- Branch --}}
+                    <div class="col-md-4">
+                        <label>Branch</label>
+                        <select
+                            name="branch_details[{{ $index }}][branch_id]"
+                            class="form-select branch-select"
+                            required>
+                            <option value="">Select Branch</option>
 
-                        <div class="col-md-3">
-                            <label>Weekend Price</label>
-                            <input type="text"
-                                name="branch_details[{{ $index }}][weekend_price]"
-                                class="form-control form-control-sm"
-                                value="{{ $detail['weekend_price'] ?? '' }}">
-                        </div>
+                            @foreach($branches as $branch)
+                            <option value="{{ $branch->id }}" {{ ($detail['branch_id'] ?? '') == $branch->id ? 'selected' : '' }}>
+                                {{ $branch->title }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <div class="col-md-6">
-                            <label>Sort Order</label>
-                            <input type="number"
-                                name="branch_details[{{ $index }}][sort_order]"
-                                class="form-control form-control-sm"
-                                value="{{ $detail['sort_order'] ?? 0 }}">
-                        </div>
+                    {{-- Title --}}
+                    <div class="col-md-4">
+                        <label>Title</label>
+                        <input type="text"
+                            name="branch_details[{{ $index }}][title]"
+                            class="form-control form-control-sm"
+                            value="{{ $detail['title'] ?? '' }}">
+                    </div>
 
-                        <div class="col-md-6">
-                            <label>Status</label>
-                            <select name="branch_details[{{ $index }}][status]"
-                                class="form-select form-select-sm">
-                                <option value="1">
-                                    Active
-                                </option>
-                                <option value="0">
-                                    Inactive
-                                </option>
-                            </select>
-                        </div>
+                    {{-- Image --}}
+                    <div class="col-md-4">
+                        <label>Image</label>
+                        <input type="file"
+                            name="branch_details[{{ $index }}][image]"
+                            class="form-control form-control-sm">
+                        @if(!empty($detail['image']))
+                        <div class="mb-2">
 
-                        <div class="col-md-6">
-                            <label>Highlight Description</label>
-                            <textarea
-                                name="branch_details[{{ $index }}][highlighted_description]"
-                                rows="3"
-                                class="form-control">{{ $detail['highlighted_description'] ?? '' }}</textarea>
-                        </div>
+                            <img src="{{ asset($detail['image']) }}"
+                                class="img-thumbnail"
+                                style="max-height:100px">
 
-                        <div class="col-md-6">
-                            <label>Description</label>
-                            <textarea
-                                name="branch_details[{{ $index }}][description]"
-                                rows="3"
-                                class="form-control">{{ $detail['description'] ?? '' }}</textarea>
+                            <div class="form-check mt-1">
+
+                                <input type="checkbox"
+                                    class="form-check-input"
+                                    name="branch_details[{{ $index }}][remove_image]"
+                                    value="1">
+
+                                <label class="form-check-label">
+                                    Remove Image
+                                </label>
+
+                            </div>
+
                         </div>
-                        <div class="col-md-12 text-end">
-                            <button type="button" class="btn btn-light-danger btn-sm removeBranchBtn badge bg-danger">
-                                Remove
+                        @endif
+
+                    </div>
+
+                    {{-- Description --}}
+                    <div class="col-md-12">
+                        <label>Description</label>
+                        <textarea
+                            rows="4"
+                            class="form-control"
+                            name="branch_details[{{ $index }}][description]">{{ $detail['description'] ?? '' }}</textarea>
+                    </div>
+
+                    {{-- FEATURES --}}
+                    <div class="col-md-12">
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <h6>Features</h6>
+
+                            <button type="button"
+                                class="btn btn-primary btn-sm addFeatureBtn">
+                                Add Feature
                             </button>
                         </div>
+
+                        <div class="features-wrapper">
+
+                            @foreach(($detail['features'] ?? []) as $featureIndex => $feature)
+
+                            <div class="feature-item border rounded p-2 mb-2">
+
+                                <div class="row g-2 p-6">
+
+                                    <div class="col-md-3">
+                                        <label>Icon</label>
+                                        <input type="file"
+                                            class="form-control form-control-sm"
+                                            name="branch_details[{{ $index }}][features][{{ $featureIndex }}][icon]">
+                                        @if(!empty($feature['icon']))
+                                        <div class="mb-2">
+
+                                            <img src="{{ asset($feature['icon']) }}"
+                                                width="60">
+
+                                            <div class="form-check">
+
+                                                <input type="checkbox"
+                                                    name="branch_details[{{ $index }}][features][{{ $featureIndex }}][remove_icon]"
+                                                    value="1"
+                                                    class="form-check-input">
+
+                                                <label class="form-check-label">
+                                                    Remove
+                                                </label>
+
+                                            </div>
+
+                                        </div>
+                                        @endif
+
+
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label>Title</label>
+
+                                        <input type="text"
+                                            class="form-control form-control-sm"
+                                            name="branch_details[{{ $index }}][features][{{ $featureIndex }}][title]"
+                                            value="{{ $feature['title'] ?? '' }}">
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label>Subtitle</label>
+
+                                        <input type="text"
+                                            class="form-control form-control-sm"
+                                            name="branch_details[{{ $index }}][features][{{ $featureIndex }}][subtitle]"
+                                            value="{{ $feature['subtitle'] ?? '' }}">
+                                    </div>
+
+                                    <div class="col-md-1 text-end">
+                                        <button type="button"
+                                            class="btn btn-danger btn-sm removeFeatureBtn">
+                                            Remove
+                                        </button>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label>Content</label>
+
+                                        <textarea
+                                            rows="3"
+                                            class="form-control"
+                                            name="branch_details[{{ $index }}][features][{{ $featureIndex }}][content]">{{ $feature['content'] ?? '' }}</textarea>
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+
+                            @endforeach
+
+                        </div>
+
                     </div>
+
+                    {{-- MIDDLE BANNER --}}
+                    <div class="col-md-12">
+
+                        <label>Middle Banner</label>
+
+                        @if(!empty($detail['middle_banner']))
+                        <div class="mb-2">
+
+                            <img src="{{ asset($detail['middle_banner']) }}"
+                                class="img-thumbnail"
+                                style="max-height:120px">
+
+                            <div class="form-check mt-1">
+
+                                <input type="checkbox"
+                                    name="branch_details[{{ $index }}][remove_middle_banner]"
+                                    value="1"
+                                    class="form-check-input">
+
+                                <label class="form-check-label">
+                                    Remove Banner
+                                </label>
+
+                            </div>
+
+                        </div>
+                        @endif
+
+                        <input type="file"
+                            name="branch_details[{{ $index }}][middle_banner]"
+                            class="form-control form-control-sm">
+
+                    </div>
+
+                    {{-- GALLERY --}}
+                    <div class="col-md-12">
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <h6>Gallery</h6>
+
+                            <button type="button"
+                                class="btn btn-primary btn-sm addGalleryBtn">
+                                Add Gallery
+                            </button>
+                        </div>
+
+                        <div class="gallery-wrapper">
+
+                            @foreach(($detail['galleries'] ?? []) as $galleryIndex => $gallery)
+
+                            <div class="gallery-item border rounded p-2 mb-2">
+
+                                <div class="row g-2">
+
+                                    <div class="col-md-6">
+                                        <label>Title</label>
+
+                                        <input type="text"
+                                            class="form-control form-control-sm"
+                                            name="branch_details[{{ $index }}][gallery][{{ $galleryIndex }}][title]"
+                                            value="{{ $gallery['title'] ?? '' }}">
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <input type="file"
+                                            class="form-control form-control-sm"
+                                            name="branch_details[{{ $index }}][gallery][{{ $galleryIndex }}][image]">
+                                        @if(!empty($gallery['image']))
+                                        <div class="mb-2">
+                                            <img src="{{ asset($gallery['image']) }}"
+                                                width="80">
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                    name="branch_details[{{ $index }}][gallery][{{ $galleryIndex }}][remove_image]"
+                                                    value="1"
+                                                    class="form-check-input">
+
+                                                <label class="form-check-label">
+                                                    Remove
+                                                </label>
+                                            </div>
+                                        </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <label>&nbsp;</label>
+                                        <button type="button"
+                                            class="btn btn-danger btn-sm removeGalleryBtn">
+                                            X
+                                        </button>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Description</label>
+
+                                        <textarea
+                                            rows="2"
+                                            class="form-control"
+                                            name="branch_details[{{ $index }}][gallery][{{ $galleryIndex }}][description]">{{ $gallery['description'] ?? '' }}</textarea>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            @endforeach
+
+                        </div>
+
+                    </div>
+
+                    {{-- Sort Order --}}
+                    <div class="col-md-6">
+                        <label>Sort Order</label>
+
+                        <input type="number"
+                            class="form-control form-control-sm"
+                            name="branch_details[{{ $index }}][sort_order]"
+                            value="{{ $detail['sort_order'] ?? 0 }}">
+                    </div>
+
+                    {{-- Status --}}
+                    <div class="col-md-6">
+                        <label>Status</label>
+
+                        <select
+                            class="form-select form-select-sm"
+                            name="branch_details[{{ $index }}][status]">
+
+                            <option value="1">
+                                Active
+                            </option>
+
+                            <option value="0">
+                                Inactive
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-md-12 text-end">
+
+                        <button type="button"
+                            class="btn btn-danger btn-sm removeBranchBtn">
+                            Remove
+                        </button>
+
+                    </div>
+
                 </div>
+
+            </div>
             @endforeach
         </div>
     </div>
@@ -215,7 +490,6 @@ $details = old(
 @section('script')
 
 <script>
-
     let branchIndex =
         document.querySelectorAll('.branch-detail-item').length;
 
@@ -321,123 +595,135 @@ $details = old(
     }
 
     document.getElementById('addBranchBtn')
-        .addEventListener('click', function () {
-        let wrapper =
-            document.getElementById(
-                'branchDetailsWrapper'
-            );
+        .addEventListener('click', function() {
 
-        let div = document.createElement('div');
-        div.classList.add(
-            'branch-detail-item',
-            'border',
-            'rounded',
-            'p-3',
-            'mb-3'
-        );
+            let wrapper =
+                document.getElementById('branchDetailsWrapper');
 
-        div.innerHTML = `
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label>
-                        Branch
-                    </label>
-                    <select
-                        name="branch_details[${branchIndex}][branch_id]"
-                        class="form-select branch-select"
-                        required>
-                        ${generateBranchOptions()}
-                    </select>
+            let div = document.createElement('div');
 
-                </div>
+            div.className =
+                'branch-detail-item border rounded p-3 mb-3';
 
-                <div class="col-md-3">
+            div.innerHTML = `
+        <div class="row g-3">
 
-                    <label>
-                        Weekday Price
-                    </label>
+            <div class="col-md-4">
+                <label>Branch</label>
 
-                    <input type="text"
-                        name="branch_details[${branchIndex}][weekday_price]"
-                        class="form-control form-control-sm">
+                <select
+                    name="branch_details[${branchIndex}][branch_id]"
+                    class="form-select branch-select">
 
-                </div>
+                    ${generateBranchOptions()}
 
-                <div class="col-md-3">
+                </select>
+            </div>
 
-                    <label>
-                        Weekend Price
-                    </label>
+            <div class="col-md-4">
+                <label>Title</label>
 
-                    <input type="text"
-                        name="branch_details[${branchIndex}][weekend_price]"
-                        class="form-control form-control-sm">
+                <input type="text"
+                    class="form-control form-control-sm"
+                    name="branch_details[${branchIndex}][title]">
+            </div>
 
-                </div>
+            <div class="col-md-4">
+                <label>Image</label>
 
-                <div class="col-md-6">
-                    <label>
-                        Sort Order
-                    </label>
-                    <input type="number"
-                        name="branch_details[${branchIndex}][sort_order]"
-                        class="form-control form-control-sm"
-                        value="0">
-                </div>
+                <input type="file"
+                    class="form-control form-control-sm"
+                    name="branch_details[${branchIndex}][image]">
+            </div>
 
-                <div class="col-md-6">
-                    <label>
-                        Status
-                    </label>
-                    <select
-                        name="branch_details[${branchIndex}][status]"
-                        class="form-select form-select-sm">
-                        <option value="1">
-                            Active
-                        </option>
-                        <option value="0">
-                            Inactive
-                        </option>
-                    </select>
-                </div>
+            <div class="col-md-12">
+                <label>Description</label>
 
-                <div class="col-md-6">
-                    <label>
-                        Highlight Description
-                    </label>
+                <textarea
+                    rows="4"
+                    class="form-control"
+                    name="branch_details[${branchIndex}][description]"></textarea>
+            </div>
 
-                    <textarea
-                        name="branch_details[${branchIndex}][highlighted_description]"
-                        rows="3"
-                        class="form-control"></textarea>
-                </div>
+            <div class="col-md-12">
+                <div class="d-flex justify-content-between">
+                    <h6>Features</h6>
 
-                <div class="col-md-6">
-                    <label>
-                        Description
-                    </label>
-                    <textarea
-                        name="branch_details[${branchIndex}][description]"
-                        rows="3"
-                        class="form-control"></textarea>
-                </div>
-
-                <div class="col-md-12 text-end">
                     <button type="button"
-                        class="btn btn-light-danger btn-sm removeBranchBtn badge bg-danger">
-                        Remove
+                        class="btn btn-primary btn-sm addFeatureBtn">
+                        Add Feature
                     </button>
                 </div>
+
+                <div class="features-wrapper"></div>
             </div>
-        `;
 
-        wrapper.appendChild(div);
-        branchIndex++;
-        refreshBranchDropdowns();
-        toggleAddMoreButton();
-    });
+            <div class="col-md-12">
+                <label>Middle Banner</label>
 
-    document.addEventListener('change', function (e) {
+                <input type="file"
+                    class="form-control form-control-sm"
+                    name="branch_details[${branchIndex}][middle_banner]">
+            </div>
+
+            <div class="col-md-12">
+                <div class="d-flex justify-content-between">
+                    <h6>Gallery</h6>
+
+                    <button type="button"
+                        class="btn btn-primary btn-sm addGalleryBtn">
+                        Add Gallery
+                    </button>
+                </div>
+
+                <div class="gallery-wrapper"></div>
+            </div>
+
+            <div class="col-md-6">
+                <label>Sort Order</label>
+
+                <input type="number"
+                    value="0"
+                    class="form-control form-control-sm"
+                    name="branch_details[${branchIndex}][sort_order]">
+            </div>
+
+            <div class="col-md-6">
+                <label>Status</label>
+
+                <select
+                    class="form-select form-select-sm"
+                    name="branch_details[${branchIndex}][status]">
+
+                    <option value="1">
+                        Active
+                    </option>
+
+                    <option value="0">
+                        Inactive
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="col-md-12 text-end">
+                <button type="button"
+                    class="btn btn-danger btn-sm removeBranchBtn">
+                    Remove
+                </button>
+            </div>
+
+        </div>
+    `;
+
+            wrapper.appendChild(div);
+
+            branchIndex++;
+
+            refreshBranchDropdowns();
+        });
+
+    document.addEventListener('change', function(e) {
         if (e.target.classList.contains('branch-select')) {
             refreshBranchDropdowns();
             toggleAddMoreButton();
@@ -453,7 +739,7 @@ $details = old(
         }
     });*/
 
-    document.addEventListener('click', function (e) {
+    document.addEventListener('click', function(e) {
         const removeBtn = e.target.closest('.removeBranchBtn');
 
         if (removeBtn) {
@@ -476,7 +762,7 @@ $details = old(
                 message: 'Are you sure you want to remove this branch detail?',
                 buttonText: 'Yes, Remove',
                 buttonClass: 'btn btn-sm btn-danger',
-                onConfirm: function () {
+                onConfirm: function() {
                     removeBtn
                         .closest('.branch-detail-item')
                         .remove();
@@ -488,54 +774,54 @@ $details = old(
     });
 
     document.querySelector('form')
-        .addEventListener('submit', function (e) {
-        let values = [];
-        let duplicate = false;
-        let hasBranch = false;
+        .addEventListener('submit', function(e) {
+            let values = [];
+            let duplicate = false;
+            let hasBranch = false;
 
-        document.querySelectorAll('.branch-select')
-            .forEach(select => {
+            document.querySelectorAll('.branch-select')
+                .forEach(select => {
 
-            if (select.value) {
-                hasBranch = true;
-                if (values.includes(select.value)) {
-                    duplicate = true;
-                } else {
-                    values.push(select.value);
-                }
+                    if (select.value) {
+                        hasBranch = true;
+                        if (values.includes(select.value)) {
+                            duplicate = true;
+                        } else {
+                            values.push(select.value);
+                        }
+                    }
+
+                });
+            if (!hasBranch) {
+                e.preventDefault();
+
+                window.openAppConfirm({
+                    title: 'Branch Required',
+                    message: 'Please select at least one branch before submitting.',
+                    buttonText: 'OK',
+                    buttonClass: 'btn btn-sm btn-primary'
+                });
+
+                return;
             }
 
+            if (duplicate) {
+                e.preventDefault();
+                window.openAppConfirm({
+                    title: 'Duplicate Branches',
+                    message: 'Duplicate branches are not allowed.',
+                    buttonText: 'OK',
+                    buttonClass: 'btn btn-sm btn-primary'
+                });
+            }
         });
-        if (!hasBranch) {
-            e.preventDefault();
-
-            window.openAppConfirm({
-                title: 'Branch Required',
-                message: 'Please select at least one branch before submitting.',
-                buttonText: 'OK',
-                buttonClass: 'btn btn-sm btn-primary'
-            });
-
-            return;
-        }
-
-        if (duplicate) {
-            e.preventDefault();
-            window.openAppConfirm({
-                title: 'Duplicate Branches',
-                message: 'Duplicate branches are not allowed.',
-                buttonText: 'OK',
-                buttonClass: 'btn btn-sm btn-primary'
-            });
-        }
-    });
 
     /*document.addEventListener('DOMContentLoaded', function () {
         refreshBranchDropdowns();
         toggleAddMoreButton();
     });*/
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // FIX EDIT FORM INITIAL VALUES
         setTimeout(() => {
             refreshBranchDropdowns();
@@ -552,6 +838,141 @@ $details = old(
         document.getElementById('slug').value = slug;
     });
 
+    document.addEventListener('click', function(e) {
+
+        if (e.target.closest('.addFeatureBtn')) {
+
+            let branchItem =
+                e.target.closest('.branch-detail-item');
+
+            let wrapper =
+                branchItem.querySelector('.features-wrapper');
+
+            let branchIndex =
+                Array.from(
+                    document.querySelectorAll('.branch-detail-item')
+                ).indexOf(branchItem);
+
+            let featureIndex =
+                wrapper.querySelectorAll('.feature-item').length;
+
+            wrapper.insertAdjacentHTML('beforeend', `
+                <div class="feature-item border rounded p-2 mb-2">
+
+                    <div class="row g-2 p-6">
+
+                        <div class="col-md-3">
+                            <input type="file"
+                                class="form-control form-control-sm"
+                                name="branch_details[${branchIndex}][features][${featureIndex}][icon]">
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="text"
+                                placeholder="Title"
+                                class="form-control form-control-sm"
+                                name="branch_details[${branchIndex}][features][${featureIndex}][title]">
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="text"
+                                placeholder="Subtitle"
+                                class="form-control form-control-sm"
+                                name="branch_details[${branchIndex}][features][${featureIndex}][subtitle]">
+                        </div>
+
+                        <div class="col-md-1">
+                            <button type="button"
+                                class="btn btn-danger btn-sm removeFeatureBtn">
+                                Remove
+                            </button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <textarea
+                                rows="2"
+                                class="form-control"
+                                placeholder="Content"
+                                name="branch_details[${branchIndex}][features][${featureIndex}][content]"></textarea>
+                        </div>
+
+                    </div>
+
+                </div>
+            `);
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+
+        if (e.target.closest('.addGalleryBtn')) {
+
+            let branchItem =
+                e.target.closest('.branch-detail-item');
+
+            let wrapper =
+                branchItem.querySelector('.gallery-wrapper');
+
+            let branchIndex =
+                Array.from(
+                    document.querySelectorAll('.branch-detail-item')
+                ).indexOf(branchItem);
+
+            let galleryIndex =
+                wrapper.querySelectorAll('.gallery-item').length;
+
+            wrapper.insertAdjacentHTML('beforeend', `
+            <div class="gallery-item border rounded p-2 mb-2">
+
+                <div class="row g-2 p-6">
+
+                    <div class="col-md-6">
+                        <input type="text"
+                            placeholder="Title"
+                            class="form-control form-control-sm"
+                            name="branch_details[${branchIndex}][gallery][${galleryIndex}][title]">
+                    </div>
+                    <div class="col-md-5">
+                        <input type="file"
+                            class="form-control form-control-sm"
+                            name="branch_details[${branchIndex}][gallery][${galleryIndex}][image]">
+                    </div>
+
+                    <div class="col-md-1">
+                        <button type="button"
+                            class="btn btn-danger btn-sm removeGalleryBtn">
+                            X
+                        </button>
+                    </div>
+
+                    <div class="col-md-12">
+                        <textarea
+                            rows="2"
+                            class="form-control"
+                            placeholder="Description"
+                            name="branch_details[${branchIndex}][gallery][${galleryIndex}][description]"></textarea>
+                    </div>
+
+                    
+
+                </div>
+
+            </div>
+        `);
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+
+        if (e.target.closest('.removeFeatureBtn')) {
+            e.target.closest('.feature-item').remove();
+        }
+
+        if (e.target.closest('.removeGalleryBtn')) {
+            e.target.closest('.gallery-item').remove();
+        }
+
+    });
 </script>
 
 @endsection
