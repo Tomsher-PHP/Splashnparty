@@ -40,10 +40,28 @@ class NewsUpdateApiController extends Controller
             ], 200);
         }
 
+        // Fetch 3 related blogs (latest active news updates, excluding current one)
+        $relatedBlogs = NewsUpdate::where('status', 1)
+            ->where('id', '!=', $news->id)
+            ->orderBy('publish_date', 'desc')
+            ->take(3)
+            ->get()
+            ->map(function ($blog) {
+                $blog->image = $blog->image ? asset($blog->image) : null;
+                $blog->og_image = $blog->og_image ? asset($blog->og_image) : null;
+                return $blog;
+            });
+
+        $news->image = $news->image ? asset($news->image) : null;
+        $news->og_image = $news->og_image ? asset($news->og_image) : null;
+
+        $newsArray = $news->toArray();
+        $newsArray['related'] = $relatedBlogs;
+
         return response()->json([
             'success' => true,
-            'data' => $news,
-            'page_content' => \App\Models\Page::getPageContent('news-updates')
+            'data' => $newsArray,
+            'page_content' => \App\Models\Page::getPageContent('news-updates-details') ?? \App\Models\Page::getPageContent('news-updates')
         ]);
     }
     
