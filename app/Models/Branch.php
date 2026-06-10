@@ -38,4 +38,14 @@ class Branch extends Model
     {
         return $this->belongsToMany(Attraction::class, 'attraction_branch');
     }
+
+    public function packages()
+    {
+        return $this->hasMany(Package::class);
+    }
+
+    public function generalAccess()
+    {
+        return $this->hasMany(GeneralAccess::class);
+    }
 }
