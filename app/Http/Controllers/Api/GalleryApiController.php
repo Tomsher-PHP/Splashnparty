@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ImageGallery;
 use App\Models\VideoGallery;
-use App\Models\OutDoorEvent;
+use App\Models\OutdoorEvent;
 
 class GalleryApiController extends Controller
 {
@@ -90,7 +90,7 @@ class GalleryApiController extends Controller
             50
         );
 
-        $query = OutDoorEvent::query();
+        $query = OutdoorEvent::query();
 
         // TITLE FILTER
         if ($title = request('title')) {

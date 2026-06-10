@@ -40,6 +40,12 @@ return [
                 'title' => 'Dubai\'s Most Exciting Waterpark',
                 'fields' => [
                     [
+                        'name' => 'waterpark_image',
+                        'label' => 'Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
                         'name' => 'waterpark_title',
                         'label' => 'Common Title',
                         'type' => 'text',
@@ -183,6 +189,60 @@ return [
                                 'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
                             ]
                         ]
+                    ]
+                ]
+            ],
+            [
+                'title' => 'CTA Banner Section',
+                'description' => 'Manage the Call to Action banner background image, title, description, and redirect buttons',
+                'fields' => [
+                    [
+                        'name' => 'cta_bg_image',
+                        'label' => 'Background Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'cta_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title (e.g. Ready to Plan Your Perfect Day?)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'cta_description',
+                        'label' => 'Banner Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter banner description...',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'cta_btn1_text',
+                        'label' => 'Button 1 Text',
+                        'type' => 'text',
+                        'placeholder' => 'Enter first button text (e.g. Enquire Now)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'cta_btn1_link',
+                        'label' => 'Button 1 Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter first button redirect URL',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'cta_btn2_text',
+                        'label' => 'Button 2 Text',
+                        'type' => 'text',
+                        'placeholder' => 'Enter second button text (e.g. Buy Day Passes)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'cta_btn2_link',
+                        'label' => 'Button 2 Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter second button redirect URL',
+                        'rules' => ['nullable', 'string', 'max:255'],
                     ]
                 ]
             ],
@@ -760,8 +820,8 @@ return [
             ]
         ]
     ],
-    'admission-rates' => [
-        'title' => 'Admission Rates',
+    'general-access' => [
+        'title' => 'General Access',
         'sections' => [
             [
                 'title' => 'Header Banner',
@@ -805,17 +865,29 @@ return [
                 'fields' => [
                     [
                         'name' => 'general_access_heading',
-                        'label' => 'General Access Heading',
+                        'label' => 'General Access Title',
                         'type' => 'text',
                         'placeholder' => 'Enter general access section heading',
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
                         'name' => 'birthday_packages_heading',
-                        'label' => 'Birthday Packages Heading',
+                        'label' => 'Birthday Packages Title',
                         'type' => 'text',
                         'placeholder' => 'Enter birthday packages section heading',
                         'rules' => ['nullable', 'string', 'max:255'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Bottom Section',
+                'fields' => [
+                    [
+                        'name' => 'bottom_description',
+                        'label' => 'Bottom Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter bottom description details',
+                        'rules' => ['nullable', 'string'],
                     ]
                 ]
             ]
@@ -1218,7 +1290,7 @@ return [
                                 'name' => 'link',
                                 'label' => 'Link / URL',
                                 'type' => 'text',
-                                'placeholder' => 'Enter redirect URL (e.g. /admission-rates)',
+                                'placeholder' => 'Enter redirect URL (e.g. /general-access)',
                                 'rules' => ['nullable', 'string', 'max:255'],
                             ],
                             [

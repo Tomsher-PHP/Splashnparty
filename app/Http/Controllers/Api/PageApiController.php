@@ -70,9 +70,10 @@ class PageApiController extends Controller
 
          $data['locations'] = Branch::where('status', 1)
             ->orderBy('sort_order', 'asc')
-            ->get(['title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
+            ->get(['id','title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
             ->map(function ($client) {
                 return [
+                    'id' => $client->id,
                     'title' => $client->title,
                     'description' => $client->description,
                     'image' => $client->image ? asset($client->image) : null,
@@ -106,9 +107,10 @@ class PageApiController extends Controller
 
         $data['locations'] = Branch::where('status', 1)
             ->orderBy('sort_order', 'asc')
-            ->get(['title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
+            ->get(['id','title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
             ->map(function ($client) {
                 return [
+                    'id' => $client->id,
                     'title' => $client->title,
                     'description' => $client->description,
                     'image' => $client->image ? asset($client->image) : null,
@@ -240,9 +242,10 @@ class PageApiController extends Controller
 
          $data['locations'] = Branch::where('status', 1)
                                     ->orderBy('sort_order', 'asc')
-                                    ->get(['title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
+                                    ->get(['id','title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
                                     ->map(function ($client) {
                                         return [
+                                            'id' => $client->id,
                                             'title' => $client->title,
                                             'description' => $client->description,
                                             'image' => $client->image ? asset($client->image) : null,
