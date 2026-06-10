@@ -99,9 +99,7 @@
                         </td>
                         <td>
                             @foreach($foodMenu->branches as $branch)
-                                <span class="badge bg-primary">
-                                    {{ $branch->title }}
-                                </span>
+                                {{ $branch->title }}@if(!$loop->last), @endif
                             @endforeach
                         </td>
                         <td>

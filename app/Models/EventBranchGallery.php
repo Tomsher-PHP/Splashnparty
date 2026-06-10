@@ -4,23 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class EventBranchGallery extends Model
 {
     protected $fillable = [
 
+        'event_branch_detail_id',
+
         'title',
-        'slug',
+        'description',
         'image',
-        'banner_image',
+
         'sort_order',
-        'status',
+        'status'
     ];
 
-    public function branchDetails()
+    public function branchDetail()
     {
-        return $this->hasMany(
+        return $this->belongsTo(
             EventBranchDetail::class
         );
     }
-
 }

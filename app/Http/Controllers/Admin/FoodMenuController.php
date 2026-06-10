@@ -25,8 +25,7 @@ class FoodMenuController extends Controller
             'view_food_menus'
         );
 
-        $query = FoodMenu::with('branch')
-            ->latest();
+        $query = FoodMenu::latest();
 
         // KEYWORD SEARCH
         if ($keyword = request('title')) {
@@ -137,10 +136,7 @@ class FoodMenuController extends Controller
         );
     }
 
-    public function update(
-        Request $request,
-        FoodMenu $foodMenu
-    ) {
+    public function update(Request $request, FoodMenu $foodMenu) {
 
         $this->authorizeFoodMenuPermission(
             'edit_food_menus'
@@ -150,7 +146,8 @@ class FoodMenuController extends Controller
 
             'title' => 'required|string|max:255',
 
-            'branch_id' => 'required|exists:branches,id',
+            'branch_ids' => 'required|array',
+            'branch_ids.*' => 'exists:branches,id',
 
             'type' => 'required|in:adult,kid',
 
