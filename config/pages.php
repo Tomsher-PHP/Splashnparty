@@ -40,6 +40,12 @@ return [
                 'title' => 'Dubai\'s Most Exciting Waterpark',
                 'fields' => [
                     [
+                        'name' => 'waterpark_image',
+                        'label' => 'Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
                         'name' => 'waterpark_title',
                         'label' => 'Common Title',
                         'type' => 'text',
