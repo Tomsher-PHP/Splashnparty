@@ -61,7 +61,7 @@ class NewsUpdateApiController extends Controller
         return response()->json([
             'success' => true,
             'data' => $newsArray,
-            'page_content' => \App\Models\Page::getPageContent('news-updates-details') ?? \App\Models\Page::getPageContent('news-updates')
+            'page_content' => \App\Models\Page::getPageContent('news-updates')
         ]);
     }
     
