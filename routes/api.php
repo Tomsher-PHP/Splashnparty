@@ -69,10 +69,7 @@ Route::get(
 );
 
 // Details 
-Route::get(
-    '/news-updates/{slug}',
-    [NewsUpdateApiController::class, 'show']
-);
+Route::get('/news-details',[NewsUpdateApiController::class, 'show']);
 
 Route::get(
     'events',

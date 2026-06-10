@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\BirthdayPackage;
+use App\Models\Branch;
 
 class BirthdayPackageApiController extends Controller
 {
@@ -54,11 +55,32 @@ class BirthdayPackageApiController extends Controller
             }
         );
 
+        $locations = Branch::where('status', 1)
+                                ->orderBy('sort_order', 'asc')
+                                ->get(['id','title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
+                                ->map(function ($client) {
+                                    return [
+                                        'id' => $client->id,
+                                        'title' => $client->title,
+                                        'description' => $client->description,
+                                        'image' => $client->image ? asset($client->image) : null,
+                                        'location_link' => $client->location_link,
+                                        'address' => $client->address,
+                                        'phone' => $client->phone,
+                                        'email' => $client->email,
+                                        'working_hours' => $client->working_hours
+                                    ];
+                                });
+
+        $packagesArray = $packages->toArray();
+        $packagesArray['locations'] = $locations;
+
         return response()->json([
             'success' => true,
             'message' => 'Birthday packages retrieved successfully.',
             'page_content' => \App\Models\Page::getPageContent('birthday-packages'),
-            'data' => $packages
+            'locations' => $locations,
+            'data' => $packagesArray
         ]);
     }
 }

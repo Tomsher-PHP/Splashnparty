@@ -911,6 +911,20 @@ return [
                         'label' => 'Banner Image',
                         'type' => 'image',
                         'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'heading',
+                        'label' => 'Main Heading',
+                        'type' => 'text',
+                        'placeholder' => 'Enter main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Main Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter main description',
+                        'rules' => ['nullable', 'string'],
                     ]
                 ]
             ]
@@ -1034,6 +1048,25 @@ return [
                         'label' => 'Description',
                         'type' => 'textarea',
                         'placeholder' => 'Enter description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Map Section',
+                'fields' => [
+                    [
+                        'name' => 'map_title',
+                        'label' => 'Map Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter map section title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'map_description',
+                        'label' => 'Map Section Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter map section description',
                         'rules' => ['nullable', 'string'],
                     ]
                 ]

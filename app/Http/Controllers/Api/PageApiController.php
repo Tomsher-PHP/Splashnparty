@@ -301,6 +301,20 @@ class PageApiController extends Controller
                 $attractions = $associated->where('type', 'attraction')->values()->all();
                 $adventures = $associated->where('type', 'adventure')->values()->all();
 
+                // Get all active packages associated with this branch
+                $packages = $branch->generalAccess()
+                    ->where('status', 1)
+                    ->orderBy('sort_order', 'asc')
+                    ->get()
+                    ->map(function ($package) {
+                        return [
+                            'id' => $package->id,
+                            'title' => $package->title,
+                            'weekday_price' => $package->weekday_price,
+                            'weekend_price' => $package->weekend_price
+                        ];
+                    })->values()->all();
+
                 return [
                     'id' => $branch->id,
                     'title' => $branch->title,
@@ -312,7 +326,8 @@ class PageApiController extends Controller
                     'email' => $branch->email,
                     'working_hours' => $branch->working_hours,
                     'attractions' => $attractions,
-                    'adventures' => $adventures
+                    'adventures' => $adventures,
+                    'packages' => $packages
                 ];
             });
 
