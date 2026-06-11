@@ -32,6 +32,7 @@ Route::post('/newsletter-subscribe', [NewsletterApiController::class, 'subscribe
 Route::get('/waterpark', [PageApiController::class, 'waterpark']);
 Route::get('/footer', [PageApiController::class, 'footerSettings']);
 Route::get('/settings', [PageApiController::class, 'settings']);
+Route::get('/gallery-categories', [GalleryApiController::class, 'galleryCategories']);
 
 
 
