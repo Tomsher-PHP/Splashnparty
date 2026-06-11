@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventBranchDetail;
+use App\Models\Page;
 use Illuminate\Http\Request;
 
 class EventApiController extends Controller
@@ -12,24 +13,25 @@ class EventApiController extends Controller
     public function index()
     {
         $events = Event::where(
-                'status',
-                1
-            )
+            'status',
+            1
+        )
             ->orderBy(
                 'sort_order'
             )
-            ->get([
+            ->select(
                 'id',
                 'title',
                 'slug',
                 'image',
-                'banner_image'
-            ]);
+                'banner_image',
+            )
+            ->paginate(min(request('limit', 10), 50));
 
         return response()->json([
             'success' => true,
             'data' => $events,
-            'page_content' => \App\Models\Page::getPageContent('events-listing'),
+            'page_content' => Page::getPageContent('events-listing'),
         ]);
     }
 
@@ -43,15 +45,15 @@ class EventApiController extends Controller
         ]);
 
         $event = Event::where(
-                'status',
-                1
-            )
+            'status',
+            1
+        )
             ->findOrFail($id);
 
         $branchDetail = EventBranchDetail::with([
-                'features',
-                'galleries'
-            ])
+            'features',
+            'galleries',
+        ])
             ->where(
                 'event_id',
                 $event->id

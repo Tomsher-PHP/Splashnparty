@@ -74,10 +74,7 @@ Route::get(
 // Details 
 Route::get('/news-details',[NewsUpdateApiController::class, 'show']);
 
-Route::get(
-    'events',
-    [EventApiController::class, 'index']
-);
+Route::get('events',[EventApiController::class, 'index']);
 
 Route::get(
     'events/{id}',
