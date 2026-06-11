@@ -6,9 +6,30 @@ use App\Http\Controllers\Controller;
 use App\Models\ImageGallery;
 use App\Models\VideoGallery;
 use App\Models\OutdoorEvent;
+use App\Models\IndoorEvent;
+use Illuminate\Http\Request;
+
 
 class GalleryApiController extends Controller
 {
+
+    public function galleryCategories(Request $request){
+        $type = $request->type ?? 'image';
+
+        if($type == 'image'){
+            $category = ImageGallery::where('status', 1)->get(['id', 'category_name','slug']);
+        }else if($type == 'video'){
+            $category = VideoGallery::where('status', 1)->get(['id', 'category_name','slug']);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Categories found.',
+            'data' => $category,
+            'page_content' => \App\Models\Page::getPageContent($type.'-gallery'),
+        ]);
+
+    }
     public function imageGallery()
     {
         $limit = min(
