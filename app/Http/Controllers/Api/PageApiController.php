@@ -399,6 +399,24 @@ class PageApiController extends Controller
         }
 
         unset($siteSettings['enquiry_email']);
+
+        $locations = Branch::where('status', 1)
+            ->orderBy('sort_order', 'asc')
+            ->get(['id','title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
+            ->map(function ($client) {
+                return [
+                    'id' => $client->id,
+                    'title' => $client->title,
+                    'description' => $client->description,
+                    'image' => $client->image ? asset($client->image) : null,
+                    'location_link' => $client->location_link,
+                    'address' => $client->address,
+                    'phone' => $client->phone,
+                    'email' => $client->email,
+                    'working_hours' => $client->working_hours
+                ];
+            });
+
         
         return response()->json([
             'success' => true,
@@ -406,9 +424,11 @@ class PageApiController extends Controller
             'data' => [
                 'header_menus' => $headerMenus,
                 'footer_settings' => $footerSettings,
-                'general_settings' => $siteSettings
+                'general_settings' => $siteSettings,
+                'locations' => $locations
             ]
         ]);
     }
 }
+
 
