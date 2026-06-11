@@ -28,14 +28,15 @@ class CafeMenuController extends Controller
         );
 
         $query = CafeMenu::with([
-            'branch',
             'category'
         ])->latest();
        
         // KEYWORD SEARCH
         if ($keyword = request('keyword')) {
+            // Find branch IDs matching the keyword
+            $matchingBranchIds = Branch::where('title', 'like', '%' . $keyword . '%')->pluck('id')->toArray();
 
-            $query->where(function ($q) use ($keyword) {
+            $query->where(function ($q) use ($keyword, $matchingBranchIds) {
                 $q->where(
                     'title',
                     'like',
@@ -46,24 +47,22 @@ class CafeMenuController extends Controller
                     'like',
                     '%' . $keyword . '%'
                 )
-                ->orWhereHas('branch', function ($branchQuery) use ($keyword) {
-
-                    $branchQuery->where(
-                        'title',
-                        'like',
-                        '%' . $keyword . '%'
-                    );
-
-                })
                 ->orWhereHas('category', function ($categoryQuery) use ($keyword) {
-
                     $categoryQuery->where(
                         'title',
                         'like',
                         '%' . $keyword . '%'
                     );
-
                 });
+
+                if (!empty($matchingBranchIds)) {
+                    $q->orWhere(function ($subQ) use ($matchingBranchIds) {
+                        foreach ($matchingBranchIds as $bId) {
+                            $subQ->orWhereJsonContains('branch_ids', (int) $bId)
+                                 ->orWhereJsonContains('branch_ids', (string) $bId);
+                        }
+                    });
+                }
             });
         }
 
@@ -78,11 +77,10 @@ class CafeMenuController extends Controller
 
         // FILTER BRANCH
         if ($branch = request('branch')) {
-
-            $query->where(
-                'branch_id',
-                $branch
-            );
+            $query->where(function ($q) use ($branch) {
+                $q->whereJsonContains('branch_ids', (int) $branch)
+                  ->orWhereJsonContains('branch_ids', (string) $branch);
+            });
         }
 
         $menus = $query
@@ -139,7 +137,8 @@ class CafeMenuController extends Controller
 
         $request->validate([
 
-            'branch_id' => 'required|exists:branches,id',
+            'branch_ids' => 'required|array',
+            'branch_ids.*' => 'exists:branches,id',
 
             'cafe_menu_category_id' =>
                 'required|exists:cafe_menu_categories,id',
@@ -183,8 +182,8 @@ class CafeMenuController extends Controller
 
         CafeMenu::create([
 
-            'branch_id' =>
-                $request->branch_id,
+            'branch_ids' =>
+                is_array($request->branch_ids) ? array_map('intval', $request->branch_ids) : [],
 
             'cafe_menu_category_id' =>
                 $request->cafe_menu_category_id,
@@ -259,7 +258,8 @@ class CafeMenuController extends Controller
 
         $request->validate([
 
-            'branch_id' => 'required|exists:branches,id',
+            'branch_ids' => 'required|array',
+            'branch_ids.*' => 'exists:branches,id',
 
             'cafe_menu_category_id' =>
                 'required|exists:cafe_menu_categories,id',
@@ -336,8 +336,8 @@ class CafeMenuController extends Controller
 
         $cafe_menu->update([
 
-            'branch_id' =>
-                $request->branch_id,
+            'branch_ids' =>
+                is_array($request->branch_ids) ? array_map('intval', $request->branch_ids) : [],
 
             'cafe_menu_category_id' =>
                 $request->cafe_menu_category_id,
