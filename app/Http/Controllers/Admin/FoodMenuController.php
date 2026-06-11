@@ -97,7 +97,7 @@ class FoodMenuController extends Controller
 
         $foodMenu = FoodMenu::create([
             'title' => $request->title,
-            'branch_ids' => $request->branch_ids,
+            'branch_ids' => is_array($request->branch_ids) ? array_map('intval', $request->branch_ids) : [],
             'type' => $request->type,
             'food_type' => $request->food_type,
             'price' => $request->price,
@@ -186,7 +186,7 @@ class FoodMenuController extends Controller
 
         $foodMenu->update([
             'title' => $request->title,
-            'branch_ids' => $request->branch_ids,
+            'branch_ids' => is_array($request->branch_ids) ? array_map('intval', $request->branch_ids) : [],
             'type' => $request->type,
             'food_type' => $request->food_type,
             'price' => $request->price,
