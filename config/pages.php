@@ -2042,6 +2042,48 @@ return [
                 ]
             ]
         ]
+    ],
+    'events-listing' => [
+        'title' => 'Events Listing',
+        'sections' => [
+            [
+                'title' => 'Header Banner',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Events Listing Content',
+                'fields' => [
+                    [
+                        'name' => 'heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter page description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ]
+        ]
     ]
 ];
 

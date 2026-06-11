@@ -29,6 +29,7 @@ class EventApiController extends Controller
         return response()->json([
             'success' => true,
             'data' => $events,
+            'page_content' => \App\Models\Page::getPageContent('events-listing'),
         ]);
     }
 
