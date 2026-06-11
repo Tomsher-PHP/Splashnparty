@@ -130,7 +130,11 @@
 
                         <td>{{ $item->title }}</td>
 
-                        <td>{{ $item->branch?->title }}</td>
+                        <td>
+                            @foreach($item->branches as $branch)
+                                {{ $branch->title }}@if(!$loop->last), @endif
+                            @endforeach
+                        </td>
 
                         <td>{{ $item->category?->title }}</td>
 
