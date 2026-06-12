@@ -71,6 +71,15 @@
             </li>
             @endcan
 
+            @can('view_cake_enquiries')
+            <li>
+                <a href="{{ route('cake-enquiries.index') }}" class="{{ request()->routeIs('cake-enquiries.*') ? 'active-page' : '' }}">
+                    <i class="ri-mail-line text-xl me-14 d-flex w-auto"></i>
+                    <span>Cake Enquiries</span>
+                </a>
+            </li>
+            @endcan
+
             <li class="nav-item dropdown">
                 @php
                     $cafeMenuPermission =

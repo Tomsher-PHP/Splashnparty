@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AttractionController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ContactEnquiryController;
+use App\Http\Controllers\Admin\CakeEnquiryController;
 use App\Http\Controllers\Admin\BalloonDecorationController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BirthdayPackageController;
@@ -110,6 +111,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('general-access', GeneralAccessController::class);
     Route::resource('packages', PackageController::class);
     Route::resource('contact-enquiries', ContactEnquiryController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('cake-enquiries', CakeEnquiryController::class)->only(['index', 'show', 'destroy']);
 
     Route::patch('attractions/{attraction}/status', [AttractionController::class, 'updateStatus'])->name('attractions.update-status');
     Route::resource('attractions', AttractionController::class);

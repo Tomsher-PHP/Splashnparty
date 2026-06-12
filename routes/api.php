@@ -41,6 +41,8 @@ Route::get('/image-gallery',[GalleryApiController::class, 'imageGallery']);
 Route::get('/video-gallery',[GalleryApiController::class, 'videoGallery']);
 Route::get('/outdoor-events',[GalleryApiController::class, 'outdoorEvents']);
 Route::get('/cakes',[CakeApiController::class, 'cakes']);
+Route::get('/cake-details',[CakeApiController::class, 'cakeDetails']);
+Route::post('/cake-enquiry',[CakeApiController::class, 'submitEnquiry']);
 Route::get('/branches',[BranchApiController::class, 'branches']);
 Route::get('/rentals',[RentalApiController::class, 'rentals']);
 Route::get('/cafe-menu-page',[CafeMenuApiController::class, 'cafeMenuPage']);
