@@ -43,10 +43,6 @@ class CakeApiController extends Controller
             $recipient = env('MAIL_ADMIN');
         }
 
-        if (empty($recipient)) {
-            $recipient = 'admin@splashnparty.com'; // final fallback
-        }
-
         // Send mail notification
         try {
             Mail::to($recipient)->send(new CakeEnquiryMail($enquiry));
