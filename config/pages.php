@@ -1781,6 +1781,13 @@ return [
                         'type' => 'text',
                         'placeholder' => 'Enter pricing highlight heading (e.g. Special Offers)',
                         'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'price_sub_heading',
+                        'label' => 'Pricing Highlight Sub-Heading',
+                        'type' => 'text',
+                        'placeholder' => 'Enter pricing highlight sub-heading (e.g. Includes full day access)',
+                        'rules' => ['nullable', 'string', 'max:255'],
                     ]
                 ]
             ],
