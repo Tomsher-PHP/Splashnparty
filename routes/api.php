@@ -53,6 +53,10 @@ Route::get('/balloon-decorations',[BalloonDecorationApiController::class, 'ballo
 Route::get('/birthday-packages',[BirthdayPackageApiController::class, 'birthdayPackages']);
 Route::get('/food-menus',[FoodMenuApiController::class, 'foodMenus']);
 
+Route::get('/food-menu-page',[FoodMenuApiController::class, 'foodMenuPage']);
+Route::get('/food-menu-categories',[FoodMenuApiController::class, 'foodMenuCategories']);
+Route::get('/food-menu-items',[FoodMenuApiController::class, 'foodMenuItems']);
+
 Route::get('/party-extras', [PartyExtrasApiController::class, 'partyExtras']);
 Route::get('/general-access', [GeneralAccessApiController::class, 'generalAccess']);
 

@@ -26,7 +26,7 @@ class FoodMenuController extends Controller
             'view_food_menus'
         );
 
-        $query = FoodMenu::latest();
+        $query = FoodMenu::with(['category'])->latest();
 
         // KEYWORD SEARCH
         if ($keyword = request('title')) {
@@ -38,13 +38,32 @@ class FoodMenuController extends Controller
             );
         }
 
+        // FILTER CATEGORY
+        if ($category = request('category')) {
+            $query->where(
+                'food_menu_category_id',
+                $category
+            );
+        }
+
+        // FILTER LOCATION (BRANCH)
+        if ($branch = request('branch')) {
+            $query->where(function ($q) use ($branch) {
+                $q->whereJsonContains('branch_ids', (int) $branch)
+                  ->orWhereJsonContains('branch_ids', (string) $branch);
+            });
+        }
+
         $foodMenus = $query
             ->paginate(10)
             ->withQueryString();
 
+        $categories = FoodMenuCategory::orderBy('title')->get();
+        $branches = Branch::where('status', 1)->orderBy('title')->get();
+
         return view(
             'food-menus.index',
-            compact('foodMenus')
+            compact('foodMenus', 'categories', 'branches')
         );
     }
 

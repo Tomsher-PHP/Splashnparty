@@ -30,6 +30,26 @@
                         name="title"
                         value="{{ request('title') }}">
                 </div>
+                <div>
+                    <select name="category" class="form-select form-select-sm">
+                        <option value="">All Categories</option>
+                        @foreach($categories as $cat)
+                            <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
+                                {{ $cat->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <select name="branch" class="form-select form-select-sm">
+                        <option value="">All Locations</option>
+                        @foreach($branches as $b)
+                            <option value="{{ $b->id }}" {{ request('branch') == $b->id ? 'selected' : '' }}>
+                                {{ $b->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary-600">
                         <i class="ri-search-line"></i> Filter
@@ -154,7 +174,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8"
+                        <td colspan="10"
                             class="text-center">
                             No records found
                         </td>
