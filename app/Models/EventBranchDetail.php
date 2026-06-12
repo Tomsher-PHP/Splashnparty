@@ -15,6 +15,11 @@ class EventBranchDetail extends Model
         'description',
         'image',
         'middle_banner',
+        'features_title',
+        'features_description',
+        'middle_banner_link',
+        'gallery_title',
+        'gallery_description',
 
         'sort_order',
         'status',
