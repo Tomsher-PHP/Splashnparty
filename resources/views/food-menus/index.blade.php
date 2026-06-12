@@ -61,6 +61,7 @@
                         <th>
                             Branch
                         </th>
+                        <th>Category</th>
                         <th>
                             Type
                         </th>
@@ -102,6 +103,7 @@
                                 {{ $branch->title }}@if(!$loop->last), @endif
                             @endforeach
                         </td>
+                        <td>{{ $foodMenu->category?->title }}</td>
                         <td>
                             {{ ucfirst($foodMenu->type) }}
                         </td>

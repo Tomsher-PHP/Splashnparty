@@ -17,6 +17,7 @@ class FoodMenu extends Model
         'image',
         'sort_order',
         'status',
+        'food_menu_category_id',
     ];
 
     protected $casts = [
@@ -29,5 +30,13 @@ class FoodMenu extends Model
             'id',
             $this->branch_ids ?? []
         )->get();
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(
+            FoodMenuCategory::class,
+            'food_menu_category_id'
+        );
     }
 }
