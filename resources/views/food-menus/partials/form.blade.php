@@ -54,20 +54,35 @@
                 <label class="form-label fw-semibold">
                     Type
                 </label>
-
                 <select name="type"
                     class="form-select form-select-sm">
-
                     <option value="adult">
                         Adult
                     </option>
-
                     <option value="kid">
                         Kid
                     </option>
-
                 </select>
+            </div>
 
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">
+                    Category
+                </label>
+                <select name="food_menu_category_id"
+                    class="form-select form-select-sm"
+                    required>
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}"
+                            {{ old('food_menu_category_id', $foodMenu->food_menu_category_id ?? '') == $category->id ? 'selected' : '' }}>
+                            {{ $category->title }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="col-md-3">

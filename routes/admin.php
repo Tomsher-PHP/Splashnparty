@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\AttractionController;
 use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\ContactEnquiryController;
 use App\Http\Controllers\Admin\BalloonDecorationController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BirthdayPackageController;
@@ -12,14 +11,18 @@ use App\Http\Controllers\Admin\CafeMenuCategoryController;
 use App\Http\Controllers\Admin\CafeMenuController;
 use App\Http\Controllers\Admin\CakeController;
 use App\Http\Controllers\Admin\ClientLogoController;
+use App\Http\Controllers\Admin\ContactEnquiryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\FoodMenuCategoryController;
 use App\Http\Controllers\Admin\FoodMenuController;
 use App\Http\Controllers\Admin\GeneralAccessController;
 use App\Http\Controllers\Admin\GeneralSettingController;
 use App\Http\Controllers\Admin\HeaderMenuController;
 use App\Http\Controllers\Admin\ImageGalleryController;
+use App\Http\Controllers\Admin\NewsletterSubscriptionController;
+use App\Http\Controllers\Admin\NewsUpdateController;
 use App\Http\Controllers\Admin\OutDoorEventsController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PageController;
@@ -30,8 +33,6 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\VideoGalleryController;
-use App\Http\Controllers\Admin\NewsUpdateController;
-use App\Http\Controllers\Admin\NewsletterSubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -103,6 +104,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::resource('events', EventController::class)->parameters(['events' => 'event'])->except(['show']);
 
+    Route::resource('food-menu-categories', FoodMenuCategoryController::class);
     Route::resource('food-menus', FoodMenuController::class);
 
     Route::resource('party-extras', PartyExtraController::class);

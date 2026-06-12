@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\FoodMenu;
+use App\Models\FoodMenuCategory;
 use Illuminate\Http\Request;
 
 class FoodMenuController extends Controller
@@ -58,9 +59,14 @@ class FoodMenuController extends Controller
             1
         )->orderBy('title')->get();
 
+        $categories = FoodMenuCategory::where(
+            'status',
+            1
+        )->orderBy('sort_order')->get();
+
         return view(
             'food-menus.create',
-            compact('branches')
+            compact('branches', 'categories')
         );
     }
 
@@ -81,6 +87,8 @@ class FoodMenuController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'sort_order' => 'nullable|integer',
             'status' => 'required|boolean',
+            'food_menu_category_id' =>
+                'required|exists:food_menu_categories,id',
         ]);
 
         $image = null;
@@ -105,6 +113,8 @@ class FoodMenuController extends Controller
             'image' => $image,
             'sort_order' => $request->sort_order ?? 0,
             'status' => $request->status,
+            'food_menu_category_id' =>
+                $request->food_menu_category_id,
         ]);
         
 
@@ -127,11 +137,17 @@ class FoodMenuController extends Controller
             1
         )->orderBy('title')->get();
 
+        $categories = FoodMenuCategory::where(
+            'status',
+            1
+        )->orderBy('sort_order')->get();
+
         return view(
             'food-menus.edit',
             compact(
                 'foodMenu',
-                'branches'
+                'branches',
+                'categories',
             )
         );
     }
@@ -162,6 +178,8 @@ class FoodMenuController extends Controller
             'sort_order' => 'nullable|integer',
 
             'status' => 'required|boolean',
+            'food_menu_category_id' =>
+                'required|exists:food_menu_categories,id',
         ]);
 
         $image = $foodMenu->image;
@@ -194,6 +212,8 @@ class FoodMenuController extends Controller
             'image' => $image,
             'sort_order' => $request->sort_order ?? 0,
             'status' => $request->status,
+            'food_menu_category_id' =>
+                $request->food_menu_category_id,
         ]);
 
         return redirect()
