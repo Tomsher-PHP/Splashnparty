@@ -62,7 +62,7 @@ class PackageApiController extends Controller
             'success' => true,
             'message' => 'Package details fetched successfully',
             'data' => $packages,
-            'page_content' => \App\Models\Page::getPageContent('packages'),
+            'page_content' => \App\Models\Page::getPageContent('book-a-trip'),
         ]);
     }
 
