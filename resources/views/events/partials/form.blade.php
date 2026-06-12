@@ -545,11 +545,11 @@ $isEdit
                             class="form-select form-select-sm"
                             name="branch_details[{{ $index }}][status]">
 
-                            <option value="1">
+                            <option value="1" {{ ($detail['status'] ?? 1) == 1 ? 'selected' : '' }}>
                                 Active
                             </option>
 
-                            <option value="0">
+                            <option value="0" {{ ($detail['status'] ?? 1) == 0 ? 'selected' : '' }}>
                                 Inactive
                             </option>
 
