@@ -1141,7 +1141,14 @@ return [
                         'label' => 'Banner Image',
                         'type' => 'image',
                         'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
-                    ]
+                    ],
+                    [
+                        'name' => 'birthday_booking_link',
+                        'label' => 'Birthday Booking Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter birthday booking link',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
                 ]
             ],
             [
