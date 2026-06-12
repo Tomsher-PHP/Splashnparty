@@ -51,6 +51,8 @@ class VideoGalleryController extends Controller
 
             'category_name'      => 'required|string|max:255',
 
+            'slug'               => 'required|string|max:255|unique:video_galleries,slug',
+
             'youtube_link'       => 'required|array|min:1',
 
             'youtube_link.*'     => 'required|url',
@@ -92,6 +94,8 @@ class VideoGalleryController extends Controller
         VideoGallery::create([
 
             'category_name'       => $request->category_name,
+
+            'slug'                => $request->slug,
 
             'youtube_link'        => array_values($youtubeLinks),
 
@@ -137,6 +141,8 @@ class VideoGalleryController extends Controller
         $request->validate([
 
             'category_name'      => 'required|string|max:255',
+
+            'slug'               => 'required|string|max:255|unique:video_galleries,slug,' . $video_gallery->id,
 
             'youtube_link'       => 'required|array|min:1',
 
@@ -219,6 +225,8 @@ class VideoGalleryController extends Controller
         $video_gallery->update([
 
             'category_name'       => $request->category_name,
+
+            'slug'                => $request->slug,
 
             'youtube_link'        => array_values($youtubeLinks),
 

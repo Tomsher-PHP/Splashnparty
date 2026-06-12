@@ -18,17 +18,15 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label fw-semibold">
-                    Branch
+                    Branches
                 </label>
-                <select name="branch_id"
-                    class="form-select form-select-sm"
+                <select name="branch_ids[]"
+                    class="form-control select2"
+                    multiple
                     required>
-                    <option value="">
-                        Select Branch
-                    </option>
                     @foreach($branches as $branch)
                         <option value="{{ $branch->id }}"
-                            {{ old('branch_id', $cafe_menu->branch_id ?? '') == $branch->id ? 'selected' : '' }}>
+                            {{ in_array($branch->id, old('branch_ids', $cafe_menu->branch_ids ?? [])) ? 'selected' : '' }}>
                             {{ $branch->title }}
                         </option>
                     @endforeach
@@ -185,7 +183,15 @@
         </div>
     </div>
 </div>
+@section('script')
 <script>
+    $(function () {
+        $('.select2').select2({
+            width: '100%',
+            placeholder: 'Select Branches'
+        });
+    });
+
     document.addEventListener('click', function(e) {
         if (e.target.closest('.remove-menu-image')) {
             if (!confirm('Remove image?')) {
@@ -197,3 +203,4 @@
         }
     });
 </script>
+@endsection

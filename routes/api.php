@@ -32,6 +32,8 @@ Route::post('/newsletter-subscribe', [NewsletterApiController::class, 'subscribe
 Route::get('/waterpark', [PageApiController::class, 'waterpark']);
 Route::get('/footer', [PageApiController::class, 'footerSettings']);
 Route::get('/settings', [PageApiController::class, 'settings']);
+Route::get('/gallery-categories', [GalleryApiController::class, 'galleryCategories']);
+Route::get('/gallery-items', [GalleryApiController::class, 'galleryItems']);
 
 
 
@@ -41,7 +43,10 @@ Route::get('/outdoor-events',[GalleryApiController::class, 'outdoorEvents']);
 Route::get('/cakes',[CakeApiController::class, 'cakes']);
 Route::get('/branches',[BranchApiController::class, 'branches']);
 Route::get('/rentals',[RentalApiController::class, 'rentals']);
-Route::get('/cafe-menus',[CafeMenuApiController::class, 'cafeMenus']);
+Route::get('/cafe-menu-page',[CafeMenuApiController::class, 'cafeMenuPage']);
+Route::get('/cafe-menu-categories',[CafeMenuApiController::class, 'cafeMenuCategories']);
+Route::get('/cafe-menu-items',[CafeMenuApiController::class, 'cafeMenuItems']);
+
 Route::get('/balloon-decorations',[BalloonDecorationApiController::class, 'balloonDecorations']);
 Route::get('/birthday-packages',[BirthdayPackageApiController::class, 'birthdayPackages']);
 Route::get('/food-menus',[FoodMenuApiController::class, 'foodMenus']);
@@ -71,12 +76,6 @@ Route::get(
 // Details 
 Route::get('/news-details',[NewsUpdateApiController::class, 'show']);
 
-Route::get(
-    'events',
-    [EventApiController::class, 'index']
-);
+Route::get('events',[EventApiController::class, 'index']);
 
-Route::get(
-    'events/{id}',
-    [EventApiController::class, 'show']
-);
+Route::get('events-data',[EventApiController::class, 'show']);

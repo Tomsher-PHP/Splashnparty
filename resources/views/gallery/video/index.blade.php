@@ -81,9 +81,12 @@
                             </td>
 
                             <td>
-                                <div class="fw-semibold">
+                                <span class="fw-semibold d-block">
                                     {{ $gallery->category_name }}
-                                </div>
+                                </span>
+                                <span class="text-xs text-secondary-light font-monospace">
+                                    {{ $gallery->slug }}
+                                </span>
                             </td>
 
                             <td>
