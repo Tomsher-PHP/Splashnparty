@@ -199,6 +199,14 @@
                                 </a>
                             </li>
                         @endcan
+                        @can('view_food_menu_categories')
+                            <li class="submenu-item">
+                                <a href="{{ route('food-menu-categories.index') }}">
+                                    <i class="ri-restaurant-line text-xl me-14 d-flex w-auto"></i>
+                                    <span>Food Menu Categories</span>
+                                </a>
+                            </li>
+                        @endcan
                         @can('view_food_menus')
                             <li class="submenu-item">
                                 <a href="{{ route('food-menus.index') }}">
