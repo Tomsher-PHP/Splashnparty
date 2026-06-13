@@ -102,14 +102,14 @@ class PageController extends Controller
 
                         if ($subField['type'] === 'image') {
                             // If it's an image, a new upload is validated, otherwise it can be empty (meaning keep existing)
-                            $rules["{$fieldName}.*.{$subName}"] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'];
+                            $rules["{$fieldName}.*.{$subName}"] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:500'];
                         } elseif ($subField['type'] === 'repeater') {
                             $rules["{$fieldName}.*.{$subName}"] = $subField['rules'] ?? ['nullable', 'array'];
                             foreach ($subField['fields'] as $nestedSubField) {
                                 $nestedSubName = $nestedSubField['name'];
                                 $nestedSubRules = $nestedSubField['rules'] ?? [];
                                 if ($nestedSubField['type'] === 'image') {
-                                    $rules["{$fieldName}.*.{$subName}.*.{$nestedSubName}"] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'];
+                                    $rules["{$fieldName}.*.{$subName}.*.{$nestedSubName}"] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:500'];
                                 } else {
                                     $rules["{$fieldName}.*.{$subName}.*.{$nestedSubName}"] = $nestedSubRules;
                                 }
@@ -126,11 +126,11 @@ class PageController extends Controller
                     $rules[$fieldName] = ['nullable', 'array'];
                     $rules["{$fieldName}.*.type"] = ['required', 'string', 'in:existing,upload'];
                     $rules["{$fieldName}.*.value"] = ['nullable', 'string'];
-                    $rules["{$fieldName}.*.file"] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'];
+                    $rules["{$fieldName}.*.file"] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:500'];
                 } else {
                     $fieldRules = $field['rules'] ?? [];
                     if ($field['type'] === 'image') {
-                        $rules[$fieldName] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'];
+                        $rules[$fieldName] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:500'];
                     } else {
                         $rules[$fieldName] = $fieldRules;
                     }
