@@ -80,7 +80,7 @@ $isEdit = isset($package);
             </div>
 
             {{-- PRICE --}}
-            <div class="col-md-6">
+            <div class="col-md-6 d-none">
 
                 <label class="form-label fw-semibold">
                     Price
