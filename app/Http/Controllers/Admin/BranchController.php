@@ -67,7 +67,7 @@ class BranchController extends Controller
             'address'       => 'nullable|string',
             'phone' => [
                 'required',
-                'regex:/^(?:\+971|00971|0)?5[0-9]{8}$/'
+                'regex:/^(?:\+971|00971)?(?:5\d{8}|[2-9]\d{7})$|^0(?:5\d{8}|[2-9]\d{7})$/'
             ],
             'email'         => 'nullable|email|max:255',
             'working_hours' => 'nullable|string',
@@ -135,7 +135,7 @@ class BranchController extends Controller
             'address'       => 'nullable|string',
             'phone' => [
                 'required',
-                'regex:/^(?:\+971|00971|0)?5[0-9]{8}$/'
+                'regex:/^(?:\+971|00971)?(?:5\d{8}|[2-9]\d{7})$|^0(?:5\d{8}|[2-9]\d{7})$/'
             ],
             'email'         => 'nullable|email|max:255',
             'working_hours' => 'nullable|string',
