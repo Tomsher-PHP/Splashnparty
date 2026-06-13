@@ -12,8 +12,18 @@ class Event extends Model
         'slug',
         'image',
         'banner_image',
+        'heading',
+        'description',
         'sort_order',
         'status',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+        'og_title',
+        'og_description',
+        'og_image',
+        'twitter_title',
+        'twitter_description',
     ];
 
     public function branchDetails()

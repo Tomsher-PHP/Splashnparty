@@ -23,4 +23,9 @@ class Cake extends Model
         'gallery_images' => 'array',
         'status'         => 'boolean',
     ];
+
+    public function enquiries()
+    {
+        return $this->hasMany(CakeEnquiry::class);
+    }
 }

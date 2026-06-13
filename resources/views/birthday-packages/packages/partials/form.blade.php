@@ -80,7 +80,7 @@ $isEdit = isset($package);
             </div>
 
             {{-- PRICE --}}
-            <div class="col-md-6">
+            <div class="col-md-6 d-none">
 
                 <label class="form-label fw-semibold">
                     Price
@@ -218,9 +218,12 @@ $isEdit = isset($package);
                 <label class="form-label fw-semibold">
                     Description
                 </label>
-                <textarea name="description"
-                    rows="5"
-                    class="form-control">{{ old('description', $package->description ?? '') }}</textarea>
+                <div class="quill-editor-wrapper">
+                    <div class="quill-editor" data-input="description">
+                        {!! old('description', $package->description ?? '') !!}
+                    </div>
+                    <textarea name="description" id="description" class="d-none">{{ old('description', $package->description ?? '') }}</textarea>
+                </div>
             </div>
         </div>
     </div>
@@ -244,6 +247,42 @@ $isEdit = isset($package);
             .replace(/^-+|-+$/g, '');
 
         document.getElementById('slug').value = slug;
+    });
+
+    $(document).ready(function() {
+        // Initialize Quill Editors for wysiwyg fields
+        $('.quill-editor').each(function() {
+            const editor = this;
+            if (editor.dataset.quillInit) return;
+            
+            const inputId = $(editor).data('input');
+            const textarea = document.getElementById(inputId);
+            
+            const quill = new Quill(editor, {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ color: [] }, { background: [] }],
+                        
+                        ['blockquote', 'code-block'],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        [{ indent: '-1' }, { indent: '+1' }],
+                        [{ align: [] }],
+                        ['clean']
+                    ]
+                }
+            });
+
+            quill.on('text-change', function() {
+                if (textarea) {
+                    textarea.value = quill.root.innerHTML;
+                }
+            });
+            
+            editor.dataset.quillInit = "1";
+        });
     });
 </script>
 

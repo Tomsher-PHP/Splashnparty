@@ -137,7 +137,12 @@ class BirthdayPackageController extends Controller
 
             'price' => $request->price,
 
-            'highlighted_description' => $request->highlighted_description,
+            'minimum_kids' => $request->minimum_kids,
+            'duration' => $request->duration,
+            'weekday_rate' => $request->weekday_rate,
+            'weekend_rate' => $request->weekend_rate,
+
+            'highlighted_description' => $request->highlighted_description ?? NULL,
 
             'description' => $request->description,
 
@@ -275,7 +280,7 @@ class BirthdayPackageController extends Controller
 
             'price' => $request->price,
 
-            'highlighted_description' => $request->highlighted_description,
+            'highlighted_description' => $request->highlighted_description ?? NULL,
 
             'description' => $request->description,
 

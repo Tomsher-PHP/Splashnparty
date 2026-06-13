@@ -135,6 +135,26 @@ $isEdit
                 </div>
                 @endif
             </div>
+
+            <div class="col-md-6">
+                <label>
+                    Heading
+                </label>
+                <input type="text"
+                    name="heading"
+                    class="form-control form-control-sm"
+                    value="{{ old('heading', $event->heading ?? '') }}">
+            </div>
+
+            <div class="col-md-12">
+                <label>
+                    Description
+                </label>
+                <textarea
+                    name="description"
+                    rows="3"
+                    class="form-control">{{ old('description', $event->description ?? '') }}</textarea>
+            </div>
         </div>
     </div>
 </div>
@@ -158,7 +178,19 @@ $isEdit
         <div id="branchDetailsWrapper">
 
             @foreach($details as $index => $detail)
-            <div class="branch-detail-item border rounded p-3 mb-3">
+            <div class="branch-detail-item border rounded p-3 mb-3 bg-light bg-opacity-25">
+
+                <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-neutral-200 dark:border-neutral-700">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary-600 branch-index-badge">#{{ $index + 1 }}</span>
+                        <strong class="branch-header-title text-neutral-800 dark:text-neutral-200">
+                            @php
+                                $selectedBranch = $branches->firstWhere('id', $detail['branch_id'] ?? null);
+                            @endphp
+                            {{ $selectedBranch ? 'Branch Detail: ' . $selectedBranch->title : 'Branch Detail: (Unassigned)' }}
+                        </strong>
+                    </div>
+                </div>
 
                 <div class="row g-3">
 
@@ -195,6 +227,9 @@ $isEdit
                             name="branch_details[{{ $index }}][image]"
                             class="form-control form-control-sm">
                         @if(!empty($detail['image']))
+                        <input type="hidden"
+                            name="branch_details[{{ $index }}][old_image]"
+                            value="{{ $detail['image'] }}">
                         <div class="mb-2">
 
                             <img src="{{ asset($detail['image']) }}"
@@ -220,12 +255,18 @@ $isEdit
                     </div>
 
                     {{-- Description --}}
-                    <div class="col-md-12">
+                    <div class="col-md-12 mb-3">
                         <label>Description</label>
+                        <div class="quill-editor-wrapper">
+                            <div class="quill-editor"
+                                data-input="description_{{ $index }}">
+                                {!! $detail['description'] ?? '' !!}
+                            </div>
+                        </div>
                         <textarea
-                            rows="4"
-                            class="form-control"
-                            name="branch_details[{{ $index }}][description]">{{ $detail['description'] ?? '' }}</textarea>
+                            name="branch_details[{{ $index }}][description]"
+                            id="description_{{ $index }}"
+                            class="d-none">{{ $detail['description'] ?? '' }}</textarea>
                     </div>
 
                     {{-- FEATURES --}}
@@ -238,6 +279,23 @@ $isEdit
                                 class="btn btn-primary btn-sm addFeatureBtn">
                                 Add Feature
                             </button>
+                        </div>
+
+                        <div class="row g-2 mb-3 mt-2">
+                            <div class="col-md-6">
+                                <label>Features Section Title</label>
+                                <input type="text"
+                                    name="branch_details[{{ $index }}][features_title]"
+                                    class="form-control form-control-sm"
+                                    value="{{ $detail['features_title'] ?? '' }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Features Section Description</label>
+                                <textarea
+                                    name="branch_details[{{ $index }}][features_description]"
+                                    rows="2"
+                                    class="form-control ">{{ $detail['features_description'] ?? '' }}</textarea>
+                            </div>
                         </div>
 
                         <div class="features-wrapper">
@@ -254,6 +312,9 @@ $isEdit
                                             class="form-control form-control-sm"
                                             name="branch_details[{{ $index }}][features][{{ $featureIndex }}][icon]">
                                         @if(!empty($feature['icon']))
+                                        <input type="hidden"
+                                            name="branch_details[{{ $index }}][features][{{ $featureIndex }}][old_icon]"
+                                            value="{{ $feature['icon'] }}">
                                         <div class="mb-2">
 
                                             <img src="{{ asset($feature['icon']) }}"
@@ -330,6 +391,9 @@ $isEdit
                         <label>Middle Banner</label>
 
                         @if(!empty($detail['middle_banner']))
+                        <input type="hidden"
+                            name="branch_details[{{ $index }}][old_middle_banner]"
+                            value="{{ $detail['middle_banner'] }}">
                         <div class="mb-2">
 
                             <img src="{{ asset($detail['middle_banner']) }}"
@@ -356,6 +420,14 @@ $isEdit
                             name="branch_details[{{ $index }}][middle_banner]"
                             class="form-control form-control-sm">
 
+                        <div class="mt-2">
+                            <label>Middle Banner Link</label>
+                            <input type="text"
+                                name="branch_details[{{ $index }}][middle_banner_link]"
+                                class="form-control form-control-sm"
+                                value="{{ $detail['middle_banner_link'] ?? '' }}">
+                        </div>
+
                     </div>
 
                     {{-- GALLERY --}}
@@ -368,6 +440,23 @@ $isEdit
                                 class="btn btn-primary btn-sm addGalleryBtn">
                                 Add Gallery
                             </button>
+                        </div>
+
+                        <div class="row g-2 mb-3 mt-2">
+                            <div class="col-md-6">
+                                <label>Gallery Section Title</label>
+                                <input type="text"
+                                    name="branch_details[{{ $index }}][gallery_title]"
+                                    class="form-control form-control-sm"
+                                    value="{{ $detail['gallery_title'] ?? '' }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Gallery Section Description</label>
+                                <textarea
+                                    name="branch_details[{{ $index }}][gallery_description]"
+                                    rows="2"
+                                    class="form-control ">{{ $detail['gallery_description'] ?? '' }}</textarea>
+                            </div>
                         </div>
 
                         <div class="gallery-wrapper">
@@ -392,6 +481,9 @@ $isEdit
                                             class="form-control form-control-sm"
                                             name="branch_details[{{ $index }}][gallery][{{ $galleryIndex }}][image]">
                                         @if(!empty($gallery['image']))
+                                        <input type="hidden"
+                                            name="branch_details[{{ $index }}][gallery][{{ $galleryIndex }}][old_image]"
+                                            value="{{ $gallery['image'] }}">
                                         <div class="mb-2">
                                             <img src="{{ asset($gallery['image']) }}"
                                                 width="80">
@@ -453,11 +545,11 @@ $isEdit
                             class="form-select form-select-sm"
                             name="branch_details[{{ $index }}][status]">
 
-                            <option value="1">
+                            <option value="1" {{ ($detail['status'] ?? 1) == 1 ? 'selected' : '' }}>
                                 Active
                             </option>
 
-                            <option value="0">
+                            <option value="0" {{ ($detail['status'] ?? 1) == 0 ? 'selected' : '' }}>
                                 Inactive
                             </option>
 
@@ -480,6 +572,8 @@ $isEdit
         </div>
     </div>
 </div>
+
+@include('components.seo-fields', ['model' => $event ?? null])
 
 <div class="mt-3 text-end">
     <button class="btn btn-primary">
@@ -603,9 +697,15 @@ $isEdit
             let div = document.createElement('div');
 
             div.className =
-                'branch-detail-item border rounded p-3 mb-3';
+                'branch-detail-item border rounded p-3 mb-3 bg-light bg-opacity-25';
 
             div.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-neutral-200 dark:border-neutral-700">
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-primary-600 branch-index-badge">#${branchIndex + 1}</span>
+                <strong class="branch-header-title text-neutral-800 dark:text-neutral-200">Branch Detail: (Unassigned)</strong>
+            </div>
+        </div>
         <div class="row g-3">
 
             <div class="col-md-4">
@@ -636,13 +736,17 @@ $isEdit
                     name="branch_details[${branchIndex}][image]">
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-12 mb-3">
                 <label>Description</label>
-
+                <div class="quill-editor-wrapper">
+                    <div class="quill-editor"
+                        data-input="description_${branchIndex}">
+                    </div>
+                </div>
                 <textarea
-                    rows="4"
-                    class="form-control"
-                    name="branch_details[${branchIndex}][description]"></textarea>
+                    name="branch_details[${branchIndex}][description]"
+                    id="description_${branchIndex}"
+                    class="d-none"></textarea>
             </div>
 
             <div class="col-md-12">
@@ -653,6 +757,22 @@ $isEdit
                         class="btn btn-primary btn-sm addFeatureBtn">
                         Add Feature
                     </button>
+                </div>
+
+                <div class="row g-2 mb-3 mt-2">
+                    <div class="col-md-6">
+                        <label>Features Section Title</label>
+                        <input type="text"
+                            class="form-control form-control-sm"
+                            name="branch_details[${branchIndex}][features_title]">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Features Section Description</label>
+                        <textarea
+                            class="form-control"
+                            rows="2"
+                            name="branch_details[${branchIndex}][features_description]"></textarea>
+                    </div>
                 </div>
 
                 <div class="features-wrapper"></div>
@@ -666,6 +786,13 @@ $isEdit
                     name="branch_details[${branchIndex}][middle_banner]">
             </div>
 
+            <div class="col-md-12 mt-2">
+                <label>Middle Banner Link</label>
+                <input type="text"
+                    class="form-control form-control-sm"
+                    name="branch_details[${branchIndex}][middle_banner_link]">
+            </div>
+
             <div class="col-md-12">
                 <div class="d-flex justify-content-between">
                     <h6>Gallery</h6>
@@ -674,6 +801,22 @@ $isEdit
                         class="btn btn-primary btn-sm addGalleryBtn">
                         Add Gallery
                     </button>
+                </div>
+
+                <div class="row g-2 mb-3 mt-2">
+                    <div class="col-md-6">
+                        <label>Gallery Section Title</label>
+                        <input type="text"
+                            class="form-control form-control-sm"
+                            name="branch_details[${branchIndex}][gallery_title]">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Gallery Section Description</label>
+                        <textarea
+                            class="form-control"
+                            rows="2"
+                            name="branch_details[${branchIndex}][gallery_description]"></textarea>
+                    </div>
                 </div>
 
                 <div class="gallery-wrapper"></div>
@@ -717,6 +860,8 @@ $isEdit
     `;
 
             wrapper.appendChild(div);
+            initQuillEditors(div);
+            updateBranchIndices();
 
             branchIndex++;
 
@@ -727,6 +872,16 @@ $isEdit
         if (e.target.classList.contains('branch-select')) {
             refreshBranchDropdowns();
             toggleAddMoreButton();
+
+            // Update branch title in header
+            const branchItem = e.target.closest('.branch-detail-item');
+            if (branchItem) {
+                const headerTitle = branchItem.querySelector('.branch-header-title');
+                if (headerTitle) {
+                    const selectedText = e.target.options[e.target.selectedIndex].text;
+                    headerTitle.innerText = e.target.value ? `Branch Detail: ${selectedText}` : 'Branch Detail: (Unassigned)';
+                }
+            }
         }
     });
 
@@ -766,6 +921,7 @@ $isEdit
                     removeBtn
                         .closest('.branch-detail-item')
                         .remove();
+                    updateBranchIndices();
                     refreshBranchDropdowns();
                     toggleAddMoreButton();
                 }
@@ -825,8 +981,18 @@ $isEdit
         // FIX EDIT FORM INITIAL VALUES
         setTimeout(() => {
             refreshBranchDropdowns();
+            updateBranchIndices();
         }, 100);
     });
+
+    function updateBranchIndices() {
+        document.querySelectorAll('#branchDetailsWrapper .branch-detail-item').forEach((item, index) => {
+            let badge = item.querySelector('.branch-index-badge');
+            if (badge) {
+                badge.innerText = `#${index + 1}`;
+            }
+        });
+    }
 
     document.getElementById('title').addEventListener('keyup', function() {
         let slug = this.value
@@ -973,6 +1139,45 @@ $isEdit
         }
 
     });
+
+    // quill editor starts
+    document.addEventListener('DOMContentLoaded', function () {
+        initQuillEditors();
+    });
+
+    function initQuillEditors(context = document) {
+        context.querySelectorAll('.quill-editor').forEach(editor => {
+            if (editor.dataset.quillInit) {
+                return;
+            }
+
+            const inputId = editor.dataset.input;
+            const textarea = document.getElementById(inputId);
+            if (!textarea) return;
+
+            const quill = new Quill(editor, {
+                theme: 'snow',
+                placeholder: 'Write description here...',
+                modules: {
+                    toolbar: [
+                        [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ color: [] }, { background: [] }],
+                        ['blockquote', 'code-block'],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        [{ indent: '-1' }, { indent: '+1' }],
+                        [{ align: [] }],
+                        ['clean']
+                    ]
+                }
+            });
+
+            quill.on('text-change', function () {
+                textarea.value = quill.root.innerHTML;
+            });
+            editor.dataset.quillInit = "1";
+        });
+    }
 </script>
 
 @endsection

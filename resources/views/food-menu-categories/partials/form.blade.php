@@ -45,27 +45,29 @@
                 </div>
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label>Sort Order</label>
-                <input type="number"
-                    name="sort_order"
-                    class="form-control form-control-sm"
-                    value="{{ old('sort_order', $category->sort_order ?? 0) }}">
-            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label>Sort Order</label>
+                    <input type="number"
+                        name="sort_order"
+                        class="form-control form-control-sm"
+                        value="{{ old('sort_order', $category->sort_order ?? 0) }}">
+                </div>
 
-            <div class="col-md-6 mb-3">
-                <label>Status</label>
-                <select name="status" class="form-select form-select-sm">
-                    <option value="1"
-                        {{ old('status', $category->status ?? 1) == 1 ? 'selected' : '' }}>
-                        Active
-                    </option>
+                <div class="col-md-6">
+                    <label>Status</label>
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="1"
+                            {{ old('status', $category->status ?? 1) == 1 ? 'selected' : '' }}>
+                            Active
+                        </option>
 
-                    <option value="0"
-                        {{ old('status', $category->status ?? 1) == 0 ? 'selected' : '' }}>
-                        Inactive
-                    </option>
-                </select>
+                        <option value="0"
+                            {{ old('status', $category->status ?? 1) == 0 ? 'selected' : '' }}>
+                            Inactive
+                        </option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="text-end mt-5">

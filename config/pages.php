@@ -283,7 +283,7 @@ return [
                     [
                         'name' => 'description',
                         'label' => 'Description',
-                        'type' => 'textarea',
+                        'type' => 'wysiwyg',
                         'placeholder' => 'Enter package description',
                         'rules' => ['nullable', 'string'],
                     ]
@@ -883,11 +883,46 @@ return [
                 'title' => 'Bottom Section',
                 'fields' => [
                     [
-                        'name' => 'bottom_description',
-                        'label' => 'Bottom Description',
+                        'name' => 'title1',
+                        'label' => 'Title 1',
+                        'type' => 'text',
+                        'placeholder' => 'Enter title 1',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description1',
+                        'label' => 'Description 1',
                         'type' => 'textarea',
-                        'placeholder' => 'Enter bottom description details',
+                        'placeholder' => 'Enter description 1',
                         'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'title2',
+                        'label' => 'Title 2',
+                        'type' => 'text',
+                        'placeholder' => 'Enter title 2',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description2',
+                        'label' => 'Description 2',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description 2',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'btn_text',
+                        'label' => 'Button Text',
+                        'type' => 'text',
+                        'placeholder' => 'Enter button text',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'btn_link',
+                        'label' => 'Button Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter button link',
+                        'rules' => ['nullable', 'string', 'max:255'],
                     ]
                 ]
             ]
@@ -1141,7 +1176,14 @@ return [
                         'label' => 'Banner Image',
                         'type' => 'image',
                         'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
-                    ]
+                    ],
+                    [
+                        'name' => 'birthday_booking_link',
+                        'label' => 'Birthday Booking Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter birthday booking link',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
                 ]
             ],
             [
@@ -1773,6 +1815,13 @@ return [
                         'label' => 'Pricing Highlight Heading',
                         'type' => 'text',
                         'placeholder' => 'Enter pricing highlight heading (e.g. Special Offers)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'price_sub_heading',
+                        'label' => 'Pricing Highlight Sub-Heading',
+                        'type' => 'text',
+                        'placeholder' => 'Enter pricing highlight sub-heading (e.g. Includes full day access)',
                         'rules' => ['nullable', 'string', 'max:255'],
                     ]
                 ]

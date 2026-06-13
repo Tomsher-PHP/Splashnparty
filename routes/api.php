@@ -41,6 +41,8 @@ Route::get('/image-gallery',[GalleryApiController::class, 'imageGallery']);
 Route::get('/video-gallery',[GalleryApiController::class, 'videoGallery']);
 Route::get('/outdoor-events',[GalleryApiController::class, 'outdoorEvents']);
 Route::get('/cakes',[CakeApiController::class, 'cakes']);
+Route::get('/cake-details',[CakeApiController::class, 'cakeDetails']);
+Route::post('/cake-enquiry',[CakeApiController::class, 'submitEnquiry']);
 Route::get('/branches',[BranchApiController::class, 'branches']);
 Route::get('/rentals',[RentalApiController::class, 'rentals']);
 Route::get('/cafe-menu-page',[CafeMenuApiController::class, 'cafeMenuPage']);
@@ -50,6 +52,10 @@ Route::get('/cafe-menu-items',[CafeMenuApiController::class, 'cafeMenuItems']);
 Route::get('/balloon-decorations',[BalloonDecorationApiController::class, 'balloonDecorations']);
 Route::get('/birthday-packages',[BirthdayPackageApiController::class, 'birthdayPackages']);
 Route::get('/food-menus',[FoodMenuApiController::class, 'foodMenus']);
+
+Route::get('/food-menu-page',[FoodMenuApiController::class, 'foodMenuPage']);
+Route::get('/food-menu-categories',[FoodMenuApiController::class, 'foodMenuCategories']);
+Route::get('/food-menu-items',[FoodMenuApiController::class, 'foodMenuItems']);
 
 Route::get('/party-extras', [PartyExtrasApiController::class, 'partyExtras']);
 Route::get('/general-access', [GeneralAccessApiController::class, 'generalAccess']);
@@ -78,4 +84,4 @@ Route::get('/news-details',[NewsUpdateApiController::class, 'show']);
 
 Route::get('events',[EventApiController::class, 'index']);
 
-Route::get('events-data',[EventApiController::class, 'show']);
+Route::get('event-details',[EventApiController::class, 'show']);

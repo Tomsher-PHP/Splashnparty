@@ -41,7 +41,7 @@
 
                     @foreach($branches as $branch)
                         <option value="{{ $branch->id }}"
-                            {{ isset($foodMenu) && in_array($branch->id, $foodMenu->branch_ids ?? []) ? 'selected' : '' }}>
+                            {{ in_array($branch->id, old('branch_ids', isset($foodMenu) ? ($foodMenu->branch_ids ?? []) : [])) ? 'selected' : '' }}>
                             {{ $branch->title }}
                         </option>
                     @endforeach
@@ -56,10 +56,12 @@
                 </label>
                 <select name="type"
                     class="form-select form-select-sm">
-                    <option value="adult">
+                    <option value="adult"
+                        {{ old('type', $foodMenu->type ?? '') == 'adult' ? 'selected' : '' }}>
                         Adult
                     </option>
-                    <option value="kid">
+                    <option value="kid"
+                        {{ old('type', $foodMenu->type ?? '') == 'kid' ? 'selected' : '' }}>
                         Kid
                     </option>
                 </select>
@@ -94,11 +96,13 @@
                 <select name="food_type"
                     class="form-select form-select-sm">
 
-                    <option value="veg">
+                    <option value="veg"
+                        {{ old('food_type', $foodMenu->food_type ?? '') == 'veg' ? 'selected' : '' }}>
                         Veg
                     </option>
 
-                    <option value="non-veg">
+                    <option value="non-veg"
+                        {{ old('food_type', $foodMenu->food_type ?? '') == 'non-veg' ? 'selected' : '' }}>
                         Non Veg
                     </option>
 
@@ -153,11 +157,13 @@
                 <select name="status"
                     class="form-select form-select-sm">
 
-                    <option value="1">
+                    <option value="1"
+                        {{ old('status', $foodMenu->status ?? 1) == 1 ? 'selected' : '' }}>
                         Active
                     </option>
 
-                    <option value="0">
+                    <option value="0"
+                        {{ old('status', $foodMenu->status ?? 1) == 0 ? 'selected' : '' }}>
                         Inactive
                     </option>
 

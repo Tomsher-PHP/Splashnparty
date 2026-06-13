@@ -32,16 +32,17 @@ return new class extends Migration
         }
 
         if (Schema::hasColumn('food_menus', 'branch_id')) {
+            if (DB::getDriverName() !== 'sqlite') {
+                try {
+                    DB::statement('ALTER TABLE food_menus DROP FOREIGN KEY food_menus_branch_id_foreign');
+                } catch (\Exception $e) {
+                    // FK does not exist
+                }
 
-            try {
-                DB::statement('ALTER TABLE food_menus DROP FOREIGN KEY food_menus_branch_id_foreign');
-            } catch (\Exception $e) {
-                // FK does not exist
+                Schema::table('food_menus', function (Blueprint $table) {
+                    $table->dropColumn('branch_id');
+                });
             }
-
-            Schema::table('food_menus', function (Blueprint $table) {
-                $table->dropColumn('branch_id');
-            });
         }
     }
 

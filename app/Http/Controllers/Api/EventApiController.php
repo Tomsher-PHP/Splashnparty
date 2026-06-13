@@ -25,6 +25,8 @@ class EventApiController extends Controller
                 'slug',
                 'image',
                 'banner_image',
+                'heading',
+                'description',
             )
             ->paginate(min(request('limit', 10), 50));
 
@@ -39,13 +41,14 @@ class EventApiController extends Controller
     {
         $request->validate([
             'slug' => 'required|string|exists:events,slug',
+            'branch_id' => 'nullable|integer|exists:branches,id',
         ]);
 
         $event = Event::where('status', 1)
             ->where('slug', $request->slug)
             ->firstOrFail();
 
-        $branchDetails = EventBranchDetail::with([
+        $query = EventBranchDetail::with([
             'branch:id,title,description,image,location_link,address,phone,email,working_hours',
             'features' => function ($q) {
                 $q->where('status', 1)->orderBy('sort_order');
@@ -55,13 +58,18 @@ class EventApiController extends Controller
             },
         ])
             ->where('event_id', $event->id)
-            ->where('status', 1)
-            ->orderBy('sort_order')
-            ->get();
+            ->where('status', 1);
+
+        if ($request->filled('branch_id')) {
+            $query->where('branch_id', $request->branch_id);
+        }
+
+        $branchDetails = $query->orderBy('sort_order')->get();
 
         // Format image URLs to absolute URLs
         $event->image = $event->image ? asset($event->image) : null;
         $event->banner_image = $event->banner_image ? asset($event->banner_image) : null;
+        $event->og_image = $event->og_image ? asset($event->og_image) : null;
 
         $branchDetails->transform(function ($detail) {
             $detail->image = $detail->image ? asset($detail->image) : null;
@@ -92,6 +100,16 @@ class EventApiController extends Controller
                 'slug' => $event->slug,
                 'image' => $event->image,
                 'banner_image' => $event->banner_image,
+                'heading' => $event->heading,
+                'description' => $event->description,
+                'meta_title' => $event->meta_title,
+                'meta_description' => $event->meta_description,
+                'meta_keywords' => $event->meta_keywords,
+                'og_title' => $event->og_title,
+                'og_description' => $event->og_description,
+                'og_image' => $event->og_image,
+                'twitter_title' => $event->twitter_title,
+                'twitter_description' => $event->twitter_description,
                 'branch_details' => $branchDetails,
             ],
         ]);
