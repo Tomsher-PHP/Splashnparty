@@ -61,7 +61,7 @@ class HeaderMenuController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'url' => ['nullable', 'string', 'max:2048'],
-            'icon' => ['nullable', 'file', 'image', 'mimes:png,webp,svg', 'max:2048'],
+            'icon' => ['nullable', 'file', 'mimes:png,webp,svg,jpeg,jpg', 'max:2048'],
             'parent_id' => ['nullable', 'exists:header_menus,id'],
             'sort_order' => ['required', 'integer', 'min:0'],
             'status' => ['required', 'boolean'],
@@ -101,7 +101,7 @@ class HeaderMenuController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'url' => ['nullable', 'string', 'max:2048'],
-            'icon' => ['nullable', 'file', 'image', 'mimes:png,webp,svg', 'max:2048'],
+            'icon' => ['nullable', 'file', 'mimes:png,webp,svg,jpeg,jpg', 'max:2048'],
             'parent_id' => ['nullable', 'exists:header_menus,id'],
             'sort_order' => ['required', 'integer', 'min:0'],
             'status' => ['required', 'boolean'],
