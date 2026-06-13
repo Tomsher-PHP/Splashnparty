@@ -52,7 +52,7 @@ class Page extends Model
                 if (is_array($value)) {
                     self::fixImagePaths($value);
                 } elseif (is_string($value) && !empty($value)) {
-                    if (in_array($key, ['image', 'banner_image', 'bottom_image', 'og_image', 'icon', 'file']) || str_starts_with($value, 'pages/')) {
+                    if (in_array($key, ['image', 'banner_image', 'bottom_image', 'og_image', 'icon', 'file', 'center_image']) || str_starts_with($value, 'pages/')) {
                         if (!str_starts_with($value, 'http://') && !str_starts_with($value, 'https://')) {
                             if (str_starts_with($value, 'pages/')) {
                                 $value = asset('storage/' . $value);

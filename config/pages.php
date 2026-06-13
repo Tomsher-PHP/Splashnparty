@@ -612,6 +612,12 @@ return [
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
+                        'name' => 'center_image',
+                        'label' => 'Center Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
                         'name' => 'bottom_description',
                         'label' => 'Bottom Section Description',
                         'type' => 'wysiwyg',
