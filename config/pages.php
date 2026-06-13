@@ -283,7 +283,7 @@ return [
                     [
                         'name' => 'description',
                         'label' => 'Description',
-                        'type' => 'textarea',
+                        'type' => 'wysiwyg',
                         'placeholder' => 'Enter package description',
                         'rules' => ['nullable', 'string'],
                     ]
