@@ -883,11 +883,46 @@ return [
                 'title' => 'Bottom Section',
                 'fields' => [
                     [
-                        'name' => 'bottom_description',
-                        'label' => 'Bottom Description',
+                        'name' => 'title1',
+                        'label' => 'Title 1',
+                        'type' => 'text',
+                        'placeholder' => 'Enter title 1',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description1',
+                        'label' => 'Description 1',
                         'type' => 'textarea',
-                        'placeholder' => 'Enter bottom description details',
+                        'placeholder' => 'Enter description 1',
                         'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'title2',
+                        'label' => 'Title 2',
+                        'type' => 'text',
+                        'placeholder' => 'Enter title 2',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description2',
+                        'label' => 'Description 2',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description 2',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'btn_text',
+                        'label' => 'Button Text',
+                        'type' => 'text',
+                        'placeholder' => 'Enter button text',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'btn_link',
+                        'label' => 'Button Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter button link',
+                        'rules' => ['nullable', 'string', 'max:255'],
                     ]
                 ]
             ]
