@@ -4,75 +4,77 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookingRequest;
+use Illuminate\Http\Request;
 use App\Models\Booking;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class BookingApiController extends Controller
 {
-    public function store(StoreBookingRequest $request)
+    public function store(Request $request)
     {
-        DB::beginTransaction();
+        $validator = Validator::make($request->all(), [
+            'package_id' => 'required|exists:packages,id',
+            'food_type' => 'required|in:with_food,without_food',
+            'adult_count' => 'required|integer|min:0',
+            'child_count' => 'required|integer|min:0',
+            'booking_date' => 'required|date',
 
-        try {
+            'contact_name' => 'required|string|max:255',
+            'email' => 'nullable|email',
+            'phone' => 'required|string|max:20',
+            'emirate' => 'nullable|string|max:255',
+            'address' => 'nullable|string',
+            'remarks' => 'nullable|string',
+        ]);
 
-            $data = $request->validated();
-
-            $priceData = PackageApiController::calculateBookingPrice([
-                'package_id'   => $data['package_id'],
-                'food_type'    => $data['food_type'],
-                'adult_count'  => $data['adult_count'],
-                'child_count'  => $data['child_count'],
-                'booking_date' => $data['booking_date'],
-            ]);
-
-            $booking = Booking::create([
-                'booking_reference' => '',
-                'package_id' => $priceData['package_id'],
-                'branch_id'  => $priceData['branch_id'],
-                'food_type' => $data['food_type'],
-                'booking_date' => $data['booking_date'],
-                'child_count' => $data['child_count'],
-                'adult_count' => $data['adult_count'],
-                'subtotal'     => $priceData['subtotal'],
-                'vat'          => $priceData['vat'],
-                'total_amount' => $priceData['total_amount'],
-                'contact_name' => $data['contact_name'],
-                'email'        => $data['email'] ?? null,
-                'phone'        => $data['phone'],
-                'emirate' => $data['emirate'],
-                'address' => $data['address'],
-                'remarks' => $data['remarks'] ?? null,
-                'status' => 'confirmed',
-                'payment_status' => 'unpaid',
-            ]);
-
-            $booking->booking_reference = 'BK-' . str_pad($booking->id, 6, '0', STR_PAD_LEFT);
-            $booking->save();
-
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Booking created successfully',
-                'data' => [
-                    'booking' => $booking,
-                    'payment_url' => route(
-                        'ccavenue.payment',
-                        $booking->id
-                    ),
-                ]
-            ]);
-
-        } catch (\Exception $e) {
-
-            DB::rollBack();
-
+        if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
-            ], 422);
+                'message' => $validator->errors()->first(),
+            ], 200);
         }
+
+        $data = $request->all();
+        $priceData = PackageApiController::calculateBookingPrice([
+            'package_id'   => $data['package_id'],
+            'food_type'    => $data['food_type'],
+            'adult_count'  => $data['adult_count'],
+            'child_count'  => $data['child_count'],
+            'booking_date' => $data['booking_date'],
+        ]);
+
+        $booking = Booking::create([
+            'booking_reference' => '',
+            'package_id' => $priceData['package_id'],
+            'branch_id'  => $priceData['branch_id'],
+            'food_type' => $data['food_type'],
+            'booking_date' => $data['booking_date'],
+            'child_count' => $data['child_count'],
+            'adult_count' => $data['adult_count'],
+            'subtotal'     => $priceData['subtotal'],
+            'vat'          => $priceData['vat'],
+            'total_amount' => $priceData['total_amount'],
+            'contact_name' => $data['contact_name'],
+            'email'        => $data['email'] ?? null,
+            'phone'        => $data['phone'],
+            'emirate' => $data['emirate'],
+            'address' => $data['address'],
+            'remarks' => $data['remarks'] ?? null,
+            'status' => 'confirmed',
+            'payment_status' => 'unpaid',
+        ]);
+
+        $booking->booking_reference = 'BK-' . str_pad($booking->id, 6, '0', STR_PAD_LEFT);
+        $booking->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Booking created successfully',
+            'data' => $booking,
+            'page_content' => null,
+        ], 200);
     }
 
     public function show($id)

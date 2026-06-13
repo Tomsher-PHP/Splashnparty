@@ -209,7 +209,7 @@ class PackageApiController extends Controller
         $subtotal = $childTotal + $adultTotal;
 
 
-        $vatPercentage = SiteSetting::where('group', 'vat')->where('key', 'vat_percentage')->first()->value ;
+        $vatPercentage = SiteSetting::where('group', 'vat')->where('key', 'vat_percentage')->first()?->value ?? 0;
 
         $vat = round(($subtotal * $vatPercentage) / 100, 2);
 
