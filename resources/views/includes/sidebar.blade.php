@@ -71,23 +71,55 @@
             </li>
             @endcan
 
-            @can('view_cake_enquiries')
-            <li>
-                <a href="{{ route('cake-enquiries.index') }}" class="{{ request()->routeIs('cake-enquiries.*') ? 'active-page' : '' }}">
-                    <i class="ri-mail-line text-xl me-14 d-flex w-auto"></i>
-                    <span>Cake Enquiries</span>
-                </a>
-            </li>
-            @endcan
+            @php
+                $enquiriesPermission =
+                    auth()->user()->can('view_contact_enquiries') ||
+                    auth()->user()->can('view_cake_enquiries');
+            @endphp
 
-            <li class="nav-item dropdown">
-                @php
-                    $cafeMenuPermission =
-                        auth()->user()->can('view_cafe_menu_categories') ||
-                        auth()->user()->can('view_cafe_menus');
-                @endphp
+            @if($enquiriesPermission)
+                <li class="nav-item dropdown">
+                    <a href="javascript:void(0)"
+                        class="nav-link dropdown-toggle {{ request()->routeIs('contact-enquiries.*') || request()->routeIs('cake-enquiries.*') ? '' : 'collapsed' }}"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#enquiriesMenu"
+                        aria-expanded="false">
+                        <i class="ri-mail-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Enquiries</span>
+                    </a>
 
-                @if($cafeMenuPermission)
+                    <ul class="collapse submenu {{ request()->routeIs('contact-enquiries.*') || request()->routeIs('cake-enquiries.*') ? 'show' : '' }}"
+                        id="enquiriesMenu">
+                        @can('view_contact_enquiries')
+                            <li class="submenu-item">
+                                <a href="{{ route('contact-enquiries.index') }}" class="{{ request()->routeIs('contact-enquiries.*') ? 'active-page' : '' }}">
+                                    <i class="ri-mail-line me-2"></i>
+                                    Contact Enquiries
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('view_cake_enquiries')
+                            <li class="submenu-item">
+                                <a href="{{ route('cake-enquiries.index') }}" class="{{ request()->routeIs('cake-enquiries.*') ? 'active-page' : '' }}">
+                                    <i class="ri-cake-2-line me-2"></i>
+                                    Cake Enquiries
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endif
+
+            @php
+                $cafeMenuPermission =
+                    auth()->user()->can('view_cafe_menu_categories') ||
+                    auth()->user()->can('view_cafe_menus');
+            @endphp
+
+            @if($cafeMenuPermission)
+                <li class="nav-item dropdown">
+                
                     <a href="javascript:void(0)"
                         class="nav-link dropdown-toggle {{ request()->routeIs('cafe-menu-categories.*') || request()->routeIs('cafe-menus.*') ? '' : 'collapsed' }}"
                         data-bs-toggle="collapse"
@@ -117,17 +149,17 @@
                             </li>
                         @endcan
                     </ul>
-                @endif
-            </li>
+                </li>
+            @endif
 
-            <li class="nav-item dropdown">
-                @php
-                    $RentalPermission =
-                        auth()->user()->can('view_rental_categories') ||
-                        auth()->user()->can('view_rental_items');
-                @endphp
+            @php
+                $RentalPermission =
+                    auth()->user()->can('view_rental_categories') ||
+                    auth()->user()->can('view_rental_items');
+            @endphp
 
-                @if($RentalPermission)
+            @if($RentalPermission)
+                <li class="nav-item dropdown">
                     <a href="javascript:void(0)"
                         class="nav-link dropdown-toggle {{ request()->routeIs('rental-categories.*') || request()->routeIs('rental-items.*') ? '' : 'collapsed' }}"
                         data-bs-toggle="collapse"
@@ -157,17 +189,18 @@
                             </li>
                         @endcan
                     </ul>
-                @endif
-            </li>
+                </li>
+            @endif
 
-            <li class="nav-item dropdown">
-                @php
-                    $birthdayPackagePermission =
-                        auth()->user()->can('view_balloon_decorations') ||
-                        auth()->user()->can('view_birthday_packages');
-                @endphp
+            @php
+                $birthdayPackagePermission =
+                    auth()->user()->can('view_balloon_decorations') ||
+                    auth()->user()->can('view_birthday_packages');
+            @endphp
 
-                @if($birthdayPackagePermission)
+            @if($birthdayPackagePermission)
+                <li class="nav-item dropdown">
+                
                     <a href="javascript:void(0)"
                         class="nav-link dropdown-toggle {{ request()->routeIs('balloon-decorations.*') || request()->routeIs('birthday-packages.*') ? '' : 'collapsed' }}"
                         data-bs-toggle="collapse"
@@ -225,8 +258,8 @@
                         @endcan
             
                     </ul>
-                @endif
-            </li>
+                </li>
+            @endif
             @can('view_events')
                 <li>
                     <a href="{{ route('events.index') }}">
@@ -245,14 +278,7 @@
                     </a>
                 </li>
             @endif
-            @can('view_contact_enquiries')
-                <li>
-                    <a href="{{ route('contact-enquiries.index') }}" class="{{ request()->routeIs('contact-enquiries.*') ? 'active-page' : '' }}">
-                        <i class="ri-mail-line text-xl me-14 d-flex w-auto"></i>
-                        <span>Contact Enquiries</span>
-                    </a>
-                </li>
-            @endcan
+
 
             @can('view_newsletter_subscriptions')
                 <li>
@@ -346,17 +372,17 @@
                 </li>
             @endcan
 
-            <li class="nav-item dropdown">
+            @php
+                $galleryPermission =
+                    auth()->user()->can('view_image_gallery') ||
+                    auth()->user()->can('view_video_gallery') ||
+                    auth()->user()->can('view_outdoor_events');
+            @endphp
 
-                @php
-                    $galleryPermission =
-                        auth()->user()->can('view_image_gallery') ||
-                        auth()->user()->can('view_video_gallery') ||
-                        auth()->user()->can('view_outdoor_events');
-                @endphp
+            @if($galleryPermission)
 
-                @if($galleryPermission)
-
+                <li class="nav-item dropdown">
+              
                     <a href="javascript:void(0)"
                         class="nav-link dropdown-toggle {{ request()->routeIs('image-gallery.*') || request()->routeIs('video-gallery.*') || request()->routeIs('outdoor-events.*') ? '' : 'collapsed' }}"
                         data-bs-toggle="collapse"
@@ -421,10 +447,8 @@
                         @endcan
 
                     </ul>
-
-                @endif
-
-            </li>
+                </li>
+            @endif
 
             <li class="sidebar-menu-group-title">Staff Management</li>
             @can('view_staff')
