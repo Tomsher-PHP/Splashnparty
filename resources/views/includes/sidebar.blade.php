@@ -30,6 +30,46 @@
                 </li>
             @endif
 
+            @php
+                $enquiriesPermission =
+                    auth()->user()->can('view_contact_enquiries') ||
+                    auth()->user()->can('view_cake_enquiries');
+            @endphp
+
+            @if($enquiriesPermission)
+                <li class="nav-item dropdown">
+                    <a href="javascript:void(0)"
+                        class="nav-link dropdown-toggle {{ request()->routeIs('contact-enquiries.*') || request()->routeIs('cake-enquiries.*') ? '' : 'collapsed' }}"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#enquiriesMenu"
+                        aria-expanded="false">
+                        <i class="ri-mail-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Enquiries</span>
+                    </a>
+
+                    <ul class="collapse submenu {{ request()->routeIs('contact-enquiries.*') || request()->routeIs('cake-enquiries.*') ? 'show' : '' }}"
+                        id="enquiriesMenu">
+                        @can('view_contact_enquiries')
+                            <li class="submenu-item">
+                                <a href="{{ route('contact-enquiries.index') }}" class="{{ request()->routeIs('contact-enquiries.*') ? 'active-page' : '' }}">
+                                    <i class="ri-mail-line me-2"></i>
+                                    Contact Enquiries
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('view_cake_enquiries')
+                            <li class="submenu-item">
+                                <a href="{{ route('cake-enquiries.index') }}" class="{{ request()->routeIs('cake-enquiries.*') ? 'active-page' : '' }}">
+                                    <i class="ri-cake-2-line me-2"></i>
+                                    Cake Enquiries
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endif
+
              @can('view_packages')
                 <li>
                     <a href="{{ route('packages.index') }}">
@@ -71,45 +111,7 @@
             </li>
             @endcan
 
-            @php
-                $enquiriesPermission =
-                    auth()->user()->can('view_contact_enquiries') ||
-                    auth()->user()->can('view_cake_enquiries');
-            @endphp
-
-            @if($enquiriesPermission)
-                <li class="nav-item dropdown">
-                    <a href="javascript:void(0)"
-                        class="nav-link dropdown-toggle {{ request()->routeIs('contact-enquiries.*') || request()->routeIs('cake-enquiries.*') ? '' : 'collapsed' }}"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#enquiriesMenu"
-                        aria-expanded="false">
-                        <i class="ri-mail-line text-xl me-14 d-flex w-auto"></i>
-                        <span>Enquiries</span>
-                    </a>
-
-                    <ul class="collapse submenu {{ request()->routeIs('contact-enquiries.*') || request()->routeIs('cake-enquiries.*') ? 'show' : '' }}"
-                        id="enquiriesMenu">
-                        @can('view_contact_enquiries')
-                            <li class="submenu-item">
-                                <a href="{{ route('contact-enquiries.index') }}" class="{{ request()->routeIs('contact-enquiries.*') ? 'active-page' : '' }}">
-                                    <i class="ri-mail-line me-2"></i>
-                                    Contact Enquiries
-                                </a>
-                            </li>
-                        @endcan
-
-                        @can('view_cake_enquiries')
-                            <li class="submenu-item">
-                                <a href="{{ route('cake-enquiries.index') }}" class="{{ request()->routeIs('cake-enquiries.*') ? 'active-page' : '' }}">
-                                    <i class="ri-cake-2-line me-2"></i>
-                                    Cake Enquiries
-                                </a>
-                            </li>
-                        @endcan
-                    </ul>
-                </li>
-            @endif
+            
 
             @php
                 $cafeMenuPermission =
