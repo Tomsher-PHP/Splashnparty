@@ -99,7 +99,7 @@ class PartyExtraController extends Controller
             'thumbnail_image' => 'nullable|image',
             'gallery_images.*' => 'nullable|image',
 
-            'meta_title'          => 'nullable|string|max:255',
+            'meta_title'          => 'nullable|string',
             'meta_description'    => 'nullable|string',
             'meta_keywords'       => 'nullable|string',
 
@@ -231,7 +231,7 @@ class PartyExtraController extends Controller
             'status' => 'required|in:0,1',
 
             // SEO
-            'meta_title' => 'nullable|string|max:255',
+            'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
 

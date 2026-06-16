@@ -266,7 +266,7 @@ class PageController extends Controller
                     'label' => 'Meta Title',
                     'type' => 'text',
                     'placeholder' => 'Enter SEO meta title',
-                    'rules' => ['nullable', 'string', 'max:255'],
+                    'rules' => ['nullable', 'string'],
                 ],
                 [
                     'name' => 'meta_description',

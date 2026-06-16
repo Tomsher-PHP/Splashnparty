@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('youtube_link');
 
             // SEO
-            $table->string('meta_title')->nullable();
+            $table->text('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->text('meta_keywords')->nullable();
 

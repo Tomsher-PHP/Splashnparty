@@ -92,7 +92,7 @@ class EventController extends Controller
 
             'status' => 'required|boolean',
 
-            'meta_title' => 'nullable|string|max:255',
+            'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
             'og_title' => 'nullable|string|max:255',
@@ -258,7 +258,7 @@ class EventController extends Controller
 
             'status' => 'required|boolean',
 
-            'meta_title' => 'nullable|string|max:255',
+            'meta_title' => 'nullable|string',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
             'og_title' => 'nullable|string|max:255',

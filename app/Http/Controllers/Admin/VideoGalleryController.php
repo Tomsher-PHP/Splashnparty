@@ -60,7 +60,7 @@ class VideoGalleryController extends Controller
             'status'             => 'required|boolean',
 
             // SEO
-            'meta_title'         => 'nullable|string|max:255',
+            'meta_title'         => 'nullable|string',
             'meta_description'   => 'nullable|string',
             'meta_keywords'      => 'nullable|string',
 
@@ -151,7 +151,7 @@ class VideoGalleryController extends Controller
             'status'             => 'required|boolean',
 
             // SEO
-            'meta_title'         => 'nullable|string|max:255',
+            'meta_title'         => 'nullable|string',
             'meta_description'   => 'nullable|string',
             'meta_keywords'      => 'nullable|string',
 

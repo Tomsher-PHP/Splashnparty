@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('images')->nullable();
 
             // SEO
-            $table->string('meta_title')->nullable();
+            $table->text('meta_title')->nullable();
             $table->text('meta_description')->nullable();
             $table->text('meta_keywords')->nullable();
 
