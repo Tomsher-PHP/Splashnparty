@@ -22,6 +22,14 @@ class BirthdayPackage extends Model
         'description',
         'sort_order',
         'status',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+        'og_title',
+        'og_description',
+        'og_image',
+        'twitter_title',
+        'twitter_description',
     ];
 
     public function branch()

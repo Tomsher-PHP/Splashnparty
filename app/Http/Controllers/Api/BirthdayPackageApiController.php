@@ -51,6 +51,10 @@ class BirthdayPackageApiController extends Controller
                     ? asset($item->banner_image)
                     : null;
 
+                $item->og_image = $item->og_image
+                    ? asset($item->og_image)
+                    : null;
+
                 return $item;
             }
         );

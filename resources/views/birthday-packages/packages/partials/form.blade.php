@@ -226,6 +226,11 @@ $isEdit = isset($package);
                 </div>
             </div>
         </div>
+
+        <!-- SEO COMPONENT -->
+        @include('components.seo-fields', [
+            'model' => $package ?? null
+        ])
     </div>
 
     <div class="card-footer text-end">

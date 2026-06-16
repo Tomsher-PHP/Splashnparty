@@ -97,6 +97,16 @@ class BirthdayPackageController extends Controller
             'duration' => 'nullable|string|max:255',
             'weekday_rate' => 'nullable|numeric|min:0',
             'weekend_rate' => 'nullable|numeric|min:0',
+
+            // SEO Validation
+            'meta_title' => 'nullable|string',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string',
+            'og_title' => 'nullable|string|max:255',
+            'og_description' => 'nullable|string',
+            'og_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'twitter_title' => 'nullable|string|max:255',
+            'twitter_description' => 'nullable|string',
         ]);
 
         $image = null;
@@ -121,6 +131,16 @@ class BirthdayPackageController extends Controller
             );
 
             $bannerImage = 'storage/' . $path;
+        }
+
+        $ogImage = null;
+
+        if ($request->hasFile('og_image')) {
+            $path = $request->file('og_image')->store(
+                'uploads/birthday-packages/seo',
+                'public'
+            );
+            $ogImage = 'storage/' . $path;
         }
 
         BirthdayPackage::create([
@@ -149,6 +169,16 @@ class BirthdayPackageController extends Controller
             'sort_order' => $request->sort_order ?? 0,
 
             'status' => $request->status,
+
+            // SEO Fields
+            'meta_title' => $request->meta_title,
+            'meta_description' => $request->meta_description,
+            'meta_keywords' => $request->meta_keywords,
+            'og_title' => $request->og_title,
+            'og_description' => $request->og_description,
+            'og_image' => $ogImage,
+            'twitter_title' => $request->twitter_title,
+            'twitter_description' => $request->twitter_description,
         ]);
 
         return redirect()
@@ -216,6 +246,17 @@ class BirthdayPackageController extends Controller
             'duration' => 'nullable|string|max:255',
             'weekday_rate' => 'nullable|numeric|min:0',
             'weekend_rate' => 'nullable|numeric|min:0',
+
+            // SEO Validation
+            'remove_og_image' => 'nullable|boolean',
+            'meta_title' => 'nullable|string',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string',
+            'og_title' => 'nullable|string|max:255',
+            'og_description' => 'nullable|string',
+            'og_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'twitter_title' => 'nullable|string|max:255',
+            'twitter_description' => 'nullable|string',
         ]);
 
         $image = $birthday_package->image;
@@ -266,6 +307,29 @@ class BirthdayPackageController extends Controller
             $bannerImage = 'storage/' . $path;
         }
 
+        $ogImage = $birthday_package->og_image;
+
+        // Remove OG Image
+        if ($request->remove_og_image == 1 && $birthday_package->og_image) {
+            if (file_exists(public_path($birthday_package->og_image))) {
+                unlink(public_path($birthday_package->og_image));
+            }
+            $ogImage = null;
+        }
+
+        // Upload New OG Image
+        if ($request->hasFile('og_image')) {
+            if ($birthday_package->og_image && file_exists(public_path($birthday_package->og_image))) {
+                unlink(public_path($birthday_package->og_image));
+            }
+
+            $path = $request->file('og_image')->store(
+                'uploads/birthday-packages/seo',
+                'public'
+            );
+            $ogImage = 'storage/' . $path;
+        }
+
         $birthday_package->update([
 
             'branch_id' => $request->branch_id,
@@ -292,6 +356,16 @@ class BirthdayPackageController extends Controller
             'duration' => $request->duration,
             'weekday_rate' => $request->weekday_rate,
             'weekend_rate' => $request->weekend_rate,
+
+            // SEO Fields
+            'meta_title' => $request->meta_title,
+            'meta_description' => $request->meta_description,
+            'meta_keywords' => $request->meta_keywords,
+            'og_title' => $request->og_title,
+            'og_description' => $request->og_description,
+            'og_image' => $ogImage,
+            'twitter_title' => $request->twitter_title,
+            'twitter_description' => $request->twitter_description,
         ]);
 
         return redirect()
@@ -331,6 +405,17 @@ class BirthdayPackageController extends Controller
 
             unlink(
                 public_path($birthday_package->banner_image)
+            );
+        }
+
+        if (
+            $birthday_package->og_image &&
+            file_exists(
+                public_path($birthday_package->og_image)
+            )
+        ) {
+            unlink(
+                public_path($birthday_package->og_image)
             );
         }
 
