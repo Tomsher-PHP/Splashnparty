@@ -37,7 +37,7 @@ class CcAvenueController extends Controller
                 'payment_status' => 'paid'
             ]);
 
-            return redirect()->to($frontendSuccessUrl . '?status=success&id=' . urlencode($booking->id));
+            return redirect()->to($frontendSuccessUrl . '?status=success&id=' . base64_encode($booking->id));
         }
 
         if ($booking) {

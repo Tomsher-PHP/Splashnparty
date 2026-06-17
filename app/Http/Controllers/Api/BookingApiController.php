@@ -105,7 +105,7 @@ class BookingApiController extends Controller
             'success' => true,
             'message' => 'Booking created successfully',
             'data' => $booking,
-            'bid' => urlencode($booking->id),
+            'bid' => base64_encode($booking->id),
             'payment_url'  => $url,
             'page_content' => null,
         ], 200);
@@ -113,7 +113,7 @@ class BookingApiController extends Controller
 
     public function show($id)
     {
-        $id = urldecode($id);
+        $id = base64_decode($id);
         $booking = Booking::with([
             'package',
             'branch'
