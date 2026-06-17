@@ -169,7 +169,7 @@ class PackageApiController extends Controller
             throw new \Exception("Package is not available on {$dayName}");
         }
 
-        $isWeekend = in_array($dayName, ['Friday', 'Saturday']);
+        $isWeekend = in_array($dayName, ['Saturday','Sunday']);
 
         if ($data['food_type'] === 'with_food') {
 
