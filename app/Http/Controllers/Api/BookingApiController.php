@@ -17,6 +17,7 @@ class BookingApiController extends Controller
         $validator = Validator::make($request->all(), [
             'package_id' => 'required|exists:packages,id',
             'food_type' => 'required|in:with_food,without_food',
+            'food_preference' => 'required_if:food_type,with_food|nullable|in:veg,non_veg,non-veg',
             'adult_count' => 'required|integer|min:0',
             'child_count' => 'required|integer|min:0',
             'booking_date' => 'required|date',
@@ -50,6 +51,7 @@ class BookingApiController extends Controller
             'package_id' => $priceData['package_id'],
             'branch_id'  => $priceData['branch_id'],
             'food_type' => $data['food_type'],
+            'food_preference' => $data['food_type'] === 'with_food' ? ($data['food_preference'] ?? null) : null,
             'booking_date' => $data['booking_date'],
             'child_count' => $data['child_count'],
             'adult_count' => $data['adult_count'],

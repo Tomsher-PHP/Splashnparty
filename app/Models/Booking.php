@@ -13,6 +13,7 @@ class Booking extends Model
         'branch_id',
 
         'food_type',
+        'food_preference',
 
         'booking_date',
 

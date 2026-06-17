@@ -16,6 +16,7 @@ class StoreBookingRequest extends FormRequest
         return [
             'package_id' => 'required|exists:packages,id',
             'food_type' => 'required|in:with_food,without_food',
+            'food_preference' => 'required_if:food_type,with_food|nullable|in:veg,non_veg,non-veg',
             'adult_count' => 'required|integer|min:0',
             'child_count' => 'required|integer|min:0',
             'booking_date' => 'required|date',
