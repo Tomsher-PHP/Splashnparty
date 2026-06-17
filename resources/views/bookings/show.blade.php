@@ -35,24 +35,40 @@
     <div class="card-body">
         <table class="table table-bordered">
             <tr>
-                <th>Booking Ref</th>
+                <th width="30%">Booking Ref</th>
                 <td>{{ $booking->booking_reference }}</td>
             </tr>
             <tr>
-                <th>Customer</th>
+                <th>Branch</th>
+                <td>{{ $booking->branch->title ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Package</th>
+                <td>{{ $booking->package->title ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Customer Name</th>
                 <td>{{ $booking->contact_name }}</td>
             </tr>
             <tr>
                 <th>Email</th>
-                <td>{{ $booking->email }}</td>
+                <td>{{ $booking->email ?? 'N/A' }}</td>
             </tr>
             <tr>
                 <th>Phone</th>
                 <td>{{ $booking->phone }}</td>
             </tr>
             <tr>
+                <th>Emirate</th>
+                <td>{{ $booking->emirate ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ $booking->address ?? 'N/A' }}</td>
+            </tr>
+            <tr>
                 <th>Booking Date</th>
-                <td>{{ $booking->booking_date }}</td>
+                <td>{{ $booking->booking_date ? $booking->booking_date->format('Y-m-d') : 'N/A' }}</td>
             </tr>
             <tr>
                 <th>Adults</th>
@@ -63,8 +79,26 @@
                 <td>{{ $booking->child_count }}</td>
             </tr>
             <tr>
+                <th>Food Type</th>
+                <td>{{ $booking->food_type ? ucfirst(str_replace('_', ' ', $booking->food_type)) : 'N/A' }}</td>
+            </tr>
+            @if($booking->food_type === 'with_food')
+            <tr>
+                <th>Food Preference</th>
+                <td>{{ $booking->food_preference ? ucfirst(str_replace(['_', '-'], ' ', $booking->food_preference)) : 'N/A' }}</td>
+            </tr>
+            @endif
+            <tr>
+                <th>Subtotal</th>
+                <td>{{ number_format($booking->subtotal, 2) }}</td>
+            </tr>
+            <tr>
+                <th>VAT</th>
+                <td>{{ number_format($booking->vat, 2) }}</td>
+            </tr>
+            <tr>
                 <th>Total Amount</th>
-                <td>{{ $booking->total_amount }}</td>
+                <td>{{ number_format($booking->total_amount, 2) }}</td>
             </tr>
             <tr>
                 <th>Status</th>
@@ -76,7 +110,7 @@
             </tr>
             <tr>
                 <th>Remarks</th>
-                <td>{{ $booking->remarks }}</td>
+                <td>{{ $booking->remarks ?? 'N/A' }}</td>
             </tr>
         </table>
     </div>
