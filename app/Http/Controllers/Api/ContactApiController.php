@@ -33,7 +33,7 @@ class ContactApiController extends Controller
             return response()->json([
                 'success' => false,
                 'errors' => $validator->errors()
-            ], 422);
+            ], 200);
         }
 
         $validated = $validator->validated();
