@@ -9,6 +9,7 @@ use App\Models\Booking;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Http\Controllers\CcAvenueController;
 
 class BookingApiController extends Controller
 {
@@ -61,8 +62,8 @@ class BookingApiController extends Controller
             'contact_name' => $data['contact_name'],
             'email'        => $data['email'] ?? null,
             'phone'        => $data['phone'],
-            'emirate' => $data['emirate'],
-            'address' => $data['address'],
+            'emirate' => $data['emirate'] ?? null,
+            'address' => $data['address'] ?? null,
             'remarks' => $data['remarks'] ?? null,
             'status' => 'confirmed',
             'payment_status' => 'unpaid',
@@ -71,10 +72,40 @@ class BookingApiController extends Controller
         $booking->booking_reference = 'BK-' . str_pad($booking->id, 6, '0', STR_PAD_LEFT);
         $booking->save();
 
+        // Generate CCAvenue payment payload
+        $merchantId = config('services.ccavenue.merchant_id');
+        $accessCode = config('services.ccavenue.access_code');
+        $workingKey = config('services.ccavenue.working_key');
+        $paymentUrl = config('services.ccavenue.payment_url');
+
+        $merchantData = [
+            'merchant_id' => $merchantId,
+            'order_id' => $booking->booking_reference,
+            'currency' => 'AED',
+            'amount' => $booking->total_amount,
+            'redirect_url' => route('ccavenue.success'),
+            'cancel_url' => route('ccavenue.failure'),
+            'billing_name' => $booking->contact_name,
+            'billing_email' => $booking->email,
+            'billing_tel' => $booking->phone,
+        ];
+
+        $merchantDataString = '';
+        foreach ($merchantData as $key => $value) {
+            $merchantDataString .= $key . '=' . $value . '&';
+        }
+        $merchantDataString = rtrim($merchantDataString, '&');
+
+        $ccController = new CcAvenueController();
+        $encRequest = $ccController->encrypt($merchantDataString, $workingKey);
+
+        $url = $paymentUrl.'?command=initiateTransaction&encRequest=' . $encRequest . '&access_code=' . $accessCode;
+
         return response()->json([
             'success' => true,
             'message' => 'Booking created successfully',
             'data' => $booking,
+            'payment_url'  => $url,
             'page_content' => null,
         ], 200);
     }

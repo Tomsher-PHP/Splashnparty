@@ -18,6 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->append(\App\Http\Middleware\EnforceMaxFileSize::class);
+        $middleware->validateCsrfTokens(except: [
+            'payment/ccavenue/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

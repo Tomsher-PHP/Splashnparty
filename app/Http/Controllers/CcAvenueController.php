@@ -1,7 +1,5 @@
 <?php
 
-// |This controller is to test the ccavenuue Url, its success and failure url.
-
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
@@ -9,63 +7,121 @@ use Illuminate\Http\Request;
 
 class CcAvenueController extends Controller
 {
-    public function redirectToGateway(Booking $booking)
-    {
-        $merchantData = [
-            'merchant_id' => env('CCAVENUE_MERCHANT_ID'),
-            'order_id' => $booking->booking_reference,
-            'currency' => 'AED',
-            'amount' => $booking->total_amount,
-
-            'redirect_url' => url('/ccavenue/success'),
-            'cancel_url' => url('/ccavenue/cancel'),
-
-            'billing_name' => $booking->contact_name,
-            'billing_email' => $booking->email,
-            'billing_tel' => $booking->phone,
-        ];
-
-        dd($merchantData);
-    }
 
     public function success(Request $request)
     {
-        $booking = Booking::where(
-            'booking_reference',
-            $request->order_id
-        )->first();
+        $workingKey = config('services.ccavenue.working_key');
+        $encResponse = $request->input('encResp');
+        $frontendSuccessUrl = config('services.ccavenue.frontend_success_url');
+        $frontendFailureUrl = config('services.ccavenue.frontend_failure_url');
 
-        if ($booking) {
+        if (!$encResponse) {
+            return redirect()->to($frontendFailureUrl . '?message=' . urlencode('Empty response received from payment gateway.'));
+        }
 
+        $decryptedText = $this->decrypt($encResponse, $workingKey);
+        parse_str($decryptedText, $responseParams);
+
+        $orderId = $responseParams['order_id'] ?? null;
+        $trackingId = $responseParams['tracking_id'] ?? null;
+        $orderStatus = $responseParams['order_status'] ?? null;
+        $message = $responseParams['status_message'] ?? 'Transaction was not successful.';
+
+        $booking = null;
+        if ($orderId) {
+            $booking = Booking::where('booking_reference', $orderId)->first();
+        }
+
+        if ($booking && strtolower($orderStatus) === 'success') {
             $booking->update([
                 'payment_status' => 'paid'
             ]);
 
-            // Send email here
+            return redirect()->to($frontendSuccessUrl . '?id=' . urlencode($orderId));
         }
 
-        return response()->json([
-            'success' => true
-        ]);
+        if ($booking) {
+            $booking->update([
+                'payment_status' => 'unpaid'
+            ]);
+        }
+
+        return redirect()->to($frontendFailureUrl . '?id=' . urlencode($orderId ?? '') );
     }
 
     public function failure(Request $request)
     {
-        $booking = Booking::where(
-            'booking_reference',
-            $request->order_id
-        )->first();
+        $workingKey = config('services.ccavenue.working_key');
+        $encResponse = $request->input('encResp');
+        $frontendFailureUrl = config('services.ccavenue.frontend_failure_url');
+
+        if (!$encResponse) {
+            return redirect()->to($frontendFailureUrl);
+        }
+
+        $decryptedText = $this->decrypt($encResponse, $workingKey);
+        parse_str($decryptedText, $responseParams);
+
+        $orderId = $responseParams['order_id'] ?? null;
+        $trackingId = $responseParams['tracking_id'] ?? null;
+        $message = $responseParams['status_message'] ?? 'Transaction failed.';
+
+        $booking = null;
+        if ($orderId) {
+            $booking = Booking::where('booking_reference', $orderId)->first();
+        }
 
         if ($booking) {
-
             $booking->update([
-                'payment_status' => 'failed',
+                'payment_status' => 'unpaid'
             ]);
         }
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Payment failed'
-        ]);
+        return redirect()->to($frontendFailureUrl);
+    }
+
+    public function encrypt($plainText, $key)
+    {
+        // $key = $this->hextobin(md5($key));
+        // $initVector = pack("C*", 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f);
+        // $openMode = openssl_encrypt($plainText, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $initVector);
+        // return bin2hex($openMode);
+        $key = $this->hextobin(md5($key));
+		$initVector = pack("C*", 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f);
+		$openMode = openssl_encrypt($plainText, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $initVector);
+		$encryptedText = bin2hex($openMode);
+		return $encryptedText;
+    }
+
+    private function decrypt($encryptedText, $key)
+    {
+        $key = $this->hextobin(md5($key));
+        $initVector = pack("C*", 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f);
+        $encryptedText = $this->hextobin($encryptedText);
+        return openssl_decrypt($encryptedText, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $initVector);
+    }
+
+    private function hextobin($hexString)
+    {
+         $length = strlen($hexString); 
+        $binString="";   
+        $count=0; 
+        while($count<$length) 
+        {       
+            $subString =substr($hexString,$count,2);           
+            $packedString = pack("H*",$subString); 
+            if ($count==0)
+        {
+            $binString=$packedString;
+        } 
+            
+        else 
+        {
+            $binString.=$packedString;
+        } 
+            
+        $count+=2; 
+        } 
+        return $binString; 
     }
 }

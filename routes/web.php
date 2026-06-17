@@ -21,11 +21,6 @@ Route::get('/', [AuthController::class, 'showLogin']);
 
 
 
-Route::get(
-    '/payment/ccavenue/{booking}',
-    [CcAvenueController::class, 'redirectToGateway']
-)->name('ccavenue.payment');
-
 Route::post('/payment/ccavenue/success', [CcAvenueController::class, 'success'])
     ->name('ccavenue.success');
 
