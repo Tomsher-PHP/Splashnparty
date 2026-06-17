@@ -16,7 +16,7 @@ class CcAvenueController extends Controller
         $frontendFailureUrl = config('services.ccavenue.frontend_failure_url');
 
         if (!$encResponse) {
-            return redirect()->to($frontendFailureUrl . '?message=' . urlencode('Empty response received from payment gateway.'));
+            return redirect()->to($frontendFailureUrl . '?status=failed');
         }
 
         $decryptedText = $this->decrypt($encResponse, $workingKey);
@@ -37,7 +37,7 @@ class CcAvenueController extends Controller
                 'payment_status' => 'paid'
             ]);
 
-            return redirect()->to($frontendSuccessUrl . '?id=' . urlencode($orderId));
+            return redirect()->to($frontendSuccessUrl . '?status=success&id=' . urlencode($booking->id));
         }
 
         if ($booking) {
@@ -46,7 +46,7 @@ class CcAvenueController extends Controller
             ]);
         }
 
-        return redirect()->to($frontendFailureUrl . '?id=' . urlencode($orderId ?? '') );
+        return redirect()->to($frontendFailureUrl . '?status=failed');
     }
 
     public function failure(Request $request)
@@ -56,7 +56,7 @@ class CcAvenueController extends Controller
         $frontendFailureUrl = config('services.ccavenue.frontend_failure_url');
 
         if (!$encResponse) {
-            return redirect()->to($frontendFailureUrl);
+            return redirect()->to($frontendFailureUrl . '?status=failed');
         }
 
         $decryptedText = $this->decrypt($encResponse, $workingKey);
@@ -77,7 +77,7 @@ class CcAvenueController extends Controller
             ]);
         }
 
-        return redirect()->to($frontendFailureUrl);
+        return redirect()->to($frontendFailureUrl . '?status=failed');
     }
 
     public function encrypt($plainText, $key)
