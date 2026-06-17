@@ -47,7 +47,7 @@ class PackageApiController extends Controller
                         ],
                     ],
 
-                    'free_adult_with_child' => (bool) $package->free_adult_with_child,
+                    'child_count_for_free_adult' => (int) $package->child_count_for_free_adult,
 
                     'start_date' => $package->start_date,
                     'end_date' => $package->end_date,
@@ -94,7 +94,7 @@ class PackageApiController extends Controller
                     ],
                 ],
 
-                'free_adult_with_child' => (bool) $package->free_adult_with_child,
+                'child_count_for_free_adult' => (int) $package->child_count_for_free_adult,
 
                 'start_date' => $package->start_date,
                 'end_date' => $package->end_date,
@@ -197,8 +197,8 @@ class PackageApiController extends Controller
 
         $freeAdults = 0;
 
-        if ($package->free_adult_with_child) {
-            $freeAdults = min($adultCount, $childCount);
+        if ($package->child_count_for_free_adult && $package->child_count_for_free_adult > 0) {
+            $freeAdults = min($adultCount, floor($childCount / $package->child_count_for_free_adult));
         }
 
         $chargeableAdults = $adultCount - $freeAdults;

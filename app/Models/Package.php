@@ -24,7 +24,7 @@ class Package extends Model
         'child_weekend_price_without_food',
         'adult_weekend_price_without_food',
 
-        'free_adult_with_child',
+        'child_count_for_free_adult',
 
         'start_date',
         'end_date',
@@ -37,7 +37,7 @@ class Package extends Model
 
     protected $casts = [
         'days' => 'array',
-        'free_adult_with_child' => 'boolean',
+        'child_count_for_free_adult' => 'integer',
         'status' => 'boolean',
         'start_date' => 'date',
         'end_date' => 'date',

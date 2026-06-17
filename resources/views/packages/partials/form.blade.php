@@ -30,26 +30,17 @@
         </select>
     </div>
 
-    {{-- FREE ADULT --}}
-    <div class="col-md-6">
+    {{-- CHILD COUNT FOR FREE ADULT --}}
+    <div class="col-md-4">
         <label class="form-label fw-semibold">
-            Free One Adult With Each Child
+            Child Count for Free Adult Ticket
         </label>
 
-        <select name="free_adult_with_child"
-            class="form-select form-select-sm">
-
-            <option value="1"
-                {{ old('free_adult_with_child', $isEdit ? $package->free_adult_with_child : 0) == 1 ? 'selected' : '' }}>
-                Yes
-            </option>
-
-            <option value="0"
-                {{ old('free_adult_with_child', $isEdit ? $package->free_adult_with_child : 0) == 0 ? 'selected' : '' }}>
-                No
-            </option>
-
-        </select>
+        <input type="number"
+            name="child_count_for_free_adult"
+            min="0"
+            class="form-control form-control-sm"
+            value="{{ old('child_count_for_free_adult', $isEdit ? $package->child_count_for_free_adult : 0) }}">
     </div>
 
     {{-- WITH FOOD --}}

@@ -56,7 +56,7 @@ class PackageController extends Controller
         $request->validate([
             'branch_id' => 'nullable|exists:branches,id',
             'title' => 'required|max:255',
-            'food_type' => 'nullable|in:with_food,without_food',
+            // 'food_type' => 'nullable|in:with_food,without_food',
 
             // With Food Prices
             'child_weekday_price_with_food' => 'nullable|numeric',
@@ -70,7 +70,7 @@ class PackageController extends Controller
             'child_weekend_price_without_food' => 'nullable|numeric',
             'adult_weekend_price_without_food' => 'nullable|numeric',
 
-            'free_adult_with_child' => 'nullable|boolean',
+            'child_count_for_free_adult' => 'nullable|integer|min:0',
 
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
@@ -84,7 +84,7 @@ class PackageController extends Controller
         Package::create([
             'branch_id' => $request->branch_id,
             'title' => $request->title,
-            'food_type' => $request->food_type,
+            // 'food_type' => $request->food_type,
 
             // With Food Prices
             'child_weekday_price_with_food' => $request->child_weekday_price_with_food,
@@ -98,7 +98,7 @@ class PackageController extends Controller
             'child_weekend_price_without_food' => $request->child_weekend_price_without_food,
             'adult_weekend_price_without_food' => $request->adult_weekend_price_without_food,
 
-            'free_adult_with_child' => $request->boolean('free_adult_with_child'),
+            'child_count_for_free_adult' => $request->child_count_for_free_adult ?? 0,
 
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
@@ -133,7 +133,7 @@ class PackageController extends Controller
         $request->validate([
             'branch_id' => 'nullable|exists:branches,id',
             'title' => 'required|max:255',
-            'food_type' => 'nullable|in:with_food,without_food',
+            // 'food_type' => 'nullable|in:with_food,without_food',
 
             // With Food Prices
             'child_weekday_price_with_food' => 'nullable|numeric',
@@ -147,7 +147,7 @@ class PackageController extends Controller
             'child_weekend_price_without_food' => 'nullable|numeric',
             'adult_weekend_price_without_food' => 'nullable|numeric',
 
-            'free_adult_with_child' => 'nullable|boolean',
+            'child_count_for_free_adult' => 'nullable|integer|min:0',
 
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
@@ -161,7 +161,7 @@ class PackageController extends Controller
         $package->update([
             'branch_id' => $request->branch_id,
             'title' => $request->title,
-            'food_type' => $request->food_type,
+            // 'food_type' => $request->food_type,
 
             // With Food Prices
             'child_weekday_price_with_food' => $request->child_weekday_price_with_food,
@@ -175,7 +175,7 @@ class PackageController extends Controller
             'child_weekend_price_without_food' => $request->child_weekend_price_without_food,
             'adult_weekend_price_without_food' => $request->adult_weekend_price_without_food,
 
-            'free_adult_with_child' => $request->boolean('free_adult_with_child'),
+            'child_count_for_free_adult' => $request->child_count_for_free_adult ?? 0,
 
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
