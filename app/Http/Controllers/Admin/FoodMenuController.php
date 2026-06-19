@@ -54,6 +54,22 @@ class FoodMenuController extends Controller
             });
         }
 
+        // FILTER TYPE
+        if ($type = request('type')) {
+            $query->where(
+                'type',
+                $type
+            );
+        }
+
+        // FILTER FOOD TYPE
+        if ($foodType = request('food_type')) {
+            $query->where(
+                'food_type',
+                $foodType
+            );
+        }
+
         $foodMenus = $query
             ->paginate(10)
             ->withQueryString();
@@ -203,14 +219,22 @@ class FoodMenuController extends Controller
 
         $image = $foodMenu->image;
 
+        // REMOVE IMAGE
+        if ($request->remove_image == 1 && $foodMenu->image) {
+            if (file_exists(public_path($foodMenu->image))) {
+                unlink(public_path($foodMenu->image));
+            }
+            $image = null;
+        }
+
         if ($request->hasFile('image')) {
 
             if (
-                $foodMenu->image &&
-                file_exists(public_path($foodMenu->image))
+                $image &&
+                file_exists(public_path($image))
             ) {
 
-                unlink(public_path($foodMenu->image));
+                unlink(public_path($image));
             }
 
             $path = $request->file('image')->store(

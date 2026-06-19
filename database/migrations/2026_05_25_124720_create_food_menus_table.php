@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('branch_id')
+                ->nullable()
                 ->constrained()
                 ->cascadeOnDelete();
 

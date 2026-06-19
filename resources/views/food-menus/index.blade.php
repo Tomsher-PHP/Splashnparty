@@ -50,6 +50,20 @@
                         @endforeach
                     </select>
                 </div>
+                <div>
+                    <select name="type" class="form-select form-select-sm">
+                        <option value="">All Types</option>
+                        <option value="adult" {{ request('type') == 'adult' ? 'selected' : '' }}>Adult</option>
+                        <option value="kid" {{ request('type') == 'kid' ? 'selected' : '' }}>Kid</option>
+                    </select>
+                </div>
+                <div>
+                    <select name="food_type" class="form-select form-select-sm">
+                        <option value="">All Food Types</option>
+                        <option value="veg" {{ request('food_type') == 'veg' ? 'selected' : '' }}>Veg</option>
+                        <option value="non-veg" {{ request('food_type') == 'non-veg' ? 'selected' : '' }}>Non-veg</option>
+                    </select>
+                </div>
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary-600">
                         <i class="ri-search-line"></i> Filter

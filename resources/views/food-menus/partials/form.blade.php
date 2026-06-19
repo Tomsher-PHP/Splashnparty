@@ -133,6 +133,24 @@
                     name="image"
                     class="form-control form-control-sm">
 
+                @if(!empty($foodMenu?->image))
+                    <div class="position-relative d-inline-block thumb-image-wrapper mt-20">
+                        <img src="{{ asset($foodMenu->image) }}"
+                                class="rounded border thumb-image"
+                                >
+                        <div class="thumb-image-overlay remove-menu-image">
+                            <button type="button"
+                                    class="btn btn-danger rounded-circle">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <input type="hidden"
+                            name="remove_image"
+                            id="remove_image"
+                            value="0">
+                @endif
+
             </div>
 
             <div class="col-md-6">
@@ -204,6 +222,17 @@ $(function () {
         width: '100%',
         placeholder: 'Select Branches'
     });
+});
+
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.remove-menu-image')) {
+        if (!confirm('Remove image?')) {
+            return;
+        }
+
+        document.getElementById('remove_image').value = 1;
+        e.target.closest('.thumb-image-wrapper').remove();
+    }
 });
 </script>
 @endsection
