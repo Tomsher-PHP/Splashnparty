@@ -69,7 +69,8 @@ class BookingApiController extends Controller
             'payment_status' => 'unpaid',
         ]);
 
-        $booking->booking_reference = 'BK-' . str_pad($booking->id, 6, '0', STR_PAD_LEFT);
+        
+        $booking->booking_reference = 'SP-' . Str::upper(Str::random(5)) . '-' . $booking->id;
         $booking->save();
 
         // Generate CCAvenue payment payload
