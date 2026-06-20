@@ -20,7 +20,7 @@ class BookingController extends Controller
             403
         );
     }
-    public function index()
+    public function index(Request $request)
     {
         $this->authorizeBookingPermission(
             'view_bookings'
@@ -30,6 +30,10 @@ class BookingController extends Controller
             'package',
             'branch'
         ])
+        ->where('payment_status', 'paid')
+        ->when($request->filled('booking_reference'), function ($query) use ($request) {
+            $query->where('booking_reference', 'like', '%' . $request->booking_reference . '%');
+        })
         ->latest()
         ->paginate(20);
 
@@ -45,6 +49,8 @@ class BookingController extends Controller
             'view_bookings'
         );
 
+        abort_unless($booking->payment_status === 'paid', 404);
+
         return view(
             'bookings.show',
             compact('booking')
@@ -56,6 +62,8 @@ class BookingController extends Controller
         $this->authorizeBookingPermission(
             'generate_invoice'
         );
+
+        abort_unless($booking->payment_status === 'paid', 404);
 
         $direction = 'ltr';
         $text_align = 'left';

@@ -4,8 +4,10 @@
     <div class="card-header d-flex justify-content-between align-items-center">
         <h6 class="mb-0">Booking Details</h6>
         <div class="d-flex align-items-center gap-2">
-            <label>Payment Status: </label>
-            <form method="POST"
+            {{-- <label>Payment Status: </label>
+
+            {{ ucfirst($booking->payment_status) }} --}}
+            {{-- <form method="POST"
                 action="{{ route('bookings.payment-status', $booking->id) }}">
                 @csrf
                 <select name="payment_status"
@@ -20,7 +22,7 @@
                         UnPaid
                     </option>
                 </select>
-            </form>
+            </form> --}}
 
             @can('generate_invoice')
                 <a href="{{ route('bookings.invoice', $booking->id) }}"
@@ -106,7 +108,13 @@
             </tr>
             <tr>
                 <th>Payment Status</th>
-                <td>{{ ucfirst($booking->payment_status) }}</td>
+                <td style="font-size:16px !important;"> 
+                    @if ($booking->payment_status === 'paid')
+                        <span class="badge bg-success ">Paid</span>
+                    @elseif ($booking->payment_status === 'unpaid')
+                        <span class="badge bg-danger">Unpaid</span>
+                    @endif
+                </td>
             </tr>
             <tr>
                 <th>Remarks</th>
