@@ -276,7 +276,6 @@
             <!-- Right: Tax Invoice title & Metadata -->
             <td class="invoice-title-section">
                 <h1 class="invoice-title">TAX INVOICE</h1>
-                <h2 style="font-size:16px; font-weight:bold; color: #64748b; margin:-5px 0 15px 0;">فاتورة ضريبية</h2>
                 
                 <table class="meta-details-table">
                     <tr>
@@ -372,13 +371,11 @@
     <table class="items-table">
         <thead>
             <tr>
-                <th width="30">#</th>
+                <th>#</th>
                 <th>Description</th>
-                <th width="50" class="align-center">Qty</th>
-                <th width="90" class="align-right">Unit Price</th>
-                <th width="65" class="align-center">VAT Rate</th>
-                <th width="85" class="align-right">VAT Amount</th>
-                <th width="95" class="align-right">Total (AED)</th>
+                <th class="align-center">Qty</th>
+                <th class="align-right">Unit Price</th>
+                <th class="align-right">Total (AED)</th>
             </tr>
         </thead>
         <tbody>
@@ -399,9 +396,7 @@
                     </td>
                     <td class="align-center">{{ $childCount }}</td>
                     <td class="align-right">AED {{ number_format($childPrice, 2) }}</td>
-                    <td class="align-center">{{ $vatPercentage }}%</td>
-                    <td class="align-right">AED {{ number_format($childVat, 2) }}</td>
-                    <td class="align-right">AED {{ number_format($childSubtotal + $childVat, 2) }}</td>
+                    <td class="align-right">AED {{ number_format($childSubtotal, 2) }}</td>
                 </tr>
             @endif
 
@@ -417,9 +412,8 @@
                     </td>
                     <td class="align-center">{{ $chargeableAdults }}</td>
                     <td class="align-right">AED {{ number_format($adultPrice, 2) }}</td>
-                    <td class="align-center">{{ $vatPercentage }}%</td>
-                    <td class="align-right">AED {{ number_format($adultVat, 2) }}</td>
-                    <td class="align-right">AED {{ number_format($adultSubtotal + $adultVat, 2) }}</td>
+        
+                    <td class="align-right">AED {{ number_format($adultSubtotal , 2) }}</td>
                 </tr>
             @endif
         </tbody>

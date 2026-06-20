@@ -43,7 +43,7 @@ class CcAvenueController extends Controller
                     \Illuminate\Support\Facades\Mail::to($booking->email)->send(new \App\Mail\BookingInvoiceMail($booking));
                 }
 
-                $adminEmail = \App\Models\SiteSetting::where('key', 'notification_email')->value('value');
+                $adminEmail = \App\Models\SiteSetting::where('group', 'email_settings')->where('key', 'notification_email')->value('value');
                 if ($adminEmail) {
                     \Illuminate\Support\Facades\Mail::to($adminEmail)->send(new \App\Mail\BookingInvoiceMail($booking));
                 }
