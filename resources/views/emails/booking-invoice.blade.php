@@ -29,7 +29,7 @@
 
     <tr>
         <td><strong>Children</strong></td>
-        <td>{{ $booking->children_count }}</td>
+        <td>{{ $booking->child_count }}</td>
     </tr>
 
     <tr>

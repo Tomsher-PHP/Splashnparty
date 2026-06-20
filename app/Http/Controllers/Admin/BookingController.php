@@ -92,9 +92,26 @@ class BookingController extends Controller
             'payment_status' => 'required|in:paid,unpaid'
         ]);
 
+        $oldStatus = $booking->payment_status;
+
         $booking->update([
             'payment_status' => $request->payment_status
         ]);
+
+        if ($request->payment_status === 'paid' && $oldStatus !== 'paid') {
+            try {
+                if ($booking->email) {
+                    \Illuminate\Support\Facades\Mail::to($booking->email)->send(new \App\Mail\BookingInvoiceMail($booking));
+                }
+
+                $adminEmail = \App\Models\SiteSetting::where('key', 'notification_email')->value('value');
+                if ($adminEmail) {
+                    \Illuminate\Support\Facades\Mail::to($adminEmail)->send(new \App\Mail\BookingInvoiceMail($booking));
+                }
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Error sending manual booking confirmation emails: ' . $e->getMessage());
+            }
+        }
 
         return redirect()
             ->back()

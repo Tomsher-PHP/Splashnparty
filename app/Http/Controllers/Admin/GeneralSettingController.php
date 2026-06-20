@@ -203,6 +203,16 @@ class GeneralSettingController extends Controller
                 'rules' => ['nullable', 'numeric', 'min:0', 'max:100'],
                 'sort_order' => 95,
             ],
+            [
+                'group' => 'vat',
+                'group_title' => 'Vat Percentage',
+                'key' => 'trn',
+                'label' => 'Tax Registration Number (TRN)',
+                'type' => 'text',
+                'placeholder' => 'Enter TRN (e.g. 100xxxxxxxxxxxx)',
+                'rules' => ['nullable', 'string', 'max:50'],
+                'sort_order' => 96,
+            ],
           
             [
                 'group' => 'seo',

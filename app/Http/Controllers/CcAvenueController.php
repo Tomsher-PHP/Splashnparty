@@ -37,6 +37,20 @@ class CcAvenueController extends Controller
                 'payment_status' => 'paid'
             ]);
 
+            // Send booking confirmation email to customer and admin
+            try {
+                if ($booking->email) {
+                    \Illuminate\Support\Facades\Mail::to($booking->email)->send(new \App\Mail\BookingInvoiceMail($booking));
+                }
+
+                $adminEmail = \App\Models\SiteSetting::where('key', 'notification_email')->value('value');
+                if ($adminEmail) {
+                    \Illuminate\Support\Facades\Mail::to($adminEmail)->send(new \App\Mail\BookingInvoiceMail($booking));
+                }
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Error sending booking confirmation emails: ' . $e->getMessage());
+            }
+
             return redirect()->to($frontendSuccessUrl . '?status=success&id=' . base64_encode($booking->id));
         }
 
