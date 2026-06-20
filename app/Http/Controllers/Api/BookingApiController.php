@@ -70,7 +70,7 @@ class BookingApiController extends Controller
         ]);
 
         
-        $booking->booking_reference = 'SP-' . Str::upper(Str::random(5)) . '-' . $booking->id;
+        $booking->booking_reference = 'SP' . date('Ymd-His'). $booking->id;
         $booking->save();
 
         // Generate CCAvenue payment payload
