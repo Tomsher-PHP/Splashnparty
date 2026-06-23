@@ -41,6 +41,14 @@ class GeneralSettingController extends Controller
                 $value = $request->file($key)->store('settings', 'public');
             } else {
                 $value = $validated[$key] ?? null;
+                if ($key === 'schema' && !empty($value)) {
+                    $jsonOnly = preg_replace('/<\/?script[^>]*>/i', '', $value);
+                    $jsonOnly = trim($jsonOnly);
+                    $decoded = json_decode($jsonOnly, true);
+                    if (json_last_error() === JSON_ERROR_NONE) {
+                        $value = json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                    }
+                }
             }
 
             SiteSetting::updateOrCreate(
@@ -250,9 +258,20 @@ class GeneralSettingController extends Controller
                 'key' => 'schema',
                 'label' => 'Schema Markup',
                 'type' => 'textarea',
-                'rows' => 20,
-                'placeholder' => 'Enter schema markup without script tags (e.g. JSON-LD)',
-                'rules' => ['nullable', 'string'],
+                'rows' => 10,
+                'placeholder' => 'Enter schema markup (e.g. JSON format)',
+                'rules' => [
+                    'nullable',
+                    'string',
+                    function ($attribute, $value, $fail) {
+                        $jsonOnly = preg_replace('/<\/?script[^>]*>/i', '', $value);
+                        $jsonOnly = trim($jsonOnly);
+                        json_decode($jsonOnly);
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $fail('The Schema Markup must be a valid JSON structure.');
+                        }
+                    }
+                ],
                 'sort_order' => 180,
             ],
         ];
