@@ -34,7 +34,7 @@
                                             class="form-label fw-semibold">{!! $field['label'] !!}</label>
 
                                         @if ($type === 'textarea')
-                                            <textarea id="{{ $key }}" name="{{ $key }}" rows="3"
+                                            <textarea id="{{ $key }}" name="{{ $key }}" rows="{{ $field['rows'] ?? 3 }}"
                                                 class="form-control @error($key) is-invalid @enderror"
                                                 placeholder="{{ $field['placeholder'] ?? '' }}">{{ $value }}</textarea>
                                         @elseif ($type === 'file')

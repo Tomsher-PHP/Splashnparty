@@ -244,6 +244,17 @@ class GeneralSettingController extends Controller
                 'rules' => ['nullable', 'string', 'max:5000'],
                 'sort_order' => 170,
             ],
+            [
+                'group' => 'seo',
+                'group_title' => 'SEO & Map',
+                'key' => 'schema',
+                'label' => 'Schema Markup',
+                'type' => 'textarea',
+                'rows' => 20,
+                'placeholder' => 'Enter schema markup without script tags (e.g. JSON-LD)',
+                'rules' => ['nullable', 'string'],
+                'sort_order' => 180,
+            ],
         ];
     }
 
