@@ -30,6 +30,12 @@ class BirthdayPackage extends Model
         'og_image',
         'twitter_title',
         'twitter_description',
+        'schema',
+        'faq_selection',
+    ];
+
+    protected $casts = [
+        'faq_selection' => 'array',
     ];
 
     public function branch()

@@ -74,9 +74,11 @@ class BirthdayPackageController extends Controller
             1
         )->orderBy('title')->get();
 
+        $allFaqs = \App\Models\Faq::where('status', 1)->orderBy('sort_order', 'asc')->get();
+
         return view(
             'birthday-packages.packages.create',
-            compact('branches')
+            compact('branches', 'allFaqs')
         );
     }
 
@@ -121,6 +123,19 @@ class BirthdayPackageController extends Controller
             'og_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'twitter_title' => 'nullable|string|max:255',
             'twitter_description' => 'nullable|string',
+            'schema' => [
+                'nullable',
+                'string',
+                function ($attribute, $value, $fail) {
+                    $jsonOnly = preg_replace('/<\/?script[^>]*>/i', '', $value);
+                    $jsonOnly = trim($jsonOnly);
+                    json_decode($jsonOnly);
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $fail('The Schema Markup must be a valid JSON structure.');
+                    }
+                }
+            ],
+            'faq_selection' => 'nullable|array',
         ]);
 
         $image = null;
@@ -155,6 +170,31 @@ class BirthdayPackageController extends Controller
                 'public'
             );
             $ogImage = 'storage/' . $path;
+        }
+
+        $schema = $request->schema;
+        if (!empty($schema)) {
+            $jsonOnly = preg_replace('/<\/?script[^>]*>/i', '', $schema);
+            $jsonOnly = trim($jsonOnly);
+            $decoded = json_decode($jsonOnly, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $schema = json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            }
+        }
+
+        $faqSelection = $request->faq_selection;
+        if (is_array($faqSelection)) {
+            $faqIds = $faqSelection['faq_ids'] ?? [];
+            $questions = $faqSelection['questions'] ?? [];
+            
+            $filteredFaqIds = [];
+            foreach ($faqIds as $id) {
+                if (!empty($questions[$id]) && is_array($questions[$id])) {
+                    $filteredFaqIds[] = (int) $id;
+                }
+            }
+            
+            $faqSelection['faq_ids'] = $filteredFaqIds;
         }
 
         BirthdayPackage::create([
@@ -193,6 +233,8 @@ class BirthdayPackageController extends Controller
             'og_image' => $ogImage,
             'twitter_title' => $request->twitter_title,
             'twitter_description' => $request->twitter_description,
+            'schema' => $schema,
+            'faq_selection' => $faqSelection,
         ]);
 
         return redirect()
@@ -216,11 +258,14 @@ class BirthdayPackageController extends Controller
             1
         )->orderBy('title')->get();
 
+        $allFaqs = \App\Models\Faq::where('status', 1)->orderBy('sort_order', 'asc')->get();
+
         return view(
             'birthday-packages.packages.edit',
             compact(
                 'birthday_package',
-                'branches'
+                'branches',
+                'allFaqs'
             )
         );
     }
@@ -271,6 +316,19 @@ class BirthdayPackageController extends Controller
             'og_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'twitter_title' => 'nullable|string|max:255',
             'twitter_description' => 'nullable|string',
+            'schema' => [
+                'nullable',
+                'string',
+                function ($attribute, $value, $fail) {
+                    $jsonOnly = preg_replace('/<\/?script[^>]*>/i', '', $value);
+                    $jsonOnly = trim($jsonOnly);
+                    json_decode($jsonOnly);
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $fail('The Schema Markup must be a valid JSON structure.');
+                    }
+                }
+            ],
+            'faq_selection' => 'nullable|array',
         ]);
 
         $image = $birthday_package->image;
@@ -344,6 +402,31 @@ class BirthdayPackageController extends Controller
             $ogImage = 'storage/' . $path;
         }
 
+        $schema = $request->schema;
+        if (!empty($schema)) {
+            $jsonOnly = preg_replace('/<\/?script[^>]*>/i', '', $schema);
+            $jsonOnly = trim($jsonOnly);
+            $decoded = json_decode($jsonOnly, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $schema = json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+            }
+        }
+
+        $faqSelection = $request->faq_selection;
+        if (is_array($faqSelection)) {
+            $faqIds = $faqSelection['faq_ids'] ?? [];
+            $questions = $faqSelection['questions'] ?? [];
+            
+            $filteredFaqIds = [];
+            foreach ($faqIds as $id) {
+                if (!empty($questions[$id]) && is_array($questions[$id])) {
+                    $filteredFaqIds[] = (int) $id;
+                }
+            }
+            
+            $faqSelection['faq_ids'] = $filteredFaqIds;
+        }
+
         $birthday_package->update([
 
             'branch_id' => $request->branch_id,
@@ -380,6 +463,8 @@ class BirthdayPackageController extends Controller
             'og_image' => $ogImage,
             'twitter_title' => $request->twitter_title,
             'twitter_description' => $request->twitter_description,
+            'schema' => $schema,
+            'faq_selection' => $faqSelection,
         ]);
 
         return redirect()
