@@ -191,7 +191,7 @@
                                                                             </span>
                                                                         </div>
                                                                         <div class="d-flex align-items-center gap-12">
-                                                                            <button type="button" class="btn btn-xs btn-outline-danger btn-icon remove-faq-category-btn" data-category-id="{{ $faq->id }}" onclick="event.stopPropagation();" title="Remove Category">
+                                                                            <button type="button" class="btn btn-xs btn-outline-danger btn-icon remove-faq-category-btn" data-category-id="{{ $faq->id }}" title="Remove Category">
                                                                                 <i class="ri-delete-bin-line"></i>
                                                                             </button>
                                                                             <i class="ri-arrow-down-s-line text-lg toggle-icon accordion-arrow" style="transition: transform 0.2s;"></i>
@@ -256,7 +256,7 @@
                                                                         </span>
                                                                     </div>
                                                                     <div class="d-flex align-items-center gap-12">
-                                                                        <button type="button" class="btn btn-xs btn-outline-danger btn-icon remove-faq-category-btn" data-category-id="{{ $faq->id }}" onclick="event.stopPropagation();" title="Remove Category">
+                                                                        <button type="button" class="btn btn-xs btn-outline-danger btn-icon remove-faq-category-btn" data-category-id="{{ $faq->id }}" title="Remove Category">
                                                                             <i class="ri-delete-bin-line"></i>
                                                                         </button>
                                                                         <i class="ri-arrow-down-s-line text-lg toggle-icon accordion-arrow" style="transition: transform 0.2s;"></i>
@@ -1345,7 +1345,11 @@
             });
 
             // Accordion toggle click handler
-            $(document).on('click', '.faq-card-accordion-header', function() {
+            $(document).on('click', '.faq-card-accordion-header', function(e) {
+                // If click originated from the delete button, do nothing (event bubbles to its own click handler)
+                if ($(e.target).closest('.remove-faq-category-btn').length) {
+                    return;
+                }
                 const targetSelector = $(this).data('target');
                 const target = $(targetSelector);
                 const arrow = $(this).find('.accordion-arrow');
