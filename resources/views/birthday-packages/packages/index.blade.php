@@ -38,6 +38,33 @@
                         value="{{ request('keyword') }}">
                 </div>
 
+                {{-- BRANCH FILTER --}}
+                <div>
+                    <label class="form-label form-label-sm">
+                        Branch
+                    </label>
+                    <select name="branch_id" class="form-select form-select-sm" style="min-width: 150px;">
+                        <option value="">All Branches</option>
+                        @foreach($branches as $branch)
+                            <option value="{{ $branch->id }}" {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
+                                {{ $branch->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                {{-- STATUS FILTER --}}
+                <div>
+                    <label class="form-label form-label-sm">
+                        Status
+                    </label>
+                    <select name="status" class="form-select form-select-sm" style="min-width: 120px;">
+                        <option value="">All Status</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+
                 {{-- BUTTONS --}}
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary-600">

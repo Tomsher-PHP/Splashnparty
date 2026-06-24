@@ -39,13 +39,27 @@ class BirthdayPackageController extends Controller
             );
         }
 
+        // BRANCH FILTER
+        if ($branchId = request('branch_id')) {
+            $query->where('branch_id', $branchId);
+        }
+
+        // STATUS FILTER
+        if (request()->has('status') && request('status') !== null && request('status') !== '') {
+            $query->where('status', request('status'));
+        }
+
         $packages = $query
             ->paginate(10)
             ->withQueryString();
 
+        $branches = Branch::where('status', 1)
+            ->orderBy('title')
+            ->get();
+
         return view(
             'birthday-packages.packages.index',
-            compact('packages')
+            compact('packages', 'branches')
         );
     }
 
