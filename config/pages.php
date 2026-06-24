@@ -1832,42 +1832,7 @@ return [
                     ]
                 ]
             ],
-            [
-                'title' => 'FAQ Section',
-                'description' => 'Manage the FAQ section title and repeating list of questions & answers',
-                'fields' => [
-                    [
-                        'name' => 'faq_title',
-                        'label' => 'FAQ Section Title',
-                        'type' => 'text',
-                        'placeholder' => 'Enter FAQ section title (e.g. Frequently Asked Questions)',
-                        'rules' => ['nullable', 'string', 'max:255'],
-                    ],
-                    [
-                        'name' => 'faqs',
-                        'label' => 'Frequently Asked Questions',
-                        'type' => 'repeater',
-                        'fields' => [
-                            [
-                                'name' => 'question',
-                                'label' => 'Question',
-                                'type' => 'text',
-                                'placeholder' => 'Enter question',
-                                'col' => 'col-12',
-                                'rules' => ['required', 'string', 'max:255'],
-                            ],
-                            [
-                                'name' => 'answer',
-                                'label' => 'Answer',
-                                'type' => 'textarea',
-                                'placeholder' => 'Enter answer',
-                                'rows' => 2,
-                                'rules' => ['required', 'string'],
-                            ]
-                        ]
-                    ]
-                ]
-            ],
+
             [
                 'title' => 'Bottom Banner (CTA)',
                 'description' => 'Manage the call-to-action bottom banner content and redirection buttons',

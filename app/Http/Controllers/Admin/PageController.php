@@ -47,6 +47,7 @@ class PageController extends Controller
         // Dynamically append the common SEO section to all pages except footer settings and news-updates-details
         if ($page->slug !== 'footer' && $page->slug !== 'news-updates-details') {
             $schema['sections'][] = $this->getSeoSectionSchema();
+            $schema['sections'][] = $this->getFaqSectionSchema();
         }
 
         // Dynamically populate options if needed
@@ -83,6 +84,7 @@ class PageController extends Controller
         // Dynamically append the common SEO section to all pages except footer settings and news-updates-details
         if ($page->slug !== 'footer' && $page->slug !== 'news-updates-details') {
             $schema['sections'][] = $this->getSeoSectionSchema();
+            $schema['sections'][] = $this->getFaqSectionSchema();
         }
 
         // Build validation rules dynamically
@@ -231,7 +233,21 @@ class PageController extends Controller
 
                     $content[$fieldName] = $savedPaths;
                 } else {
-                    $content[$fieldName] = $request->input($fieldName);
+                    $value = $request->input($fieldName);
+                    if ($fieldName === 'faq_selection' && is_array($value)) {
+                        $faqIds = $value['faq_ids'] ?? [];
+                        $questions = $value['questions'] ?? [];
+                        
+                        $filteredFaqIds = [];
+                        foreach ($faqIds as $id) {
+                            if (!empty($questions[$id]) && is_array($questions[$id])) {
+                                $filteredFaqIds[] = (int) $id;
+                            }
+                        }
+                        
+                        $value['faq_ids'] = $filteredFaqIds;
+                    }
+                    $content[$fieldName] = $value;
                 }
             }
         }
@@ -315,6 +331,39 @@ class PageController extends Controller
                     'label' => 'OG Image',
                     'type' => 'image',
                     'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Get the common FAQ selection section schema.
+     */
+    private function getFaqSectionSchema(): array
+    {
+        return [
+            'title' => 'FAQ Section Settings',
+            'description' => 'Manage the FAQ section title, select multiple FAQ categories and choose specific questions to display on this page.',
+            'fields' => [
+                [
+                    'name' => 'faq_title',
+                    'label' => 'FAQ Section Title',
+                    'type' => 'text',
+                    'placeholder' => 'Enter FAQ section title (e.g. Frequently Asked Questions)',
+                    'rules' => ['nullable', 'string', 'max:255'],
+                ],
+                 [
+                    'name' => 'faq_description',
+                    'label' => 'FAQ Section Description',
+                    'type' => 'textarea',
+                    'placeholder' => 'Enter FAQ section description',
+                    'rules' => ['nullable', 'string'],
+                ],
+                [
+                    'name' => 'faq_selection',
+                    'label' => 'Select FAQs',
+                    'type' => 'faq_select',
+                    'rules' => ['nullable', 'array'],
                 ]
             ]
         ];

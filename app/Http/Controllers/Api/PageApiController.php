@@ -202,28 +202,10 @@ class PageApiController extends Controller
             ], 200);
         }
 
-        $data = Faq::where('status', 1)
-            ->orderBy('sort_order', 'asc')
-            ->get()
-            ->map(function ($faq) {
-                return [
-                    'category' => $faq->category,
-                    'details' => collect($faq->details)
-                        ->filter(fn($item) => ($item['status'] ?? 1) == 1)
-                        ->sortBy(fn($item) => (int) ($item['sort_order'] ?? 0))
-                        ->map(fn($item) => [
-                            'question' => $item['question'] ?? '',
-                            'answer' => $item['answer'] ?? ''
-                        ])
-                        ->values()
-                        ->all()
-                ];
-            });
-
         return response()->json([
             'success' => true,
             'message' => 'Page found.',
-            'data' => $data,
+            'data' => $page['selected_faqs'] ?? [],
             'page_content' => $page
         ]);
     }
