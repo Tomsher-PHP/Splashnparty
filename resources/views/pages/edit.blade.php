@@ -69,7 +69,7 @@
                                                 placeholder="{{ $field['placeholder'] ?? '' }}">
 
                                         @elseif ($fieldType === 'textarea')
-                                            <textarea id="{{ $fieldName }}" name="{{ $fieldName }}" rows="4"
+                                            <textarea id="{{ $fieldName }}" name="{{ $fieldName }}" rows="{{ $field['rows'] ?? 4 }}"
                                                 class="form-control @error($fieldName) is-invalid @enderror"
                                                 placeholder="{{ $field['placeholder'] ?? '' }}">{{ $fieldValue }}</textarea>
 

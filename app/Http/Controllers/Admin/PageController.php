@@ -46,8 +46,8 @@ class PageController extends Controller
 
         // Dynamically append the common SEO section to all pages except footer settings and news-updates-details
         if ($page->slug !== 'footer' && $page->slug !== 'news-updates-details') {
-            $schema['sections'][] = $this->getSeoSectionSchema();
             $schema['sections'][] = $this->getFaqSectionSchema();
+            $schema['sections'][] = $this->getSeoSectionSchema();
         }
 
         // Dynamically populate options if needed
@@ -83,8 +83,8 @@ class PageController extends Controller
 
         // Dynamically append the common SEO section to all pages except footer settings and news-updates-details
         if ($page->slug !== 'footer' && $page->slug !== 'news-updates-details') {
-            $schema['sections'][] = $this->getSeoSectionSchema();
             $schema['sections'][] = $this->getFaqSectionSchema();
+            $schema['sections'][] = $this->getSeoSectionSchema();
         }
 
         // Build validation rules dynamically
@@ -331,6 +331,14 @@ class PageController extends Controller
                     'label' => 'OG Image',
                     'type' => 'image',
                     'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                ],
+                 [
+                    'name' => 'schema',
+                    'label' => 'Schema Markup',
+                    'type' => 'textarea',
+                    'rows' => 10,
+                    'placeholder' => 'Enter schema markup (e.g. JSON-LD script tag or raw JSON)',
+                    'rules' => ['nullable', 'string'],
                 ]
             ]
         ];
