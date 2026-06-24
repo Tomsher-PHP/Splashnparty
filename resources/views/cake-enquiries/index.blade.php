@@ -103,7 +103,7 @@
                                 {{ $enquiry->preferred_date ? date('d M Y', strtotime($enquiry->preferred_date)) : 'Not Specified' }}
                             </td>
                             <td class="text-xs fw-medium text-secondary-light dark:text-neutral-400">
-                                {{ $enquiry->created_at?->format('d M Y, h:i A') ?? 'N/A' }}
+                                {{ date('d M Y, h:i A', strtotime($enquiry->created_at)) ?? 'N/A' }}
                             </td>
                             <td class="text-center">
                                 @if($enquiry->status === 'unread')
