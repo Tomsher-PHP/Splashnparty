@@ -197,9 +197,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="mt-3">
-            {{ $foodMenus->links('pagination::bootstrap-4') }}
-        </div>
     </div>
 
     <div class="card-footer bg-white border-0">

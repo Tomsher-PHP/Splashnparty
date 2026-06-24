@@ -151,9 +151,6 @@
             </table>
 
         </div>
-
-        {{ $cakes->links('pagination::bootstrap-4') }}
-
     </div>
     <div class="card-footer bg-white border-0">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">

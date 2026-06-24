@@ -181,20 +181,6 @@
             </table>
         </div>
 
-        <!-- PAGINATION -->
-        @if($faqs->hasPages())
-        <div class="d-flex justify-content-between align-items-center mt-24">
-            <div class="text-secondary-light">
-                Showing {{ $faqs->firstItem() }} to {{ $faqs->lastItem() }}
-                of {{ $faqs->total() }} FAQs
-            </div>
-
-            <div>
-                {{ $faqs->links('pagination::bootstrap-4') }}
-            </div>
-        </div>
-        @endif
-
     </div>
     <div class="card-footer bg-white border-0">
 
