@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookingRequest;
 use Illuminate\Http\Request;
 use App\Models\Booking;
+use App\Models\Package;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -39,6 +40,44 @@ class BookingApiController extends Controller
         }
 
         $data = $request->all();
+
+        $package = Package::where('id', $data['package_id'])
+                        ->where('status', 1)
+                        ->first();
+
+        if (!$package) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid package selected',
+            ], 200);
+        }
+
+        $bookingDate = \Carbon\Carbon::parse($data['booking_date']);
+
+        if ($package->start_date && $bookingDate->lt($package->start_date)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking date is before package start date',
+            ], 200);
+        }
+
+        if ($package->end_date && $bookingDate->gt($package->end_date)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Booking date is after package end date',
+            ], 200);
+        }
+
+        $dayName = $bookingDate->format('l');
+
+        if (!empty($package->days) && !in_array($dayName, $package->days)) {
+            return response()->json([
+                'success' => false,
+                'message' => "Package is not available on {$dayName}",
+            ], 200);
+        }
+
+
         $priceData = PackageApiController::calculateBookingPrice([
             'package_id'   => $data['package_id'],
             'food_type'    => $data['food_type'],
