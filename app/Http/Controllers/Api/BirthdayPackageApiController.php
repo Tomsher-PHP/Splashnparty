@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\BirthdayPackage;
 use App\Models\Branch;
+use App\Models\Faq;
 
 class BirthdayPackageApiController extends Controller
 {
@@ -55,6 +56,10 @@ class BirthdayPackageApiController extends Controller
                     ? asset($item->og_image)
                     : null;
 
+                $item->selected_faqs = $this->getFaqs($item->faq_selection);
+
+                unset($item->faq_selection);
+
                 return $item;
             }
         );
@@ -85,5 +90,52 @@ class BirthdayPackageApiController extends Controller
             'page_content' => \App\Models\Page::getPageContent('birthday-packages'),
             'data' => $packagesArray
         ]);
+    }
+
+    public static function getFaqs($faqSelection)
+    {
+        if (empty($faqSelection) || empty($faqSelection['faq_ids'])) {
+            return [];
+        }
+
+        $categoryIds = $faqSelection['faq_ids'];
+        $selectedQuestions = $faqSelection['questions'] ?? [];
+
+        $faqs = Faq::whereIn('id', $categoryIds)
+            ->where('status', true)
+            ->orderBy('sort_order', 'asc')
+            ->get();
+
+        $formattedFaqs = [];
+
+        foreach ($faqs as $faq) {
+            $catId = $faq->id;
+            $allowedQuestions = $selectedQuestions[$catId] ?? [];
+            if (empty($allowedQuestions)) {
+                continue;
+            }
+
+            // Filter questions in the category details
+            $details = collect($faq->details)
+                ->filter(function ($item) use ($allowedQuestions) {
+                    return ($item['status'] ?? 1) == 1 && in_array($item['question'], $allowedQuestions);
+                })
+                ->sortBy(fn($item) => (int) ($item['sort_order'] ?? 0))
+                ->map(fn($item) => [
+                    'question' => $item['question'] ?? '',
+                    'answer' => $item['answer'] ?? ''
+                ])
+                ->values()
+                ->all();
+
+            if (!empty($details)) {
+                $formattedFaqs[] = [
+                    'category' => $faq->category,
+                    'details' => $details
+                ];
+            }
+        }
+
+        return $formattedFaqs;
     }
 }

@@ -116,6 +116,8 @@ class EventController extends Controller
                 }
             ],
             'faq_selection' => 'nullable|array',
+            'faq_title' => 'nullable|string|max:255',
+            'faq_description' => 'nullable|string',
 
             'branch_details' => 'required|array|min:1',
 
@@ -234,6 +236,8 @@ class EventController extends Controller
             'twitter_description' => $request->twitter_description,
             'schema' => $schema,
             'faq_selection' => $faqSelection,
+            'faq_title' => $request->faq_title,
+            'faq_description' => $request->faq_description,
         ]);
         
         $this->saveBranchDetails(
@@ -326,6 +330,8 @@ class EventController extends Controller
                 }
             ],
             'faq_selection' => 'nullable|array',
+            'faq_title' => 'nullable|string|max:255',
+            'faq_description' => 'nullable|string',
 
             'branch_details' => 'required|array|min:1',
 
@@ -471,6 +477,8 @@ class EventController extends Controller
             'twitter_description' => $request->twitter_description,
             'schema' => $schema,
             'faq_selection' => $faqSelection,
+            'faq_title' => $request->faq_title,
+            'faq_description' => $request->faq_description,
         ]);
 
         

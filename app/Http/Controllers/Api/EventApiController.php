@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\Faq;
+
 use App\Models\EventBranchDetail;
 use App\Models\Page;
 use Illuminate\Http\Request;
@@ -12,10 +14,7 @@ class EventApiController extends Controller
 {
     public function index()
     {
-        $events = Event::where(
-            'status',
-            1
-        )
+        $events = Event::where('status', 1)
             ->orderBy(
                 'sort_order'
             )
@@ -92,6 +91,7 @@ class EventApiController extends Controller
             return $detail;
         });
 
+
         return response()->json([
             'success' => true,
             'data' => [
@@ -110,8 +110,59 @@ class EventApiController extends Controller
                 'og_image' => $event->og_image,
                 'twitter_title' => $event->twitter_title,
                 'twitter_description' => $event->twitter_description,
+                'schema' => $event->schema,
+                'faq_title' => $event->faq_title,
+                'faq_description' => $event->faq_description,
+                'selected_faqs' => $this->getFaqs($event->faq_selection),
                 'branch_details' => $branchDetails,
             ],
         ]);
+    }
+
+    public static function getFaqs($faqSelection)
+    {
+        if (empty($faqSelection) || empty($faqSelection['faq_ids'])) {
+            return [];
+        }
+
+        $categoryIds = $faqSelection['faq_ids'];
+        $selectedQuestions = $faqSelection['questions'] ?? [];
+
+        $faqs = Faq::whereIn('id', $categoryIds)
+            ->where('status', true)
+            ->orderBy('sort_order', 'asc')
+            ->get();
+
+        $formattedFaqs = [];
+
+        foreach ($faqs as $faq) {
+            $catId = $faq->id;
+            $allowedQuestions = $selectedQuestions[$catId] ?? [];
+            if (empty($allowedQuestions)) {
+                continue;
+            }
+
+            // Filter questions in the category details
+            $details = collect($faq->details)
+                ->filter(function ($item) use ($allowedQuestions) {
+                    return ($item['status'] ?? 1) == 1 && in_array($item['question'], $allowedQuestions);
+                })
+                ->sortBy(fn($item) => (int) ($item['sort_order'] ?? 0))
+                ->map(fn($item) => [
+                    'question' => $item['question'] ?? '',
+                    'answer' => $item['answer'] ?? ''
+                ])
+                ->values()
+                ->all();
+
+            if (!empty($details)) {
+                $formattedFaqs[] = [
+                    'category' => $faq->category,
+                    'details' => $details
+                ];
+            }
+        }
+
+        return $formattedFaqs;
     }
 }

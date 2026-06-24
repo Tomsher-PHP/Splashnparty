@@ -607,6 +607,17 @@ $isEdit
     <div class="card-body">
         <p class="text-muted mb-20 text-xs">Manage the FAQ categories and select specific questions to display on this event page.</p>
         
+        <div class="row mb-20">
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">FAQ Section Title</label>
+                <input type="text" name="faq_title" class="form-control form-control-sm" placeholder="Enter FAQ section title (e.g. Frequently Asked Questions)" value="{{ old('faq_title', $event->faq_title ?? '') }}">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">FAQ Section Description</label>
+                <textarea name="faq_description" rows="2" class="form-control" placeholder="Enter FAQ section description">{{ old('faq_description', $event->faq_description ?? '') }}</textarea>
+            </div>
+        </div>
+
         <div class="faq-selection-widget">
             <!-- Category Selector Control -->
             <div class="faq-selector-controls d-flex align-items-center gap-12 mb-20 p-16 border rounded-8 bg-neutral-50">

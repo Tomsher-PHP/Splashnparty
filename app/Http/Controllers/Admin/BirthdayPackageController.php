@@ -136,6 +136,8 @@ class BirthdayPackageController extends Controller
                 }
             ],
             'faq_selection' => 'nullable|array',
+            'faq_title' => 'nullable|string|max:255',
+            'faq_description' => 'nullable|string',
         ]);
 
         $image = null;
@@ -235,6 +237,8 @@ class BirthdayPackageController extends Controller
             'twitter_description' => $request->twitter_description,
             'schema' => $schema,
             'faq_selection' => $faqSelection,
+            'faq_title' => $request->faq_title,
+            'faq_description' => $request->faq_description,
         ]);
 
         return redirect()
@@ -329,6 +333,8 @@ class BirthdayPackageController extends Controller
                 }
             ],
             'faq_selection' => 'nullable|array',
+            'faq_title' => 'nullable|string|max:255',
+            'faq_description' => 'nullable|string',
         ]);
 
         $image = $birthday_package->image;
@@ -465,6 +471,8 @@ class BirthdayPackageController extends Controller
             'twitter_description' => $request->twitter_description,
             'schema' => $schema,
             'faq_selection' => $faqSelection,
+            'faq_title' => $request->faq_title,
+            'faq_description' => $request->faq_description,
         ]);
 
         return redirect()

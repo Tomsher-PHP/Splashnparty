@@ -32,6 +32,8 @@ class BirthdayPackage extends Model
         'twitter_description',
         'schema',
         'faq_selection',
+        'faq_title',
+        'faq_description',
     ];
 
     protected $casts = [
