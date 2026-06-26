@@ -93,7 +93,7 @@
                         <th>Status</th>
                         @if(auth()->user()->can('edit_birthday_packages') ||
                         auth()->user()->can('delete_birthday_packages'))
-                        <th class="text-end pe-4">Action</th>
+                        <th class="text-center pe-4">Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -151,10 +151,23 @@
                             @endif
                         </td>
 
-                        @if(auth()->user()->can('edit_birthday_packages') ||
+                        @if(auth()->user()->can('create_birthday_packages') ||
+                        auth()->user()->can('edit_birthday_packages') ||
                         auth()->user()->can('delete_birthday_packages'))
                         <td class="text-end pe-4">
                             <div class="d-flex justify-content-end align-items-center gap-2">
+                                @can('create_birthday_packages')
+                                <form method="POST"
+                                    action="{{ route('birthday-packages.copy', $package->id) }}"
+                                    class="d-inline">
+                                    @csrf
+                                    <button type="submit"
+                                        class="item-icon-btn bg-primary-light bg-hover-primary-200 text-primary fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle border-0"
+                                        title="Copy Package">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                    </button>
+                                </form>
+                                @endcan
                                 @can('edit_birthday_packages')
                                 <a href="{{ route('birthday-packages.edit', $package->id) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">

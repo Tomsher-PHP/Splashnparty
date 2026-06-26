@@ -101,6 +101,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::resource('balloon-decorations', BalloonDecorationController::class);
 
+    Route::post('birthday-packages/{birthday_package}/copy', [BirthdayPackageController::class, 'copy'])->name('birthday-packages.copy');
     Route::resource('birthday-packages', BirthdayPackageController::class);
 
     Route::resource('events', EventController::class)->parameters(['events' => 'event'])->except(['show']);

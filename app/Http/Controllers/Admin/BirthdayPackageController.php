@@ -533,4 +533,67 @@ class BirthdayPackageController extends Controller
             'Deleted successfully'
         );
     }
+
+    public function copy(BirthdayPackage $birthday_package)
+    {
+        $this->authorizeBirthdayPackagePermission(
+            'create_birthday_packages'
+        );
+
+        $newPackage = $birthday_package->replicate();
+
+        $originalTitle = $birthday_package->title;
+        $title = $originalTitle . ' - Copy';
+        $slug = Str::slug($title);
+
+        $counter = 1;
+        while (BirthdayPackage::where('slug', $slug)->exists()) {
+            $title = $originalTitle . ' - Copy (' . $counter . ')';
+            $slug = Str::slug($title);
+            $counter++;
+        }
+
+        $newPackage->title = $title;
+        $newPackage->slug = $slug;
+
+        // Copy files to avoid shared reference when unlinking
+        if ($birthday_package->image && file_exists(public_path($birthday_package->image))) {
+            $originalPath = public_path($birthday_package->image);
+            $pathInfo = pathinfo($originalPath);
+            $newFilename = $pathInfo['filename'] . '_copy_' . time() . '.' . ($pathInfo['extension'] ?? 'jpg');
+            $newPath = $pathInfo['dirname'] . '/' . $newFilename;
+            if (copy($originalPath, $newPath)) {
+                $newPackage->image = str_replace($pathInfo['basename'], $newFilename, $birthday_package->image);
+            }
+        }
+
+        if ($birthday_package->banner_image && file_exists(public_path($birthday_package->banner_image))) {
+            $originalPath = public_path($birthday_package->banner_image);
+            $pathInfo = pathinfo($originalPath);
+            $newFilename = $pathInfo['filename'] . '_copy_' . time() . '.' . ($pathInfo['extension'] ?? 'jpg');
+            $newPath = $pathInfo['dirname'] . '/' . $newFilename;
+            if (copy($originalPath, $newPath)) {
+                $newPackage->banner_image = str_replace($pathInfo['basename'], $newFilename, $birthday_package->banner_image);
+            }
+        }
+
+        if ($birthday_package->og_image && file_exists(public_path($birthday_package->og_image))) {
+            $originalPath = public_path($birthday_package->og_image);
+            $pathInfo = pathinfo($originalPath);
+            $newFilename = $pathInfo['filename'] . '_copy_' . time() . '.' . ($pathInfo['extension'] ?? 'jpg');
+            $newPath = $pathInfo['dirname'] . '/' . $newFilename;
+            if (copy($originalPath, $newPath)) {
+                $newPackage->og_image = str_replace($pathInfo['basename'], $newFilename, $birthday_package->og_image);
+            }
+        }
+
+        $newPackage->save();
+
+        return redirect()
+            ->route('birthday-packages.index')
+            ->with(
+                'success',
+                'Birthday package copied successfully'
+            );
+    }
 }
