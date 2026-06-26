@@ -24,6 +24,11 @@
                 </select>
             </form> --}}
 
+            <a href="{{ session('last_booking_url', route('bookings.index')) }}"
+                class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+
             @can('generate_invoice')
                 <a href="{{ route('bookings.invoice', $booking->id) }}"
                 class="btn btn-sm btn-primary">
@@ -116,10 +121,10 @@
                     @endif
                 </td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <th>Remarks</th>
                 <td>{{ $booking->remarks ?? 'N/A' }}</td>
-            </tr>
+            </tr> --}}
         </table>
     </div>
 </div>

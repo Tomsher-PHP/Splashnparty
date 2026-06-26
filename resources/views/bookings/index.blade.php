@@ -11,89 +11,158 @@
 </div>
 
 <div class="card">
-    <div class="card-header">
+    <div class="card-header bg-white py-16">
         <form method="GET" action="{{ route('bookings.index') }}">
-            <div class="d-flex flex-wrap align-items-end gap-3">
-                <div>
+            <div class="row g-3 align-items-end">
+                <!-- Row 1 -->
+                <div class="col-md-4 col-sm-6">
+                    <label class="form-label text-sm fw-medium text-secondary mb-1">Search Keyword</label>
                     <input type="text"
                         class="form-control form-control-sm"
-                        placeholder="Reference No"
-                        name="booking_reference"
-                        value="{{ request('booking_reference') }}">
+                        placeholder="Search ref, name, phone, email..."
+                        name="keyword"
+                        value="{{ request('keyword') }}">
                 </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-sm btn-primary-600">
-                        <i class="ri-search-line"></i> Filter
-                    </button>
 
-                    <a href="{{ route('bookings.index') }}"
-                        class="btn btn-sm btn-outline-secondary">
-                        Reset
-                    </a>
+                <div class="col-md-4 col-sm-6">
+                    <label class="form-label text-sm fw-medium text-secondary mb-1">Branch</label>
+                    <select name="branch_id" class="form-select form-select-sm">
+                        <option value="">All Branches</option>
+                        @foreach($branches as $branch)
+                        <option value="{{ $branch->id }}" {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
+                            {{ $branch->title }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-4 col-sm-12">
+                    <label class="form-label text-sm fw-medium text-secondary mb-1">Package</label>
+                    <select name="package_id" class="form-select form-select-sm">
+                        <option value="">All Packages</option>
+                        @foreach($packages as $package)
+                        <option value="{{ $package->id }}" {{ request('package_id') == $package->id ? 'selected' : '' }}>
+                            {{ $package->title }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="col-md-4 col-sm-6">
+                    <label class="form-label text-sm fw-medium text-secondary mb-1">Reservation Date Range</label>
+                    <div class="input-group input-group-sm">
+                        <input type="date"
+                            name="reservation_start_date"
+                            class="form-control"
+                            value="{{ request('reservation_start_date', request('start_date')) }}">
+                        <span class="input-group-text bg-light text-muted">to</span>
+                        <input type="date"
+                            name="reservation_end_date"
+                            class="form-control"
+                            value="{{ request('reservation_end_date', request('end_date')) }}">
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6">
+                    <label class="form-label text-sm fw-medium text-secondary mb-1">Booked At Date Range</label>
+                    <div class="input-group input-group-sm">
+                        <input type="date"
+                            name="booked_start_date"
+                            class="form-control"
+                            value="{{ request('booked_start_date') }}">
+                        <span class="input-group-text bg-light text-muted">to</span>
+                        <input type="date"
+                            name="booked_end_date"
+                            class="form-control"
+                            value="{{ request('booked_end_date') }}">
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 text-end">
+                    <label class="form-label text-sm fw-medium text-secondary mb-1 d-none d-md-block">&nbsp;</label>
+                    <div class="d-inline-flex gap-2">
+                        <button type="submit" class="btn btn-sm btn-primary-600 px-24">
+                            <i class="ri-search-line me-1"></i> Filter
+                        </button>
+                        <a href="{{ route('bookings.index') }}" class="btn btn-sm btn-outline-secondary px-24">
+                            Reset
+                        </a>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
 
     <div class="card-body">
-
         <div class="overflow-x-auto">
             <table class="table bordered-table mb-0">
                 <thead class="bg-light">
                     <tr>
                         <th width="60">#</th>
                         <th>Booking Ref</th>
-                        <th>Customer</th>
-                        <th>Phone</th>
-                        <th>Date</th>
-                        <th>Adults</th>
-                        <th>Children</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th width="180">Action</th>
+                        <th style="max-width: 180px;">Customer</th>
+                        <th style="max-width: 150px;">Branch</th>
+                        <th style="max-width: 200px;">Package</th>
+                        <th class="text-center">Reservation Date</th>
+                        
+                        <th class="text-center">Adults</th>
+                        <th class="text-center">Children</th>
+                        <th class="text-center">Total</th>
+                        <th class="text-center">Booked At</th>
+                        <th width="180" class="text-center">Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach($bookings as $key => $booking)
-
+                    @forelse($bookings as $key => $booking)
                     <tr>
                         <td>
-                            {{ $key + 1 }}
+                            {{ $bookings->firstItem() + $key }}
                         </td>
                         <td>{{ $booking->booking_reference }}</td>
-                        <td>{{ $booking->contact_name }}</td>
-                        <td>{{ $booking->phone }}</td>
-                        <td>{{ $booking->booking_date }}</td>
-                        <td>{{ $booking->adult_count }}</td>
-                        <td>{{ $booking->child_count }}</td>
-                        <td>{{ $booking->total_amount }}</td>
-                        <td>{{ ucfirst($booking->status) }}</td>
-
-                        <td>
+                        <td style="max-width: 180px; white-space: normal; word-break: break-word;">
+                            <div class="fw-semibold text-dark">{{ $booking->contact_name }}</div>
+                            <div class="text-xs text-secondary mt-1">
+                                <span class="d-block"><i class="ri-phone-line align-middle text-muted me-1"></i>{{ $booking->phone }}</span>
+                                @if($booking->email)
+                                <span class="d-block text-truncate" title="{{ $booking->email }}"><i class="ri-mail-line align-middle text-muted me-1"></i>{{ $booking->email }}</span>
+                                @endif
+                            </div>
+                        </td>
+                        <td style="max-width: 150px; white-space: normal; word-break: break-word;">{{ $booking->branch?->title ?? 'N/A' }}</td>
+                        <td style="max-width: 200px; white-space: normal; word-break: break-word;">{{ $booking->package?->title ?? 'N/A' }}</td>
+                        <td class="text-center">{{ $booking->booking_date ? $booking->booking_date->format('Y-m-d') : 'N/A' }}</td>
+                        <td class="text-center">{{ $booking->adult_count }}</td>
+                        <td class="text-center">{{ $booking->child_count }}</td>
+                        <td class="text-center">{{ $booking->total_amount }}</td>
+                        <td class="text-center">{{ $booking->created_at ? $booking->created_at->format('Y-m-d H:i') : 'N/A' }}</td>
+                                                                        
+                        <td class="text-center">
                             <div class="d-flex justify-content-end align-items-center gap-2">
                                 @can('view_bookings')
-                                <a href="{{ route('bookings.show',$booking->id) }}"
+                                <a href="{{ route('bookings.show', $booking->id) }}"
                                 class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
-                                    <iconify-icon icon="mdi:eye-outline"
-                                            class="menu-icon">
-                                        </iconify-icon>
+                                    <iconify-icon icon="mdi:eye-outline" class="menu-icon"></iconify-icon>
                                 </a>
                                 @endcan
 
                                 @can('generate_invoice')
                                     <a href="{{ route('bookings.invoice', $booking->id) }}"
                                     class="bg-info-focus text-info-600 bg-hover-info-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
-                                        <iconify-icon icon="mdi:download-outline"
-                                            class="menu-icon">
-                                        </iconify-icon>
+                                        <iconify-icon icon="mdi:download-outline" class="menu-icon"></iconify-icon>
                                     </a>
                                 @endcan
                             </div>
                         </td>
                     </tr>
-
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="11" class="text-center py-24 text-muted">
+                            No bookings found matching filters.
+                        </td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

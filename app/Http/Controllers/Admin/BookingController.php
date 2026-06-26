@@ -22,24 +22,89 @@ class BookingController extends Controller
     }
     public function index(Request $request)
     {
+        
         $this->authorizeBookingPermission(
             'view_bookings'
         );
 
-        $bookings = Booking::with([
+        $query = Booking::with([
             'package',
             'branch'
-        ])
-        ->where('payment_status', 'paid')
-        ->when($request->filled('booking_reference'), function ($query) use ($request) {
+        ]);
+
+        // Payment status filter (defaults to 'paid' if not specified or empty, but can be 'unpaid' or 'all')
+        if ($request->filled('payment_status') && $request->payment_status !== 'all') {
+            $query->where('payment_status', $request->payment_status);
+        } elseif (!$request->has('payment_status') || $request->payment_status === null || $request->payment_status === '') {
+            // Default behavior if not filtered: show paid
+            $query->where('payment_status', 'paid');
+        } // if payment_status is 'all', we don't apply where('payment_status')
+
+        // Keyword search (Reference, Name, Phone, Email)
+        if ($request->filled('keyword')) {
+            $keyword = $request->keyword;
+            $query->where(function ($q) use ($keyword) {
+                $q->where('booking_reference', 'like', '%' . $keyword . '%')
+                  ->orWhere('contact_name', 'like', '%' . $keyword . '%')
+                  ->orWhere('phone', 'like', '%' . $keyword . '%')
+                  ->orWhere('email', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        // Keep backwards compatibility for direct booking_reference input
+        if ($request->filled('booking_reference')) {
             $query->where('booking_reference', 'like', '%' . $request->booking_reference . '%');
-        })
-        ->latest()
-        ->paginate(20);
+        }
+
+        // Branch filter
+        if ($request->filled('branch_id')) {
+            $query->where('branch_id', $request->branch_id);
+        }
+
+        // Package filter
+        if ($request->filled('package_id')) {
+            $query->where('package_id', $request->package_id);
+        }
+
+        // Reservation Date filters
+        if ($request->filled('reservation_start_date')) {
+            $query->whereDate('booking_date', '>=', $request->reservation_start_date);
+        } elseif ($request->filled('start_date')) {
+            $query->whereDate('booking_date', '>=', $request->start_date);
+        }
+
+        if ($request->filled('reservation_end_date')) {
+            $query->whereDate('booking_date', '<=', $request->reservation_end_date);
+        } elseif ($request->filled('end_date')) {
+            $query->whereDate('booking_date', '<=', $request->end_date);
+        }
+
+        // Booked At filters
+        if ($request->filled('booked_start_date')) {
+            $query->whereDate('created_at', '>=', $request->booked_start_date);
+        }
+
+        if ($request->filled('booked_end_date')) {
+            $query->whereDate('created_at', '<=', $request->booked_end_date);
+        }
+
+        $bookings = $query->latest()
+            ->paginate(20)
+            ->withQueryString();
+
+        $branches = \App\Models\Branch::where('status', 1)->orderBy('title')->get();
+        
+        $packagesQuery = \App\Models\Package::where('status', 1);
+        if ($request->filled('branch_id')) {
+            $packagesQuery->where('branch_id', $request->branch_id);
+        }
+        $packages = $packagesQuery->orderBy('title')->get();
+
+        session(['last_booking_url' => $request->fullUrl()]);
 
         return view(
             'bookings.index',
-            compact('bookings')
+            compact('bookings', 'branches', 'packages')
         );
     }
 
