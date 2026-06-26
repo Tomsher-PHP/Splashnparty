@@ -102,7 +102,7 @@
                         <th>Status</th>
 
                         @if(auth()->user()?->can('edit_general_access') || auth()->user()?->can('delete_general_access'))
-                        <th class="text-end pe-4">
+                        <th class="text-center pe-4">
                             Action
                         </th>
                         @endif
@@ -155,9 +155,9 @@
                         </td>
 
                         @if(auth()->user()?->can('edit_general_access') || auth()->user()?->can('delete_general_access'))
-                        <td class="text-end pe-4">
+                        <td class="text-center pe-4">
 
-                            <div class="d-flex justify-content-end align-items-center gap-2">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
 
                                 @can('edit_general_access')
 

@@ -67,9 +67,9 @@
                         <th style="width: 140px;">Received Date</th>
                         <th class="text-center" style="width: 120px;">Status</th>
                         @if (auth()->user()?->can('delete_cake_enquiries'))
-                            <th class="text-end" style="width: 100px;">Actions</th>
+                            <th class="text-center" style="width: 100px;">Actions</th>
                         @else
-                            <th class="text-end" style="width: 60px;">Action</th>
+                            <th class="text-center" style="width: 60px;">Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -118,7 +118,7 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="d-flex justify-content-end align-items-center gap-2">
+                                <div class="d-flex justify-content-center align-items-center gap-2">
                                     <a href="{{ route('cake-enquiries.show', $enquiry) }}"
                                        class="bg-primary-focus text-primary-600 bg-hover-primary-200 fw-semibold w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle border-0 text-decoration-none"
                                        title="View Details">

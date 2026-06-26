@@ -53,7 +53,7 @@
                     <th>Slug</th>
                     <th>Status</th>
                     @if (auth()->user()?->can('edit_events') || auth()->user()?->can('delete_events'))
-                    <th class="text-end">Action</th>
+                    <th class="text-center">Action</th>
                     @endif
 
                 </tr>
@@ -107,8 +107,8 @@
                         </td>
 
                         @if (auth()->user()?->can('edit_events') || auth()->user()?->can('delete_events'))
-                        <td class="text-end pe-4">
-                                <div class="d-flex justify-content-end align-items-center gap-2">
+                        <td class="text-center pe-4">
+                                <div class="d-flex justify-content-center align-items-center gap-2">
                                     @can('edit_events')
                                     <a href="{{ route('events.edit', $event) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">

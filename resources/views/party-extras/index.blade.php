@@ -94,7 +94,7 @@
                         <th>Type</th>
                         <th>Status</th>
                         @if (auth()->user()?->can('edit_party_extras') || auth()->user()?->can('delete_party_extras'))
-                        <th class="text-end pe-4">Action</th>
+                        <th class="text-center pe-4">Action</th>
                         @endcan
                     </tr>
                 </thead>
@@ -131,8 +131,8 @@
                         </td>
 
                         @if (auth()->user()?->can('edit_party_extras') || auth()->user()?->can('delete_party_extras'))
-                        <td class="text-end pe-4">
-                            <div class="d-flex justify-content-end align-items-center gap-2">
+                        <td class="text-center pe-4">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
                                 @can('edit_party_extras')
                                 <a href="{{ route('party-extras.edit',$item) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">

@@ -199,4 +199,27 @@ class PackageController extends Controller
 
         return back()->with('success', 'Deleted successfully');
     }
+
+    public function copy(Package $package)
+    {
+        $this->authorizePackagePermission('create_packages');
+
+        $newPackage = $package->replicate();
+
+        $originalTitle = $package->title;
+        $title = $originalTitle . ' - Copy';
+
+        $counter = 1;
+        while (Package::where('title', $title)->where('branch_id', $package->branch_id)->exists()) {
+            $title = $originalTitle . ' - Copy (' . $counter . ')';
+            $counter++;
+        }
+
+        $newPackage->title = $title;
+        $newPackage->save();
+
+        return redirect()
+            ->route('packages.index')
+            ->with('success', 'Package copied successfully');
+    }
 }

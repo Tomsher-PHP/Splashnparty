@@ -56,7 +56,7 @@
                         <th>Sort</th>
                         <th>Status</th>
                         @if (auth()->user()?->can('edit_cakes') || auth()->user()?->can('delete_cakes'))
-                        <th class="text-end">Action</th>
+                        <th class="text-center">Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -102,7 +102,7 @@
 
                         @if (auth()->user()?->can('edit_cakes') || auth()->user()?->can('delete_cakes'))
                         <td>
-                            <div class="d-flex justify-content-end align-items-center gap-2">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
                                 @can('edit_cakes')
                                 <a href="{{ route('cakes.edit', $cake) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">

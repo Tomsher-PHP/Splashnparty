@@ -112,6 +112,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('party-extras', PartyExtraController::class);
 
     Route::resource('general-access', GeneralAccessController::class);
+    Route::post('packages/{package}/copy', [PackageController::class, 'copy'])->name('packages.copy');
     Route::resource('packages', PackageController::class);
     Route::resource('contact-enquiries', ContactEnquiryController::class)->only(['index', 'show', 'destroy']);
     Route::resource('cake-enquiries', CakeEnquiryController::class)->only(['index', 'show', 'destroy']);

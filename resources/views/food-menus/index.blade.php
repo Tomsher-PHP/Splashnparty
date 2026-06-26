@@ -109,7 +109,7 @@
                             Status
                         </th>
                         @if (auth()->user()?->can('edit_food_menus') || auth()->user()?->can('delete_food_menus'))
-                        <th class="text-end pe-4">
+                        <th class="text-center pe-4">
                             Action
                         </th>
                         @endif
@@ -159,8 +159,8 @@
                             @endif
                         </td>
                         @if (auth()->user()?->can('edit_food_menus') || auth()->user()?->can('delete_food_menus'))
-                        <td class="text-end pe-4">
-                            <div class="d-flex justify-content-end align-items-center gap-2">
+                        <td class="text-center pe-4">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
                                 @can('edit_food_menus')
                                 <a href="{{ route('food-menus.edit', $foodMenu->id) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">

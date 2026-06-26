@@ -83,7 +83,7 @@
                         <th>Sort Order</th>
                         <th>Status</th>
                         @if (auth()->user()?->can('edit_rental_items') || auth()->user()?->can('delete_rental_items'))
-                        <th class="text-end">Action</th>
+                        <th class="text-center">Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -115,8 +115,8 @@
                         </td>
 
                         @if (auth()->user()?->can('edit_rental_items') || auth()->user()?->can('delete_rental_items'))
-                        <td class="text-end pe-4">
-                            <div class="d-flex justify-content-end align-items-center gap-2">
+                        <td class="text-center pe-4">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
                                 @can('edit_rental_items')
                                 <a href="{{ route('rental-items.edit', $item->id) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
