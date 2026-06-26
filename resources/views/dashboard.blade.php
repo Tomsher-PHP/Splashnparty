@@ -177,6 +177,70 @@
         text-decoration: none !important;
         display: block !important;
     }
+
+    /* Clean Top-Border KPI Cards with Reduced Colors */
+    .kpi-card-revenue { border-top: 4px solid #10b981 !important; }
+    .kpi-card-bookings { border-top: 4px solid #3b82f6 !important; }
+    .kpi-card-kids { border-top: 4px solid #8b5cf6 !important; }
+    .kpi-card-contact { border-top: 4px solid #f59e0b !important; }
+    .kpi-card-cake { border-top: 4px solid #f43f5e !important; }
+
+    /* Left Accent Border Spectral Highlights for Secondary Cards */
+    .color-border-left-primary { border-left: 4px solid #2563eb !important; }
+    .color-border-left-purple { border-left: 4px solid #7c3aed !important; }
+    .color-border-left-success { border-left: 4px solid #16a34a !important; }
+    .color-border-left-info { border-left: 4px solid #0891b2 !important; }
+    .color-border-left-warning { border-left: 4px solid #eab308 !important; }
+    .color-border-left-danger { border-left: 4px solid #dc2626 !important; }
+
+    /* Custom Unique Gradient Active Tabs */
+    #bookings-tab.nav-link.active {
+        background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+        color: white !important;
+    }
+    #birthday-tab.nav-link.active {
+        background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%) !important;
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
+        color: white !important;
+    }
+    #cafe-tab.nav-link.active {
+        background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%) !important;
+        box-shadow: 0 4px 12px rgba(6, 182, 212, 0.35);
+        color: white !important;
+    }
+    #cakes-tab.nav-link.active {
+        background: linear-gradient(135deg, #db2777 0%, #ec4899 100%) !important;
+        box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35);
+        color: white !important;
+    }
+    #events-tab.nav-link.active {
+        background: linear-gradient(135deg, #ea580c 0%, #f97316 100%) !important;
+        box-shadow: 0 4px 12px rgba(249, 115, 22, 0.35);
+        color: white !important;
+    }
+
+    /* Individual Custom Quick Action Tiles Hovers */
+    .tile-bookings:hover {
+        background: rgba(99, 102, 241, 0.08) !important;
+        border-color: rgba(99, 102, 241, 0.5) !important;
+    }
+    .tile-package:hover {
+        background: rgba(139, 92, 246, 0.08) !important;
+        border-color: rgba(139, 92, 246, 0.5) !important;
+    }
+    .tile-cafe:hover {
+        background: rgba(6, 182, 212, 0.08) !important;
+        border-color: rgba(6, 182, 212, 0.5) !important;
+    }
+    .tile-cake:hover {
+        background: rgba(236, 72, 153, 0.08) !important;
+        border-color: rgba(236, 72, 153, 0.5) !important;
+    }
+    .tile-event:hover {
+        background: rgba(249, 115, 22, 0.08) !important;
+        border-color: rgba(249, 115, 22, 0.5) !important;
+    }
 </style>
 @endsection
 @section('content')
@@ -202,111 +266,89 @@
         </div>
     </div>
 
-    <!-- Stats Cards Row (6 KPI Metrics) -->
-    <div class="row row-cols-xxl-6 row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4 mb-28">
-        <!-- KPI 1: Birthday Packages -->
-        <div class="col">
-            <a href="{{ route('birthday-packages.index') }}" class="card glass-card gradient-primary-glow h-100 border-0 text-decoration-none">
-                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
+    <!-- Business Performance (Primary KPIs) -->
+    <div class="row gy-4 mb-28">
+        <!-- KPI: Total Revenue -->
+        <div class="col-xxl col-lg-4 col-sm-6 col-12">
+            <div class="card glass-card kpi-card-revenue h-100 border-0">
+                <div class="card-body p-24 d-flex flex-column justify-content-between h-100">
                     <div>
                         <div class="d-flex align-items-center justify-content-between mb-16">
-                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Birthday Packages</span>
-                            <div class="w-36-px h-36-px bg-primary-100 dark:bg-primary-950 text-primary-600 dark:text-primary-400 rounded-circle d-flex justify-content-center align-items-center">
-                                <iconify-icon icon="solar:gift-bold" class="text-lg"></iconify-icon>
+                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Total Sales / Revenue</span>
+                            <div class="w-36-px h-36-px rounded-circle d-flex justify-content-center align-items-center bg-success-50 dark:bg-success-950 text-success-main">
+                                <iconify-icon icon="solar:double-alt-arrow-up-bold-duotone" class="text-lg"></iconify-icon>
                             </div>
                         </div>
-                        <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['birthday_package_count']) }}</h4>
-                        <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Active packages catalog</p>
+                        <span  class="fw-bold text-xl mb-4 text-neutral-900 dark:text-white">AED {{ number_format($stats['total_revenue'], 2) }}</span>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI: Total Bookings -->
+        <div class="col-xxl col-lg-4 col-sm-6 col-12">
+            <a href="{{ route('bookings.index') }}" class="card glass-card kpi-card-bookings h-100 border-0 text-decoration-none">
+                <div class="card-body p-24 d-flex flex-column justify-content-between h-100">
+                    <div>
+                        <div class="d-flex align-items-center justify-content-between mb-16">
+                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Total Bookings</span>
+                            <div class="w-36-px h-36-px rounded-circle d-flex justify-content-center align-items-center bg-primary-50 dark:bg-primary-950 text-primary-600">
+                                <iconify-icon icon="solar:calendar-date-bold-duotone" class="text-lg"></iconify-icon>
+                            </div>
+                        </div>
+                        <span  class="fw-bold text-xl mb-4 text-neutral-900 dark:text-white">{{ number_format($stats['total_bookings']) }}</span>
                     </div>
                 </div>
             </a>
         </div>
 
-        <!-- KPI 2: Events & Parties -->
-        <div class="col">
-            <a href="{{ route('events.index') }}" class="card glass-card gradient-purple-glow h-100 border-0 text-decoration-none">
-                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
+        <!-- KPI: Kids Entertained -->
+        <div class="col-xxl col-lg-4 col-sm-6 col-12">
+            <div class="card glass-card kpi-card-kids h-100 border-0">
+                <div class="card-body p-24 d-flex flex-column justify-content-between h-100">
                     <div>
                         <div class="d-flex align-items-center justify-content-between mb-16">
-                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Events & Parties</span>
-                            <div class="w-36-px h-36-px bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 rounded-circle d-flex justify-content-center align-items-center">
-                                <iconify-icon icon="solar:clapperboard-play-bold" class="text-lg"></iconify-icon>
+                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Kids Entertained</span>
+                            <div class="w-36-px h-36-px rounded-circle d-flex justify-content-center align-items-center bg-purple-50 dark:bg-purple-950 text-purple-600">
+                                <iconify-icon icon="solar:user-bold-duotone" class="text-lg"></iconify-icon>
                             </div>
                         </div>
-                        <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['event_count']) }}</h4>
-                        <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Organized events</p>
+                        <span  class="fw-bold text-xl mb-4 text-neutral-900 dark:text-white">{{ number_format($stats['total_kids']) }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI: Contact Enquiries -->
+        <div class="col-xxl col-lg-6 col-sm-6 col-12">
+            <a href="{{ route('contact-enquiries.index') }}" class="card glass-card kpi-card-contact h-100 border-0 text-decoration-none">
+                <div class="card-body p-24 d-flex flex-column justify-content-between h-100">
+                    <div>
+                        <div class="d-flex align-items-center justify-content-between mb-16">
+                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Contact Enquiries</span>
+                            <div class="w-36-px h-36-px rounded-circle d-flex justify-content-center align-items-center bg-warning-50 dark:bg-warning-950 text-warning-main">
+                                <iconify-icon icon="solar:letter-bold-duotone" class="text-lg"></iconify-icon>
+                            </div>
+                        </div>
+                        <span  class="fw-bold text-xl mb-4 text-neutral-900 dark:text-white">{{ number_format($stats['contact_enquiries_count']) }}</span>
                     </div>
                 </div>
             </a>
         </div>
 
-        <!-- KPI 3: Cafe Menu Items -->
-        <div class="col">
-            <a href="{{ route('cafe-menus.index') }}" class="card glass-card gradient-info-glow h-100 border-0 text-decoration-none">
-                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
+        <!-- KPI: Cake Enquiries -->
+        <div class="col-xxl col-lg-6 col-sm-6 col-12">
+            <a href="{{ route('cake-enquiries.index') }}" class="card glass-card kpi-card-cake h-100 border-0 text-decoration-none">
+                <div class="card-body p-24 d-flex flex-column justify-content-between h-100">
                     <div>
                         <div class="d-flex align-items-center justify-content-between mb-16">
-                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Cafe Items</span>
-                            <div class="w-36-px h-36-px bg-info-100 dark:bg-info-950 text-info-600 dark:text-info-400 rounded-circle d-flex justify-content-center align-items-center">
-                                <iconify-icon icon="solar:cup-hot-bold" class="text-lg"></iconify-icon>
+                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Cake Enquiries</span>
+                            <div class="w-36-px h-36-px rounded-circle d-flex justify-content-center align-items-center bg-danger-50 dark:bg-danger-950 text-danger-main">
+                                <iconify-icon icon="solar:crown-minimalistic-bold-duotone" class="text-lg"></iconify-icon>
                             </div>
                         </div>
-                        <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['cafe_menu_count']) }}</h4>
-                        <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Dishes & beverages</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <!-- KPI 4: Custom Cake Designs -->
-        <div class="col">
-            <a href="{{ route('cakes.index') }}" class="card glass-card gradient-success-glow h-100 border-0 text-decoration-none">
-                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
-                    <div>
-                        <div class="d-flex align-items-center justify-content-between mb-16">
-                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Cake Designs</span>
-                            <div class="w-36-px h-36-px bg-success-100 dark:bg-success-950 text-success-main dark:text-success-400 rounded-circle d-flex justify-content-center align-items-center">
-                                <iconify-icon icon="solar:crown-minimalistic-bold" class="text-lg"></iconify-icon>
-                            </div>
-                        </div>
-                        <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['cake_count']) }}</h4>
-                        <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Custom cake models</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <!-- KPI 5: Rental Gear & Decor -->
-        <div class="col">
-            <a href="{{ route('rental-items.index') }}" class="card glass-card gradient-danger-glow h-100 border-0 text-decoration-none">
-                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
-                    <div>
-                        <div class="d-flex align-items-center justify-content-between mb-16">
-                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Rental Items</span>
-                            <div class="w-36-px h-36-px bg-danger-100 dark:bg-danger-950 text-danger-600 dark:text-danger-400 rounded-circle d-flex justify-content-center align-items-center">
-                                <iconify-icon icon="solar:box-bold" class="text-lg"></iconify-icon>
-                            </div>
-                        </div>
-                        <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['rental_item_count']) }}</h4>
-                        <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Party rentals & decor</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <!-- KPI 6: Active Venue Branches -->
-        <div class="col">
-            <a href="{{ route('branches.index') }}" class="card glass-card gradient-warning-glow h-100 border-0 text-decoration-none">
-                <div class="card-body p-20 d-flex flex-column justify-content-between h-100">
-                    <div>
-                        <div class="d-flex align-items-center justify-content-between mb-16">
-                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Active Branches</span>
-                            <div class="w-36-px h-36-px bg-warning-100 dark:bg-warning-950 text-warning-main dark:text-warning-400 rounded-circle d-flex justify-content-center align-items-center">
-                                <iconify-icon icon="solar:map-point-bold" class="text-lg"></iconify-icon>
-                            </div>
-                        </div>
-                        <h4 class="fw-bold text-neutral-900 dark:text-white mb-4">{{ number_format($stats['branch_count']) }}</h4>
-                        <p class="text-xs text-secondary-light dark:text-neutral-400 mb-0">Locations & venues</p>
+                        <span  class="fw-bold text-xl mb-4 text-neutral-900 dark:text-white">{{ number_format($stats['cake_enquiries_count']) }}</span>
                     </div>
                 </div>
             </a>
@@ -322,9 +364,16 @@
                     <p class="text-sm text-secondary-light dark:text-neutral-400 mb-20">Instantly launch new entries in the respective database catalogs from here.</p>
 
                     <div class="row g-3">
-                        @can('create_birthday_packages')
-                        <div class="col-md-3 col-sm-6">
-                            <a href="{{ route('birthday-packages.create') }}" class="action-tile p-16 text-center d-flex flex-column align-items-center gap-2 h-100 justify-content-center text-decoration-none">
+                        <div class="col-md col-sm-6">
+                            <a href="{{ route('bookings.index') }}" class="action-tile tile-bookings p-16 text-center d-flex flex-column align-items-center gap-2 h-100 justify-content-center text-decoration-none">
+                                <iconify-icon icon="solar:calendar-date-bold" class="text-2xl text-indigo-600"></iconify-icon>
+                                <span class="fw-semibold text-neutral-900 dark:text-white text-xs d-block">Bookings Overview</span>
+                            </a>
+                        </div>
+
+                        @can('create_packages')
+                        <div class="col-md col-sm-6">
+                            <a href="{{ route('packages.create') }}" class="action-tile tile-package p-16 text-center d-flex flex-column align-items-center gap-2 h-100 justify-content-center text-decoration-none">
                                 <iconify-icon icon="solar:gift-bold" class="text-2xl text-primary-600"></iconify-icon>
                                 <span class="fw-semibold text-neutral-900 dark:text-white text-xs d-block">Add Package</span>
                             </a>
@@ -332,8 +381,8 @@
                         @endcan
 
                         @can('create_cafe_menus')
-                        <div class="col-md-3 col-sm-6">
-                            <a href="{{ route('cafe-menus.create') }}" class="action-tile p-16 text-center d-flex flex-column align-items-center gap-2 h-100 justify-content-center text-decoration-none">
+                        <div class="col-md col-sm-6">
+                            <a href="{{ route('cafe-menus.create') }}" class="action-tile tile-cafe p-16 text-center d-flex flex-column align-items-center gap-2 h-100 justify-content-center text-decoration-none">
                                 <iconify-icon icon="solar:cup-hot-bold" class="text-2xl text-cyan"></iconify-icon>
                                 <span class="fw-semibold text-neutral-900 dark:text-white text-xs d-block">New Cafe Item</span>
                             </a>
@@ -341,8 +390,8 @@
                         @endcan
 
                         @can('create_cakes')
-                        <div class="col-md-3 col-sm-6">
-                            <a href="{{ route('cakes.create') }}" class="action-tile p-16 text-center d-flex flex-column align-items-center gap-2 h-100 justify-content-center text-decoration-none">
+                        <div class="col-md col-sm-6">
+                            <a href="{{ route('cakes.create') }}" class="action-tile tile-cake p-16 text-center d-flex flex-column align-items-center gap-2 h-100 justify-content-center text-decoration-none">
                                 <iconify-icon icon="solar:crown-minimalistic-bold" class="text-2xl text-success-main"></iconify-icon>
                                 <span class="fw-semibold text-neutral-900 dark:text-white text-xs d-block">Add Custom Cake</span>
                             </a>
@@ -350,8 +399,8 @@
                         @endcan
 
                         @can('create_events')
-                        <div class="col-md-3 col-sm-6">
-                            <a href="{{ route('events.create') }}" class="action-tile p-16 text-center d-flex flex-column align-items-center gap-2 h-100 justify-content-center text-decoration-none">
+                        <div class="col-md col-sm-6">
+                            <a href="{{ route('events.create') }}" class="action-tile tile-event p-16 text-center d-flex flex-column align-items-center gap-2 h-100 justify-content-center text-decoration-none">
                                 <iconify-icon icon="solar:clapperboard-play-bold" class="text-2xl text-purple-600"></iconify-icon>
                                 <span class="fw-semibold text-neutral-900 dark:text-white text-xs d-block">New Event</span>
                             </a>
@@ -400,363 +449,138 @@
 
     <!-- Charts & Analytics Suite -->
     <div class="row gy-4 mb-28">
-        <!-- Catalog Distribution Breakdown -->
-        <div class="col-xxl-7 col-xl-12">
+        <!-- Monthly Sales & Revenue Trends -->
+        <div class="col-xxl-12 col-12">
             <div class="card glass-card h-100 border-0">
                 <div class="card-body p-24">
-                    <div class="d-flex align-items-center justify-content-between mb-24">
+                    <div class="d-flex align-items-center justify-content-between mb-24 flex-wrap gap-2">
                         <div>
-                            <h6 class="text-lg fw-bold text-neutral-900 dark:text-white mb-4">Catalog Distribution Matrix</h6>
-                            <span class="text-xs text-secondary-light dark:text-neutral-400">Statistical distribution of system elements</span>
+                            <h6 class="text-lg fw-bold text-neutral-900 dark:text-white mb-4">Monthly Sales & Revenue</h6>
+                            <span class="text-xs text-secondary-light dark:text-neutral-400">Revenue analysis for the year {{ $selected_year }}</span>
                         </div>
-                        <span class="badge bg-primary-50 text-primary-600 dark:bg-primary-950 dark:text-primary-400 text-2xs px-10 py-6 rounded-pill fw-semibold">Live System Data</span>
+                        <div class="d-flex align-items-center gap-3">
+                            <form method="GET" action="{{ route('dashboard') }}" class="d-flex align-items-center gap-2">
+                                <label for="revenue_chart_year" class="text-xs fw-semibold text-secondary-light dark:text-neutral-300 mb-0 flex-shrink-0">Filter Year:</label>
+                                <select name="chart_year" id="revenue_chart_year" class="form-select form-select-sm py-4 px-12 text-xs" style="width: 100px; border-radius: 6px; cursor: pointer;" onchange="this.form.submit()">
+                                    @foreach ($available_years as $year)
+                                        <option value="{{ $year }}" {{ $year == $selected_year ? 'selected' : '' }}>{{ $year }}</option>
+                                    @endforeach
+                                </select>
+                            </form>
+                            <span class="badge bg-success-50 text-success-600 dark:bg-success-950 dark:text-success-400 text-2xs px-10 py-6 rounded-pill fw-semibold">AED Sales</span>
+                        </div>
                     </div>
-                    <div id="catalogDistributionChart" style="min-height: 310px;"></div>
+                    <div id="revenueTrendsChart" style="min-height: 310px; width: 90%; margin: 0 auto;"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Supportive Content Donut Chart -->
-        <div class="col-xxl-5 col-xl-12">
+        <!-- Monthly Booking Volume -->
+        <div class="col-xxl-12 col-12">
             <div class="card glass-card h-100 border-0">
                 <div class="card-body p-24">
-                    <h6 class="text-lg fw-bold text-neutral-900 dark:text-white mb-4">Support & Engagement Assets</h6>
-                    <p class="text-sm text-secondary-light dark:text-neutral-400 mb-24">Readiness indicators of secondary modules and gallery components.</p>
-                    
-                    <div class="row align-items-center">
-                        <div class="col-md-7 col-12 mb-16 mb-md-0">
-                            <div id="engagementRadialChart" style="min-height: 250px;"></div>
+                    <div class="d-flex align-items-center justify-content-between mb-24 flex-wrap gap-2">
+                        <div>
+                            <h6 class="text-lg fw-bold text-neutral-900 dark:text-white mb-4">Monthly Booking Volume</h6>
+                            <span class="text-xs text-secondary-light dark:text-neutral-400">Booking count analysis for the year {{ $selected_year }}</span>
                         </div>
-                        <div class="col-md-5 col-12">
-                            <div class="d-flex flex-column gap-12">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="w-12-px h-12-px rounded-circle bg-primary-600"></div>
-                                    <div class="flex-grow-1">
-                                        <span class="text-xs text-secondary-light dark:text-neutral-400 d-block">Gallery Assets</span>
-                                        <h6 class="fw-bold mb-0 text-sm text-neutral-900 dark:text-white">{{ $stats['gallery_count'] }} files</h6>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="w-12-px h-12-px rounded-circle bg-success-main"></div>
-                                    <div class="flex-grow-1">
-                                        <span class="text-xs text-secondary-light dark:text-neutral-400 d-block">Testimonials</span>
-                                        <h6 class="fw-bold mb-0 text-sm text-neutral-900 dark:text-white">{{ $stats['testimonial_count'] }} quotes</h6>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="w-12-px h-12-px rounded-circle bg-warning-main"></div>
-                                    <div class="flex-grow-1">
-                                        <span class="text-xs text-secondary-light dark:text-neutral-400 d-block">FAQ Entries</span>
-                                        <h6 class="fw-bold mb-0 text-sm text-neutral-900 dark:text-white">{{ $stats['faq_count'] }} records</h6>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="w-12-px h-12-px rounded-circle bg-danger-main"></div>
-                                    <div class="flex-grow-1">
-                                        <span class="text-xs text-secondary-light dark:text-neutral-400 d-block">Home Banners</span>
-                                        <h6 class="fw-bold mb-0 text-sm text-neutral-900 dark:text-white">{{ $stats['banner_count'] }} active</h6>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <form method="GET" action="{{ route('dashboard') }}" class="d-flex align-items-center gap-2">
+                                <label for="bookings_chart_year" class="text-xs fw-semibold text-secondary-light dark:text-neutral-300 mb-0 flex-shrink-0">Filter Year:</label>
+                                <select name="chart_year" id="bookings_chart_year" class="form-select form-select-sm py-4 px-12 text-xs" style="width: 100px; border-radius: 6px; cursor: pointer;" onchange="this.form.submit()">
+                                    @foreach ($available_years as $year)
+                                        <option value="{{ $year }}" {{ $year == $selected_year ? 'selected' : '' }}>{{ $year }}</option>
+                                    @endforeach
+                                </select>
+                            </form>
+                            <span class="badge bg-primary-50 text-primary-600 dark:bg-primary-950 dark:text-primary-400 text-2xs px-10 py-6 rounded-pill fw-semibold">Bookings</span>
                         </div>
                     </div>
-
-                    <div class="mt-20 p-12 bg-neutral-50 dark:bg-neutral-900 bg-opacity-50 rounded-12 d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center gap-2">
-                            <iconify-icon icon="solar:settings-bold" class="text-lg text-primary-600"></iconify-icon>
-                            <span class="text-xs fw-semibold text-neutral-900 dark:text-white">Master Site Settings</span>
-                        </div>
-                        <a href="{{ route('general-settings.edit') }}" class="btn btn-primary-600 btn-sm py-4 px-12 rounded-8 text-xs">Configure</a>
-                    </div>
+                    <div id="bookingsVolumeChart" style="min-height: 310px; width: 90%; margin: 0 auto;"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Active Catalog Lists & Team Section -->
+    <!-- Latest Paid Bookings -->
     <div class="row gy-4">
-        <!-- Tabbed Catalog Lists -->
-        <div class="col-xxl-8 col-xl-12">
+        <div class="col-12">
             <div class="card glass-card h-100 border-0">
                 <div class="card-body p-24">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-24 gap-3">
+                    <div class="d-flex align-items-center justify-content-between mb-24 flex-wrap gap-2">
                         <div>
-                            <h6 class="fw-bold text-lg text-neutral-900 dark:text-white mb-2">Operational Asset Catalog</h6>
-                            <span class="text-xs text-secondary-light dark:text-neutral-400">Browse the latest records registered in each category</span>
+                            <h6 class="fw-bold text-lg text-neutral-900 dark:text-white mb-2">Latest Paid Bookings</h6>
+                            <span class="text-xs text-secondary-light dark:text-neutral-400">Review the 10 most recent fully paid and confirmed bookings</span>
                         </div>
-                        
-                        <ul class="nav nav-pills custom-pills mb-0 gap-2" id="recentAssetsTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active px-16 py-8 d-flex align-items-center text-xs" id="birthday-tab" data-bs-toggle="pill" data-bs-target="#birthday-panel" type="button" role="tab" aria-controls="birthday-panel" aria-selected="true">
-                                    Packages
-                                    <span class="badge bg-white bg-opacity-20 rounded-pill text-white ms-8 text-2xs">{{ count($recent_birthday_packages) }}</span>
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link px-16 py-8 d-flex align-items-center text-xs" id="cafe-tab" data-bs-toggle="pill" data-bs-target="#cafe-panel" type="button" role="tab" aria-controls="cafe-panel" aria-selected="false">
-                                    Cafe Menu
-                                    <span class="badge bg-white bg-opacity-20 rounded-pill text-white ms-8 text-2xs">{{ count($recent_cafe_menus) }}</span>
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link px-16 py-8 d-flex align-items-center text-xs" id="cakes-tab" data-bs-toggle="pill" data-bs-target="#cakes-panel" type="button" role="tab" aria-controls="cakes-panel" aria-selected="false">
-                                    Custom Cakes
-                                    <span class="badge bg-white bg-opacity-20 rounded-pill text-white ms-8 text-2xs">{{ count($recent_cakes) }}</span>
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link px-16 py-8 d-flex align-items-center text-xs" id="events-tab" data-bs-toggle="pill" data-bs-target="#events-panel" type="button" role="tab" aria-controls="events-panel" aria-selected="false">
-                                    Events
-                                    <span class="badge bg-white bg-opacity-20 rounded-pill text-white ms-8 text-2xs">{{ count($recent_events) }}</span>
-                                </button>
-                            </li>
-                        </ul>
+                        <a href="{{ route('bookings.index') }}" class="btn btn-primary-600 btn-sm py-6 px-16 rounded-8 text-xs">View All Bookings</a>
                     </div>
 
-                    <div class="tab-content" id="recentAssetsTabContent">
-                        <!-- Birthday Packages Panel -->
-                        <div class="tab-pane fade show active" id="birthday-panel" role="tabpanel" aria-labelledby="birthday-tab">
-                            <div class="table-responsive">
-                                <table class="table bordered-table sm-table mb-0 align-middle">
-                                    <thead>
-                                        <tr class="text-neutral-700 dark:text-neutral-300">
-                                            <th>Title</th>
-                                            <th>Branch Venue</th>
-                                            <th>Rate / Price</th>
-                                            <th class="text-center">Active Status</th>
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="table custom-table sm-table mb-0 align-middle">
+                                <thead>
+                                    <tr class="text-neutral-700 dark:text-neutral-300">
+                                        <th>Ref No.</th>
+                                        <th>Customer Details</th>
+                                        <th>Venue & Package</th>
+                                        <th>Date & Guests</th>
+                                        <th>Total Price</th>
+                                        <th>Payment Status</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($recent_bookings as $booking)
+                                        <tr>
+                                            <td>
+                                                <a href="{{ route('bookings.show', $booking->id) }}" class="fw-bold text-primary-600 hover-text-primary text-xs">
+                                                    {{ $booking->booking_reference }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <h6 class="text-sm mb-0 fw-semibold text-neutral-900 dark:text-white">{{ $booking->contact_name }}</h6>
+                                                    <span class="text-2xs text-secondary-light dark:text-neutral-400 d-block">{{ $booking->email }} | {{ $booking->phone }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span class="text-xs fw-semibold text-neutral-900 dark:text-white d-block">{{ $booking->branch?->name ?? 'Global Venue' }}</span>
+                                                    <span class="text-2xs text-secondary-light dark:text-neutral-400 d-block">{{ $booking->package?->title ?? 'Custom Package' }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span class="text-xs fw-semibold text-neutral-900 dark:text-white d-block">
+                                                        {{ $booking->booking_date ? $booking->booking_date->format('d M Y') : 'N/A' }}
+                                                    </span>
+                                                    <span class="text-2xs text-secondary-light dark:text-neutral-400 d-block">
+                                                        {{ $booking->adult_count }} Adults, {{ $booking->child_count }} Kids
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="fw-bold text-neutral-900 dark:text-white text-sm">
+                                                    AED {{ number_format($booking->total_amount, 2) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="bg-success-focus text-success-main px-12 py-4 rounded-pill fw-semibold text-2xs">PAID</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="{{ route('bookings.show', $booking->id) }}" class="btn btn-outline-primary-600 btn-sm py-4 px-12 rounded-8 text-xs d-inline-flex align-items-center gap-1">
+                                                    View Details
+                                                </a>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($recent_birthday_packages as $package)
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center gap-3">
-                                                        <div class="thumbnail-container border border-neutral-200 dark:border-neutral-800">
-                                                            @if ($package->image)
-                                                                <img src="{{ asset('storage/' . $package->image) }}" alt="" class="thumbnail-img">
-                                                            @else
-                                                                <div class="w-100 h-100 bg-neutral-100 dark:bg-neutral-800 d-flex justify-content-center align-items-center">
-                                                                    <iconify-icon icon="solar:gift-bold" class="text-neutral-400"></iconify-icon>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                        <div>
-                                                            <h6 class="text-sm mb-0 fw-semibold text-neutral-900 dark:text-white">{{ $package->title }}</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="text-xs fw-medium text-secondary-light dark:text-neutral-300">{{ $package->branch?->name ?? 'Global Venue' }}</td>
-                                                <td><span class="fw-bold text-primary-600 text-sm">{{ $package->price ? 'AED ' . number_format($package->price, 2) : 'N/A' }}</span></td>
-                                                <td class="text-center">
-                                                    @if($package->status)
-                                                        <span class="bg-success-focus text-success-main px-12 py-4 rounded-pill fw-semibold text-2xs">ACTIVE</span>
-                                                    @else
-                                                        <span class="bg-neutral-100 text-neutral-600 px-12 py-4 rounded-pill fw-semibold text-2xs">INACTIVE</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="4" class="text-center py-36 text-secondary-light dark:text-neutral-500">No birthday packages cataloged yet.</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Cafe Panel -->
-                        <div class="tab-pane fade" id="cafe-panel" role="tabpanel" aria-labelledby="cafe-tab">
-                            <div class="table-responsive">
-                                <table class="table bordered-table sm-table mb-0 align-middle">
-                                    <thead>
-                                        <tr class="text-neutral-700 dark:text-neutral-300">
-                                            <th>Dish / Drink</th>
-                                            <th>Category Type</th>
-                                            <th>Rate / Price</th>
-                                            <th class="text-center">Active Status</th>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center py-36 text-secondary-light dark:text-neutral-500">No paid bookings registered yet.</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($recent_cafe_menus as $menu)
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center gap-3">
-                                                        <div class="thumbnail-container border border-neutral-200 dark:border-neutral-800">
-                                                            @if ($menu->image)
-                                                                <img src="{{ asset('storage/' . $menu->image) }}" alt="" class="thumbnail-img">
-                                                            @else
-                                                                <div class="w-100 h-100 bg-neutral-100 dark:bg-neutral-800 d-flex justify-content-center align-items-center">
-                                                                    <iconify-icon icon="solar:cup-hot-bold" class="text-neutral-400"></iconify-icon>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                        <div>
-                                                            <h6 class="text-sm mb-0 fw-semibold text-neutral-900 dark:text-white">{{ $menu->title }}</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="text-xs fw-medium text-secondary-light dark:text-neutral-300">{{ $menu->category?->name ?? 'General Delights' }}</td>
-                                                <td><span class="fw-bold text-primary-600 text-sm">{{ $menu->price ? 'AED ' . number_format($menu->price, 2) : 'N/A' }}</span></td>
-                                                <td class="text-center">
-                                                    @if($menu->status)
-                                                        <span class="bg-success-focus text-success-main px-12 py-4 rounded-pill fw-semibold text-2xs">ACTIVE</span>
-                                                    @else
-                                                        <span class="bg-neutral-100 text-neutral-600 px-12 py-4 rounded-pill fw-semibold text-2xs">INACTIVE</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="4" class="text-center py-36 text-secondary-light dark:text-neutral-500">No cafe items registered yet.</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
-
-                        <!-- Cakes Panel (NEW) -->
-                        <div class="tab-pane fade" id="cakes-panel" role="tabpanel" aria-labelledby="cakes-tab">
-                            <div class="table-responsive">
-                                <table class="table bordered-table sm-table mb-0 align-middle">
-                                    <thead>
-                                        <tr class="text-neutral-700 dark:text-neutral-300">
-                                            <th>Cake Model</th>
-                                            <th>Product ID</th>
-                                            <th>Price Rate</th>
-                                            <th class="text-center">Active Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($recent_cakes as $cake)
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center gap-3">
-                                                        <div class="thumbnail-container border border-neutral-200 dark:border-neutral-800">
-                                                            @if ($cake->thumbnail_image)
-                                                                <img src="{{ asset($cake->thumbnail_image) }}" alt="" class="thumbnail-img">
-                                                            @else
-                                                                <div class="w-100 h-100 bg-neutral-100 dark:bg-neutral-800 d-flex justify-content-center align-items-center">
-                                                                    <iconify-icon icon="solar:crown-minimalistic-bold" class="text-neutral-400"></iconify-icon>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                        <div>
-                                                            <h6 class="text-sm mb-0 fw-semibold text-neutral-900 dark:text-white">{{ $cake->title }}</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="text-xs fw-medium text-secondary-light dark:text-neutral-300">{{ $cake->product_code ?: 'N/A' }}</td>
-                                                <td><span class="fw-bold text-primary-600 text-sm">{{ $cake->price ? 'AED ' . number_format($cake->price, 2) : 'N/A' }}</span></td>
-                                                <td class="text-center">
-                                                    @if($cake->status)
-                                                        <span class="bg-success-focus text-success-main px-12 py-4 rounded-pill fw-semibold text-2xs">ACTIVE</span>
-                                                    @else
-                                                        <span class="bg-neutral-100 text-neutral-600 px-12 py-4 rounded-pill fw-semibold text-2xs">INACTIVE</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="4" class="text-center py-36 text-secondary-light dark:text-neutral-500">No custom cake designs loaded.</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Events Panel -->
-                        <div class="tab-pane fade" id="events-panel" role="tabpanel" aria-labelledby="events-tab">
-                            <div class="table-responsive">
-                                <table class="table bordered-table sm-table mb-0 align-middle">
-                                    <thead>
-                                        <tr class="text-neutral-700 dark:text-neutral-300">
-                                            <th>Event Occasion</th>
-                                            <th>Created Date</th>
-                                            <th class="text-center">Active Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($recent_events as $event)
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center gap-3">
-                                                        <div class="thumbnail-container border border-neutral-200 dark:border-neutral-800">
-                                                            @if ($event->image)
-                                                                <img src="{{ asset('storage/' . $event->image) }}" alt="" class="thumbnail-img">
-                                                            @else
-                                                                <div class="w-100 h-100 bg-neutral-100 dark:bg-neutral-800 d-flex justify-content-center align-items-center">
-                                                                    <iconify-icon icon="solar:clapperboard-play-bold" class="text-neutral-400"></iconify-icon>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                        <div>
-                                                            <h6 class="text-sm mb-0 fw-semibold text-neutral-900 dark:text-white">{{ $event->title }}</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="text-xs fw-medium text-secondary-light dark:text-neutral-300">{{ $event->created_at?->format('d M Y') ?? 'N/A' }}</td>
-                                                <td class="text-center">
-                                                    @if($event->status)
-                                                        <span class="bg-success-focus text-success-main px-12 py-4 rounded-pill fw-semibold text-2xs">ACTIVE</span>
-                                                    @else
-                                                        <span class="bg-neutral-100 text-neutral-600 px-12 py-4 rounded-pill fw-semibold text-2xs">INACTIVE</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="3" class="text-center py-36 text-secondary-light dark:text-neutral-500">No events registered yet.</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Staff Members List -->
-        <div class="col-xxl-4 col-xl-12">
-            <div class="card glass-card h-100 border-0">
-                <div class="card-body p-24">
-                    <div class="d-flex align-items-center justify-content-between mb-24">
-                        <div>
-                            <h6 class="fw-bold text-lg text-neutral-900 dark:text-white mb-2">Venue Team Directory</h6>
-                            <span class="text-xs text-secondary-light dark:text-neutral-400">Administrative and playground staff roles</span>
-                        </div>
-                        <a href="{{ route('staffs.index') }}" class="text-primary-600 dark:text-primary-400 hover-text-primary d-inline-flex align-items-center gap-1 text-xs fw-semibold">
-                            Directory
-                            <iconify-icon icon="solar:alt-arrow-right-linear" class="icon"></iconify-icon>
-                        </a>
-                    </div>
-
-                    <div class="d-flex flex-column gap-20">
-                        @forelse ($staff_members as $member)
-                            <div class="d-flex align-items-center justify-content-between gap-3 p-12 rounded-12 bg-neutral-50 dark:bg-neutral-900 bg-opacity-30 border border-neutral-100 border-opacity-50 dark:border-neutral-800 dark:border-opacity-50">
-                                <div class="d-flex align-items-center">
-                                    <div class="avatar-wrapper me-12">
-                                        <div class="w-40-px h-40-px bg-primary-100 dark:bg-primary-950 rounded-circle d-flex justify-content-center align-items-center text-primary-600 dark:text-primary-400 font-bold">
-                                            {{ strtoupper(substr($member->name ?? 'U', 0, 1)) }}
-                                        </div>
-                                        <span class="online-indicator w-10-px h-10-px bg-success-main rounded-circle d-block"></span>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="text-sm mb-0 fw-semibold text-neutral-900 dark:text-white">{{ $member->name }}</h6>
-                                        <span class="text-2xs text-secondary-light dark:text-neutral-400 d-block">{{ $member->email }}</span>
-                                    </div>
-                                </div>
-                                <span class="badge bg-primary-50 dark:bg-primary-950 text-primary-600 dark:text-primary-400 text-2xs px-10 py-6 rounded-pill fw-semibold">
-                                    {{ $member->roles->first()?->name ?? 'Staff' }}
-                                </span>
-                            </div>
-                        @empty
-                            <p class="text-center text-secondary-light dark:text-neutral-500 py-36 text-sm mb-0">No registered staff found.</p>
-                        @endforelse
                     </div>
                 </div>
             </div>
@@ -791,48 +615,48 @@
             updateClock();
             setInterval(updateClock, 1000);
 
-            // Catalog Distribution Column Chart
+            // Monthly Sales & Revenue Trends Chart (Area)
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             const textColors = isDark ? '#94a3b8' : '#64748b';
             const gridColors = isDark ? '#334155' : '#f1f5f9';
 
-            var catalogOptions = {
+            const trendDates = {!! json_encode(array_column($trends, 'date')) !!};
+            const trendCounts = {!! json_encode(array_column($trends, 'count')) !!};
+            const trendRevenues = {!! json_encode(array_column($trends, 'revenue')) !!};
+
+            var revenueOptions = {
                 series: [{
-                    name: 'Catalog Records Count',
-                    data: [
-                        {{ $stats['birthday_package_count'] }},
-                        {{ $stats['event_count'] }},
-                        {{ $stats['cafe_menu_count'] }},
-                        {{ $stats['cake_count'] }},
-                        {{ $stats['rental_item_count'] }}
-                    ]
+                    name: 'Revenue (AED)',
+                    data: trendRevenues
                 }],
                 chart: {
-                    type: 'bar',
                     height: 310,
+                    width: '100%',
+                    type: 'area',
                     toolbar: {
                         show: false
                     },
                     parentHeightOffset: 0
                 },
-                plotOptions: {
-                    bar: {
-                        borderRadius: 6,
-                        horizontal: false,
-                        columnWidth: '38%',
-                        endingShape: 'rounded'
-                    },
-                },
-                dataLabels: {
-                    enabled: false
-                },
                 stroke: {
-                    show: true,
-                    width: 2,
-                    colors: ['transparent']
+                    width: 3,
+                    curve: 'smooth'
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.35,
+                        opacityTo: 0.05,
+                        stops: [0, 90, 100]
+                    }
+                },
+                labels: trendDates,
+                markers: {
+                    size: 4
                 },
                 xaxis: {
-                    categories: ['Birthday Packages', 'Events', 'Cafe Menu', 'Custom Cakes', 'Rental Items'],
+                    type: 'category',
                     labels: {
                         style: {
                             colors: textColors,
@@ -848,32 +672,34 @@
                     }
                 },
                 yaxis: {
+                    title: {
+                        text: 'Revenue (AED)',
+                        offsetX: 10,
+                        style: {
+                            color: '#10b981',
+                            fontWeight: 600
+                        }
+                    },
                     labels: {
+                        // minWidth: 80,
                         style: {
                             colors: textColors,
                             fontSize: '11px'
+                        },
+                        formatter: function(val) {
+                            return 'AED ' + val.toLocaleString();
                         }
                     }
                 },
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        shade: 'light',
-                        type: "vertical",
-                        shadeIntensity: 0.25,
-                        gradientToColors: ['#7c3aed', '#db2777', '#0891b2', '#16a34a', '#dc2626'],
-                        inverseColors: true,
-                        opacityFrom: 0.85,
-                        opacityTo: 0.55,
-                        stops: [0, 100]
-                    },
-                    colors: ['#2563eb', '#9333ea', '#06b6d4', '#22c55e', '#ef4444']
-                },
+                colors: ['#10b981'],
                 tooltip: {
                     theme: isDark ? 'dark' : 'light',
                     y: {
-                        formatter: function (val) {
-                            return val + " items active"
+                        formatter: function (y) {
+                            if (typeof y !== "undefined") {
+                                return 'AED ' + y.toLocaleString();
+                            }
+                            return y;
                         }
                     }
                 },
@@ -885,75 +711,104 @@
                         right: 10,
                         bottom: 0
                     }
+                },
+                legend: {
+                    show: false
                 }
             };
 
-            var catalogChart = new ApexCharts(document.querySelector("#catalogDistributionChart"), catalogOptions);
-            catalogChart.render();
-
-            // Supportive Media & Engagement Donut Chart
-            var engagementOptions = {
-                series: [
-                    {{ $stats['gallery_count'] }},
-                    {{ $stats['testimonial_count'] }},
-                    {{ $stats['faq_count'] }},
-                    {{ $stats['banner_count'] }}
-                ],
+            // Monthly Booking Volume Chart (Rounded Columns)
+            var bookingsOptions = {
+                series: [{
+                    name: 'Bookings Count',
+                    data: trendCounts
+                }],
                 chart: {
-                    type: 'donut',
-                    height: 250,
+                    height: 310,
+                    width: '100%',
+                    type: 'bar',
+                    toolbar: {
+                        show: false
+                    },
                     parentHeightOffset: 0
                 },
-                labels: ['Gallery Assets', 'Testimonials', 'FAQ Records', 'Home Banners'],
-                colors: ['#2563eb', '#16a34a', '#eab308', '#dc2626'],
-                legend: {
-                    show: false
-                },
-                dataLabels: {
-                    enabled: false
-                },
                 plotOptions: {
-                    pie: {
-                        donut: {
-                            size: '72%',
-                            labels: {
-                                show: true,
-                                name: {
-                                    show: true,
-                                    fontSize: '12px',
-                                    fontWeight: 500,
-                                    color: textColors
-                                },
-                                value: {
-                                    show: true,
-                                    fontSize: '20px',
-                                    fontWeight: 700,
-                                    color: isDark ? '#ffffff' : '#0f172a',
-                                    formatter: function (val) {
-                                        return val
-                                    }
-                                },
-                                total: {
-                                    show: true,
-                                    label: 'Total Assets',
-                                    fontSize: '11px',
-                                    fontWeight: 500,
-                                    color: textColors,
-                                    formatter: function (w) {
-                                        return w.globals.seriesTotals.reduce((a, b) => a + b, 0)
-                                    }
-                                }
-                            }
+                    bar: {
+                        columnWidth: '40%',
+                        borderRadius: 6
+                    }
+                },
+                fill: {
+                    opacity: 0.85
+                },
+                labels: trendDates,
+                xaxis: {
+                    type: 'category',
+                    labels: {
+                        style: {
+                            colors: textColors,
+                            fontSize: '11px',
+                            fontWeight: 500
+                        }
+                    },
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Bookings Count',
+                        offsetX: 8,
+                        style: {
+                            color: '#3b82f6',
+                            fontWeight: 600
+                        }
+                    },
+                    labels: {
+                        // minWidth: 10,
+                        style: {
+                            colors: textColors,
+                            fontSize: '11px'
+                        },
+                        formatter: function(val) {
+                            return val.toFixed(0);
                         }
                     }
                 },
+                colors: ['#3b82f6'],
                 tooltip: {
-                    theme: isDark ? 'dark' : 'light'
+                    theme: isDark ? 'dark' : 'light',
+                    y: {
+                        formatter: function (y) {
+                            if (typeof y !== "undefined") {
+                                return y.toLocaleString() + ' bookings';
+                            }
+                            return y;
+                        }
+                    }
+                },
+                grid: {
+                    borderColor: gridColors,
+                    strokeDashArray: 4,
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        bottom: 0
+                    }
+                },
+                legend: {
+                    show: false
                 }
             };
 
-            var engagementChart = new ApexCharts(document.querySelector("#engagementRadialChart"), engagementOptions);
-            engagementChart.render();
+            var revenueTrendsChart = new ApexCharts(document.querySelector("#revenueTrendsChart"), revenueOptions);
+            revenueTrendsChart.render();
+
+            var bookingsVolumeChart = new ApexCharts(document.querySelector("#bookingsVolumeChart"), bookingsOptions);
+            bookingsVolumeChart.render();
 
             // Update charts colors on theme switch
             const themeBtn = document.querySelector('.theme-customization-sidebar__close');
@@ -964,7 +819,7 @@
                         const newTextColors = newDark ? '#94a3b8' : '#64748b';
                         const newGridColors = newDark ? '#334155' : '#f1f5f9';
 
-                        catalogChart.updateOptions({
+                        revenueTrendsChart.updateOptions({
                             xaxis: {
                                 labels: {
                                     style: {
@@ -987,29 +842,29 @@
                             }
                         });
 
-                        engagementChart.updateOptions({
-                            plotOptions: {
-                                pie: {
-                                    donut: {
-                                        labels: {
-                                            name: {
-                                                color: newTextColors
-                                            },
-                                            value: {
-                                                color: newDark ? '#ffffff' : '#0f172a'
-                                            },
-                                            total: {
-                                                color: newTextColors
-                                            }
-                                        }
+                        bookingsVolumeChart.updateOptions({
+                            xaxis: {
+                                labels: {
+                                    style: {
+                                        colors: newTextColors
                                     }
                                 }
+                            },
+                            yaxis: {
+                                labels: {
+                                    style: {
+                                        colors: newTextColors
+                                    }
+                                }
+                            },
+                            grid: {
+                                borderColor: newGridColors
                             },
                             tooltip: {
                                 theme: newDark ? 'dark' : 'light'
                             }
                         });
-                    }, 150);
+                    }, 180000);
                 });
             }
         });
