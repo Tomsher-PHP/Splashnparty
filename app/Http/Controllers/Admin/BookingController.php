@@ -67,25 +67,45 @@ class BookingController extends Controller
         }
 
         // Reservation Date filters
-        if ($request->filled('reservation_start_date')) {
-            $query->whereDate('booking_date', '>=', $request->reservation_start_date);
-        } elseif ($request->filled('start_date')) {
-            $query->whereDate('booking_date', '>=', $request->start_date);
-        }
+        if ($request->filled('reservation_date_range')) {
+            $dates = explode(' to ', $request->reservation_date_range);
+            if (count($dates) == 2) {
+                $query->whereDate('booking_date', '>=', $dates[0])
+                      ->whereDate('booking_date', '<=', $dates[1]);
+            } else {
+                $query->whereDate('booking_date', $dates[0]);
+            }
+        } else {
+            if ($request->filled('reservation_start_date')) {
+                $query->whereDate('booking_date', '>=', $request->reservation_start_date);
+            } elseif ($request->filled('start_date')) {
+                $query->whereDate('booking_date', '>=', $request->start_date);
+            }
 
-        if ($request->filled('reservation_end_date')) {
-            $query->whereDate('booking_date', '<=', $request->reservation_end_date);
-        } elseif ($request->filled('end_date')) {
-            $query->whereDate('booking_date', '<=', $request->end_date);
+            if ($request->filled('reservation_end_date')) {
+                $query->whereDate('booking_date', '<=', $request->reservation_end_date);
+            } elseif ($request->filled('end_date')) {
+                $query->whereDate('booking_date', '<=', $request->end_date);
+            }
         }
 
         // Booked At filters
-        if ($request->filled('booked_start_date')) {
-            $query->whereDate('created_at', '>=', $request->booked_start_date);
-        }
+        if ($request->filled('booked_date_range')) {
+            $dates = explode(' to ', $request->booked_date_range);
+            if (count($dates) == 2) {
+                $query->whereDate('created_at', '>=', $dates[0])
+                      ->whereDate('created_at', '<=', $dates[1]);
+            } else {
+                $query->whereDate('created_at', $dates[0]);
+            }
+        } else {
+            if ($request->filled('booked_start_date')) {
+                $query->whereDate('created_at', '>=', $request->booked_start_date);
+            }
 
-        if ($request->filled('booked_end_date')) {
-            $query->whereDate('created_at', '<=', $request->booked_end_date);
+            if ($request->filled('booked_end_date')) {
+                $query->whereDate('created_at', '<=', $request->booked_end_date);
+            }
         }
 
         $bookings = $query->latest()

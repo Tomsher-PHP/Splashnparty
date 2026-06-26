@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
     <h6 class="fw-semibold mb-0">Bookings</h6>
     <div class="d-flex align-items-center gap-2">
         <span class="bg-primary-50 text-primary-600 px-20 py-8 rounded fw-medium text-sm">{{ $bookings->total() }} Total
@@ -14,18 +14,19 @@
     <div class="card-header bg-white py-16">
         <form method="GET" action="{{ route('bookings.index') }}">
             <div class="row g-3 align-items-end">
-                <!-- Row 1 -->
-                <div class="col-md-4 col-sm-6">
-                    <label class="form-label text-sm fw-medium text-secondary mb-1">Search Keyword</label>
+                <!-- Keyword search -->
+                <div class="col-md-3 col-sm-6">
+                    {{-- <label class="form-label text-sm fw-medium text-secondary mb-1">Search Keyword</label> --}}
                     <input type="text"
                         class="form-control form-control-sm"
-                        placeholder="Search ref, name, phone, email..."
+                        placeholder="Search ref, name, phone..."
                         name="keyword"
                         value="{{ request('keyword') }}">
                 </div>
 
-                <div class="col-md-4 col-sm-6">
-                    <label class="form-label text-sm fw-medium text-secondary mb-1">Branch</label>
+                <!-- Branch select -->
+                <div class="col-md-3 col-sm-6">
+                    {{-- <label class="form-label text-sm fw-medium text-secondary mb-1">Branch</label> --}}
                     <select name="branch_id" class="form-select form-select-sm">
                         <option value="">All Branches</option>
                         @foreach($branches as $branch)
@@ -36,8 +37,9 @@
                     </select>
                 </div>
 
-                <div class="col-md-4 col-sm-12">
-                    <label class="form-label text-sm fw-medium text-secondary mb-1">Package</label>
+                <!-- Package select -->
+                <div class="col-md-3 col-sm-6">
+                    {{-- <label class="form-label text-sm fw-medium text-secondary mb-1">Package</label> --}}
                     <select name="package_id" class="form-select form-select-sm">
                         <option value="">All Packages</option>
                         @foreach($packages as $package)
@@ -48,47 +50,34 @@
                     </select>
                 </div>
 
-                <!-- Row 2 -->
-                <div class="col-md-4 col-sm-6">
-                    <label class="form-label text-sm fw-medium text-secondary mb-1">Reservation Date Range</label>
-                    <div class="input-group input-group-sm">
-                        <input type="date"
-                            name="reservation_start_date"
-                            class="form-control"
-                            value="{{ request('reservation_start_date', request('start_date')) }}">
-                        <span class="input-group-text bg-light text-muted">to</span>
-                        <input type="date"
-                            name="reservation_end_date"
-                            class="form-control"
-                            value="{{ request('reservation_end_date', request('end_date')) }}">
-                    </div>
+                <!-- Reservation Date Range -->
+                <div class="col-md-3 col-sm-6">
+                    {{-- <label class="form-label text-sm fw-medium text-secondary mb-1">Reservation Date</label> --}}
+                    <input type="text"
+                        name="reservation_date_range"
+                        class="form-control form-control-sm flatpickr-range bg-white"
+                        placeholder="Select reservation date range"
+                        value="{{ request('reservation_date_range') }}">
                 </div>
 
-                <div class="col-md-4 col-sm-6">
-                    <label class="form-label text-sm fw-medium text-secondary mb-1">Booked At Date Range</label>
-                    <div class="input-group input-group-sm">
-                        <input type="date"
-                            name="booked_start_date"
-                            class="form-control"
-                            value="{{ request('booked_start_date') }}">
-                        <span class="input-group-text bg-light text-muted">to</span>
-                        <input type="date"
-                            name="booked_end_date"
-                            class="form-control"
-                            value="{{ request('booked_end_date') }}">
-                    </div>
+                <!-- Booked At Date Range -->
+                <div class="col-md-3 col-sm-6">
+                    {{-- <label class="form-label text-sm fw-medium text-secondary mb-1">Booked At</label> --}}
+                    <input type="text"
+                        name="booked_date_range"
+                        class="form-control form-control-sm flatpickr-range bg-white"
+                        placeholder="Select booked at range"
+                        value="{{ request('booked_date_range') }}">
                 </div>
 
-                <div class="col-md-4 col-sm-12 text-end">
-                    <label class="form-label text-sm fw-medium text-secondary mb-1 d-none d-md-block">&nbsp;</label>
-                    <div class="d-inline-flex gap-2">
-                        <button type="submit" class="btn btn-sm btn-primary-600 px-24">
-                            <i class="ri-search-line me-1"></i> Filter
-                        </button>
-                        <a href="{{ route('bookings.index') }}" class="btn btn-sm btn-outline-secondary px-24">
-                            Reset
-                        </a>
-                    </div>
+                <!-- Action buttons -->
+                <div class=" col-md-1 col-sm-3 d-inline-flex gap-2">
+                    <button type="submit" class="btn btn-sm btn-primary-600 px-16 w-100" title="Filter">
+                        <i class="ri-search-line me-1"></i> 
+                    </button>
+                    <a href="{{ route('bookings.index') }}" class="btn btn-sm btn-outline-secondary px-16 w-100 text-center" title="Reset">
+                        <i class="ri-refresh-line me-1"></i> 
+                    </a>
                 </div>
             </div>
         </form>
@@ -181,4 +170,17 @@
     </div>
 </div>
 
+@endsection
+
+@section('script')
+<script src="{{ asset('assets/js/flatpickr.js') }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        flatpickr(".flatpickr-range", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+            allowInput: false,
+        });
+    });
+</script>
 @endsection
