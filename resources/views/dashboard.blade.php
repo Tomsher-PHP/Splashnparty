@@ -509,17 +509,17 @@
                 <div class="card-body p-24">
                     <div class="d-flex align-items-center justify-content-between mb-24 flex-wrap gap-2">
                         <div>
-                            <h6 class="fw-bold text-lg text-neutral-900 dark:text-white mb-2">Latest Paid Bookings</h6>
-                            <span class="text-xs text-secondary-light dark:text-neutral-400">Review the 10 most recent fully paid and confirmed bookings</span>
+                            <h6 class="fw-bold text-lg text-neutral-900 mb-2">Latest Paid Bookings</h6>
+                            <span class="text-xs text-secondary-light">Review the 10 most recent fully paid and confirmed bookings</span>
                         </div>
                         <a href="{{ route('bookings.index') }}" class="btn btn-primary-600 btn-sm py-6 px-16 rounded-8 text-xs">View All Bookings</a>
                     </div>
 
                     <div class="table-container">
                         <div class="table-responsive">
-                            <table class="table custom-table sm-table mb-0 align-middle">
+                            <table class="table bordered-table mb-0 align-middle">
                                 <thead>
-                                    <tr class="text-neutral-700 dark:text-neutral-300">
+                                    <tr>
                                         <th>Ref No.</th>
                                         <th>Customer Details</th>
                                         <th>Venue & Package</th>
@@ -539,28 +539,28 @@
                                             </td>
                                             <td>
                                                 <div>
-                                                    <h6 class="text-sm mb-0 fw-semibold text-neutral-900 dark:text-white">{{ $booking->contact_name }}</h6>
-                                                    <span class="text-2xs text-secondary-light dark:text-neutral-400 d-block">{{ $booking->email }} | {{ $booking->phone }}</span>
+                                                    <h6 class="text-sm mb-0 fw-semibold text-neutral-900">{{ $booking->contact_name }}</h6>
+                                                    <span class="text-2xs text-secondary-light d-block">{{ $booking->email }} | {{ $booking->phone }}</span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div>
-                                                    <span class="text-xs fw-semibold text-neutral-900 dark:text-white d-block">{{ $booking->branch?->name ?? 'Global Venue' }}</span>
-                                                    <span class="text-2xs text-secondary-light dark:text-neutral-400 d-block">{{ $booking->package?->title ?? 'Custom Package' }}</span>
+                                                    <span class="text-xs fw-semibold text-neutral-900 d-block">{{ $booking->branch?->name ?? 'Global Venue' }}</span>
+                                                    <span class="text-2xs text-secondary-light d-block">{{ $booking->package?->title ?? 'Custom Package' }}</span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div>
-                                                    <span class="text-xs fw-semibold text-neutral-900 dark:text-white d-block">
+                                                    <span class="text-xs fw-semibold text-neutral-900 d-block">
                                                         {{ $booking->booking_date ? $booking->booking_date->format('d M Y') : 'N/A' }}
                                                     </span>
-                                                    <span class="text-2xs text-secondary-light dark:text-neutral-400 d-block">
+                                                    <span class="text-2xs text-secondary-light d-block">
                                                         {{ $booking->adult_count }} Adults, {{ $booking->child_count }} Kids
                                                     </span>
                                                 </div>
                                             </td>
                                             <td>
-                                                <span class="fw-bold text-neutral-900 dark:text-white text-sm">
+                                                <span class="fw-bold text-neutral-900 text-sm">
                                                     AED {{ number_format($booking->total_amount, 2) }}
                                                 </span>
                                             </td>
@@ -575,7 +575,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center py-36 text-secondary-light dark:text-neutral-500">No paid bookings registered yet.</td>
+                                            <td colspan="7" class="text-center py-36 text-secondary-light">No paid bookings registered yet.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
