@@ -59,6 +59,11 @@ class PartyExtraController extends Controller
             );
         }
 
+        // Status Filter
+        if (request()->has('status') && request('status') !== null && request('status') !== '') {
+            $query->where('status', request('status'));
+        }
+
         $partyExtras = $query
             ->paginate(10)
             ->withQueryString();

@@ -33,12 +33,16 @@ class EventController extends Controller
 
         // KEYWORD SEARCH
         if ($keyword = request('title')) {
-
             $query->where(
                 'title',
                 'like',
                 '%' . $keyword . '%'
             );
+        }
+
+        // STATUS FILTER
+        if (request()->has('status') && request('status') !== null && request('status') !== '') {
+            $query->where('status', request('status'));
         }
 
         $events = $query

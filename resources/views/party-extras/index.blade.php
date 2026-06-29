@@ -65,6 +65,17 @@
                     </select>
                 </div>
 
+                {{-- Status --}}
+                <div>
+                    <label class="form-label mb-1">Status</label>
+                    <select name="status"
+                        class="form-select form-select-sm">
+                        <option value="">All Statuses</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary-600">
                         <i class="ri-search-line"></i>
