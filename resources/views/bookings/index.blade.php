@@ -85,7 +85,7 @@
 
     <div class="card-body">
         <div class="overflow-x-auto">
-            <table class="table bordered-table mb-0">
+            <table class="table bordered-table mb-0" style="min-width: 1100px;">
                 <thead class="bg-light">
                     <tr>
                         <th width="60">#</th>

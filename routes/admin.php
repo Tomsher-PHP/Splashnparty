@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\OutDoorEventsController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\PartyExtraController;
 use App\Http\Controllers\Admin\RentalCategoryController;
 use App\Http\Controllers\Admin\RentalItemController;
@@ -157,5 +158,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('newsletter-subscriptions/export', [NewsletterSubscriptionController::class, 'export'])->name('newsletter-subscriptions.export');
     Route::resource('newsletter-subscriptions', NewsletterSubscriptionController::class)->only(['index', 'destroy']);
 
-    
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('admin.profile.update');
 });
