@@ -162,4 +162,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('admin.profile.update');
 
     Route::post('/clear-cache', [DashboardController::class, 'clearCache'])->name('admin.clear-cache');
+
+    // Admin Fallback Route to catch undefined admin paths and load auth session context
+    Route::fallback(function () {
+        abort(404);
+    });
 });
