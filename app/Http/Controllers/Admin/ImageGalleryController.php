@@ -20,8 +20,12 @@ class ImageGalleryController extends Controller
 
         // SEARCH CATEGORY
         if ($search = request('category')) {
-
             $query->where('category_name', 'like', '%' . $search . '%');
+        }
+
+        // STATUS FILTER
+        if (request()->has('status') && request('status') !== null && request('status') !== '') {
+            $query->where('status', request('status'));
         }
 
         $galleries = $query

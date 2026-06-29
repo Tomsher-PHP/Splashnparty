@@ -28,6 +28,11 @@ class VideoGalleryController extends Controller
             );
         }
 
+        // STATUS FILTER
+        if (request()->has('status') && request('status') !== null && request('status') !== '') {
+            $query->where('status', request('status'));
+        }
+
         $galleries = $query
             ->paginate(10)
             ->withQueryString();

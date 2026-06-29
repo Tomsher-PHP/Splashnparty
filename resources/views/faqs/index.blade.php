@@ -31,7 +31,16 @@
                     <input type="text" name="search" value="{{ request('search') }}"
                         class="form-control form-control-sm" placeholder="Search question / category">
                 </div>
-                
+
+                {{-- Status --}}
+                <div>
+                    <label class="fw-semibold text-sm mb-1">Status</label>
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="">All Statuses</option>
+                        <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
 
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary-600">
