@@ -44,34 +44,56 @@
 <!-- Notifications Table Card -->
 <div class="card border-0 shadow-sm">
     <div class="card-body p-24">
-        <form method="GET" class="mb-16" action="{{ route('admin.notifications.index') }}">
-            <div class="row align-items-center g-3">
-                <div class="col-md-3">
-                    <div class="position-relative">
-                        <input type="text" name="search" class="form-control form-control-sm ps-40" 
-                               placeholder="Search notifications..." 
-                               value="{{ request('search') }}">
+        <div class="d-flex col-md-12 row">
+            <form method="GET" class="mb-16 col-md-8" action="{{ route('admin.notifications.index') }}">
+                <div class="row align-items-center g-3">
+                    <div class="col-md-5">
+                        <div class="position-relative">
+                            <input type="text" name="search" class="form-control form-control-sm ps-40" 
+                                placeholder="Search notifications..." 
+                                value="{{ request('search') }}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <select name="status" class="form-select form-select-sm" aria-label="Default">
+                            <option value="">All Statuses</option>
+                            <option value="unread" {{ request('status') === 'unread' ? 'selected' : '' }}>Unread</option>
+                            <option value="read" {{ request('status') === 'read' ? 'selected' : '' }}>Read</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 d-flex gap-2">
+                        <button class="btn btn-primary-600 btn-sm d-inline-flex align-items-center gap-2 flex-grow-1 justify-content-center">
+                            <i class="ri-search-line"></i> Filter
+                        </button>
+                        <a href="{{ route('admin.notifications.index') }}" class="btn btn-outline-secondary btn-sm flex-grow-1 text-center justify-content-center">
+                            Reset
+                        </a>
                     </div>
                 </div>
+            </form>
 
-                <div class="col-md-2">
-                    <select name="status" class="form-select form-select-sm" aria-label="Default">
-                        <option value="">All Statuses</option>
-                        <option value="unread" {{ request('status') === 'unread' ? 'selected' : '' }}>Unread</option>
-                        <option value="read" {{ request('status') === 'read' ? 'selected' : '' }}>Read</option>
+            <div class="d-flex justify-content-end mb-16  col-md-4">
+                <form method="GET" action="{{ route('admin.notifications.index') }}" class="d-flex align-items-center gap-2">
+                    @if(request('search'))
+                        <input type="hidden" name="search" value="{{ request('search') }}">
+                    @endif
+                    @if(request('status'))
+                        <input type="hidden" name="status" value="{{ request('status') }}">
+                    @endif
+                    <span class="text-xs text-secondary-light text-nowrap">Show</span>
+                    <select name="limit" class="form-select form-select-sm w-auto" onchange="this.form.submit()" style="min-width: 80px;">
+                        <option value="10" {{ $limit == 10 ? 'selected' : '' }}>10</option>
+                        <option value="15" {{ $limit == 15 ? 'selected' : '' }}>15</option>
+                        <option value="25" {{ $limit == 25 ? 'selected' : '' }}>25</option>
+                        <option value="50" {{ $limit == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ $limit == 100 ? 'selected' : '' }}>100</option>
                     </select>
-                </div>
-
-                <div class="col-md-2 d-flex gap-2">
-                    <button class="btn btn-primary-600 btn-sm d-inline-flex align-items-center gap-2 flex-grow-1 justify-content-center">
-                        <i class="ri-search-line"></i> Filter
-                    </button>
-                    <a href="{{ route('admin.notifications.index') }}" class="btn btn-outline-secondary btn-sm flex-grow-1 text-center justify-content-center">
-                        Reset
-                    </a>
-                </div>
+                    <span class="text-xs text-secondary-light text-nowrap">entries</span>
+                </form>
             </div>
-        </form>
+        </div>
         <div class="overflow-x-auto">
             <table class="table bordered-table mb-0 align-middle">
                 <thead>
@@ -95,13 +117,13 @@
                             <td> {{ $notifications->firstItem() + $loop->index }} </td>
                             <td>
                                 <div>
-                                    @if($notification->link)
+                                    {{-- @if($notification->link)
                                         <a href="{{ $notification->link }}" class="text-neutral-900 dark:text-white hover-text-primary fw-semibold text-sm d-block mb-1">
                                             {{ $notification->title }}
                                         </a>
-                                    @else
+                                    @else --}}
                                         <h6 class="text-sm mb-1 fw-semibold text-neutral-900 dark:text-white">{{ $notification->title }}</h6>
-                                    @endif
+                                    {{-- @endif --}}
                                     <span class="text-xs text-secondary-light dark:text-neutral-400 d-block">{{ $notification->message }}</span>
                                 </div>
                             </td>

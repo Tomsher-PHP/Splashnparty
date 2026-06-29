@@ -12,6 +12,7 @@ class NotificationController extends Controller
     {
         $search = $request->input('search');
         $status = $request->input('status');
+        $limit = $request->input('limit', 15);
 
         $query = SystemNotification::query();
 
@@ -28,14 +29,14 @@ class NotificationController extends Controller
             $query->where('is_read', true);
         }
 
-        $notifications = $query->latest()->paginate(15)->withQueryString();
+        $notifications = $query->latest()->paginate((int)$limit)->withQueryString();
         $totalCount = SystemNotification::count();
         $unreadCount = SystemNotification::where('is_read', false)->count();
 
         // Mark all as read when visiting the list page
         SystemNotification::where('is_read', false)->update(['is_read' => true]);
 
-        return view('notifications.index', compact('notifications', 'totalCount', 'unreadCount'));
+        return view('notifications.index', compact('notifications', 'totalCount', 'unreadCount', 'limit'));
     }
 
     public function markAllRead()
