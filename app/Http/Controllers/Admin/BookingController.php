@@ -184,6 +184,18 @@ class BookingController extends Controller
         ]);
 
         if ($request->payment_status === 'paid' && $oldStatus !== 'paid') {
+            // Create system notification
+            try {
+                \App\Models\SystemNotification::create([
+                    'title' => 'Booking Marked as Paid',
+                    'message' => "Booking reference {$booking->booking_reference} has been marked as paid manually (AED " . number_format($booking->total_amount, 2) . ").",
+                    'link' => route('bookings.show', $booking->id),
+                    'is_read' => false,
+                ]);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Error creating system notification: ' . $e->getMessage());
+            }
+
             try {
                 if ($booking->email) {
                     \Illuminate\Support\Facades\Mail::to($booking->email)->send(new \App\Mail\BookingInvoiceMail($booking));

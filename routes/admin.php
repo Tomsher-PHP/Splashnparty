@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\HeaderMenuController;
 use App\Http\Controllers\Admin\ImageGalleryController;
 use App\Http\Controllers\Admin\NewsletterSubscriptionController;
 use App\Http\Controllers\Admin\NewsUpdateController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\OutDoorEventsController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PageController;
@@ -119,6 +120,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::patch('attractions/{attraction}/status', [AttractionController::class, 'updateStatus'])->name('attractions.update-status');
     Route::resource('attractions', AttractionController::class);
+
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('admin.notifications.mark-all-read');
+    Route::post('/notifications/bulk-delete', [NotificationController::class, 'bulkDelete'])->name('admin.notifications.bulk-delete');
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy'])->name('admin.notifications.destroy');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('admin.notifications.index');
 
     Route::group(['prefix' => 'bookings'], function () {
 

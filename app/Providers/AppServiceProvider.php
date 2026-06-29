@@ -37,6 +37,16 @@ class AppServiceProvider extends ServiceProvider
             $view->with('generalSettings', new Fluent($settings));
         });
 
+        View::composer('includes.header', function ($view) {
+            $notifications = Schema::hasTable('system_notifications')
+                ? \App\Models\SystemNotification::where('is_read', false)->latest()->take(10)->get()
+                : collect();
+            $view->with([
+                'adminNotifications' => $notifications,
+                'adminNotificationsCount' => $notifications->count(),
+            ]);
+        });
+
         // Dynamically cap file upload validation max rules to 500 KB globally
         \Illuminate\Support\Facades\Validator::resolver(function($translator, $data, $rules, $messages, $customAttributes) {
             foreach ($rules as $attribute => &$attributeRules) {

@@ -37,6 +37,18 @@ class CcAvenueController extends Controller
                 'payment_status' => 'paid'
             ]);
 
+            // Create system notification
+            try {
+                \App\Models\SystemNotification::create([
+                    'title' => 'New Successful Booking',
+                    'message' => "Booking reference {$booking->booking_reference} has been paid successfully (AED " . number_format($booking->total_amount, 2) . ").",
+                    'link' => route('bookings.show', $booking->id),
+                    'is_read' => false,
+                ]);
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error('Error creating system notification: ' . $e->getMessage());
+            }
+
             // Send booking confirmation email to customer and admin
             try {
                 if ($booking->email) {
