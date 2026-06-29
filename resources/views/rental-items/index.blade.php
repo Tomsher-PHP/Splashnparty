@@ -23,9 +23,9 @@
 <div class="card">
     <div class="card-header">
         <form method="GET" action="{{ route('rental-items.index') }}">
-            <div class="d-flex flex-wrap align-items-end gap-3">
+            <div class="row d-flex flex-wrap align-items-end">
                 {{-- KEYWORD SEARCH --}}
-                <div>
+                <div class="col-md-3">
                     <label class="form-label form-label-sm">
                         Keyword
                     </label>
@@ -37,7 +37,7 @@
                 </div>
 
                 {{-- CATEGORY --}}
-                <div>
+                <div class="col-md-3">
                     <label class="form-label form-label-sm">
                         Category
                     </label>
@@ -55,9 +55,27 @@
                     </select>
                 </div>
 
-                
+                {{-- STATUS --}}
+                <div class="col-md-2">
+                    <label class="form-label form-label-sm">
+                        Status
+                    </label>
+                    <select name="status"
+                        class="form-select form-select-sm">
+                        <option value="">
+                            All Statuses
+                        </option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>
+                            Active
+                        </option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>
+                            Inactive
+                        </option>
+                    </select>
+                </div>
+
                 {{-- BUTTONS --}}
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 col-md-2">
                     <button class="btn btn-sm btn-primary-600">
                         <i class="ri-search-line"></i>
                         Filter
