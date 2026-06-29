@@ -19,6 +19,15 @@
             <div class="d-flex flex-wrap align-items-center gap-3">
                 <button type="button" data-theme-toggle
                     class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"></button>
+
+                <form id="clearCacheForm" action="{{ route('admin.clear-cache') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="button" id="clearCacheBtn"
+                        class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"
+                        title="Clear Application Cache">
+                        <iconify-icon icon="solar:refresh-linear" class="text-primary-light text-xl"></iconify-icon>
+                    </button>
+                </form>
                 
                 <div class="dropdown">
                     <button
@@ -73,8 +82,30 @@
                     </div>
                 </div><!-- Notification dropdown end -->
 
-                <script>
+                 <script>
                 document.addEventListener('DOMContentLoaded', function() {
+                    const clearCacheBtn = document.getElementById('clearCacheBtn');
+                    if (clearCacheBtn) {
+                        clearCacheBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            if (typeof window.openAppConfirm === 'function') {
+                                window.openAppConfirm({
+                                    title: 'Clear Application Cache',
+                                    message: 'Are you sure you want to clear the entire application cache (views, configuration, routes, and data cache)?',
+                                    buttonText: 'Clear Cache',
+                                    buttonClass: 'btn btn-danger btn-sm',
+                                    onConfirm: function() {
+                                        document.getElementById('clearCacheForm').submit();
+                                    }
+                                });
+                            } else {
+                                if (confirm('Are you sure you want to clear the application cache?')) {
+                                    document.getElementById('clearCacheForm').submit();
+                                }
+                            }
+                        });
+                    }
+
                     const markAllReadBtn = document.getElementById('markAllReadBtn');
                     if (markAllReadBtn) {
                         markAllReadBtn.addEventListener('click', function(e) {

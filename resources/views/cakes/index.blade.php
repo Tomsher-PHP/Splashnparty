@@ -22,7 +22,7 @@
 <div class="card">
     <div class="card-header">
         <form method="GET" action="{{ route('cakes.index') }}">
-            <div class="row">
+            <div class="row align-items-center g-3">
                 <div class="col-md-4">
                     <input type="text"
                         name="title"
@@ -31,12 +31,20 @@
                         value="{{ request('title') }}">
                 </div>
 
-                <div class="col-md-2">
-                    <button class="btn btn-sm btn-primary-600">
+                <div class="col-md-3">
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="">All Statuses</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 d-flex gap-2">
+                    <button class="btn btn-sm btn-primary-600 flex-grow-1">
                         <i class="ri-search-line"></i> Filter
                     </button>
                     <a href="{{ route('cakes.index') }}"
-                        class="btn btn-sm btn-outline-secondary">
+                        class="btn btn-sm btn-outline-secondary flex-grow-1 text-center">
                         Reset
                     </a>
                 </div>

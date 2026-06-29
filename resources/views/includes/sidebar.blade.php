@@ -70,27 +70,7 @@
                 </li>
             @endif
 
-             @can('view_packages')
-                <li>
-                    <a href="{{ route('packages.index') }}">
-                        <i class="ri-gift-line text-xl me-14 d-flex w-auto"></i>
-                        <span>Packages</span>
-                    </a>
-                </li>
-            @endcan
-
-
-            @can('view_general_access')
-                <li>
-                    <a href="{{ route('general-access.index') }}">
-                        <i class="ri-ticket-2-line text-xl me-14 d-flex w-auto"></i>
-                        <span>General Access</span>
-                    </a>
-                </li>
-            @endcan
-
-           
-            @can('view_branches')
+             @can('view_branches')
             <li class="nav-item">
                 <a href="{{ route('branches.index') }}"
                 class="nav-link">
@@ -98,6 +78,15 @@
                     <span>Branches</span>
                 </a>
             </li>
+            @endcan
+
+             @can('view_packages')
+                <li>
+                    <a href="{{ route('packages.index') }}">
+                        <i class="ri-gift-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Packages</span>
+                    </a>
+                </li>
             @endcan
 
             @can('view_cakes')
@@ -336,6 +325,15 @@
                     <a href="{{ route('pages.index') }}" class="{{ request()->routeIs('pages.*') && !($footerPage && request()->is("admin/pages/{$footerPage->id}*")) ? 'active-page' : '' }}">
                         <i class="ri-pages-line text-xl me-14 d-flex w-auto"></i>
                         <span>Page Management</span>
+                    </a>
+                </li>
+            @endcan
+
+             @can('view_general_access')
+                <li>
+                    <a href="{{ route('general-access.index') }}">
+                        <i class="ri-ticket-2-line text-xl me-14 d-flex w-auto"></i>
+                        <span>General Access</span>
                     </a>
                 </li>
             @endcan

@@ -23,12 +23,12 @@
 <div class="card">
     <div class="card-header">
         <form method="GET" action="{{ route('cafe-menus.index') }}">
-            <div class="d-flex flex-wrap align-items-end gap-3">
+            <div class="d-flex flex-wrap align-items-end  row">
                 {{-- KEYWORD SEARCH --}}
-                <div>
-                    <label class="form-label form-label-sm">
+                <div class="col-md-3">
+                    {{-- <label class="form-label form-label-sm">
                         Keyword
-                    </label>
+                    </label> --}}
                     <input type="text"
                         class="form-control form-control-sm"
                         placeholder="Search title..."
@@ -37,10 +37,10 @@
                 </div>
 
                 {{-- CATEGORY --}}
-                <div>
-                    <label class="form-label form-label-sm">
+                <div class="col-md-3">
+                    {{-- <label class="form-label form-label-sm">
                         Category
-                    </label>
+                    </label> --}}
                     <select name="category"
                         class="form-select form-select-sm">
                         <option value="">
@@ -56,10 +56,10 @@
                 </div>
 
                 {{-- BRANCH --}}
-                <div>
-                    <label class="form-label form-label-sm">
+                <div class="col-md-3">
+                    {{-- <label class="form-label form-label-sm">
                         Branch
-                    </label>
+                    </label> --}}
                     <select name="branch"
                         class="form-select form-select-sm">
                         <option value="">
@@ -73,8 +73,66 @@
                         @endforeach
                     </select>
                 </div>
+
+                {{-- MENU TYPE --}}
+                <div class="col-md-3">
+                    {{-- <label class="form-label form-label-sm">
+                        Menu Type
+                    </label> --}}
+                    <select name="menu_type"
+                        class="form-select form-select-sm">
+                        <option value="">
+                            All Menu Types
+                        </option>
+                        <option value="adult" {{ request('menu_type') === 'adult' ? 'selected' : '' }}>
+                            Adult
+                        </option>
+                        <option value="kid" {{ request('menu_type') === 'kid' ? 'selected' : '' }}>
+                            Kid
+                        </option>
+                    </select>
+                </div>
+
+                {{-- FOOD TYPE --}}
+                <div class="col-md-3 mt-1">
+                    {{-- <label class="form-label form-label-sm">
+                        Food Type
+                    </label> --}}
+                    <select name="food_type"
+                        class="form-select form-select-sm">
+                        <option value="">
+                            All Food Types
+                        </option>
+                        <option value="veg" {{ request('food_type') === 'veg' ? 'selected' : '' }}>
+                            Veg
+                        </option>
+                        <option value="non_veg" {{ request('food_type') === 'non_veg' ? 'selected' : '' }}>
+                            Non-Veg
+                        </option>
+                    </select>
+                </div>
+
+                {{-- STATUS --}}
+                <div class="col-md-3 mt-1">
+                    {{-- <label class="form-label form-label-sm">
+                        Status
+                    </label> --}}
+                    <select name="status"
+                        class="form-select form-select-sm">
+                        <option value="">
+                            All Statuses
+                        </option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>
+                            Active
+                        </option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>
+                            Inactive
+                        </option>
+                    </select>
+                </div>
+
                 {{-- BUTTONS --}}
-                <div class="d-flex gap-2">
+                <div class="col-md-2 d-flex gap-2  mt-1">
                     <button class="btn btn-sm btn-primary-600">
                         <i class="ri-search-line"></i>
                         Filter

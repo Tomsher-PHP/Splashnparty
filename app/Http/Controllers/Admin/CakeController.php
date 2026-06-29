@@ -21,12 +21,15 @@ class CakeController extends Controller
 
         // SEARCH
         if ($search = request('title')) {
-
             $query->where(
                 'title',
                 'like',
                 '%' . $search . '%'
             );
+        }
+
+        if (request()->has('status') && request('status') !== null && request('status') !== '') {
+            $query->where('status', request('status'));
         }
 
         $cakes = $query

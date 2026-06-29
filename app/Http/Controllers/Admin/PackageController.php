@@ -28,6 +28,10 @@ class PackageController extends Controller
             $query->where('branch_id', $branch);
         }
 
+        if (request()->has('status') && request('status') !== null && request('status') !== '') {
+            $query->where('status', request('status'));
+        }
+
         $packages = $query->paginate(10)->withQueryString();
 
         $branches = Branch::where(

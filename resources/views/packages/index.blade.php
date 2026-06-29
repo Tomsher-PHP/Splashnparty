@@ -23,8 +23,8 @@
 <div class="card">
     <div class="card-header">
         <form method="GET" action="{{ route('packages.index') }}">
-            <div class="row">
-                <div class="col-md-4">
+            <div class="row align-items-center g-3">
+                <div class="col-md-3">
                     <input type="text"
                         name="title"
                         class="form-control form-control-sm"
@@ -32,12 +32,31 @@
                         value="{{ request('title') }}">
                 </div>
 
-                <div class="col-md-2">
-                    <button class="btn btn-sm btn-primary-600">
+                <div class="col-md-3">
+                    <select name="branch_id" class="form-select form-select-sm">
+                        <option value="">All Branches</option>
+                        @foreach($branches as $branch)
+                            <option value="{{ $branch->id }}" {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
+                                {{ $branch->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="">All Statuses</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 d-flex gap-2">
+                    <button class="btn btn-sm btn-primary-600 flex-grow-1">
                         <i class="ri-search-line"></i> Filter
                     </button>
                     <a href="{{ route('packages.index') }}"
-                        class="btn btn-sm btn-outline-secondary">
+                        class="btn btn-sm btn-outline-secondary flex-grow-1 text-center">
                         Reset
                     </a>
                 </div>

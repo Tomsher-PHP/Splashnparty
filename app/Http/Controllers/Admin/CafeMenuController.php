@@ -83,6 +83,21 @@ class CafeMenuController extends Controller
             });
         }
 
+        // FILTER STATUS
+        if (request()->has('status') && request('status') !== null && request('status') !== '') {
+            $query->where('status', request('status'));
+        }
+
+        // FILTER MENU TYPE
+        if ($menuType = request('menu_type')) {
+            $query->where('menu_type', $menuType);
+        }
+
+        // FILTER FOOD TYPE
+        if ($foodType = request('food_type')) {
+            $query->where('food_type', $foodType);
+        }
+
         $menus = $query
             ->paginate(10)
             ->withQueryString();
