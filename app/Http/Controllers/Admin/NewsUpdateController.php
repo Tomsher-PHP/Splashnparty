@@ -12,7 +12,19 @@ class NewsUpdateController extends Controller
 {
     public function index()
     {
-        $newsUpdates = NewsUpdate::latest()->paginate(10);
+        $query = NewsUpdate::query()->latest();
+
+        // TITLE SEARCH
+        if ($title = request('title')) {
+            $query->where('title', 'like', "%{$title}%");
+        }
+
+        // STATUS FILTER
+        if (request()->has('status') && request('status') !== null && request('status') !== '') {
+            $query->where('status', request('status'));
+        }
+
+        $newsUpdates = $query->paginate(10)->withQueryString();
 
         return view('news-updates.index', compact('newsUpdates'));
     }

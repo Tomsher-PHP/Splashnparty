@@ -58,6 +58,16 @@
                                 <option value="adventure" {{ request('type') === 'adventure' ? 'selected' : '' }}>Adventure</option>
                             </select>
                         </div>
+
+                        <div class="attractions-filter-group">
+                            <label for="attractionsStatusFilter" class="attractions-filter-label">Status</label>
+                            <select id="attractionsStatusFilter" name="status"
+                                class="form-control form-control-sm attractions-filter-select">
+                                <option value="">All Statuses</option>
+                                <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="d-flex align-items-center gap-2">

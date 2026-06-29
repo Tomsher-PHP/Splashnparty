@@ -24,7 +24,7 @@
 
     <div class="card-header">
         <form method="GET" action="{{ route('news-updates.index') }}">
-            <div class="row">
+            <div class="row align-items-center g-3">
                 <div class="col-md-4">
                     <input type="text"
                         name="title"
@@ -34,11 +34,19 @@
                 </div>
 
                 <div class="col-md-2">
-                    <button class="btn btn-sm btn-primary-600">
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="">All Statuses</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 d-flex gap-2">
+                    <button class="btn btn-sm btn-primary-600 flex-grow-1">
                         <i class="ri-search-line"></i> Filter
                     </button>
                     <a href="{{ route('news-updates.index') }}"
-                        class="btn btn-sm btn-outline-secondary">
+                        class="btn btn-sm btn-outline-secondary flex-grow-1 text-center">
                         Reset
                     </a>
                 </div>
@@ -57,7 +65,7 @@
                         <th>Status</th>
                         <th>Image</th>
                         @if (auth()->user()?->can('edit_news_updates') || auth()->user()?->can('delete_news_updates'))
-                        <th>Action</th>
+                        <th class="text-center pe-4">Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -80,8 +88,8 @@
                                 @endif
                             </td>
                             @if (auth()->user()?->can('edit_news_updates') || auth()->user()?->can('delete_news_updates'))
-                            <td>
-                                <div class="d-flex justify-content-end align-items-center gap-2">
+                            <td class="text-center pe-4">
+                                <div class="d-flex justify-content-center align-items-center gap-2">
                                     @can('edit_news_updates')
                                     <a href="{{ route('news-updates.edit', $item) }}"
                                         class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">

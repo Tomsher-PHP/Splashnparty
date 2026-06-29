@@ -50,6 +50,11 @@ class AttractionController extends Controller
             $query->where('type', $request->input('type'));
         }
 
+        // Status Filter
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
         // Paginate by sort_order, then latest
         $attractions = $query->orderBy('sort_order')
                              ->latest()

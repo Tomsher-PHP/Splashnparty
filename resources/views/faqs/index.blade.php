@@ -31,12 +31,7 @@
                     <input type="text" name="search" value="{{ request('search') }}"
                         class="form-control form-control-sm" placeholder="Search question / category">
                 </div>
-
-                <div>
-                    <label class="fw-semibold text-sm mb-1">Category</label>
-                    <input type="text" name="category" value="{{ request('category') }}"
-                        class="form-control form-control-sm" placeholder="Category">
-                </div>
+                
 
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary-600">
