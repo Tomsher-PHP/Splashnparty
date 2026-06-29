@@ -27,8 +27,8 @@ Route::post('/payment/ccavenue/success', [CcAvenueController::class, 'success'])
 Route::post('/payment/ccavenue/failure', [CcAvenueController::class, 'failure'])
     ->name('ccavenue.failure');
 
-// Global Fallback Route to catch all other undefined paths and load web session context
-Route::fallback(function () {
+// Global Fallback Route to catch all other undefined paths with any HTTP method
+Route::any('{any}', function () {
     abort(404);
-});
+})->where('any', '.*');
 

@@ -85,3 +85,11 @@ Route::get('/news-details',[NewsUpdateApiController::class, 'show']);
 Route::get('events',[EventApiController::class, 'index']);
 
 Route::get('event-details',[EventApiController::class, 'show']);
+
+// API Fallback Route to catch all undefined api paths with any HTTP method
+Route::any('{any}', function () {
+    return response()->json([
+        'success' => false,
+        'message' => 'Page Not Found.',
+    ], 404);
+})->where('any', '.*');

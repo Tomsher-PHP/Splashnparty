@@ -163,8 +163,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::post('/clear-cache', [DashboardController::class, 'clearCache'])->name('admin.clear-cache');
 
-    // Admin Fallback Route to catch undefined admin paths and load auth session context
-    Route::fallback(function () {
+    // Admin Fallback Route to catch all undefined admin paths with any HTTP method
+    Route::any('{any}', function () {
         abort(404);
-    });
+    })->where('any', '.*');
 });
