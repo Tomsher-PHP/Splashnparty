@@ -41,6 +41,14 @@ class GeneralSettingController extends Controller
                 $value = $request->file($key)->store('settings', 'public');
             } else {
                 $value = $validated[$key] ?? null;
+                if ($key === 'schema' && !empty($value)) {
+                    $jsonOnly = preg_replace('/<\/?script[^>]*>/i', '', $value);
+                    $jsonOnly = trim($jsonOnly);
+                    $decoded = json_decode($jsonOnly, true);
+                    if (json_last_error() === JSON_ERROR_NONE) {
+                        $value = json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                    }
+                }
             }
 
             SiteSetting::updateOrCreate(
@@ -134,6 +142,26 @@ class GeneralSettingController extends Controller
                 'sort_order' => 50,
             ],
             [
+                'group' => 'email_settings',
+                'group_title' => 'Email Settings',
+                'key' => 'enquiry_email',
+                'label' => 'Contact Enquiries Email (<small>Enter email where website contact enquiries should be forwarded</small>)',
+                'type' => 'email',
+                'placeholder' => 'Enter email where website contact enquiries should be forwarded',
+                'rules' => ['nullable', 'email', 'max:255'],
+                'sort_order' => 95,
+            ],
+            [
+                'group' => 'email_settings',
+                'group_title' => 'Email Settings',
+                'key' => 'notification_email',
+                'label' => 'Notification Email (<small>Enter email where notifications should be sent (e.g. new bookings)</small>)',
+                'type' => 'email',
+                'placeholder' => 'Enter email where notifications should be sent (e.g. new bookings)',
+                'rules' => ['nullable', 'email', 'max:255'],
+                'sort_order' => 95,
+            ],
+            [
                 'group' => 'contact',
                 'group_title' => 'Contact Details',
                 'key' => 'phone',
@@ -174,55 +202,26 @@ class GeneralSettingController extends Controller
                 'sort_order' => 90,
             ],
             [
-                'group' => 'social',
-                'group_title' => 'Social Links',
-                'key' => 'facebook_url',
-                'label' => 'Facebook URL',
-                'type' => 'url',
-                'placeholder' => 'https://',
-                'rules' => ['nullable', 'url', 'max:255'],
-                'sort_order' => 100,
+                'group' => 'vat',
+                'group_title' => 'Vat Percentage',
+                'key' => 'vat_percentage',
+                'label' => 'Vat Percentage',
+                'type' => 'number',
+                'placeholder' => 'Enter vat percentage',
+                'rules' => ['nullable', 'numeric', 'min:0', 'max:100'],
+                'sort_order' => 95,
             ],
             [
-                'group' => 'social',
-                'group_title' => 'Social Links',
-                'key' => 'instagram_url',
-                'label' => 'Instagram URL',
-                'type' => 'url',
-                'placeholder' => 'https://',
-                'rules' => ['nullable', 'url', 'max:255'],
-                'sort_order' => 110,
+                'group' => 'vat',
+                'group_title' => 'Vat Percentage',
+                'key' => 'trn',
+                'label' => 'Tax Registration Number (TRN)',
+                'type' => 'text',
+                'placeholder' => 'Enter TRN (e.g. 100xxxxxxxxxxxx)',
+                'rules' => ['nullable', 'string', 'max:50'],
+                'sort_order' => 96,
             ],
-            [
-                'group' => 'social',
-                'group_title' => 'Social Links',
-                'key' => 'twitter_url',
-                'label' => 'Twitter / X URL',
-                'type' => 'url',
-                'placeholder' => 'https://',
-                'rules' => ['nullable', 'url', 'max:255'],
-                'sort_order' => 120,
-            ],
-            [
-                'group' => 'social',
-                'group_title' => 'Social Links',
-                'key' => 'linkedin_url',
-                'label' => 'LinkedIn URL',
-                'type' => 'url',
-                'placeholder' => 'https://',
-                'rules' => ['nullable', 'url', 'max:255'],
-                'sort_order' => 130,
-            ],
-            [
-                'group' => 'social',
-                'group_title' => 'Social Links',
-                'key' => 'youtube_url',
-                'label' => 'YouTube URL',
-                'type' => 'url',
-                'placeholder' => 'https://',
-                'rules' => ['nullable', 'url', 'max:255'],
-                'sort_order' => 140,
-            ],
+          
             [
                 'group' => 'seo',
                 'group_title' => 'SEO & Map',
@@ -252,6 +251,28 @@ class GeneralSettingController extends Controller
                 'placeholder' => 'Paste Google Map embed code or map link',
                 'rules' => ['nullable', 'string', 'max:5000'],
                 'sort_order' => 170,
+            ],
+            [
+                'group' => 'seo',
+                'group_title' => 'SEO & Map',
+                'key' => 'schema',
+                'label' => 'Schema Markup',
+                'type' => 'textarea',
+                'rows' => 10,
+                'placeholder' => 'Enter schema markup (e.g. JSON format)',
+                'rules' => [
+                    'nullable',
+                    'string',
+                    function ($attribute, $value, $fail) {
+                        $jsonOnly = preg_replace('/<\/?script[^>]*>/i', '', $value);
+                        $jsonOnly = trim($jsonOnly);
+                        json_decode($jsonOnly);
+                        if (json_last_error() !== JSON_ERROR_NONE) {
+                            $fail('The Schema Markup must be a valid JSON structure.');
+                        }
+                    }
+                ],
+                'sort_order' => 180,
             ],
         ];
     }

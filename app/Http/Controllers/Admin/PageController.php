@@ -18,10 +18,9 @@ class PageController extends Controller
         $this->authorizePagePermission('view_pages');
 
         $configPages = config('pages', []);
-        $pages = [];
 
         foreach ($configPages as $slug => $schema) {
-            $pages[] = Page::firstOrCreate(
+            Page::firstOrCreate(
                 ['slug' => $slug],
                 [
                     'title' => $schema['title'],
@@ -29,6 +28,8 @@ class PageController extends Controller
                 ]
             );
         }
+
+        $pages = Page::whereIn('slug', array_keys($configPages))->orderBy('title', 'asc')->get();
 
         return view('pages.index', compact('pages'));
     }
@@ -43,8 +44,11 @@ class PageController extends Controller
             abort(404, 'Page schema configuration not found.');
         }
 
-        // Dynamically append the common SEO section to all pages
-        $schema['sections'][] = $this->getSeoSectionSchema();
+        // Dynamically append the common SEO section to all pages except footer settings and news-updates-details
+        if ($page->slug !== 'footer' && $page->slug !== 'news-updates-details') {
+            $schema['sections'][] = $this->getFaqSectionSchema();
+            $schema['sections'][] = $this->getSeoSectionSchema();
+        }
 
         // Dynamically populate options if needed
         foreach ($schema['sections'] as &$section) {
@@ -77,8 +81,11 @@ class PageController extends Controller
             abort(404, 'Page schema configuration not found.');
         }
 
-        // Dynamically append the common SEO section to all pages
-        $schema['sections'][] = $this->getSeoSectionSchema();
+        // Dynamically append the common SEO section to all pages except footer settings and news-updates-details
+        if ($page->slug !== 'footer' && $page->slug !== 'news-updates-details') {
+            $schema['sections'][] = $this->getFaqSectionSchema();
+            $schema['sections'][] = $this->getSeoSectionSchema();
+        }
 
         // Build validation rules dynamically
         $rules = [];
@@ -89,7 +96,7 @@ class PageController extends Controller
                 $fieldName = $field['name'];
 
                 if ($field['type'] === 'repeater') {
-                    $rules[$fieldName] = ['nullable', 'array'];
+                    $rules[$fieldName] = $field['rules'] ?? ['nullable', 'array'];
                     
                     foreach ($field['fields'] as $subField) {
                         $subName = $subField['name'];
@@ -97,14 +104,14 @@ class PageController extends Controller
 
                         if ($subField['type'] === 'image') {
                             // If it's an image, a new upload is validated, otherwise it can be empty (meaning keep existing)
-                            $rules["{$fieldName}.*.{$subName}"] = ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'];
+                            $rules["{$fieldName}.*.{$subName}"] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:500'];
                         } elseif ($subField['type'] === 'repeater') {
-                            $rules["{$fieldName}.*.{$subName}"] = ['nullable', 'array'];
+                            $rules["{$fieldName}.*.{$subName}"] = $subField['rules'] ?? ['nullable', 'array'];
                             foreach ($subField['fields'] as $nestedSubField) {
                                 $nestedSubName = $nestedSubField['name'];
                                 $nestedSubRules = $nestedSubField['rules'] ?? [];
                                 if ($nestedSubField['type'] === 'image') {
-                                    $rules["{$fieldName}.*.{$subName}.*.{$nestedSubName}"] = ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'];
+                                    $rules["{$fieldName}.*.{$subName}.*.{$nestedSubName}"] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:500'];
                                 } else {
                                     $rules["{$fieldName}.*.{$subName}.*.{$nestedSubName}"] = $nestedSubRules;
                                 }
@@ -121,11 +128,11 @@ class PageController extends Controller
                     $rules[$fieldName] = ['nullable', 'array'];
                     $rules["{$fieldName}.*.type"] = ['required', 'string', 'in:existing,upload'];
                     $rules["{$fieldName}.*.value"] = ['nullable', 'string'];
-                    $rules["{$fieldName}.*.file"] = ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'];
+                    $rules["{$fieldName}.*.file"] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:500'];
                 } else {
                     $fieldRules = $field['rules'] ?? [];
                     if ($field['type'] === 'image') {
-                        $rules[$fieldName] = ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'];
+                        $rules[$fieldName] = ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:500'];
                     } else {
                         $rules[$fieldName] = $fieldRules;
                     }
@@ -226,7 +233,29 @@ class PageController extends Controller
 
                     $content[$fieldName] = $savedPaths;
                 } else {
-                    $content[$fieldName] = $request->input($fieldName);
+                    $value = $request->input($fieldName);
+                    if ($fieldName === 'faq_selection' && is_array($value)) {
+                        $faqIds = $value['faq_ids'] ?? [];
+                        $questions = $value['questions'] ?? [];
+                        
+                        $filteredFaqIds = [];
+                        foreach ($faqIds as $id) {
+                            if (!empty($questions[$id]) && is_array($questions[$id])) {
+                                $filteredFaqIds[] = (int) $id;
+                            }
+                        }
+                        
+                        $value['faq_ids'] = $filteredFaqIds;
+                    }
+                    if ($fieldName === 'schema' && !empty($value)) {
+                        $jsonOnly = preg_replace('/<\/?script[^>]*>/i', '', $value);
+                        $jsonOnly = trim($jsonOnly);
+                        $decoded = json_decode($jsonOnly, true);
+                        if (json_last_error() === JSON_ERROR_NONE) {
+                            $value = json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                        }
+                    }
+                    $content[$fieldName] = $value;
                 }
             }
         }
@@ -261,7 +290,7 @@ class PageController extends Controller
                     'label' => 'Meta Title',
                     'type' => 'text',
                     'placeholder' => 'Enter SEO meta title',
-                    'rules' => ['nullable', 'string', 'max:255'],
+                    'rules' => ['nullable', 'string'],
                 ],
                 [
                     'name' => 'meta_description',
@@ -310,6 +339,58 @@ class PageController extends Controller
                     'label' => 'OG Image',
                     'type' => 'image',
                     'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                ],
+                 [
+                    'name' => 'schema',
+                    'label' => 'Schema Markup',
+                    'type' => 'textarea',
+                    'rows' => 20,
+                    'placeholder' => 'Enter schema markup (e.g. JSON format)',
+                    'rules' => [
+                        'nullable',
+                        'string',
+                        function ($attribute, $value, $fail) {
+                            $jsonOnly = preg_replace('/<\/?script[^>]*>/i', '', $value);
+                            $jsonOnly = trim($jsonOnly);
+                            json_decode($jsonOnly);
+                            if (json_last_error() !== JSON_ERROR_NONE) {
+                                $fail('The Schema Markup must be a valid JSON structure.');
+                            }
+                        }
+                    ],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Get the common FAQ selection section schema.
+     */
+    private function getFaqSectionSchema(): array
+    {
+        return [
+            'title' => 'FAQ Section Settings',
+            'description' => 'Manage the FAQ section title, select multiple FAQ categories and choose specific questions to display on this page.',
+            'fields' => [
+                [
+                    'name' => 'faq_title',
+                    'label' => 'FAQ Section Title',
+                    'type' => 'text',
+                    'placeholder' => 'Enter FAQ section title (e.g. Frequently Asked Questions)',
+                    'rules' => ['nullable', 'string', 'max:255'],
+                ],
+                 [
+                    'name' => 'faq_description',
+                    'label' => 'FAQ Section Description',
+                    'type' => 'textarea',
+                    'placeholder' => 'Enter FAQ section description',
+                    'rules' => ['nullable', 'string'],
+                ],
+                [
+                    'name' => 'faq_selection',
+                    'label' => 'Select FAQs',
+                    'type' => 'faq_select',
+                    'rules' => ['nullable', 'array'],
                 ]
             ]
         ];

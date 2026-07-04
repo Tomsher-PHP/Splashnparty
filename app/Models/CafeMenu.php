@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class CafeMenu extends Model
 {
     protected $fillable = [
-
-        'branch_id',
+        'branch_ids',
         'cafe_menu_category_id',
         'image',
         'title',
@@ -20,9 +19,16 @@ class CafeMenu extends Model
         'status',
     ];
 
-    public function branch()
+    protected $casts = [
+        'branch_ids' => 'array',
+    ];
+
+    public function getBranchesAttribute()
     {
-        return $this->belongsTo(Branch::class);
+        return Branch::whereIn(
+            'id',
+            $this->branch_ids ?? []
+        )->get();
     }
 
     public function category()

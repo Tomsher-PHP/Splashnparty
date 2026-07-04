@@ -61,5 +61,17 @@ class PermissionSeeder extends Seeder
                 ['parent_id' => $settings->id]
             );
         }
+
+        $newsletters = Permission::firstOrCreate(
+            ['name' => 'newsletters', 'guard_name' => 'web'],
+            ['parent_id' => null]
+        );
+
+        foreach (['view_newsletter_subscriptions', 'delete_newsletter_subscriptions'] as $permission) {
+            Permission::firstOrCreate(
+                ['name' => $permission, 'guard_name' => 'web'],
+                ['parent_id' => $newsletters->id]
+            );
+        }
     }
 }

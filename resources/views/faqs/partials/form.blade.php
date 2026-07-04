@@ -1,20 +1,30 @@
 {{-- CATEGORY --}}
 <div class="row g-3 mb-4">
 
-    <div class="col-md-8">
+    <div class="col-md-6">
         <label class="form-label fw-semibold">Category</label>
 
         <input type="text"
             name="category"
-            class="form-control"
+            class="form-control form-control-sm"
             value="{{ old('category', $isEdit ? $faq->category : '') }}"
             required>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <label class="form-label fw-semibold">Sort Order</label>
+
+        <input type="number"
+            name="sort_order"
+            class="form-control form-control-sm"
+            value="{{ old('sort_order', $isEdit ? $faq->sort_order : 0) }}"
+            min="0">
+    </div>
+
+    <div class="col-md-3">
         <label class="form-label fw-semibold">Category Status</label>
 
-        <select name="status" class="form-select">
+        <select name="status" class="form-select form-select-sm">
 
             <option value="1"
                 {{ old('status', $isEdit ? $faq->status : 1) == 1 ? 'selected' : '' }}>
@@ -47,7 +57,7 @@
                 <label class="form-label fw-semibold">Question</label>
                 <input type="text"
                     name="faqs[{{ $index }}][question]"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ $item['question'] ?? '' }}"
                     required>
             </div>
@@ -56,14 +66,14 @@
                 <label class="form-label fw-semibold">Sort</label>
                 <input type="number"
                     name="faqs[{{ $index }}][sort_order]"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ $item['sort_order'] ?? 0 }}">
             </div>
 
             <div class="col-md-2">
                 <label class="form-label fw-semibold">Status</label>
                 <select name="faqs[{{ $index }}][status]"
-                    class="form-select">
+                    class="form-select form-select-sm">
                     <option value="1"
                         {{ ($item['status'] ?? 1) == 1 ? 'selected' : '' }}>
                         Active
@@ -80,20 +90,19 @@
                     Answer
                 </label>
 
-                <div class="faq-answer-block border rounded-3">
+                <div class="quill-editor-wrapper">
                     {{-- QUILL EDITOR --}}
                     <div class="quill-editor"
-                        data-input="answer_{{ $index }}"
-                        style="height: 220px;">
+                        data-input="answer_{{ $index }}">
                         {!! $item['answer'] ?? '' !!}
                     </div>
-
-                    {{-- HIDDEN TEXTAREA --}}
-                    <textarea
-                        name="faqs[{{ $index }}][answer]"
-                        id="answer_{{ $index }}"
-                        class="d-none">{{ $item['answer'] ?? '' }}</textarea>
                 </div>
+
+                {{-- HIDDEN TEXTAREA --}}
+                <textarea
+                    name="faqs[{{ $index }}][answer]"
+                    id="answer_{{ $index }}"
+                    class="d-none">{{ $item['answer'] ?? '' }}</textarea>
             </div>
             <div class="col-md-12 d-flex justify-content-end">
                 <button type="button"
@@ -125,35 +134,34 @@
                     <label class="form-label fw-semibold">Question</label>
                     <input type="text"
                         name="faqs[${faqIndex}][question]"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         required>
                 </div>
                 <div class="col-md-2">
                     <label class="form-label fw-semibold">Sort</label>
                     <input type="number"
                         name="faqs[${faqIndex}][sort_order]"
-                        class="form-control"
+                        class="form-control form-control-sm"
                         value="0">
                 </div>
                 <div class="col-md-2">
                     <label class="form-label fw-semibold">Status</label>
-                    <select name="faqs[${faqIndex}][status]" class="form-select">
+                    <select name="faqs[${faqIndex}][status]" class="form-select form-select-sm">
                         <option value="1" selected>Active</option>
                         <option value="0">Inactive</option>
                     </select>
                 </div>
                 <div class="col-md-12">
                     <label class="form-label fw-semibold">Answer</label>
-                    <div class="faq-answer-block border rounded-3">
+                    <div class="quill-editor-wrapper">
                         <div class="quill-editor"
-                            data-input="answer_${faqIndex}"
-                            style="height: 220px;">
+                            data-input="answer_${faqIndex}">
                         </div>
-                        <textarea
-                            name="faqs[${faqIndex}][answer]"
-                            id="answer_${faqIndex}"
-                            class="d-none"></textarea>
                     </div>
+                    <textarea
+                        name="faqs[${faqIndex}][answer]"
+                        id="answer_${faqIndex}"
+                        class="d-none"></textarea>
                 </div>
                 <div class="col-md-12 d-flex justify-content-end">
                     <button type="button"
@@ -200,13 +208,14 @@
                 placeholder: 'Write answer here...',
                 modules: {
                     toolbar: [
-                        [{ font: [] }],
-                        [{ size: ['small', false, 'large', 'huge'] }],
+                        [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
                         ['bold', 'italic', 'underline', 'strike'],
                         [{ color: [] }, { background: [] }],
-                        [{ align: [] }],
+                        
+                        ['blockquote', 'code-block'],
                         [{ list: 'ordered' }, { list: 'bullet' }],
-                        ['blockquote', 'link', 'image'],
+                        [{ indent: '-1' }, { indent: '+1' }],
+                        [{ align: [] }],
                         ['clean']
                     ]
                 }

@@ -32,10 +32,14 @@
                         class="form-control form-control-sm" placeholder="Search question / category">
                 </div>
 
+                {{-- Status --}}
                 <div>
-                    <label class="fw-semibold text-sm mb-1">Category</label>
-                    <input type="text" name="category" value="{{ request('category') }}"
-                        class="form-control form-control-sm" placeholder="Category">
+                    <label class="fw-semibold text-sm mb-1">Status</label>
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="">All Statuses</option>
+                        <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
+                    </select>
                 </div>
 
                 <div class="d-flex gap-2">
@@ -79,7 +83,7 @@
                         </td>
 
                         <td>
-                            <span class="badge bg-primary-50 text-primary-700">
+                            <span class="badge bg-primary-50 text-sm text-primary-700">
                                 {{ $faq->category }}
                             </span>
                         </td>
@@ -181,20 +185,6 @@
             </table>
         </div>
 
-        <!-- PAGINATION -->
-        @if($faqs->hasPages())
-        <div class="d-flex justify-content-between align-items-center mt-24">
-            <div class="text-secondary-light">
-                Showing {{ $faqs->firstItem() }} to {{ $faqs->lastItem() }}
-                of {{ $faqs->total() }} FAQs
-            </div>
-
-            <div>
-                {{ $faqs->links('pagination::bootstrap-4') }}
-            </div>
-        </div>
-        @endif
-
     </div>
     <div class="card-footer bg-white border-0">
 
@@ -206,7 +196,7 @@
                 </small>
             </div>
             <div>
-                {{ $faqs->links() }}
+                {{ $faqs->links('pagination::bootstrap-4') }}
             </div>
         </div>
 

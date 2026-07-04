@@ -18,11 +18,11 @@
         @endcan
     </div>
 </div>
-<div class="card">
 
+<div class="card">
     <div class="card-header">
         <form method="GET" action="{{ route('cakes.index') }}">
-            <div class="row">
+            <div class="row align-items-center g-3">
                 <div class="col-md-4">
                     <input type="text"
                         name="title"
@@ -31,12 +31,20 @@
                         value="{{ request('title') }}">
                 </div>
 
-                <div class="col-md-2">
-                    <button class="btn btn-sm btn-primary-600">
+                <div class="col-md-3">
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="">All Statuses</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 d-flex gap-2">
+                    <button class="btn btn-sm btn-primary-600 flex-grow-1">
                         <i class="ri-search-line"></i> Filter
                     </button>
                     <a href="{{ route('cakes.index') }}"
-                        class="btn btn-sm btn-outline-secondary">
+                        class="btn btn-sm btn-outline-secondary flex-grow-1 text-center">
                         Reset
                     </a>
                 </div>
@@ -56,7 +64,7 @@
                         <th>Sort</th>
                         <th>Status</th>
                         @if (auth()->user()?->can('edit_cakes') || auth()->user()?->can('delete_cakes'))
-                        <th class="text-end">Action</th>
+                        <th class="text-center">Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -102,7 +110,7 @@
 
                         @if (auth()->user()?->can('edit_cakes') || auth()->user()?->can('delete_cakes'))
                         <td>
-                            <div class="d-flex justify-content-end align-items-center gap-2">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
                                 @can('edit_cakes')
                                 <a href="{{ route('cakes.edit', $cake) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
@@ -116,15 +124,17 @@
                                 @endcan
 
                                 @can('delete_cakes')
-                                <form action="{{ route('cakes.destroy', $cake) }}"
-                                    method="POST"
-                                    class="d-inline">
+                                <form action="{{ route('cakes.destroy', $cake->id) }}"
+                                    method="POST" class="delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle"
-                                        onclick="return confirm('Delete this cake?')">
-                                        <iconify-icon icon="fluent:delete-24-regular" class="menu-icon"></iconify-icon>
+                                        class="item-icon-btn remove-item-btn bg-danger-focus bg-hover-danger-200 text-danger-600 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle"
+                                        data-confirm-title="Delete Item"
+                                        data-confirm-message="Are you sure you want to delete this Item?"
+                                        title="Delete">
+                                        <iconify-icon icon="fluent:delete-24-regular"
+                                            class="item-icon"></iconify-icon>
                                     </button>
                                 </form>
                                 @endcan
@@ -149,9 +159,6 @@
             </table>
 
         </div>
-
-        {{ $cakes->links() }}
-
     </div>
     <div class="card-footer bg-white border-0">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
@@ -161,10 +168,30 @@
                 </small>
             </div>
             <div>
-                {{ $cakes->links() }}
+                {{ $cakes->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>
 </div>
 
+<script>
+
+    document.querySelectorAll('.delete-form button[type="submit"]').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const form = button.closest('form');
+
+        window.openAppConfirm({
+            title: button.dataset.confirmTitle || 'Delete',
+            message: button.dataset.confirmMessage || 'Are you sure you want to continue?',
+            buttonText: 'Yes, Delete',
+            buttonClass: 'btn btn-sm btn-danger',
+            onConfirm: function() {
+                form.submit();
+            }
+        });
+    });
+});
+
+</script>
 @endsection

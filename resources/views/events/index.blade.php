@@ -28,6 +28,17 @@
                         name="title"
                         value="{{ request('title') }}">
                 </div>
+
+                {{-- STATUS --}}
+                <div>
+                    <select name="status"
+                        class="form-select form-select-sm">
+                        <option value="">All Statuses</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary-600">
                         <i class="ri-search-line"></i> Filter
@@ -53,7 +64,7 @@
                     <th>Slug</th>
                     <th>Status</th>
                     @if (auth()->user()?->can('edit_events') || auth()->user()?->can('delete_events'))
-                    <th class="text-end">Action</th>
+                    <th class="text-center">Action</th>
                     @endif
 
                 </tr>
@@ -107,8 +118,8 @@
                         </td>
 
                         @if (auth()->user()?->can('edit_events') || auth()->user()?->can('delete_events'))
-                        <td class="text-end pe-4">
-                                <div class="d-flex justify-content-end align-items-center gap-2">
+                        <td class="text-center pe-4">
+                                <div class="d-flex justify-content-center align-items-center gap-2">
                                     @can('edit_events')
                                     <a href="{{ route('events.edit', $event) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
@@ -157,7 +168,7 @@
                 </small>
             </div>
             <div>
-                {{ $events->links() }}
+                {{ $events->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

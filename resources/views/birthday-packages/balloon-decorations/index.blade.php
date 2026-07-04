@@ -37,6 +37,25 @@
                         name="keyword"
                         value="{{ request('keyword') }}">
                 </div>
+
+                {{-- STATUS --}}
+                <div>
+                    <label class="form-label form-label-sm">
+                        Status
+                    </label>
+                    <select name="status"
+                        class="form-select form-select-sm">
+                        <option value="">
+                            All Statuses
+                        </option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>
+                            Active
+                        </option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>
+                            Inactive
+                        </option>
+                    </select>
+                </div>
                 
                 {{-- BUTTONS --}}
                 <div class="d-flex gap-2">
@@ -64,7 +83,7 @@
                         <th>Sort Order</th>
                         <th>Status</th>
                         @if (auth()->user()?->can('edit_balloon_decorations') || auth()->user()?->can('delete_balloon_decorations'))
-                        <th class="text-end">Action</th>
+                        <th class="text-center">Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -95,8 +114,8 @@
                         </td>
 
                         @if (auth()->user()?->can('edit_balloon_decorations') || auth()->user()?->can('delete_balloon_decorations'))
-                        <td class="text-end pe-4">
-                            <div class="d-flex justify-content-end align-items-center gap-2">
+                        <td class="text-center pe-4">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
                                 @can('edit_balloon_decorations')
                                 <a href="{{ route('balloon-decorations.edit', $item->id) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
@@ -147,7 +166,7 @@
                 </small>
             </div>
             <div>
-                {{ $decorations->links() }}
+                {{ $decorations->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

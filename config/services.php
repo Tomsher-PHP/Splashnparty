@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'ccavenue' => [
+        'merchant_id' => env('CCAVENUE_MERCHANT_ID'),
+        'access_code' => env('CCAVENUE_ACCESS_CODE'),
+        'working_key' => env('CCAVENUE_WORKING_KEY'),
+        'payment_url' => env('CCAVENUE_PAYMENT_URL', 'https://secure.ccavenue.ae/transaction/transaction.do'),
+        'frontend_success_url' => env('CCAVENUE_FRONTEND_SUCCESS_URL', 'http://localhost:3000/payment/success'),
+        'frontend_failure_url' => env('CCAVENUE_FRONTEND_FAILURE_URL', 'http://localhost:3000/payment/failure'),
+    ],
+
 ];

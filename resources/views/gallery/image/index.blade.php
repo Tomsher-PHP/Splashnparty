@@ -30,6 +30,17 @@
                         name="category"
                         value="{{ request('category') }}">
                 </div>
+
+                {{-- STATUS --}}
+                <div>
+                    <select name="status"
+                        class="form-select form-select-sm">
+                        <option value="">All Statuses</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary-600">
                         <i class="ri-search-line"></i> Filter
@@ -51,7 +62,7 @@
                         <th width="500">Images</th>
                         <th width="120">Total</th>
                         <th width="120">Status</th>
-                        <th width="180" class="text-end pe-4">Actions</th>
+                        <th width="180" class="text-center pe-4">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,7 +72,8 @@
                             {{ $key + 1 }}
                         </td>
                         <td>
-                            {{ $gallery->category_name }}
+                            <span class="fw-semibold d-block">{{ $gallery->category_name }}</span>
+                            <span class="text-xs text-secondary-light font-monospace">{{ $gallery->slug }}</span>
                         </td>
                         <td>
                             <div class="d-flex align-items-center flex-wrap gap-2">
@@ -99,9 +111,9 @@
                             </span>
                             @endif
                         </td>
-                       <td class="text-end pe-4">
+                       <td class="text-center pe-4">
 
-                        <div class="d-flex justify-content-end align-items-center gap-2">
+                        <div class="d-flex justify-content-center align-items-center gap-2">
 
                             {{-- VIEW --}}
                             @can('view_image_gallery')
@@ -140,7 +152,7 @@
 
                                 <form action="{{ route('image-gallery.destroy', $gallery) }}"
                                     method="POST"
-                                    class="image-gallery-delete-form">
+                                    class="delete-form">
 
                                     @csrf
                                     @method('DELETE')
@@ -229,7 +241,7 @@
                 </small>
             </div>
             <div>
-                {{ $galleries->links() }}
+                {{ $galleries->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>
@@ -239,8 +251,7 @@
 
 @section('script')
 <script>
-    
-    document.querySelectorAll('.image-gallery-delete-form button[type="submit"]').forEach(function(button) {
+    document.querySelectorAll('.delete-form button[type="submit"]').forEach(function(button) {
         button.addEventListener('click', function(event) {
             event.preventDefault();
             const form = button.closest('form');

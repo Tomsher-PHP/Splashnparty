@@ -31,11 +31,11 @@
 
                                     <div class="{{ $columnClass }}">
                                         <label for="{{ $key }}"
-                                            class="form-label fw-semibold">{{ $field['label'] }}</label>
+                                            class="form-label fw-semibold">{!! $field['label'] !!}</label>
 
                                         @if ($type === 'textarea')
-                                            <textarea id="{{ $key }}" name="{{ $key }}" rows="3"
-                                                class="form-control form-control-sm @error($key) is-invalid @enderror"
+                                            <textarea id="{{ $key }}" name="{{ $key }}" rows="{{ $field['rows'] ?? 3 }}"
+                                                class="form-control @error($key) is-invalid @enderror"
                                                 placeholder="{{ $field['placeholder'] ?? '' }}">{{ $value }}</textarea>
                                         @elseif ($type === 'file')
                                             @if (!empty($settingValues[$key]))

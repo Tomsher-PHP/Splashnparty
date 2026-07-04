@@ -16,7 +16,7 @@
     </a>
 </div>
 
-<form action="{{ route('header-menus.store') }}" method="POST">
+<form action="{{ route('header-menus.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="card">

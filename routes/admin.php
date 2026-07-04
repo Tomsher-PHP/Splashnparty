@@ -1,28 +1,41 @@
 <?php
 
+use App\Http\Controllers\Admin\AttractionController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\CakeEnquiryController;
 use App\Http\Controllers\Admin\BalloonDecorationController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BirthdayPackageController;
+use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CafeMenuCategoryController;
 use App\Http\Controllers\Admin\CafeMenuController;
 use App\Http\Controllers\Admin\CakeController;
 use App\Http\Controllers\Admin\ClientLogoController;
+use App\Http\Controllers\Admin\ContactEnquiryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\FoodMenuCategoryController;
+use App\Http\Controllers\Admin\FoodMenuController;
+use App\Http\Controllers\Admin\GeneralAccessController;
 use App\Http\Controllers\Admin\GeneralSettingController;
+use App\Http\Controllers\Admin\HeaderMenuController;
 use App\Http\Controllers\Admin\ImageGalleryController;
+use App\Http\Controllers\Admin\NewsletterSubscriptionController;
+use App\Http\Controllers\Admin\NewsUpdateController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\OutDoorEventsController;
-use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\PartyExtraController;
 use App\Http\Controllers\Admin\RentalCategoryController;
 use App\Http\Controllers\Admin\RentalItemController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\VideoGalleryController;
-use App\Http\Controllers\Admin\PageController;
-use App\Http\Controllers\Admin\HeaderMenuController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -90,8 +103,68 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::resource('balloon-decorations', BalloonDecorationController::class);
 
+    Route::post('birthday-packages/{birthday_package}/copy', [BirthdayPackageController::class, 'copy'])->name('birthday-packages.copy');
     Route::resource('birthday-packages', BirthdayPackageController::class);
 
     Route::resource('events', EventController::class)->parameters(['events' => 'event'])->except(['show']);
 
+    Route::resource('food-menu-categories', FoodMenuCategoryController::class);
+    Route::resource('food-menus', FoodMenuController::class);
+
+    Route::resource('party-extras', PartyExtraController::class);
+
+    Route::resource('general-access', GeneralAccessController::class);
+    Route::post('packages/{package}/copy', [PackageController::class, 'copy'])->name('packages.copy');
+    Route::resource('packages', PackageController::class);
+    Route::resource('contact-enquiries', ContactEnquiryController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('cake-enquiries', CakeEnquiryController::class)->only(['index', 'show', 'destroy']);
+
+    Route::patch('attractions/{attraction}/status', [AttractionController::class, 'updateStatus'])->name('attractions.update-status');
+    Route::resource('attractions', AttractionController::class);
+
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('admin.notifications.mark-all-read');
+    Route::post('/notifications/bulk-delete', [NotificationController::class, 'bulkDelete'])->name('admin.notifications.bulk-delete');
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy'])->name('admin.notifications.destroy');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('admin.notifications.index');
+
+    Route::group(['prefix' => 'bookings'], function () {
+
+        Route::get('/', [
+            BookingController::class,
+            'index'
+        ])->name('bookings.index');
+
+        Route::get('/{booking}', [
+            BookingController::class,
+            'show'
+        ])->name('bookings.show');
+
+        Route::get('/{booking}/invoice', [
+            BookingController::class,
+            'invoice'
+        ])->name('bookings.invoice');
+
+        Route::post('/{booking}/payment-status', [
+            BookingController::class,
+            'updatePaymentStatus'
+        ])->name('bookings.payment-status');
+    });
+
+    Route::resource(
+        'news-updates',
+        NewsUpdateController::class
+    );
+
+    Route::get('newsletter-subscriptions/export', [NewsletterSubscriptionController::class, 'export'])->name('newsletter-subscriptions.export');
+    Route::resource('newsletter-subscriptions', NewsletterSubscriptionController::class)->only(['index', 'destroy']);
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('admin.profile.update');
+
+    Route::post('/clear-cache', [DashboardController::class, 'clearCache'])->name('admin.clear-cache');
+
+    // Admin Fallback Route to catch all undefined admin paths with any HTTP method
+    Route::any('{any}', function () {
+        abort(404);
+    })->where('any', '.*');
 });

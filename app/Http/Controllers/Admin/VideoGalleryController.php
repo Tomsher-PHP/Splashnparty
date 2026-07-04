@@ -28,6 +28,11 @@ class VideoGalleryController extends Controller
             );
         }
 
+        // STATUS FILTER
+        if (request()->has('status') && request('status') !== null && request('status') !== '') {
+            $query->where('status', request('status'));
+        }
+
         $galleries = $query
             ->paginate(10)
             ->withQueryString();
@@ -51,6 +56,8 @@ class VideoGalleryController extends Controller
 
             'category_name'      => 'required|string|max:255',
 
+            'slug'               => 'required|string|max:255|unique:video_galleries,slug',
+
             'youtube_link'       => 'required|array|min:1',
 
             'youtube_link.*'     => 'required|url',
@@ -58,7 +65,7 @@ class VideoGalleryController extends Controller
             'status'             => 'required|boolean',
 
             // SEO
-            'meta_title'         => 'nullable|string|max:255',
+            'meta_title'         => 'nullable|string',
             'meta_description'   => 'nullable|string',
             'meta_keywords'      => 'nullable|string',
 
@@ -92,6 +99,8 @@ class VideoGalleryController extends Controller
         VideoGallery::create([
 
             'category_name'       => $request->category_name,
+
+            'slug'                => $request->slug,
 
             'youtube_link'        => array_values($youtubeLinks),
 
@@ -138,6 +147,8 @@ class VideoGalleryController extends Controller
 
             'category_name'      => 'required|string|max:255',
 
+            'slug'               => 'required|string|max:255|unique:video_galleries,slug,' . $video_gallery->id,
+
             'youtube_link'       => 'required|array|min:1',
 
             'youtube_link.*'     => 'required|url',
@@ -145,7 +156,7 @@ class VideoGalleryController extends Controller
             'status'             => 'required|boolean',
 
             // SEO
-            'meta_title'         => 'nullable|string|max:255',
+            'meta_title'         => 'nullable|string',
             'meta_description'   => 'nullable|string',
             'meta_keywords'      => 'nullable|string',
 
@@ -219,6 +230,8 @@ class VideoGalleryController extends Controller
         $video_gallery->update([
 
             'category_name'       => $request->category_name,
+
+            'slug'                => $request->slug,
 
             'youtube_link'        => array_values($youtubeLinks),
 

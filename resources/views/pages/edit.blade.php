@@ -6,7 +6,10 @@
             <h6 class="fw-semibold mb-4">Edit Page Content: {{ $page->title }}</h6>
             <p class="mb-0 text-secondary-light">Manage sections, text, files, and repeatable details for this page.</p>
         </div>
-        <div>
+        <div class="d-flex align-items-center gap-2">
+            <button type="submit" form="page-edit-form" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2">
+                <i class="ri-save-line"></i> Save Page Content
+            </button>
             <a href="{{ route('pages.index') }}" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-2">
                 <i class="ri-arrow-left-line"></i> Back to Pages
             </a>
@@ -25,7 +28,7 @@
         </div>
     @endif
 
-    <form action="{{ route('pages.update', $page->id) }}" method="POST" enctype="multipart/form-data">
+    <form id="page-edit-form" action="{{ route('pages.update', $page->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -34,7 +37,7 @@
                 <div class="col-12">
                     <div class="card border-0 shadow-sm rounded-12">
                         <div class="card-header bg-base py-16 px-24 border-bottom border-neutral-100">
-                            <h6 class="text-md fw-semibold text-dark mb-0">{{ $section['title'] }}</h6>
+                            <h6 class="text-md fw-semibold  mb-0">{{ $section['title'] }}</h6>
                             @if (!empty($section['description']))
                                 <p class="text-xs text-secondary-light mb-0 mt-4">{{ $section['description'] }}</p>
                             @endif
@@ -46,7 +49,7 @@
                                         $fieldName = $field['name'];
                                         $fieldType = $field['type'];
                                         $fieldValue = old($fieldName, $page->content[$fieldName] ?? '');
-                                        $colClass = in_array($fieldType, ['repeater', 'wysiwyg', 'gallery']) ? 'col-12' : 'col-md-6';
+                                        $colClass = in_array($fieldType, ['repeater', 'wysiwyg', 'gallery', 'faq_select']) ? 'col-12' : 'col-md-6';
                                     @endphp
 
                                     <div class="{{ $colClass }}">
@@ -66,8 +69,8 @@
                                                 placeholder="{{ $field['placeholder'] ?? '' }}">
 
                                         @elseif ($fieldType === 'textarea')
-                                            <textarea id="{{ $fieldName }}" name="{{ $fieldName }}" rows="4"
-                                                class="form-control form-control-sm @error($fieldName) is-invalid @enderror"
+                                            <textarea id="{{ $fieldName }}" name="{{ $fieldName }}" rows="{{ $field['rows'] ?? 4 }}"
+                                                class="form-control @error($fieldName) is-invalid @enderror"
                                                 placeholder="{{ $field['placeholder'] ?? '' }}">{{ $fieldValue }}</textarea>
 
                                         @elseif ($fieldType === 'image')
@@ -126,13 +129,176 @@
                                                                     @endif
                                                                 </div>
                                                                 <div class="p-12 border-top border-neutral-100">
-                                                                    <h6 class="text-xs fw-semibold text-dark mb-0 text-truncate">{{ $option['label'] }}</h6>
+                                                                    <h6 class="text-xs fw-semibold  mb-0 text-truncate">{{ $option['label'] }}</h6>
                                                                     <span class="text-xxs text-neutral-400 text-capitalize">{{ $option['type'] ?? 'image' }} Banner</span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     @endforeach
                                                 </div>
+                                            </div>
+
+                                        @elseif ($fieldType === 'faq_select')
+                                            @php
+                                                $allFaqs = \App\Models\Faq::where('status', true)->orderBy('sort_order')->get();
+                                                $selectedFaqIds = $fieldValue['faq_ids'] ?? [];
+                                                $selectedQuestions = $fieldValue['questions'] ?? [];
+                                            @endphp
+                                            <div class="faq-selection-widget @error($fieldName) is-invalid @enderror">
+                                                
+                                                <!-- Category Selector Control -->
+                                                <div class="faq-selector-controls d-flex align-items-center gap-12 mb-20 p-16 border rounded-8 bg-neutral-50">
+                                                    <div class="flex-grow-1">
+                                                        <select class="form-select form-select-sm" id="faq-category-selector">
+                                                            <option value="">-- Choose an FAQ Category to Add --</option>
+                                                            @foreach ($allFaqs as $faq)
+                                                                @php
+                                                                    $isAlreadyAdded = in_array($faq->id, $selectedFaqIds);
+                                                                @endphp
+                                                                <option value="{{ $faq->id }}" {{ $isAlreadyAdded ? 'disabled class=d-none' : '' }}>
+                                                                    {{ $faq->category }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <button type="button" class="btn btn-sm btn-primary-600 d-flex align-items-center gap-8 py-8" id="btn-add-faq-category" style="white-space: nowrap;">
+                                                        <i class="ri-add-line"></i> Add Category
+                                                    </button>
+                                                </div>
+
+                                                <!-- Active Categories Container -->
+                                                <div id="active-faq-categories-container" class="row g-3">
+                                                    <!-- Empty State when nothing is added -->
+                                                    <div class="faq-empty-state col-12 text-center py-32 border border-dashed rounded-8 text-neutral-400 bg-white {{ count($selectedFaqIds) > 0 ? 'd-none' : '' }}">
+                                                        <i class="ri-question-line text-2xl d-block mb-8 text-neutral-400"></i>
+                                                        <span class="text-xs">No FAQ categories added to this page yet. Choose a category from the selector above to add it.</span>
+                                                    </div>
+
+                                                    @foreach ($allFaqs as $faq)
+                                                        @if (in_array($faq->id, $selectedFaqIds))
+                                                            <div class="col-md-6 faq-category-card-wrapper" data-category-id="{{ $faq->id }}">
+                                                                <div class="card border rounded-8 overflow-hidden shadow-none mb-12">
+                                                                    <!-- Category Header -->
+                                                                    <div class="card-header bg-neutral-50 p-16 d-flex align-items-center justify-content-between cursor-pointer faq-card-accordion-header" data-target="#faq-card-body-{{ $faq->id }}">
+                                                                        <div class="d-flex align-items-center gap-12">
+                                                                            <input type="hidden" name="{{ $fieldName }}[faq_ids][]" value="{{ $faq->id }}">
+                                                                            <h6 class="text-sm fw-semibold text-secondary-light mb-0">{{ $faq->category }}</h6>
+                                                                            <span class="badge bg-neutral-200 text-neutral-600 rounded-pill text-xxs px-8 py-4">
+                                                                                {{ count(collect($faq->details)->filter(fn($q) => ($q['status'] ?? 1) == 1)) }} Questions
+                                                                            </span>
+                                                                            <span class="selected-count-badge badge bg-primary-100 text-primary-600 rounded-pill text-xxs px-8 py-4 d-none">
+                                                                                0 Selected
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="d-flex align-items-center gap-12">
+                                                                            <button type="button" class="btn btn-xs btn-outline-danger btn-icon remove-faq-category-btn" data-category-id="{{ $faq->id }}" title="Remove Category">
+                                                                                <i class="ri-delete-bin-line"></i>
+                                                                            </button>
+                                                                            <i class="ri-arrow-down-s-line text-lg toggle-icon accordion-arrow" style="transition: transform 0.2s;"></i>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Questions List -->
+                                                                    <div id="faq-card-body-{{ $faq->id }}" class="card-body p-16 bg-white d-none">
+                                                                        <div class="d-flex align-items-center justify-content-between mb-12 pb-8 border-bottom border-neutral-100">
+                                                                            <span class="text-xxs text-neutral-400">Questions List</span>
+                                                                            <button type="button" class="btn btn-link text-primary-600 text-xxs fw-semibold p-0 select-all-questions-btn" style="text-decoration: none;">Select All</button>
+                                                                        </div>
+                                                                        @php
+                                                                            $categoryQuestions = collect($faq->details)->filter(fn($q) => ($q['status'] ?? 1) == 1)->all();
+                                                                            $selectedCatQuestions = $selectedQuestions[$faq->id] ?? [];
+                                                                        @endphp
+                                                                        @if (empty($categoryQuestions))
+                                                                            <span class="text-neutral-400 text-xs">No active questions in this category.</span>
+                                                                        @else
+                                                                            <div class="row g-3">
+                                                                                @foreach ($categoryQuestions as $index => $qItem)
+                                                                                    @php
+                                                                                        $qText = $qItem['question'] ?? '';
+                                                                                        $isQuestionSelected = in_array($qText, $selectedCatQuestions);
+                                                                                    @endphp
+                                                                                    <div class="col-12">
+                                                                                        <div class="p-16 border rounded-6 bg-neutral-50-hover transition-all faq-question-card {{ $isQuestionSelected ? 'border-primary-600 bg-primary-50' : 'border-neutral-200' }}" style="cursor: pointer;">
+                                                                                            <div class="form-check mb-0">
+                                                                                                <input class="form-check-input faq-question-checkbox" type="checkbox" name="{{ $fieldName }}[questions][{{ $faq->id }}][]" value="{{ $qText }}" id="q_{{ $faq->id }}_{{ $index }}" {{ $isQuestionSelected ? 'checked' : '' }}>
+                                                                                                <label class="form-check-label ms-2 d-block cursor-pointer" for="q_{{ $faq->id }}_{{ $index }}">
+                                                                                                    <span class="fw-semibold text-xs text-neutral-800 d-block mb-4">{{ $qText }}</span>
+                                                                                                    <span class="text-xxs text-neutral-500 d-block text-truncate" title="{{ strip_tags($qItem['answer'] ?? '') }}">{{ strip_tags($qItem['answer'] ?? '') }}</span>
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @endforeach
+                                                                            </div>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+
+                                                <!-- Hidden templates for dynamically instantiating cards -->
+                                                @foreach ($allFaqs as $faq)
+                                                    <template id="faq-cat-template-{{ $faq->id }}">
+                                                        <div class="col-md-6 faq-category-card-wrapper" data-category-id="{{ $faq->id }}">
+                                                            <div class="card border rounded-8 overflow-hidden shadow-none mb-12">
+                                                                <!-- Category Header -->
+                                                                <div class="card-header bg-neutral-50 p-16 d-flex align-items-center justify-content-between cursor-pointer faq-card-accordion-header" data-target="#faq-card-body-{{ $faq->id }}">
+                                                                    <div class="d-flex align-items-center gap-12">
+                                                                        <input type="hidden" name="{{ $fieldName }}[faq_ids][]" value="{{ $faq->id }}">
+                                                                        <h6 class="text-sm fw-semibold text-secondary-light mb-0">{{ $faq->category }}</h6>
+                                                                        <span class="badge bg-neutral-200 text-neutral-600 rounded-pill text-xxs px-8 py-4">
+                                                                            {{ count(collect($faq->details)->filter(fn($q) => ($q['status'] ?? 1) == 1)) }} Questions
+                                                                        </span>
+                                                                        <span class="selected-count-badge badge bg-primary-100 text-primary-600 rounded-pill text-xxs px-8 py-4 d-none">
+                                                                            0 Selected
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="d-flex align-items-center gap-12">
+                                                                        <button type="button" class="btn btn-xs btn-outline-danger btn-icon remove-faq-category-btn" data-category-id="{{ $faq->id }}" title="Remove Category">
+                                                                            <i class="ri-delete-bin-line"></i>
+                                                                        </button>
+                                                                        <i class="ri-arrow-down-s-line text-lg toggle-icon accordion-arrow" style="transition: transform 0.2s;"></i>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Questions List -->
+                                                                <div id="faq-card-body-{{ $faq->id }}" class="card-body p-16 bg-white d-none">
+                                                                    <div class="d-flex align-items-center justify-content-between mb-12 pb-8 border-bottom border-neutral-100">
+                                                                        <span class="text-xxs text-neutral-400">Questions List</span>
+                                                                        <button type="button" class="btn btn-link text-primary-600 text-xxs fw-semibold p-0 select-all-questions-btn" style="text-decoration: none;">Select All</button>
+                                                                    </div>
+                                                                    @php
+                                                                        $categoryQuestions = collect($faq->details)->filter(fn($q) => ($q['status'] ?? 1) == 1)->all();
+                                                                    @endphp
+                                                                    @if (empty($categoryQuestions))
+                                                                        <span class="text-neutral-400 text-xs">No active questions in this category.</span>
+                                                                    @else
+                                                                        <div class="row g-3">
+                                                                            @foreach ($categoryQuestions as $index => $qItem)
+                                                                                @php
+                                                                                    $qText = $qItem['question'] ?? '';
+                                                                                @endphp
+                                                                                <div class="col-12">
+                                                                                    <div class="p-16 border rounded-6 bg-neutral-50-hover transition-all faq-question-card border-neutral-200" style="cursor: pointer;">
+                                                                                        <div class="form-check mb-0">
+                                                                                            <input class="form-check-input faq-question-checkbox" type="checkbox" name="{{ $fieldName }}[questions][{{ $faq->id }}][]" value="{{ $qText }}" id="q_{{ $faq->id }}_{{ $index }}">
+                                                                                            <label class="form-check-label ms-2 d-block cursor-pointer" for="q_{{ $faq->id }}_{{ $index }}">
+                                                                                                <span class="fw-semibold text-xs text-neutral-800 d-block mb-4">{{ $qText }}</span>
+                                                                                                <span class="text-xxs text-neutral-500 d-block text-truncate" title="{{ strip_tags($qItem['answer'] ?? '') }}">{{ strip_tags($qItem['answer'] ?? '') }}</span>
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                @endforeach
                                             </div>
 
                                         @elseif ($fieldType === 'wysiwyg')
@@ -151,7 +317,7 @@
                                                         <span class="gallery-uploader-icon mb-12 text-primary-600 bg-primary-50 rounded-circle d-flex align-items-center justify-content-center" style="width:48px; height:48px;">
                                                             <i class="ri-upload-cloud-2-line text-2xl"></i>
                                                         </span>
-                                                        <h6 class="text-sm fw-semibold text-dark mb-4">Click to select multiple images at once</h6>
+                                                        <h6 class="text-sm fw-semibold  mb-4">Click to select multiple images at once</h6>
                                                         <p class="text-xs text-secondary-light mb-0">Images will be added as sortable thumbnails below</p>
                                                     </div>
                                                 </div>
@@ -193,7 +359,15 @@
                                                     <span class="fw-semibold text-secondary-light">{{ $field['label'] }}</span>
                                                     <div class="d-flex align-items-center gap-2">
                                                         <button type="button" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2 repeater-add-btn" 
-                                                            data-repeater-name="{{ $fieldName }}">
+                                                            data-repeater-name="{{ $fieldName }}"
+                                                            @if(isset($field['rules']))
+                                                                @foreach($field['rules'] as $rule)
+                                                                    @if(is_string($rule) && str_starts_with($rule, 'max:'))
+                                                                        data-max="{{ substr($rule, 4) }}"
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
+                                                        >
                                                             <i class="ri-add-line"></i> Add Item
                                                         </button>
                                                     </div>
@@ -230,7 +404,7 @@
                                                                             if ($subType === 'image' && empty($subValue) && !empty($row[$subName . '_existing'])) {
                                                                                 $subValue = $row[$subName . '_existing'];
                                                                             }
-                                                                            $subCol = in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6';
+                                                                            $subCol = $subField['col'] ?? (in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6');
                                                                         @endphp
 
                                                                         <div class="{{ $subCol }}">
@@ -239,6 +413,9 @@
                                                                                     {{ $subField['label'] }}
                                                                                     @if (in_array('required', $subField['rules'] ?? []))
                                                                                         <span class="text-danger-main">*</span>
+                                                                                    @endif
+                                                                                    @if (isset($subField['description']))
+                                                                                        <span class="text-xxs text-neutral-400 d-block fw-normal mt-4"><i class="ri-information-line me-1 align-middle text-sm"></i>{{ $subField['description'] }}</span>
                                                                                     @endif
                                                                                 </label>
                                                                             @endif
@@ -250,8 +427,8 @@
                                                                                     placeholder="{{ $subField['placeholder'] ?? '' }}">
 
                                                                             @elseif ($subType === 'textarea')
-                                                                                <textarea name="{{ $fieldName }}[{{ $index }}][{{ $subName }}]" rows="4"
-                                                                                    class="form-control form-control-sm"
+                                                                                <textarea name="{{ $fieldName }}[{{ $index }}][{{ $subName }}]" rows="{{ $subField['rows'] ?? 4 }}"
+                                                                                    class="form-control"
                                                                                     placeholder="{{ $subField['placeholder'] ?? '' }}">{{ $subValue }}</textarea>
 
                                                                             @elseif ($subType === 'image')
@@ -293,7 +470,15 @@
                                                                                         <button type="button" class="btn btn-xs btn-primary-600 d-inline-flex align-items-center gap-1 nested-repeater-add-btn" 
                                                                                             data-parent-repeater="{{ $fieldName }}"
                                                                                             data-parent-index="{{ $index }}"
-                                                                                            data-nested-repeater="{{ $subName }}">
+                                                                                            data-nested-repeater="{{ $subName }}"
+                                                                                            @if(isset($subField['rules']))
+                                                                                                @foreach($subField['rules'] as $rule)
+                                                                                                    @if(is_string($rule) && str_starts_with($rule, 'max:'))
+                                                                                                        data-max="{{ substr($rule, 4) }}"
+                                                                                                    @endif
+                                                                                                @endforeach
+                                                                                            @endif
+                                                                                        >
                                                                                             <i class="ri-add-line"></i> Add {{ $isSingleField ? 'Point' : 'Item' }}
                                                                                         </button>
                                                                                     </div>
@@ -419,8 +604,8 @@
                 </div>
             @endforeach
 
-            <div class="col-12 mt-32">
-                <div class="card border-0 shadow-sm rounded-12 p-20 bg-base">
+            <div class="col-12 mt-32 position-sticky bottom-0" style="z-index: 1000; bottom: 0;">
+                <div class="card border border-neutral-200 shadow-lg rounded-12 p-20 bg-base">
                     <div class="d-flex flex-wrap align-items-center gap-3">
                         <button type="submit" class="btn btn-sm btn-primary-600 d-inline-flex align-items-center gap-2">
                             <i class="ri-save-line"></i> Save Page Content
@@ -458,7 +643,7 @@
                                     @php
                                         $subName = $subField['name'];
                                         $subType = $subField['type'];
-                                        $subCol = in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6';
+                                        $subCol = $subField['col'] ?? (in_array($subType, ['textarea', 'repeater']) ? 'col-12' : 'col-md-6');
                                     @endphp
 
                                     <div class="{{ $subCol }}">
@@ -466,9 +651,12 @@
                                             <label class="form-label text-xs fw-semibold text-secondary-light">
                                                 {{ $subField['label'] }}
                                                 @if (in_array('required', $subField['rules'] ?? []))
-                                                    <span class="text-danger-main">*</span>
-                                                @endif
-                                            </label>
+                                                     <span class="text-danger-main">*</span>
+                                                 @endif
+                                                 @if (isset($subField['description']))
+                                                     <span class="text-xxs text-neutral-400 d-block fw-normal mt-4"><i class="ri-information-line me-1 align-middle text-sm"></i>{{ $subField['description'] }}</span>
+                                                 @endif
+                                             </label>
                                         @endif
 
                                         @if ($subType === 'text')
@@ -478,9 +666,9 @@
                                                 placeholder="{{ $subField['placeholder'] ?? '' }}">
 
                                         @elseif ($subType === 'textarea')
-                                            <textarea name="{{ $field['name'] }}[__INDEX__][{{ $subName }}]" rows="4"
-                                                class="form-control form-control-sm"
-                                                placeholder="{{ $subField['placeholder'] ?? '' }}"></textarea>
+                                             <textarea name="{{ $field['name'] }}[__INDEX__][{{ $subName }}]" rows="{{ $subField['rows'] ?? 4 }}"
+                                                 class="form-control"
+                                                 placeholder="{{ $subField['placeholder'] ?? '' }}"></textarea>
 
                                         @elseif ($subType === 'image')
                                             <div class="settings-file-upload">
@@ -508,9 +696,17 @@
                                                 <div class="d-flex align-items-center justify-content-between mb-12 {{ $isSingleField ? '' : 'border-bottom border-neutral-200 pb-8' }}">
                                                     <span class="fw-semibold text-secondary-light text-xs">{{ $subField['label'] }}</span>
                                                     <button type="button" class="btn btn-xs btn-primary-600 d-inline-flex align-items-center gap-1 nested-repeater-add-btn" 
-                                                        data-parent-repeater="{{ $field['name'] }}"
-                                                        data-parent-index="__INDEX__"
-                                                        data-nested-repeater="{{ $subName }}">
+                                                         data-parent-repeater="{{ $field['name'] }}"
+                                                         data-parent-index="__INDEX__"
+                                                         data-nested-repeater="{{ $subName }}"
+                                                         @if(isset($subField['rules']))
+                                                             @foreach($subField['rules'] as $rule)
+                                                                 @if(is_string($rule) && str_starts_with($rule, 'max:'))
+                                                                     data-max="{{ substr($rule, 4) }}"
+                                                                 @endif
+                                                             @endforeach
+                                                         @endif
+                                                     >
                                                         <i class="ri-add-line"></i> Add {{ $isSingleField ? 'Point' : 'Item' }}
                                                     </button>
                                                 </div>
@@ -630,11 +826,14 @@
                     theme: 'snow',
                     modules: {
                         toolbar: [
-                            [{ header: [1, 2, 3, false] }],
-                            ['bold', 'italic', 'underline'],
-                            [{ list: 'ordered' }, { list: 'bullet' }],
+                            [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
                             [{ color: [] }, { background: [] }],
-                            ['link'],
+                            
+                            ['blockquote', 'code-block'],
+                            [{ list: 'ordered' }, { list: 'bullet' }],
+                            [{ indent: '-1' }, { indent: '+1' }],
+                            [{ align: [] }],
                             ['clean']
                         ]
                     }
@@ -725,9 +924,22 @@
             });
 
             // Handle Repeater Item Adding
-            $('.repeater-add-btn').on('click', function() {
+            $('.repeater-add-btn').on('click', function(e) {
                 const repeaterName = $(this).data('repeater-name');
                 const container = $('#container-' + repeaterName);
+                const max = $(this).data('max');
+
+                if (max && container.find('.repeater-row').length >= parseInt(max)) {
+                    e.preventDefault();
+                    const label = $(this).closest('.repeater-widget').find('.fw-semibold').first().text() || 'items';
+                    if (window.appToast) {
+                        window.appToast('error', 'You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    } else {
+                        alert('You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    }
+                    return false;
+                }
+
                 const template = $('#template-' + repeaterName).html();
 
                 // Get new index
@@ -823,13 +1035,25 @@
             }
 
             // Handle Nested Repeater Item Adding
-            $(document).on('click', '.nested-repeater-add-btn', function() {
+            $(document).on('click', '.nested-repeater-add-btn', function(e) {
                 const btn = $(this);
                 const parentRepeater = btn.data('parent-repeater');
                 const parentIndex = btn.closest('.repeater-row').attr('data-index') || btn.data('parent-index');
                 const nestedRepeater = btn.data('nested-repeater');
+                const max = btn.data('max');
                 
                 const container = $('#nested-container-' + parentRepeater + '-' + parentIndex + '-' + nestedRepeater);
+                if (max && container.find('.nested-repeater-row').length >= parseInt(max)) {
+                    e.preventDefault();
+                    const label = btn.siblings('span').text() || 'items';
+                    if (window.appToast) {
+                        window.appToast('error', 'You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    } else {
+                        alert('You can add a maximum of ' + max + ' ' + label.toLowerCase() + '.');
+                    }
+                    return false;
+                }
+
                 const template = $('#nested-template-' + parentRepeater + '-' + nestedRepeater).html();
 
                 if (!container.length || !template) return;
@@ -1014,49 +1238,218 @@
                     });
                 });
             }
+
+            // Handle FAQ Category addition
+            $(document).on('click', '#btn-add-faq-category', function() {
+                const select = $('#faq-category-selector');
+                const categoryId = select.val();
+                if (!categoryId) {
+                    if (window.appToast) {
+                        window.appToast('error', 'Please select an FAQ category to add.');
+                    } else {
+                        alert('Please select an FAQ category to add.');
+                    }
+                    return;
+                }
+
+                // Get template and append
+                const template = $('#faq-cat-template-' + categoryId);
+                if (template.length) {
+                    const html = template.html();
+                    const container = $('#active-faq-categories-container');
+                    
+                    // Hide empty state if present
+                    container.find('.faq-empty-state').addClass('d-none');
+                    
+                    const $card = $(html);
+                    container.append($card);
+                    $card.hide().fadeIn(300);
+
+                    // Auto-expand the newly added card
+                    const body = $card.find('.card-body');
+                    const arrow = $card.find('.accordion-arrow');
+                    body.removeClass('d-none').hide().slideDown(200);
+                    arrow.css('transform', 'rotate(180deg)');
+
+                    // Disable and hide category option in selector
+                    const option = select.find('option[value="' + categoryId + '"]');
+                    option.prop('disabled', true).addClass('d-none');
+                    select.val(''); // Reset select
+                }
+            });
+
+            // Handle FAQ Category removal
+            $(document).on('click', '.remove-faq-category-btn', function() {
+                const button = $(this);
+                const categoryId = button.data('category-id');
+                const card = button.closest('.faq-category-card-wrapper');
+                
+                window.openAppConfirm({
+                    title: 'Remove FAQ Category',
+                    message: 'Are you sure you want to remove this FAQ category and all its selected questions from this page?',
+                    buttonText: 'Yes, Remove',
+                    buttonClass: 'btn btn-sm btn-danger',
+                    onConfirm: function() {
+                        card.fadeOut(300, function() {
+                            card.remove();
+
+                            // Show empty state if no categories left
+                            const container = $('#active-faq-categories-container');
+                            if (container.find('.faq-category-card-wrapper').length === 0) {
+                                container.find('.faq-empty-state').removeClass('d-none');
+                            }
+
+                            // Re-enable and show category option in selector
+                            const select = $('#faq-category-selector');
+                            const option = select.find('option[value="' + categoryId + '"]');
+                            option.prop('disabled', false).removeClass('d-none');
+                        });
+                    }
+                });
+            });
+
+            function updateFaqCardHeaderState(card) {
+                const checkboxes = card.find('.faq-question-checkbox');
+                const checked = checkboxes.filter(':checked');
+                const selectAllBtn = card.find('.select-all-questions-btn');
+                const badge = card.find('.selected-count-badge');
+
+                // Update Select All button text
+                if (checkboxes.length > 0 && checked.length === checkboxes.length) {
+                    selectAllBtn.text('Deselect All');
+                } else {
+                    selectAllBtn.text('Select All');
+                }
+
+                // Update Selected badge in card header
+                if (badge.length) {
+                    if (checked.length > 0) {
+                        badge.text(checked.length + ' Selected').removeClass('d-none');
+                    } else {
+                        badge.addClass('d-none');
+                    }
+                }
+            }
+
+            // Initialize header states and accordion state for pre-loaded FAQ cards
+            $('.faq-category-card-wrapper').each(function() {
+                updateFaqCardHeaderState($(this));
+                
+                const body = $(this).find('.card-body');
+                const arrow = $(this).find('.accordion-arrow');
+                if (body.hasClass('d-none')) {
+                    arrow.css('transform', 'rotate(0deg)');
+                } else {
+                    arrow.css('transform', 'rotate(180deg)');
+                }
+            });
+
+            // Accordion toggle click handler
+            $(document).on('click', '.faq-card-accordion-header', function(e) {
+                // If click originated from the delete button, do nothing (event bubbles to its own click handler)
+                if ($(e.target).closest('.remove-faq-category-btn').length) {
+                    return;
+                }
+                const targetSelector = $(this).data('target');
+                const target = $(targetSelector);
+                const arrow = $(this).find('.accordion-arrow');
+                
+                if (target.hasClass('d-none')) {
+                    target.removeClass('d-none').hide().slideDown(200);
+                    arrow.css('transform', 'rotate(180deg)');
+                } else {
+                    target.slideUp(200, function() {
+                        target.addClass('d-none');
+                    });
+                    arrow.css('transform', 'rotate(0deg)');
+                }
+            });
+
+            // Select All / Deselect All click handler
+            $(document).on('click', '.select-all-questions-btn', function(e) {
+                e.stopPropagation();
+                const button = $(this);
+                const card = button.closest('.faq-category-card-wrapper');
+                const checkboxes = card.find('.faq-question-checkbox');
+                const unchecked = checkboxes.filter(':not(:checked)');
+                
+                if (unchecked.length > 0) {
+                    checkboxes.prop('checked', true).trigger('change');
+                } else {
+                    checkboxes.prop('checked', false).trigger('change');
+                }
+            });
+
+            // Handle FAQ question card click to toggle checkbox
+            $(document).on('click', '.faq-question-card', function(e) {
+                // If clicked on the checkbox or label directly, let the default event handle it
+                if ($(e.target).is('input[type="checkbox"]') || $(e.target).closest('label').length) {
+                    return;
+                }
+                const checkbox = $(this).find('.faq-question-checkbox');
+                if (!checkbox.prop('disabled')) {
+                    const isChecked = checkbox.is(':checked');
+                    checkbox.prop('checked', !isChecked).trigger('change');
+                }
+            });
+
+            // Handle FAQ question checkbox change to update styling and header state
+            $(document).on('change', '.faq-question-checkbox', function() {
+                const container = $(this).closest('.faq-question-card');
+                const isChecked = $(this).is(':checked');
+                if (isChecked) {
+                    container.addClass('border-primary-600 bg-primary-50').removeClass('border-neutral-200');
+                } else {
+                    container.addClass('border-neutral-200').removeClass('border-primary-600 bg-primary-50');
+                }
+                
+                const card = $(this).closest('.faq-category-card-wrapper');
+                updateFaqCardHeaderState(card);
+            });
         });
     </script>
 @endsection
 
 @section('style')
     <style>
+        /* Compact FAQ Repeater Overrides */
+        #container-faqs .repeater-row {
+            margin-bottom: 12px !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            background: var(--neutral-50) !important;
+            border: 1px solid var(--neutral-200) !important;
+        }
+
+        #container-faqs .repeater-row .card-header {
+            padding: 8px 16px !important;
+            background-color: var(--neutral-100) !important;
+            border-bottom: 1px solid var(--neutral-200) !important;
+        }
+
+        #container-faqs .repeater-row .card-body {
+            padding: 12px 16px !important;
+        }
+
+        #container-faqs .repeater-row .form-control {
+            border-radius: 6px !important;
+            border: 1px solid var(--input-form-light) !important;
+        }
+
+        #container-faqs .repeater-row label {
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            margin-bottom: 4px !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary-light) !important;
+        }
+
         textarea.form-control,
         textarea.form-control-sm {
             height: auto !important;
         }
 
-        .quill-editor-wrapper {
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--input-form-light);
-            background: #fff;
-            transition: border-color 0.2s ease;
-        }
-        
-        .quill-editor-wrapper:focus-within {
-            border-color: var(--primary-600) !important;
-        }
-
-        .quill-editor-wrapper .ql-toolbar.ql-snow {
-            border: none !important;
-            border-bottom: 1px solid var(--input-form-light) !important;
-            background: #f8fafc;
-            padding: 8px 12px;
-        }
-
-        .quill-editor-wrapper .ql-container.ql-snow {
-            border: none !important;
-            font-family: inherit;
-            font-size: 14px;
-            height: 300px !important;
-            min-height: 250px !important;
-        }
-
-        .quill-editor-wrapper .ql-editor {
-            height: 300px !important;
-            min-height: 250px !important;
-            padding: 16px;
-        }
 
         .settings-current-media {
             display: flex;

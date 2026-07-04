@@ -1,11 +1,12 @@
 <div class="row">
     {{-- Category Name --}}
-    <div class="col-md-6 mb-20">
+    <div class="col-md-4 mb-20">
         <label class="form-label fw-semibold">
             Category Name <span class="text-danger">*</span>
         </label>
 
         <input type="text"
+            id="category_name"
             name="category_name"
             class="form-control form-control-sm"
             value="{{ old('category_name', $gallery->category_name ?? '') }}"
@@ -15,14 +16,33 @@
         <small class="text-danger">{{ $message }}</small>
         @enderror
     </div>
+
+    {{-- Slug --}}
+    <div class="col-md-4 mb-20">
+        <label class="form-label fw-semibold">
+            Slug <span class="text-danger">*</span>
+        </label>
+
+        <input type="text"
+            id="slug"
+            name="slug"
+            class="form-control form-control-sm"
+            value="{{ old('slug', $gallery->slug ?? '') }}"
+            placeholder="slug"
+            required>
+
+        @error('slug')
+        <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
     
     {{-- Status --}}
-    <div class="col-md-6 mb-20">
+    <div class="col-md-4 mb-20">
         <label class="form-label fw-semibold">
             Status
         </label>
         <select name="status"
-            class="form-select">
+            class="form-select form-select-sm">
             <option value="1"
                 {{ old('status', $gallery->status ?? 1) == 1 ? 'selected' : '' }}>
                 Active
@@ -33,6 +53,22 @@
             </option>
         </select>
     </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const categoryInput = document.getElementById('category_name');
+    const slugInput = document.getElementById('slug');
+    if (categoryInput && slugInput) {
+        categoryInput.addEventListener('keyup', function() {
+            slugInput.value = this.value
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        });
+    }
+});
+</script>
 
     {{-- Images --}}
     <div class="col-md-12 mb-20">

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AuthController;
 use Illuminate\Auth\Events\Login;
+use App\Http\Controllers\CcAvenueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +18,17 @@ use Illuminate\Auth\Events\Login;
 */
 
 Route::get('/', [AuthController::class, 'showLogin']);
+
+
+
+Route::post('/payment/ccavenue/success', [CcAvenueController::class, 'success'])
+    ->name('ccavenue.success');
+
+Route::post('/payment/ccavenue/failure', [CcAvenueController::class, 'failure'])
+    ->name('ccavenue.failure');
+
+// Global Fallback Route to catch all other undefined paths with any HTTP method
+Route::any('{any}', function () {
+    abort(404);
+})->where('any', '.*');
 

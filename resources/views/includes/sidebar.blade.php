@@ -15,13 +15,62 @@
     <div class="sidebar-menu-area">
         <ul class="sidebar-menu" id="sidebar-menu">
             <li>
-                <a href="{{ route('dashboard') }}" class="active-page">
+                <a href="{{ route('dashboard') }}" class="">
                     <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
                 </a>
             </li>
 
-            @can('view_branches')
+            @if(auth()->user()->can('view_bookings'))
+                <li>
+                    <a href="{{ route('bookings.index') }}">
+                        <i class="ri-calendar-check-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Bookings</span>
+                    </a>
+                </li>
+            @endif
+
+            @php
+                $enquiriesPermission =
+                    auth()->user()->can('view_contact_enquiries') ||
+                    auth()->user()->can('view_cake_enquiries');
+            @endphp
+
+            @if($enquiriesPermission)
+                <li class="nav-item dropdown">
+                    <a href="javascript:void(0)"
+                        class="nav-link dropdown-toggle {{ request()->routeIs('contact-enquiries.*') || request()->routeIs('cake-enquiries.*') ? '' : 'collapsed' }}"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#enquiriesMenu"
+                        aria-expanded="false">
+                        <i class="ri-mail-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Enquiries</span>
+                    </a>
+
+                    <ul class="collapse submenu {{ request()->routeIs('contact-enquiries.*') || request()->routeIs('cake-enquiries.*') ? 'show' : '' }}"
+                        id="enquiriesMenu">
+                        @can('view_contact_enquiries')
+                            <li class="submenu-item">
+                                <a href="{{ route('contact-enquiries.index') }}" class="{{ request()->routeIs('contact-enquiries.*') ? 'active-page' : '' }}">
+                                    <i class="ri-mail-line me-2"></i>
+                                    Contact Enquiries
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('view_cake_enquiries')
+                            <li class="submenu-item">
+                                <a href="{{ route('cake-enquiries.index') }}" class="{{ request()->routeIs('cake-enquiries.*') ? 'active-page' : '' }}">
+                                    <i class="ri-cake-2-line me-2"></i>
+                                    Cake Enquiries
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endif
+
+             @can('view_branches')
             <li class="nav-item">
                 <a href="{{ route('branches.index') }}"
                 class="nav-link">
@@ -29,6 +78,15 @@
                     <span>Branches</span>
                 </a>
             </li>
+            @endcan
+
+             @can('view_packages')
+                <li>
+                    <a href="{{ route('packages.index') }}">
+                        <i class="ri-gift-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Packages</span>
+                    </a>
+                </li>
             @endcan
 
             @can('view_cakes')
@@ -42,14 +100,17 @@
             </li>
             @endcan
 
-            <li class="nav-item dropdown">
-                @php
-                    $cafeMenuPermission =
-                        auth()->user()->can('view_cafe_menu_categories') ||
-                        auth()->user()->can('view_cafe_menus');
-                @endphp
+            
 
-                @if($cafeMenuPermission)
+            @php
+                $cafeMenuPermission =
+                    auth()->user()->can('view_cafe_menu_categories') ||
+                    auth()->user()->can('view_cafe_menus');
+            @endphp
+
+            @if($cafeMenuPermission)
+                <li class="nav-item dropdown">
+                
                     <a href="javascript:void(0)"
                         class="nav-link dropdown-toggle {{ request()->routeIs('cafe-menu-categories.*') || request()->routeIs('cafe-menus.*') ? '' : 'collapsed' }}"
                         data-bs-toggle="collapse"
@@ -79,17 +140,17 @@
                             </li>
                         @endcan
                     </ul>
-                @endif
-            </li>
+                </li>
+            @endif
 
-            <li class="nav-item dropdown">
-                @php
-                    $RentalPermission =
-                        auth()->user()->can('view_rental_categories') ||
-                        auth()->user()->can('view_rental_items');
-                @endphp
+            @php
+                $RentalPermission =
+                    auth()->user()->can('view_rental_categories') ||
+                    auth()->user()->can('view_rental_items');
+            @endphp
 
-                @if($RentalPermission)
+            @if($RentalPermission)
+                <li class="nav-item dropdown">
                     <a href="javascript:void(0)"
                         class="nav-link dropdown-toggle {{ request()->routeIs('rental-categories.*') || request()->routeIs('rental-items.*') ? '' : 'collapsed' }}"
                         data-bs-toggle="collapse"
@@ -119,17 +180,18 @@
                             </li>
                         @endcan
                     </ul>
-                @endif
-            </li>
+                </li>
+            @endif
 
-            <li class="nav-item dropdown">
-                @php
-                    $birthdayPackagePermission =
-                        auth()->user()->can('view_balloon_decorations') ||
-                        auth()->user()->can('view_birthday_packages');
-                @endphp
+            @php
+                $birthdayPackagePermission =
+                    auth()->user()->can('view_balloon_decorations') ||
+                    auth()->user()->can('view_birthday_packages');
+            @endphp
 
-                @if($birthdayPackagePermission)
+            @if($birthdayPackagePermission)
+                <li class="nav-item dropdown">
+                
                     <a href="javascript:void(0)"
                         class="nav-link dropdown-toggle {{ request()->routeIs('balloon-decorations.*') || request()->routeIs('birthday-packages.*') ? '' : 'collapsed' }}"
                         data-bs-toggle="collapse"
@@ -137,7 +199,7 @@
                         aria-expanded="false">
                         {{-- MAIN ICON --}}
                         <i class="ri-cake-3-line text-xl me-14 d-flex w-auto"></i>
-                        <span>Birthday Packages</span>
+                        <span>Birthday Party</span>
                     </a>
 
                     <ul class="collapse submenu {{ request()->routeIs('balloon-decorations.*') || request()->routeIs('birthday-packages.*') ? 'show' : '' }}"
@@ -161,14 +223,68 @@
                                 </a>
                             </li>
                         @endcan
+                        @can('view_food_menu_categories')
+                            <li class="submenu-item">
+                                <a href="{{ route('food-menu-categories.index') }}">
+                                    <i class="ri-restaurant-line text-xl me-14 d-flex w-auto"></i>
+                                    <span>Food Menu Categories</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('view_food_menus')
+                            <li class="submenu-item">
+                                <a href="{{ route('food-menus.index') }}">
+                                    <i class="ri-restaurant-line text-xl me-14 d-flex w-auto"></i>
+                                    <span>Food Menus</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('view_party_extras')
+                            <li class="submenu-item">
+                                <a href="{{ route('party-extras.index') }}">
+                                    <i class="ri-magic-line text-xl me-14 d-flex w-auto"></i>
+                                    <span>Party Extras</span>
+                                </a>
+                            </li>
+                        @endcan
+            
                     </ul>
-                @endif
-            </li>
+                </li>
+            @endif
             @can('view_events')
                 <li>
                     <a href="{{ route('events.index') }}">
                         <i class="ri-question-answer-line text-xl me-14 d-flex w-auto"></i>
                         <span>Events</span>
+                    </a>
+                </li>
+            @endcan
+
+         
+            @if(auth()->user()->can('view_news_updates'))
+                <li>
+                    <a href="{{ route('news-updates.index') }}">
+                        <i class="ri-newspaper-line text-xl me-14 d-flex w-auto"></i>
+                        <span>News & Updates</span>
+                    </a>
+                </li>
+            @endif
+
+
+            @can('view_newsletter_subscriptions')
+                <li>
+                    <a href="{{ route('newsletter-subscriptions.index') }}" class="{{ request()->routeIs('newsletter-subscriptions.*') ? 'active-page' : '' }}">
+                        <i class="ri-mail-open-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Newsletter Subscribers</span>
+                    </a>
+                </li>
+            @endcan
+
+            @can('view_attractions')
+                <li>
+                    <a href="{{ route('attractions.index') }}" class="{{ request()->routeIs('attractions.*') ? 'active-page' : '' }}">
+                        <i class="ri-water-flash-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Waterpark Attractions & Adventures</span>
                     </a>
                 </li>
             @endcan
@@ -191,10 +307,33 @@
                 </li>
             @endcan
             @can('view_pages')
+                @php
+                    $footerPage = \App\Models\Page::where('slug', 'footer')->first();
+                @endphp
+                @if($footerPage)
+                    <li>
+                        <a href="{{ route('pages.edit', $footerPage->id) }}" class="{{ request()->is("admin/pages/{$footerPage->id}/edit") ? 'active-page' : '' }}">
+                            <i class="ri-layout-bottom-line text-xl me-14 d-flex w-auto"></i>
+                            <span>Footer Menu</span>
+                        </a>
+                    </li>
+                @endif
+            @endcan
+            @can('view_pages')
+
                 <li>
-                    <a href="{{ route('pages.index') }}" class="{{ request()->routeIs('pages.*') ? 'active-page' : '' }}">
+                    <a href="{{ route('pages.index') }}" class="{{ request()->routeIs('pages.*') && !($footerPage && request()->is("admin/pages/{$footerPage->id}*")) ? 'active-page' : '' }}">
                         <i class="ri-pages-line text-xl me-14 d-flex w-auto"></i>
                         <span>Page Management</span>
+                    </a>
+                </li>
+            @endcan
+
+             @can('view_general_access')
+                <li>
+                    <a href="{{ route('general-access.index') }}">
+                        <i class="ri-ticket-2-line text-xl me-14 d-flex w-auto"></i>
+                        <span>General Access</span>
                     </a>
                 </li>
             @endcan
@@ -233,17 +372,17 @@
                 </li>
             @endcan
 
-            <li class="nav-item dropdown">
+            @php
+                $galleryPermission =
+                    auth()->user()->can('view_image_gallery') ||
+                    auth()->user()->can('view_video_gallery') ||
+                    auth()->user()->can('view_outdoor_events');
+            @endphp
 
-                @php
-                    $galleryPermission =
-                        auth()->user()->can('view_image_gallery') ||
-                        auth()->user()->can('view_video_gallery') ||
-                        auth()->user()->can('view_outdoor_events');
-                @endphp
+            @if($galleryPermission)
 
-                @if($galleryPermission)
-
+                <li class="nav-item dropdown">
+              
                     <a href="javascript:void(0)"
                         class="nav-link dropdown-toggle {{ request()->routeIs('image-gallery.*') || request()->routeIs('video-gallery.*') || request()->routeIs('outdoor-events.*') ? '' : 'collapsed' }}"
                         data-bs-toggle="collapse"
@@ -308,10 +447,8 @@
                         @endcan
 
                     </ul>
-
-                @endif
-
-            </li>
+                </li>
+            @endif
 
             <li class="sidebar-menu-group-title">Staff Management</li>
             @can('view_staff')

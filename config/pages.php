@@ -15,17 +15,88 @@ return [
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
-                        'name' => 'banner_description',
-                        'label' => 'Banner Description',
-                        'type' => 'textarea',
-                        'placeholder' => 'Enter banner description',
-                        'rules' => ['nullable', 'string'],
-                    ],
-                    [
                         'name' => 'banner_image',
                         'label' => 'Banner Image',
                         'type' => 'image',
                         'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ],
+             [
+                'title' => 'Dubai\'s Most Exciting Waterpark',
+                'fields' => [
+                    [
+                        'name' => 'waterpark_image',
+                        'label' => 'Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'waterpark_title',
+                        'label' => 'Common Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter section common title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'waterpark_description',
+                        'label' => 'Common Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter section common description',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'waterpark_items',
+                        'label' => 'Repeating Items',
+                        'type' => 'repeater',
+                        'fields' => [
+                            [
+                                'name' => 'title',
+                                'label' => 'Item Title',
+                                'type' => 'text',
+                                'placeholder' => 'Enter item title',
+                                'rules' => ['required', 'string', 'max:255'],
+                            ],
+                            [
+                                'name' => 'icon',
+                                'label' => 'Item Icon / Image',
+                                'type' => 'image',
+                                'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Location Section',
+                'fields' => [
+                    [
+                        'name' => 'location_heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'location_description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description',
+                        'rules' => ['nullable', 'string'],
                     ]
                 ]
             ],
@@ -122,44 +193,60 @@ return [
                 ]
             ],
             [
-                'title' => 'Dubai\'s Most Exciting Waterpark',
+                'title' => 'CTA Banner Section',
+                'description' => 'Manage the Call to Action banner background image, title, description, and redirect buttons',
                 'fields' => [
                     [
-                        'name' => 'waterpark_title',
-                        'label' => 'Common Title',
+                        'name' => 'cta_bg_image',
+                        'label' => 'Background Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'cta_title',
+                        'label' => 'Banner Title',
                         'type' => 'text',
-                        'placeholder' => 'Enter section common title',
+                        'placeholder' => 'Enter banner title (e.g. Ready to Plan Your Perfect Day?)',
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
-                        'name' => 'waterpark_description',
-                        'label' => 'Common Description',
+                        'name' => 'cta_description',
+                        'label' => 'Banner Description',
                         'type' => 'textarea',
-                        'placeholder' => 'Enter section common description',
+                        'placeholder' => 'Enter banner description...',
                         'rules' => ['nullable', 'string'],
                     ],
                     [
-                        'name' => 'waterpark_items',
-                        'label' => 'Repeating Items',
-                        'type' => 'repeater',
-                        'fields' => [
-                            [
-                                'name' => 'title',
-                                'label' => 'Item Title',
-                                'type' => 'text',
-                                'placeholder' => 'Enter item title',
-                                'rules' => ['required', 'string', 'max:255'],
-                            ],
-                            [
-                                'name' => 'icon',
-                                'label' => 'Item Icon / Image',
-                                'type' => 'image',
-                                'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
-                            ]
-                        ]
+                        'name' => 'cta_btn1_text',
+                        'label' => 'Button 1 Text',
+                        'type' => 'text',
+                        'placeholder' => 'Enter first button text (e.g. Enquire Now)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'cta_btn1_link',
+                        'label' => 'Button 1 Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter first button redirect URL',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'cta_btn2_text',
+                        'label' => 'Button 2 Text',
+                        'type' => 'text',
+                        'placeholder' => 'Enter second button text (e.g. Buy Day Passes)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'cta_btn2_link',
+                        'label' => 'Button 2 Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter second button redirect URL',
+                        'rules' => ['nullable', 'string', 'max:255'],
                     ]
                 ]
-            ]
+            ],
+           
         ]
     ],
     'birthday-packages' => [
@@ -196,7 +283,7 @@ return [
                     [
                         'name' => 'description',
                         'label' => 'Description',
-                        'type' => 'textarea',
+                        'type' => 'wysiwyg',
                         'placeholder' => 'Enter package description',
                         'rules' => ['nullable', 'string'],
                     ]
@@ -351,10 +438,10 @@ return [
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
-                        'name' => 'bottom_image',
-                        'label' => 'Bottom Section Image',
-                        'type' => 'image',
-                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                        'name' => 'bottom_images',
+                        'label' => 'Bottom Section Images',
+                        'type' => 'gallery',
+                        'rules' => ['nullable', 'array'],
                     ],
                     [
                         'name' => 'bottom_description',
@@ -417,10 +504,10 @@ return [
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
-                        'name' => 'bottom_image',
-                        'label' => 'Bottom Section Image',
-                        'type' => 'image',
-                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                        'name' => 'bottom_images',
+                        'label' => 'Bottom Section Images',
+                        'type' => 'gallery',
+                        'rules' => ['nullable', 'array'],
                     ],
                     [
                         'name' => 'bottom_description',
@@ -523,6 +610,12 @@ return [
                         'type' => 'text',
                         'placeholder' => 'Enter bottom section title',
                         'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'center_image',
+                        'label' => 'Center Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
                     ],
                     [
                         'name' => 'bottom_description',
@@ -676,10 +769,10 @@ return [
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
-                        'name' => 'bottom_image',
-                        'label' => 'Bottom Section Image',
-                        'type' => 'image',
-                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                        'name' => 'bottom_images',
+                        'label' => 'Bottom Section Images',
+                        'type' => 'gallery',
+                        'rules' => ['nullable', 'array'],
                     ],
                     [
                         'name' => 'bottom_description',
@@ -733,8 +826,8 @@ return [
             ]
         ]
     ],
-    'admission-rates' => [
-        'title' => 'Admission Rates',
+    'general-access' => [
+        'title' => 'General Access',
         'sections' => [
             [
                 'title' => 'Header Banner',
@@ -778,16 +871,63 @@ return [
                 'fields' => [
                     [
                         'name' => 'general_access_heading',
-                        'label' => 'General Access Heading',
+                        'label' => 'General Access Title',
                         'type' => 'text',
                         'placeholder' => 'Enter general access section heading',
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
                         'name' => 'birthday_packages_heading',
-                        'label' => 'Birthday Packages Heading',
+                        'label' => 'Birthday Packages Title',
                         'type' => 'text',
                         'placeholder' => 'Enter birthday packages section heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Bottom Section',
+                'fields' => [
+                    [
+                        'name' => 'title1',
+                        'label' => 'Title 1',
+                        'type' => 'text',
+                        'placeholder' => 'Enter title 1',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description1',
+                        'label' => 'Description 1',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description 1',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'title2',
+                        'label' => 'Title 2',
+                        'type' => 'text',
+                        'placeholder' => 'Enter title 2',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description2',
+                        'label' => 'Description 2',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter description 2',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'btn_text',
+                        'label' => 'Button Text',
+                        'type' => 'text',
+                        'placeholder' => 'Enter button text',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'btn_link',
+                        'label' => 'Button Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter button link',
                         'rules' => ['nullable', 'string', 'max:255'],
                     ]
                 ]
@@ -812,6 +952,20 @@ return [
                         'label' => 'Banner Image',
                         'type' => 'image',
                         'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'heading',
+                        'label' => 'Main Heading',
+                        'type' => 'text',
+                        'placeholder' => 'Enter main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Main Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter main description',
+                        'rules' => ['nullable', 'string'],
                     ]
                 ]
             ]
@@ -940,6 +1094,25 @@ return [
                 ]
             ],
             [
+                'title' => 'Map Section',
+                'fields' => [
+                    [
+                        'name' => 'map_title',
+                        'label' => 'Map Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter map section title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'map_description',
+                        'label' => 'Map Section Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter map section description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ],
+            [
                 'title' => 'Form Section',
                 'fields' => [
                     [
@@ -1009,7 +1182,14 @@ return [
                         'label' => 'Banner Image',
                         'type' => 'image',
                         'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
-                    ]
+                    ],
+                    [
+                        'name' => 'birthday_booking_link',
+                        'label' => 'Birthday Booking Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter birthday booking link',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
                 ]
             ],
             [
@@ -1191,7 +1371,7 @@ return [
                                 'name' => 'link',
                                 'label' => 'Link / URL',
                                 'type' => 'text',
-                                'placeholder' => 'Enter redirect URL (e.g. /admission-rates)',
+                                'placeholder' => 'Enter redirect URL (e.g. /general-access)',
                                 'rules' => ['nullable', 'string', 'max:255'],
                             ],
                             [
@@ -1523,9 +1703,407 @@ return [
                         'type' => 'textarea',
                         'placeholder' => 'Enter section description...',
                         'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'instagram_code',
+                        'label' => 'Elfsight Instagram Feed Code',
+                        'type' => 'textarea',
+                        'placeholder' => 'Paste your Elfsight Instagram feed embed code here...',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'waterpark' => [
+        'title' => 'Waterpark Page',
+        'sections' => [
+            [
+                'title' => 'Header Banner Section',
+                'description' => 'Manage the top hero banner details',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Main Introduction',
+                'description' => 'Manage the main heading and description of the Waterpark page',
+                'fields' => [
+                    [
+                        'name' => 'heading',
+                        'label' => 'Main Heading',
+                        'type' => 'text',
+                        'placeholder' => 'Enter main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Main Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter main description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Locations & Categories Overview',
+                'description' => 'Manage section headings and descriptions for Attractions, Adventures, and Locations',
+                'fields' => [
+                    [
+                        'name' => 'locations_title',
+                        'label' => 'Locations Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter locations title (e.g. Our Branches & Locations)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'attractions_title',
+                        'label' => 'Attractions Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter attractions title (e.g. High-Splash Attractions)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'attractions_description',
+                        'label' => 'Attractions Section Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter attractions description',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'adventures_title',
+                        'label' => 'Adventures Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter adventures title (e.g. Extreme Water Adventures)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'adventures_description',
+                        'label' => 'Adventures Section Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter adventures description',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Pricing Details Section',
+                'description' => 'Manage the admission rate and pricing summary texts',
+                'fields' => [
+                    [
+                        'name' => 'pricing_title',
+                        'label' => 'Pricing Section Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter pricing title (e.g. Admission Rates & Passes)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'pricing_description',
+                        'label' => 'Pricing Section Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter pricing description',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'price_heading',
+                        'label' => 'Pricing Highlight Heading',
+                        'type' => 'text',
+                        'placeholder' => 'Enter pricing highlight heading (e.g. Special Offers)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'price_sub_heading',
+                        'label' => 'Pricing Highlight Sub-Heading',
+                        'type' => 'text',
+                        'placeholder' => 'Enter pricing highlight sub-heading (e.g. Includes full day access)',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ]
+                ]
+            ],
+
+            [
+                'title' => 'Bottom Banner (CTA)',
+                'description' => 'Manage the call-to-action bottom banner content and redirection buttons',
+                'fields' => [
+                    [
+                        'name' => 'bottom_banner_image',
+                        'label' => 'Bottom Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ],
+                    [
+                        'name' => 'bottom_banner_heading',
+                        'label' => 'Bottom Banner Heading',
+                        'type' => 'text',
+                        'placeholder' => 'Enter bottom banner heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'bottom_banner_description',
+                        'label' => 'Bottom Banner Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter bottom banner description',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
+                        'name' => 'bottom_banner_btn_title_1',
+                        'label' => 'Button 1 Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter first button title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'bottom_banner_btn_link_1',
+                        'label' => 'Button 1 Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter first button redirect link',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'bottom_banner_btn_title_2',
+                        'label' => 'Button 2 Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter second button title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'bottom_banner_btn_link_2',
+                        'label' => 'Button 2 Link',
+                        'type' => 'text',
+                        'placeholder' => 'Enter second button redirect link',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'footer' => [
+        'title' => 'Footer Settings',
+        'sections' => [
+            [
+                'title' => 'Footer Menus',
+                'description' => 'Configure footer menus (maximum 3 repeatable sections, each with up to 6 links)',
+                'fields' => [
+                    [
+                        'name' => 'menu_sections',
+                        'label' => 'Menu Sections',
+                        'type' => 'repeater',
+                        'rules' => ['nullable', 'array', 'max:3'],
+                        'fields' => [
+                            [
+                                'name' => 'main_title',
+                                'label' => 'Main Title',
+                                'type' => 'text',
+                                'placeholder' => 'e.g. Quick Links',
+                                'rules' => ['required', 'string', 'max:255'],
+                            ],
+                            [
+                                'name' => 'links',
+                                'label' => 'Links List',
+                                'type' => 'repeater',
+                                'rules' => ['nullable', 'array', 'max:6'],
+                                'fields' => [
+                                    [
+                                        'name' => 'link_name',
+                                        'label' => 'Link Name',
+                                        'type' => 'text',
+                                        'placeholder' => 'e.g. About Us',
+                                        'rules' => ['required', 'string', 'max:255'],
+                                    ],
+                                    [
+                                        'name' => 'link_url',
+                                        'label' => 'Link / URL',
+                                        'type' => 'text',
+                                        'placeholder' => 'e.g. /about-us',
+                                        'rules' => ['required', 'string', 'max:255'],
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Social Media Info',
+                'description' => 'Configure social media title and repeatable networks list with SVG icons',
+                'fields' => [
+                    [
+                        'name' => 'social_title',
+                        'label' => 'Social Media Main Title',
+                        'type' => 'text',
+                        'placeholder' => 'e.g. Follow Us',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'social_links',
+                        'label' => 'Social Media Links',
+                        'type' => 'repeater',
+                        'rules' => ['nullable', 'array'],
+                        'fields' => [
+                            [
+                                'name' => 'name',
+                                'label' => 'Social Media Name',
+                                'type' => 'text',
+                                'placeholder' => 'e.g. Facebook',
+                                'rules' => ['required', 'string', 'max:255'],
+                            ],
+                            [
+                                'name' => 'svg_code',
+                                'label' => 'SVG Code',
+                                'type' => 'textarea',
+                                'placeholder' => 'Paste raw SVG code here',
+                                'description' => 'For best display results, choose/adjust the SVG width and height to 22 (e.g. width="22" height="22").',
+                                'rules' => ['nullable', 'string'],
+                                'rows' => 4,
+                            ],
+                            [
+                                'name' => 'link',
+                                'label' => 'Social Media Link',
+                                'type' => 'text',
+                                'placeholder' => 'https://facebook.com/...',
+                                'rules' => ['required', 'url', 'max:255'],
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'news-updates' => [
+        'title' => 'News & Updates',
+        'sections' => [
+            [
+                'title' => 'Header Banner',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'News & Updates Heading & Description',
+                'fields' => [
+                    [
+                        'name' => 'heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'news-updates-details' => [
+        'title' => 'News & Updates Details',
+        'sections' => [
+            [
+                'title' => 'Header Banner',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Details Section',
+                'fields' => [
+                    [
+                        'name' => 'related_content_title',
+                        'label' => 'Related Content Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter related content title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'rules' => ['nullable', 'string'],
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'events-listing' => [
+        'title' => 'Events Listing',
+        'sections' => [
+            [
+                'title' => 'Header Banner',
+                'fields' => [
+                    [
+                        'name' => 'banner_title',
+                        'label' => 'Banner Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter banner title',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'banner_image',
+                        'label' => 'Banner Image',
+                        'type' => 'image',
+                        'rules' => ['nullable', 'image', 'mimes:jpeg,png,webp,svg', 'max:4096'],
+                    ]
+                ]
+            ],
+            [
+                'title' => 'Events Listing Content',
+                'fields' => [
+                    [
+                        'name' => 'heading',
+                        'label' => 'Heading Title',
+                        'type' => 'text',
+                        'placeholder' => 'Enter page main heading',
+                        'rules' => ['nullable', 'string', 'max:255'],
+                    ],
+                    [
+                        'name' => 'description',
+                        'label' => 'Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter page description',
+                        'rules' => ['nullable', 'string'],
                     ]
                 ]
             ]
         ]
     ]
 ];
+

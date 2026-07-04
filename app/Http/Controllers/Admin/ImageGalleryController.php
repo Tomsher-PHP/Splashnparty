@@ -20,8 +20,12 @@ class ImageGalleryController extends Controller
 
         // SEARCH CATEGORY
         if ($search = request('category')) {
-
             $query->where('category_name', 'like', '%' . $search . '%');
+        }
+
+        // STATUS FILTER
+        if (request()->has('status') && request('status') !== null && request('status') !== '') {
+            $query->where('status', request('status'));
         }
 
         $galleries = $query
@@ -43,11 +47,12 @@ class ImageGalleryController extends Controller
 
         $request->validate([
             'category_name' => 'required|string|max:255',
+            'slug'          => 'required|string|max:255|unique:image_galleries,slug',
             'images'        => 'required',
             'images.*'      => 'image|mimes:jpg,jpeg,png,webp|max:2048',
             'status'        => 'required|boolean',
 
-            'meta_title'          => 'nullable|string|max:255',
+            'meta_title'          => 'nullable|string',
             'meta_description'    => 'nullable|string',
             'meta_keywords'       => 'nullable|string',
 
@@ -99,6 +104,7 @@ class ImageGalleryController extends Controller
 
         ImageGallery::create([
             'category_name' => $request->category_name,
+            'slug'          => $request->slug,
             'images'        => $uploadedImages,
 
             // SEO
@@ -110,6 +116,7 @@ class ImageGalleryController extends Controller
             'og_image' => $ogImage,
             'twitter_title'      => $request->twitter_title,
             'twitter_description' => $request->twitter_description,
+            
             'status'        => $request->status,
 
         ]);
@@ -130,10 +137,11 @@ class ImageGalleryController extends Controller
         $this->authorizeImageGalleryPermission('edit_image_gallery');
         $request->validate([
             'category_name' => 'required|string|max:255',
+            'slug'          => 'required|string|max:255|unique:image_galleries,slug,' . $image_gallery->id,
             'status'        => 'required|boolean',
             'images.*'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
 
-            'meta_title'          => 'nullable|string|max:255',
+            'meta_title'          => 'nullable|string',
             'meta_description'    => 'nullable|string',
             'meta_keywords'       => 'nullable|string',
 
@@ -224,6 +232,7 @@ class ImageGalleryController extends Controller
         // UPDATE
         $image_gallery->update([
             'category_name' => $request->category_name,
+            'slug'          => $request->slug,
             'images'        => array_values($uploadedImages),
 
             // SEO

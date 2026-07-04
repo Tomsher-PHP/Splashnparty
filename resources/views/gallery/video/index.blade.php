@@ -35,6 +35,16 @@
                            value="{{ request('category') }}">
                 </div>
 
+                {{-- STATUS --}}
+                <div>
+                    <select name="status"
+                        class="form-select form-select-sm">
+                        <option value="">All Statuses</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                </div>
+
                 <div class="d-flex gap-2">
                     <button class="btn btn-sm btn-primary-600">
                         <i class="ri-search-line"></i>
@@ -81,9 +91,12 @@
                             </td>
 
                             <td>
-                                <div class="fw-semibold">
+                                <span class="fw-semibold d-block">
                                     {{ $gallery->category_name }}
-                                </div>
+                                </span>
+                                <span class="text-xs text-secondary-light font-monospace">
+                                    {{ $gallery->slug }}
+                                </span>
                             </td>
 
                             <td>
@@ -252,7 +265,7 @@
                 </small>
             </div>
             <div>
-                {{ $galleries->links() }}
+                {{ $galleries->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

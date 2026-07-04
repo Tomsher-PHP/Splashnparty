@@ -23,9 +23,9 @@
 <div class="card">
     <div class="card-header">
         <form method="GET" action="{{ route('rental-items.index') }}">
-            <div class="d-flex flex-wrap align-items-end gap-3">
+            <div class="row d-flex flex-wrap align-items-end">
                 {{-- KEYWORD SEARCH --}}
-                <div>
+                <div class="col-md-3">
                     <label class="form-label form-label-sm">
                         Keyword
                     </label>
@@ -37,7 +37,7 @@
                 </div>
 
                 {{-- CATEGORY --}}
-                <div>
+                <div class="col-md-3">
                     <label class="form-label form-label-sm">
                         Category
                     </label>
@@ -55,9 +55,27 @@
                     </select>
                 </div>
 
-                
+                {{-- STATUS --}}
+                <div class="col-md-2">
+                    <label class="form-label form-label-sm">
+                        Status
+                    </label>
+                    <select name="status"
+                        class="form-select form-select-sm">
+                        <option value="">
+                            All Statuses
+                        </option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>
+                            Active
+                        </option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>
+                            Inactive
+                        </option>
+                    </select>
+                </div>
+
                 {{-- BUTTONS --}}
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 col-md-2">
                     <button class="btn btn-sm btn-primary-600">
                         <i class="ri-search-line"></i>
                         Filter
@@ -83,7 +101,7 @@
                         <th>Sort Order</th>
                         <th>Status</th>
                         @if (auth()->user()?->can('edit_rental_items') || auth()->user()?->can('delete_rental_items'))
-                        <th class="text-end">Action</th>
+                        <th class="text-center">Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -115,8 +133,8 @@
                         </td>
 
                         @if (auth()->user()?->can('edit_rental_items') || auth()->user()?->can('delete_rental_items'))
-                        <td class="text-end pe-4">
-                            <div class="d-flex justify-content-end align-items-center gap-2">
+                        <td class="text-center pe-4">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
                                 @can('edit_rental_items')
                                 <a href="{{ route('rental-items.edit', $item->id) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
@@ -168,7 +186,7 @@
                 </small>
             </div>
             <div>
-                {{ $items->links() }}
+                {{ $items->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

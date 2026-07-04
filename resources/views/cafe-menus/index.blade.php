@@ -23,12 +23,12 @@
 <div class="card">
     <div class="card-header">
         <form method="GET" action="{{ route('cafe-menus.index') }}">
-            <div class="d-flex flex-wrap align-items-end gap-3">
+            <div class="d-flex flex-wrap align-items-end  row">
                 {{-- KEYWORD SEARCH --}}
-                <div>
-                    <label class="form-label form-label-sm">
+                <div class="col-md-3">
+                    {{-- <label class="form-label form-label-sm">
                         Keyword
-                    </label>
+                    </label> --}}
                     <input type="text"
                         class="form-control form-control-sm"
                         placeholder="Search title..."
@@ -37,10 +37,10 @@
                 </div>
 
                 {{-- CATEGORY --}}
-                <div>
-                    <label class="form-label form-label-sm">
+                <div class="col-md-3">
+                    {{-- <label class="form-label form-label-sm">
                         Category
-                    </label>
+                    </label> --}}
                     <select name="category"
                         class="form-select form-select-sm">
                         <option value="">
@@ -56,10 +56,10 @@
                 </div>
 
                 {{-- BRANCH --}}
-                <div>
-                    <label class="form-label form-label-sm">
+                <div class="col-md-3">
+                    {{-- <label class="form-label form-label-sm">
                         Branch
-                    </label>
+                    </label> --}}
                     <select name="branch"
                         class="form-select form-select-sm">
                         <option value="">
@@ -73,8 +73,66 @@
                         @endforeach
                     </select>
                 </div>
+
+                {{-- MENU TYPE --}}
+                <div class="col-md-3">
+                    {{-- <label class="form-label form-label-sm">
+                        Menu Type
+                    </label> --}}
+                    <select name="menu_type"
+                        class="form-select form-select-sm">
+                        <option value="">
+                            All Menu Types
+                        </option>
+                        <option value="adult" {{ request('menu_type') === 'adult' ? 'selected' : '' }}>
+                            Adult
+                        </option>
+                        <option value="kid" {{ request('menu_type') === 'kid' ? 'selected' : '' }}>
+                            Kid
+                        </option>
+                    </select>
+                </div>
+
+                {{-- FOOD TYPE --}}
+                <div class="col-md-3 mt-1">
+                    {{-- <label class="form-label form-label-sm">
+                        Food Type
+                    </label> --}}
+                    <select name="food_type"
+                        class="form-select form-select-sm">
+                        <option value="">
+                            All Food Types
+                        </option>
+                        <option value="veg" {{ request('food_type') === 'veg' ? 'selected' : '' }}>
+                            Veg
+                        </option>
+                        <option value="non_veg" {{ request('food_type') === 'non_veg' ? 'selected' : '' }}>
+                            Non-Veg
+                        </option>
+                    </select>
+                </div>
+
+                {{-- STATUS --}}
+                <div class="col-md-3 mt-1">
+                    {{-- <label class="form-label form-label-sm">
+                        Status
+                    </label> --}}
+                    <select name="status"
+                        class="form-select form-select-sm">
+                        <option value="">
+                            All Statuses
+                        </option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>
+                            Active
+                        </option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>
+                            Inactive
+                        </option>
+                    </select>
+                </div>
+
                 {{-- BUTTONS --}}
-                <div class="d-flex gap-2">
+                <div class="col-md-2 d-flex gap-2  mt-1">
                     <button class="btn btn-sm btn-primary-600">
                         <i class="ri-search-line"></i>
                         Filter
@@ -102,7 +160,7 @@
                         <th>Food</th>
                         <th>Status</th>
                         @if (auth()->user()?->can('edit_cafe_menus') || auth()->user()?->can('delete_cafe_menus'))
-                        <th class="text-end">Action</th>
+                        <th class="text-center">Action</th>
                         @endif
                     </tr>
                 </thead>
@@ -130,7 +188,11 @@
 
                         <td>{{ $item->title }}</td>
 
-                        <td>{{ $item->branch?->title }}</td>
+                        <td>
+                            @foreach($item->branches as $branch)
+                                {{ $branch->title }}@if(!$loop->last), @endif
+                            @endforeach
+                        </td>
 
                         <td>{{ $item->category?->title }}</td>
 
@@ -145,8 +207,8 @@
                         </td>
 
                         @if (auth()->user()?->can('edit_cafe_menus') || auth()->user()?->can('delete_cafe_menus'))
-                        <td class="text-end pe-4">
-                            <div class="d-flex justify-content-end align-items-center gap-2">
+                        <td class="text-center pe-4">
+                            <div class="d-flex justify-content-center align-items-center gap-2">
                                 @can('edit_cafe_menus')
                                 <a href="{{ route('cafe-menus.edit', $item->id) }}"
                                     class="bg-success-focus text-success-600 bg-hover-success-200 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle">
@@ -198,7 +260,7 @@
                 </small>
             </div>
             <div>
-                {{ $menus->links() }}
+                {{ $menus->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

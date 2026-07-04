@@ -22,7 +22,7 @@
                 </label>
                 <input type="text"
                     name="title"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('title', $balloon_decoration->title ?? '') }}"
                     required>
             </div>
@@ -60,7 +60,7 @@
                 </label>
                 <input type="text" 
                     name="price"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('price', $balloon_decoration->price ?? '') }}">
             </div>
 
@@ -69,7 +69,7 @@
                     Status
                 </label>
                 <select name="status"
-                    class="form-select">
+                    class="form-select form-select-sm">
                     <option value="1"
                         {{ old('status', $balloon_decoration->status ?? 1) == 1 ? 'selected' : '' }}>
                         Active
@@ -86,7 +86,7 @@
                 </label>
                 <input type="number"
                     name="sort_order"
-                    class="form-control"
+                    class="form-control form-control-sm"
                     value="{{ old('sort_order', $balloon_decoration->sort_order ?? 0) }}">
             </div>
             <div class="col-md-12 mb-3">

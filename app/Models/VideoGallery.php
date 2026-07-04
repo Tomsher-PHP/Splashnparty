@@ -8,6 +8,7 @@ class VideoGallery extends Model
 {
     protected $fillable = [
         'category_name',
+        'slug',
         'youtube_link',
 
         'meta_title',
