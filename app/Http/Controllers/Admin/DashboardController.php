@@ -14,9 +14,9 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $total_bookings = Booking::count();
-        $total_revenue = Booking::sum('total_amount');
-        $total_kids = Booking::sum('child_count');
+        $total_bookings = Booking::where('payment_status', 'paid')->count();
+        $total_revenue = Booking::where('payment_status', 'paid')->sum('total_amount');
+        $total_kids = Booking::where('payment_status', 'paid')->sum('child_count');
 
         $stats = [
             'staff_count' => User::count(),
@@ -37,6 +37,7 @@ class DashboardController extends Controller
 
         // Available Booking Years for filtering
         $available_years = Booking::selectRaw('YEAR(booking_date) as year')
+            ->where('payment_status', 'paid')
             ->groupBy('year')
             ->orderByDesc('year')
             ->pluck('year')
@@ -54,6 +55,7 @@ class DashboardController extends Controller
 
         // Monthly trends for the selected year
         $trends_raw = Booking::whereYear('booking_date', $selected_year)
+            ->where('payment_status', 'paid')
             ->selectRaw('MONTH(booking_date) as month, COUNT(*) as count, SUM(total_amount) as revenue')
             ->groupBy('month')
             ->orderBy('month')
