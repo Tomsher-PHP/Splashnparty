@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\PackageApiController;
 use App\Http\Controllers\Api\PageApiController;
 use App\Http\Controllers\Api\PartyExtrasApiController;
 use App\Http\Controllers\Api\RentalApiController;
+use App\Http\Controllers\Api\VisitorApiController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -85,6 +86,10 @@ Route::get('/news-details',[NewsUpdateApiController::class, 'show']);
 Route::get('events',[EventApiController::class, 'index']);
 
 Route::get('event-details',[EventApiController::class, 'show']);
+
+// Visitor tracking
+Route::post('/visitors', [VisitorApiController::class, 'store']);
+Route::get('/visitors/count', [VisitorApiController::class, 'count']);
 
 // API Fallback Route to catch all undefined api paths with any HTTP method
 Route::any('{any}', function () {
