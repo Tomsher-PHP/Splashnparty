@@ -24,7 +24,7 @@ class PartyExtrasApiController extends Controller
         }
 
 
-        $extras = $query
+        $extras = $query->where('status', 1)
             ->orderBy('sort_order')
             ->latest()
             ->paginate($limit);
