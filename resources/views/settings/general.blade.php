@@ -37,6 +37,15 @@
                                             <textarea id="{{ $key }}" name="{{ $key }}" rows="{{ $field['rows'] ?? 3 }}"
                                                 class="form-control @error($key) is-invalid @enderror"
                                                 placeholder="{{ $field['placeholder'] ?? '' }}">{{ $value }}</textarea>
+                                        @elseif ($type === 'select')
+                                            <select id="{{ $key }}" name="{{ $key }}"
+                                                class="form-select form-select-sm @error($key) is-invalid @enderror">
+                                                @foreach ($field['options'] ?? [] as $optValue => $optLabel)
+                                                    <option value="{{ $optValue }}" {{ (string)$value === (string)$optValue ? 'selected' : '' }}>
+                                                        {{ $optLabel }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         @elseif ($type === 'file')
                                             @if (!empty($settingValues[$key]))
                                                 <div class="settings-current-media mb-12">

@@ -379,6 +379,16 @@ class PageApiController extends Controller
         if (!empty($siteSettings['favicon'])) {
             $siteSettings['favicon'] = asset('storage/' . $siteSettings['favicon']);
         }
+        if (!empty($siteSettings['popup_image'])) {
+            $siteSettings['popup_image'] = asset('storage/' . $siteSettings['popup_image']);
+        }
+
+        $data['popup_settings'] = [
+            'popup_status' => ($siteSettings['popup_status']) ? true : false,
+            'popup_image' => !empty($siteSettings['popup_image']) ? asset($siteSettings['popup_image']) : null,
+            'popup_button_text' => $siteSettings['popup_button_text'] ?? '',
+            'popup_button_link' => $siteSettings['popup_button_link'] ?? '',
+        ];
 
         unset($siteSettings['enquiry_email']);
 
@@ -407,7 +417,8 @@ class PageApiController extends Controller
                 'header_menus' => $headerMenus,
                 'footer_settings' => $footerSettings,
                 'general_settings' => $siteSettings,
-                'locations' => $locations
+                'locations' => $locations,
+                'popup_settings' => $data['popup_settings'] ?? []
             ]
         ]);
     }

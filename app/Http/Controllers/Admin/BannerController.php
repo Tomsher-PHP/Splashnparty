@@ -130,10 +130,10 @@ class BannerController extends Controller
 
         if ($bannerType === 'video') {
             $fileRules[] = 'mimes:mp4,webm,mov,ogg';
-            $fileRules[] = 'max:51200';
+            $fileRules[] = 'max:5120';
         } else {
             $fileRules[] = 'mimes:jpg,jpeg,png,webp';
-            $fileRules[] = 'max:4096';
+            $fileRules[] = 'max:1024';
         }
 
         return [
@@ -150,8 +150,8 @@ class BannerController extends Controller
     private function messages(): array
     {
         return [
-            'file.uploaded' => 'The selected file could not be uploaded. Please choose an image up to 4 MB or a video up to 50 MB.',
-            'file.max' => 'Images must be 4 MB or smaller. Videos must be 50 MB or smaller.',
+            'file.uploaded' => 'The selected file could not be uploaded. Please choose an image up to 500kb or a video up to 5 MB.',
+            'file.max' => 'Images must be 500kb or smaller. Videos must be 5 MB or smaller.',
             'file.mimes' => 'Please upload a valid banner file type.',
         ];
     }
