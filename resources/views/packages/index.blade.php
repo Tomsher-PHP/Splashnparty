@@ -69,6 +69,7 @@
                 <thead class="bg-light">
                     <tr>
                         <th>#</th>
+                        <th>Image</th>
                         <th>Title</th>
                         <th>Branch</th>
                         <th>Status</th>
@@ -82,6 +83,15 @@
                     @foreach($packages as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
+                        <td>
+                            @if($item->image)
+                                <img src="{{ asset($item->image) }}"
+                                    width="50" height="50"
+                                    class="rounded object-fit-cover">
+                            @else
+                                <span class="text-muted">-</span>
+                            @endif
+                        </td>
                         <td>{{ $item->title }}</td>
                         <td>{{ $item->branch->title ?? '' }}</td>
                         <td>

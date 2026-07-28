@@ -10,6 +10,8 @@ class Package extends Model
 
         'branch_id',
         'title',
+        'image',
+        'description',
         'food_type',
 
         // With Food Prices
