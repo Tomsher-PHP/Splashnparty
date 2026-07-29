@@ -317,6 +317,16 @@ class GeneralSettingController extends Controller
                 'rules' => ['nullable', 'string', 'max:2000'],
                 'sort_order' => 230,
             ],
+            [
+                'group' => 'rental_settings',
+                'group_title' => 'Rental Settings',
+                'key' => 'rental_items_pdf',
+                'label' => 'Rental Items PDF File',
+                'type' => 'file',
+                'accept' => 'application/pdf',
+                'rules' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
+                'sort_order' => 250,
+            ],
         ];
     }
 

@@ -382,6 +382,9 @@ class PageApiController extends Controller
         if (!empty($siteSettings['popup_image'])) {
             $siteSettings['popup_image'] = asset('storage/' . $siteSettings['popup_image']);
         }
+        if (!empty($siteSettings['rental_items_pdf'])) {
+            $siteSettings['rental_items_pdf'] = asset('storage/' . $siteSettings['rental_items_pdf']);
+        }
 
         $data['popup_settings'] = [
             'popup_status' => ($siteSettings['popup_status']) ? true : false,
