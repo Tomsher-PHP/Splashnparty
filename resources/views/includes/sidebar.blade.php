@@ -298,6 +298,14 @@
                     </a>
                 </li>
             @endcan
+            @can('view_rules')
+                <li>
+                    <a href="{{ route('rules.index') }}" class="{{ request()->routeIs('rules.*') ? 'active-page' : '' }}">
+                        <i class="ri-shield-line text-xl me-14 d-flex w-auto"></i>
+                        <span>Manage Rules</span>
+                    </a>
+                </li>
+            @endcan
             @can('view_header_menus')
                 <li>
                     <a href="{{ route('header-menus.index') }}" class="{{ request()->routeIs('header-menus.*') ? 'active-page' : '' }}">

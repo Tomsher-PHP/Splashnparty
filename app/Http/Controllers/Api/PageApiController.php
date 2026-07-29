@@ -410,6 +410,20 @@ class PageApiController extends Controller
             });
 
         
+        $rules = \App\Models\Rule::where('status', true)
+            ->orderBy('sort_order')
+            ->get()
+            ->map(function ($rule) {
+                return [
+                    'id' => $rule->id,
+                    'title' => $rule->title,
+                    'content' => $rule->content,
+                    'image' => $rule->image ? asset($rule->image) : null,
+                    'show_in_email' => (bool)$rule->show_in_email,
+                    'sort_order' => $rule->sort_order,
+                ];
+            });
+
         return response()->json([
             'success' => true,
             'message' => 'Settings retrieved successfully.',
@@ -418,8 +432,32 @@ class PageApiController extends Controller
                 'footer_settings' => $footerSettings,
                 'general_settings' => $siteSettings,
                 'locations' => $locations,
-                'popup_settings' => $data['popup_settings'] ?? []
+                'popup_settings' => $data['popup_settings'] ?? [],
+                'rules' => $rules
             ]
+        ]);
+    }
+
+    public function rules()
+    {
+        $rules = \App\Models\Rule::where('status', true)
+            ->orderBy('sort_order')
+            ->get()
+            ->map(function ($rule) {
+                return [
+                    'id' => $rule->id,
+                    'title' => $rule->title,
+                    'content' => $rule->content,
+                    'image' => $rule->image ? asset($rule->image) : null,
+                    'show_in_email' => (bool)$rule->show_in_email,
+                    'sort_order' => $rule->sort_order,
+                ];
+            });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Rules retrieved successfully.',
+            'data' => $rules
         ]);
     }
 }

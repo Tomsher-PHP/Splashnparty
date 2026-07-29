@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\FoodMenuController;
 use App\Http\Controllers\Admin\GeneralAccessController;
 use App\Http\Controllers\Admin\GeneralSettingController;
 use App\Http\Controllers\Admin\HeaderMenuController;
+use App\Http\Controllers\Admin\RuleController;
 use App\Http\Controllers\Admin\ImageGalleryController;
 use App\Http\Controllers\Admin\NewsletterSubscriptionController;
 use App\Http\Controllers\Admin\NewsUpdateController;
@@ -65,6 +66,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('general-settings', [GeneralSettingController::class, 'edit'])->name('general-settings.edit');
     Route::put('general-settings', [GeneralSettingController::class, 'update'])->name('general-settings.update');
+
+    Route::patch('rules/{rule}/status', [RuleController::class, 'updateStatus'])->name('rules.update-status');
+    Route::resource('rules', RuleController::class)->except(['show']);
 
     // FAQ MODULE
     Route::resource('faqs', FaqController::class)->parameters(['faqs' => 'faq'])->except(['show']);
