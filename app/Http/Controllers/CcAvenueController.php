@@ -55,9 +55,14 @@ class CcAvenueController extends Controller
                     \Illuminate\Support\Facades\Mail::to($booking->email)->send(new \App\Mail\BookingInvoiceMail($booking));
                 }
 
-                $adminEmail = \App\Models\SiteSetting::where('group', 'email_settings')->where('key', 'notification_email')->value('value');
+                $adminEmail = \App\Models\SiteSetting::where('key', 'notification_email')->value('value');
                 if ($adminEmail) {
-                    \Illuminate\Support\Facades\Mail::to($adminEmail)->send(new \App\Mail\BookingInvoiceMail($booking));
+                    $mail = \Illuminate\Support\Facades\Mail::to($adminEmail);
+                    $ccEmails = \App\Models\SiteSetting::getCcEmailsByKey('notification_cc_emails');
+                    if (!empty($ccEmails)) {
+                        $mail->cc($ccEmails);
+                    }
+                    $mail->send(new \App\Mail\BookingInvoiceMail($booking));
                 }
             } catch (\Exception $e) {
                 \Illuminate\Support\Facades\Log::error('Error sending booking confirmation emails: ' . $e->getMessage());

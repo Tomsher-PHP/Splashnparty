@@ -45,7 +45,12 @@ class CakeApiController extends Controller
 
         // Send mail notification
         try {
-            Mail::to($recipient)->send(new CakeEnquiryMail($enquiry));
+            $mail = Mail::to($recipient);
+            $ccEmails = SiteSetting::getCcEmailsByKey('enquiry_cc_emails');
+            if (!empty($ccEmails)) {
+                $mail->cc($ccEmails);
+            }
+            $mail->send(new CakeEnquiryMail($enquiry));
         } catch (\Exception $e) {
             logger()->error('Failed forwarding cake enquiry email: ' . $e->getMessage(), [
                 'recipient' => $recipient,

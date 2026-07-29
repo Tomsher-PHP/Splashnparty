@@ -142,24 +142,70 @@ class GeneralSettingController extends Controller
                 'sort_order' => 50,
             ],
             [
-                'group' => 'email_settings',
-                'group_title' => 'Email Settings',
+                'group' => 'enquiry_email_settings',
+                'group_title' => 'Enquiry Email Settings',
                 'key' => 'enquiry_email',
-                'label' => 'Contact Enquiries Email (<small>Enter email where website contact enquiries should be forwarded</small>)',
+                'label' => 'To Email (<small>Enter email where website contact enquiries should be forwarded</small>)',
                 'type' => 'email',
                 'placeholder' => 'Enter email where website contact enquiries should be forwarded',
                 'rules' => ['nullable', 'email', 'max:255'],
                 'sort_order' => 95,
             ],
             [
-                'group' => 'email_settings',
-                'group_title' => 'Email Settings',
+                'group' => 'enquiry_email_settings',
+                'group_title' => 'Enquiry Email Settings',
+                'key' => 'enquiry_cc_emails',
+                'label' => 'CC Emails (<small>Enter multiple CC emails separated by commas.</small>)',
+                'type' => 'text',
+                'placeholder' => 'cc1@example.com, cc2@example.com',
+                'rules' => [
+                    'nullable',
+                    'string',
+                    'max:1000',
+                    function ($attribute, $value, $fail) {
+                        if (empty(trim($value))) return;
+                        $emails = array_map('trim', explode(',', $value));
+                        foreach ($emails as $email) {
+                            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                                $fail("The $attribute must be a comma-separated list of valid email addresses. '$email' is invalid.");
+                            }
+                        }
+                    }
+                ],
+                'sort_order' => 96,
+            ],
+            [
+                'group' => 'notification_email_settings',
+                'group_title' => 'Booking Notification Email Settings',
                 'key' => 'notification_email',
-                'label' => 'Notification Email (<small>Enter email where notifications should be sent (e.g. new bookings)</small>)',
+                'label' => 'To Email (<small>Enter email where notifications should be sent (e.g. new bookings)</small>)',
                 'type' => 'email',
                 'placeholder' => 'Enter email where notifications should be sent (e.g. new bookings)',
                 'rules' => ['nullable', 'email', 'max:255'],
-                'sort_order' => 95,
+                'sort_order' => 97,
+            ],
+            [
+                'group' => 'notification_email_settings',
+                'group_title' => 'Booking Notification Email Settings',
+                'key' => 'notification_cc_emails',
+                'label' => 'CC Emails (<small>Enter multiple CC emails separated by commas.</small>)',
+                'type' => 'text',
+                'placeholder' => 'cc1@example.com, cc2@example.com',
+                'rules' => [
+                    'nullable',
+                    'string',
+                    'max:1000',
+                    function ($attribute, $value, $fail) {
+                        if (empty(trim($value))) return;
+                        $emails = array_map('trim', explode(',', $value));
+                        foreach ($emails as $email) {
+                            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                                $fail("The $attribute must be a comma-separated list of valid email addresses. '$email' is invalid.");
+                            }
+                        }
+                    }
+                ],
+                'sort_order' => 98,
             ],
             [
                 'group' => 'contact',

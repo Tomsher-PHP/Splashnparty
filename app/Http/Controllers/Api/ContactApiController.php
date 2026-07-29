@@ -49,7 +49,12 @@ class ContactApiController extends Controller
         }
 
         try {
-            Mail::to($recipient)->send(new ContactEnquiry($validated));
+            $mail = Mail::to($recipient);
+            $ccEmails = SiteSetting::getCcEmailsByKey('enquiry_cc_emails');
+            if (!empty($ccEmails)) {
+                $mail->cc($ccEmails);
+            }
+            $mail->send(new ContactEnquiry($validated));
 
             return response()->json([
                 'success' => true,
