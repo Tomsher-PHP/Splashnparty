@@ -72,6 +72,7 @@
                         <th>Image</th>
                         <th>Title</th>
                         <th>Branch</th>
+                        <th>Days</th>
                         <th>Status</th>
                         @if (auth()->user()?->can('create_packages') || auth()->user()?->can('edit_packages') || auth()->user()?->can('delete_packages'))
                         <th class="text-center pe-4">Action</th>
@@ -94,6 +95,17 @@
                         </td>
                         <td>{{ $item->title }}</td>
                         <td>{{ $item->branch->title ?? '' }}</td>
+                        <td>
+                            @if(is_array($item->days) && !empty($item->days))
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach($item->days as $day)
+                                        <span class="bg-neutral-100 text-neutral-600 px-12 py-4 rounded-pill fw-bold text-xs">{{ substr($day, 0, 3) }}</span>
+                                    @endforeach
+                                </div>
+                            @else
+                                <span class="bg-success-focus text-success-600 px-12 py-4 rounded-pill fw-bold text-xs">All Days</span>
+                            @endif
+                        </td>
                         <td>
                             {{ $item->status ? 'Active' : 'Inactive' }}
                         </td>
