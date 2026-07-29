@@ -103,10 +103,12 @@
                                 @can('create_packages')
                                 <form method="POST"
                                     action="{{ route('packages.copy', $item->id) }}"
-                                    class="d-inline">
+                                    class="d-inline copy-form">
                                     @csrf
                                     <button type="submit"
                                         class="item-icon-btn bg-primary-focus bg-hover-primary-200 text-primary-600 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle border-0"
+                                        data-confirm-title="Copy Package"
+                                        data-confirm-message="Are you sure you want to copy this Package?"
                                         title="Copy Package">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                                     </button>
@@ -181,6 +183,23 @@
         });
     });
 });
+
+    document.querySelectorAll('.copy-form button[type="submit"]').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const form = button.closest('form');
+
+            window.openAppConfirm({
+                title: button.dataset.confirmTitle || 'Copy Package',
+                message: button.dataset.confirmMessage || 'Are you sure you want to copy this package?',
+                buttonText: 'Yes, Copy',
+                buttonClass: 'btn btn-sm btn-primary',
+                onConfirm: function() {
+                    form.submit();
+                }
+            });
+        });
+    });
 
 </script>
 @endsection
