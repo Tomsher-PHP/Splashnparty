@@ -26,9 +26,20 @@
                 <div class="col-md-3">
                     <div class="position-relative">
                         <input type="text" name="search" class="form-control" 
-                               placeholder="Search Name, Email, Phone, Message or Rental Item..." 
+                               placeholder="Search Name, Email, Phone, Message..." 
                                value="{{ request('search') }}">
                     </div>
+                </div>
+
+                <div class="col-md-2">
+                    <select name="rental_id" class="form-select select2">
+                        <option value="">All Rental Items</option>
+                        @foreach($rentalItems as $item)
+                            <option value="{{ $item->id }}" {{ request('rental_id') == $item->id ? 'selected' : '' }}>
+                                {{ $item->title }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="col-md-2">
@@ -39,12 +50,12 @@
                     </select>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <input type="text" name="date_range" class="form-control flatpickr-range bg-white" 
                            placeholder="Select Date Range" value="{{ request('date_range') }}" readonly>
                 </div>
 
-                <div class="col-md-3 d-flex gap-2">
+                <div class="col-md-2 d-flex gap-2">
                     <button class="btn btn-primary-600 btn-sm d-inline-flex align-items-center gap-2 flex-grow-1 justify-content-center">
                         <i class="ri-search-line"></i> Filter
                     </button>
@@ -198,6 +209,11 @@
             mode: "range",
             dateFormat: "Y-m-d",
             allowInput: false,
+        });
+
+        // Initialize Select2
+        $('.select2').select2({
+            width: '100%'
         });
 
         const filtersCard = document.getElementById('enquiryFiltersCard');

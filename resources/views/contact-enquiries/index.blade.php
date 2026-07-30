@@ -39,12 +39,12 @@
                     </select>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <input type="text" name="date_range" class="form-control flatpickr-range bg-white" 
                            placeholder="Select Date Range" value="{{ request('date_range') }}" readonly>
                 </div>
 
-                <div class="col-md-3 d-flex gap-2">
+                <div class="col-md-2 d-flex gap-2">
                     <button class="btn btn-primary-600 btn-sm d-inline-flex align-items-center gap-2 flex-grow-1 justify-content-center">
                         <i class="ri-search-line"></i> Filter
                     </button>

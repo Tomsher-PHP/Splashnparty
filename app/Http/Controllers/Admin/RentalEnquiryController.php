@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\RentalEnquiry;
+use App\Models\RentalItem;
 use Illuminate\Http\Request;
 
 class RentalEnquiryController extends Controller
@@ -44,6 +45,11 @@ class RentalEnquiryController extends Controller
             $query->where('status', $request->input('status'));
         }
 
+        // Filter by Rental Item
+        if ($request->filled('rental_id')) {
+            $query->where('rental_id', $request->input('rental_id'));
+        }
+
         // Filter by Date Range (Flatpickr range: YYYY-MM-DD to YYYY-MM-DD)
         if ($request->filled('date_range')) {
             $dates = explode(' to ', $request->input('date_range'));
@@ -63,7 +69,9 @@ class RentalEnquiryController extends Controller
         $totalCount = RentalEnquiry::count();
         $unreadCount = RentalEnquiry::where('status', 'unread')->count();
 
-        return view('rental-enquiries.index', compact('enquiries', 'totalCount', 'unreadCount'));
+        $rentalItems = RentalItem::orderBy('title')->get();
+
+        return view('rental-enquiries.index', compact('enquiries', 'totalCount', 'unreadCount', 'rentalItems'));
     }
 
     /**
