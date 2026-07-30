@@ -45,6 +45,16 @@ class CakeEnquiryController extends Controller
             $query->where('status', $request->input('status'));
         }
 
+        // Filter by Date Range (Flatpickr range: YYYY-MM-DD to YYYY-MM-DD)
+        if ($request->filled('date_range')) {
+            $dates = explode(' to ', $request->input('date_range'));
+            if (count($dates) === 2) {
+                $query->whereBetween('created_at', [$dates[0] . ' 00:00:00', $dates[1] . ' 23:59:59']);
+            } elseif (count($dates) === 1) {
+                $query->whereDate('created_at', $dates[0]);
+            }
+        }
+
         // Sort by unread first, then latest
         $enquiries = $query->orderByRaw("CASE WHEN status = 'unread' THEN 0 ELSE 1 END")
                            ->latest()

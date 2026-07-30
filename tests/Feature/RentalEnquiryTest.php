@@ -151,6 +151,39 @@ class RentalEnquiryTest extends TestCase
         ]);
     }
 
+    public function test_admin_can_filter_rental_enquiries_by_date_range()
+    {
+        $enquiry1 = RentalEnquiry::create([
+            'rental_id' => $this->rentalItem->id,
+            'name' => 'Old Rental Enquiry',
+            'email' => 'old@example.com',
+            'phone' => '1234567890',
+            'message' => 'Old message',
+            'status' => 'unread',
+        ]);
+        $enquiry1->created_at = '2026-07-01 10:00:00';
+        $enquiry1->save();
+
+        $enquiry2 = RentalEnquiry::create([
+            'rental_id' => $this->rentalItem->id,
+            'name' => 'New Rental Enquiry',
+            'email' => 'new@example.com',
+            'phone' => '1234567890',
+            'message' => 'New message',
+            'status' => 'unread',
+        ]);
+        $enquiry2->created_at = '2026-07-15 10:00:00';
+        $enquiry2->save();
+
+        $response = $this->actingAs($this->admin)->get(route('rental-enquiries.index', [
+            'date_range' => '2026-07-10 to 2026-07-20',
+        ]));
+
+        $response->assertStatus(200);
+        $response->assertSee('New Rental Enquiry');
+        $response->assertDontSee('Old Rental Enquiry');
+    }
+
     public function test_admin_can_delete_rental_enquiry()
     {
         $enquiry = RentalEnquiry::create([

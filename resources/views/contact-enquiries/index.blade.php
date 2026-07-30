@@ -23,15 +23,15 @@
     <div class="card-body p-20">
         <form method="GET" action="{{ route('contact-enquiries.index') }}">
             <div class="row align-items-center g-3">
-                <div class="col-md-5">
+                <div class="col-md-3">
                     <div class="position-relative">
                         <input type="text" name="search" class="form-control" 
-                               placeholder="Search Name, Email, Subject or Category..." 
+                               placeholder="Search Name, Email, Subject..." 
                                value="{{ request('search') }}">
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <select name="status" class="form-select">
                         <option value="">All Statuses</option>
                         <option value="unread" {{ request('status') === 'unread' ? 'selected' : '' }}>Unread</option>
@@ -39,7 +39,12 @@
                     </select>
                 </div>
 
-                <div class="col-md-4 d-flex gap-2">
+                <div class="col-md-4">
+                    <input type="text" name="date_range" class="form-control flatpickr-range bg-white" 
+                           placeholder="Select Date Range" value="{{ request('date_range') }}" readonly>
+                </div>
+
+                <div class="col-md-3 d-flex gap-2">
                     <button class="btn btn-primary-600 btn-sm d-inline-flex align-items-center gap-2 flex-grow-1 justify-content-center">
                         <i class="ri-search-line"></i> Filter
                     </button>
@@ -162,6 +167,7 @@
         @endif
     </div>
 </div>
+@endsection
 
 <style>
     .pulse-dot {
@@ -183,8 +189,17 @@
     }
 </style>
 
+@section('script')
+<script src="{{ asset('assets/js/flatpickr.js') }}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // Initialize Flatpickr Date Range Picker
+        flatpickr(".flatpickr-range", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+            allowInput: false,
+        });
+
         // Prevent Flash of Unstyled Filters Panel by fading it in
         const filtersCard = document.getElementById('enquiryFiltersCard');
         if (filtersCard) {
