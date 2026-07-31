@@ -203,4 +203,94 @@ class RentalEnquiryTest extends TestCase
             'id' => $enquiry->id,
         ]);
     }
+
+    public function test_get_active_rental_categories()
+    {
+        $response = $this->getJson('/api/rentals');
+
+        $response->assertStatus(200)
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('message', 'Rental categories found.')
+            ->assertJsonStructure([
+                'success',
+                'message',
+                'data' => [
+                    '*' => [
+                        'id',
+                        'title',
+                        'slug',
+                        'sort_order',
+                        'status',
+                    ]
+                ],
+                'page_content'
+            ]);
+    }
+
+    public function test_get_rental_items_by_category_paginated()
+    {
+        $response = $this->getJson('/api/rental-items?category_id=' . $this->rentalItem->rental_category_id);
+
+        $response->assertStatus(200)
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('message', 'Rental items found.')
+            ->assertJsonStructure([
+                'success',
+                'message',
+                'data' => [
+                    'current_page',
+                    'data' => [
+                        '*' => [
+                            'id',
+                            'rental_category_id',
+                            'image',
+                            'title',
+                            'price',
+                            'description',
+                            'sort_order',
+                            'status',
+                        ]
+                    ],
+                    'total',
+                ]
+            ]);
+    }
+
+    public function test_get_all_rental_items_without_category()
+    {
+        $response = $this->getJson('/api/rental-items');
+
+        $response->assertStatus(200)
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('message', 'Rental items found.')
+            ->assertJsonStructure([
+                'success',
+                'message',
+                'data' => [
+                    'current_page',
+                    'data' => [
+                        '*' => [
+                            'id',
+                            'rental_category_id',
+                            'image',
+                            'title',
+                            'price',
+                            'description',
+                            'sort_order',
+                            'status',
+                        ]
+                    ],
+                    'total',
+                ]
+            ]);
+    }
+
+    public function test_get_rental_items_invalid_category_validation()
+    {
+        $response = $this->getJson('/api/rental-items?category_id=99999');
+
+        $response->assertStatus(200)
+            ->assertJsonPath('success', false)
+            ->assertJsonStructure(['errors' => ['category_id']]);
+    }
 }

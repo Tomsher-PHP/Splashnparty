@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\RentalCategory;
 use App\Models\RentalEnquiry;
+use App\Models\RentalItem;
 use App\Models\SiteSetting;
 use App\Mail\RentalEnquiryMail;
 use App\Mail\RentalEnquiryThankYouMail;
@@ -16,57 +17,53 @@ class RentalApiController extends Controller
 {
     public function rentals()
     {
-        $query = RentalCategory::where(
-            'status',
-            1
-        );
-
-        // CATEGORY FILTER
-        if ($categorySlug = request('category_slug')) {
-            $query->where(
-                'slug',
-                $categorySlug
-            );
-        }
-
-        if ($categoryId = request('category_id')) {
-            $query->where(
-                'id',
-                $categoryId
-            );
-        }
-
-        $categories = $query
-            ->with([
-                'rentalItems' => function ($q) {
-                    $q->where(
-                        'status',
-                        1
-                    )
-                    ->orderBy(
-                        'sort_order'
-                    );
-                }
-            ])
+        $categories = RentalCategory::where('status', 1)
             ->orderBy('sort_order')
             ->get();
-
-        $categories->each(function ($category) {
-            $category->rentalItems->transform(
-                function ($item) {
-                    $item->image = $item->image
-                        ? asset($item->image)
-                        : null;
-                    return $item;
-                }
-            );
-        });
 
         return response()->json([
             'success' => true,
             'message' => 'Rental categories found.',
             'data' => $categories,
             'page_content' => \App\Models\Page::getPageContent('rental-services'),
+        ]);
+    }
+
+    public function rentalItems(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'category_id' => ['nullable', 'exists:rental_categories,id'],
+            'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 200);
+        }
+
+        $limit = min($request->input('limit', 10), 50);
+        
+        $query = RentalItem::where('status', 1);
+
+        if ($categoryId = $request->input('category_id')) {
+            $query->where('rental_category_id', $categoryId);
+        }
+
+        $items = $query->orderBy('sort_order', 'asc')
+            ->paginate($limit);
+
+        // Transform image paths to asset URLs
+        $items->getCollection()->transform(function ($item) {
+            $item->image = $item->image ? asset($item->image) : null;
+            return $item;
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Rental items found.',
+            'data' => $items,
         ]);
     }
 
