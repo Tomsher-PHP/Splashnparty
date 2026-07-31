@@ -7,6 +7,7 @@ use App\Models\Cake;
 use App\Models\CakeEnquiry;
 use App\Models\SiteSetting;
 use App\Mail\CakeEnquiry as CakeEnquiryMail;
+use App\Mail\CakeEnquiryThankYouMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -54,6 +55,16 @@ class CakeApiController extends Controller
         } catch (\Exception $e) {
             logger()->error('Failed forwarding cake enquiry email: ' . $e->getMessage(), [
                 'recipient' => $recipient,
+                'enquiry' => $enquiry->toArray()
+            ]);
+        }
+
+        // Send thank-you email to client
+        try {
+            Mail::to($enquiry->email)->send(new CakeEnquiryThankYouMail($enquiry));
+        } catch (\Exception $e) {
+            logger()->error('Failed sending cake enquiry thank you email: ' . $e->getMessage(), [
+                'recipient' => $enquiry->email,
                 'enquiry' => $enquiry->toArray()
             ]);
         }
