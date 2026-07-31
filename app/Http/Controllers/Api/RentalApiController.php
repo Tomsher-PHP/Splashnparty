@@ -34,6 +34,7 @@ class RentalApiController extends Controller
         $validator = Validator::make($request->all(), [
             'category_id' => ['nullable', 'exists:rental_categories,id'],
             'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'keyword' => ['nullable', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
@@ -49,6 +50,13 @@ class RentalApiController extends Controller
 
         if ($categoryId = $request->input('category_id')) {
             $query->where('rental_category_id', $categoryId);
+        }
+
+        if ($keyword = $request->input('keyword')) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', '%' . $keyword . '%')
+                  ->orWhere('description', 'like', '%' . $keyword . '%');
+            });
         }
 
         $items = $query->orderBy('sort_order', 'asc')
