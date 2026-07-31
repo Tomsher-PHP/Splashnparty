@@ -208,7 +208,7 @@ class BookingController extends Controller
                     if (!empty($ccEmails)) {
                         $mail->cc($ccEmails);
                     }
-                    $mail->send(new \App\Mail\BookingInvoiceMail($booking));
+                    $mail->send(new \App\Mail\AdminBookingNotificationMail($booking));
                 }
             } catch (\Exception $e) {
                 \Illuminate\Support\Facades\Log::error('Error sending manual booking confirmation emails: ' . $e->getMessage());
