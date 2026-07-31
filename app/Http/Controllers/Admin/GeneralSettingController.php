@@ -30,6 +30,35 @@ class GeneralSettingController extends Controller
             $key = $field['key'];
 
             if (($field['type'] ?? 'text') === 'file') {
+                // Check if file upload has failed at PHP level (e.g. upload_max_filesize limit)
+                if (isset($_FILES[$key]) && $_FILES[$key]['error'] !== UPLOAD_ERR_OK && $_FILES[$key]['error'] !== UPLOAD_ERR_NO_FILE) {
+                    $errorMsg = 'File upload failed: ';
+                    switch ($_FILES[$key]['error']) {
+                        case UPLOAD_ERR_INI_SIZE:
+                            $errorMsg .= 'The file exceeds the upload_max_filesize limit configured on your server PHP settings.';
+                            break;
+                        case UPLOAD_ERR_FORM_SIZE:
+                            $errorMsg .= 'The file exceeds the form upload limits.';
+                            break;
+                        case UPLOAD_ERR_PARTIAL:
+                            $errorMsg .= 'The file was only partially uploaded.';
+                            break;
+                        case UPLOAD_ERR_NO_TMP_DIR:
+                            $errorMsg .= 'Missing a temporary folder on the server.';
+                            break;
+                        case UPLOAD_ERR_CANT_WRITE:
+                            $errorMsg .= 'Failed to write file to disk.';
+                            break;
+                        case UPLOAD_ERR_EXTENSION:
+                            $errorMsg .= 'A PHP extension stopped the file upload.';
+                            break;
+                        default:
+                            $errorMsg .= 'Unknown upload error occurred.';
+                            break;
+                    }
+                    return redirect()->back()->withInput()->withErrors([$key => $errorMsg]);
+                }
+
                 if (! $request->hasFile($key)) {
                     continue;
                 }
@@ -370,7 +399,7 @@ class GeneralSettingController extends Controller
                 'label' => 'Rental Items PDF File',
                 'type' => 'file',
                 'accept' => 'application/pdf',
-                'rules' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
+                'rules' => ['nullable', 'file', 'mimes:pdf', 'max:20971520'],
                 'sort_order' => 250,
             ],
         ];

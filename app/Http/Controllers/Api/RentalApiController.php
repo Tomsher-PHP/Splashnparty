@@ -7,6 +7,7 @@ use App\Models\RentalCategory;
 use App\Models\RentalEnquiry;
 use App\Models\SiteSetting;
 use App\Mail\RentalEnquiryMail;
+use App\Mail\RentalEnquiryThankYouMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -109,6 +110,16 @@ class RentalApiController extends Controller
         } catch (\Exception $e) {
             logger()->error('Failed forwarding rental enquiry email: ' . $e->getMessage(), [
                 'recipient' => $recipient,
+                'enquiry' => $enquiry->toArray()
+            ]);
+        }
+
+        // Send thank-you email to client
+        try {
+            Mail::to($enquiry->email)->send(new RentalEnquiryThankYouMail($enquiry));
+        } catch (\Exception $e) {
+            logger()->error('Failed sending rental enquiry thank you email: ' . $e->getMessage(), [
+                'recipient' => $enquiry->email,
                 'enquiry' => $enquiry->toArray()
             ]);
         }
