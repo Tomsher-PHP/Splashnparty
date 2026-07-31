@@ -136,53 +136,11 @@ $isEdit = isset($package);
                 @endif
             </div>
 
-            {{-- MINIMUM KIDS --}}
-            <div class="col-md-3">
-                <label class="form-label fw-semibold">
-                    Minimum Kids
-                </label>
-                <input type="text"
-                    name="minimum_kids"
-                    class="form-control form-control-sm"
-                    placeholder="Mon-Thurs: 10 kids / Fri-Sun: 15 kids"
-                    value="{{ old('minimum_kids', $package->minimum_kids ?? '') }}">
-            </div>
+            {{-- HIDDEN MINIMUM KIDS & DURATION --}}
+            <input type="hidden" name="minimum_kids" value="{{ old('minimum_kids', $package->minimum_kids ?? '') }}">
+            <input type="hidden" name="duration" value="{{ old('duration', $package->duration ?? '') }}">
 
-            {{-- DURATION --}}
-            <div class="col-md-3">
-                <label class="form-label fw-semibold">
-                    Duration
-                </label>
-                <input type="text"
-                    name="duration"
-                    class="form-control form-control-sm"
-                    placeholder="1 hour 45 minutes"
-                    value="{{ old('duration', $package->duration ?? '') }}">
-            </div>
-
-            {{-- WEEKDAY RATE --}}
-            <div class="col-md-3">
-                <label class="form-label fw-semibold">
-                    Weekday Rate
-                </label>
-                <input type="text"
-                    name="weekday_rate"
-                    class="form-control form-control-sm"
-                    value="{{ old('weekday_rate', $package->weekday_rate ?? '') }}">
-            </div>
-
-            {{-- WEEKEND RATE --}}
-            <div class="col-md-3">
-                <label class="form-label fw-semibold">
-                    Weekend Rate
-                </label>
-                <input type="text"
-                    name="weekend_rate"
-                    class="form-control form-control-sm"
-                    value="{{ old('weekend_rate', $package->weekend_rate ?? '') }}">
-            </div>
-
-            {{-- SORT ORDER --}}
+             {{-- SORT ORDER --}}
             <div class="col-md-6">
                 <label class="form-label fw-semibold">
                     Sort Order
@@ -192,6 +150,30 @@ $isEdit = isset($package);
                     class="form-control form-control-sm"
                     value="{{ old('sort_order', $package->sort_order ?? 0) }}">
             </div>
+            
+            {{-- WEEKDAY RATE --}}
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Weekday Details
+                </label>
+                <textarea name="weekday_rate"
+                    class="form-control"
+                    rows="4"
+                    placeholder="e.g. Mon-Thurs: 10 kids / AED 120 per child">{{ old('weekday_rate', $package->weekday_rate ?? '') }}</textarea>
+            </div>
+
+            {{-- WEEKEND RATE --}}
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">
+                    Weekend Details
+                </label>
+                <textarea name="weekend_rate"
+                    class="form-control"
+                    rows="4"
+                    placeholder="e.g. Fri-Sun: 15 kids / AED 150 per child">{{ old('weekend_rate', $package->weekend_rate ?? '') }}</textarea>
+            </div>
+
+           
 
             {{-- STATUS --}}
             <div class="col-md-6">
