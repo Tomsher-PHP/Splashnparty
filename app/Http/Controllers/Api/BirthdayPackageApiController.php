@@ -57,8 +57,11 @@ class BirthdayPackageApiController extends Controller
                     : null;
 
                 $item->selected_faqs = $this->getFaqs($item->faq_selection);
+                $item->minimum_kids = null;
+                $item->duration = null;
 
                 unset($item->faq_selection);
+                
 
                 return $item;
             }
