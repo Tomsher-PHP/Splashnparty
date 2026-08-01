@@ -111,8 +111,8 @@ class BirthdayPackageController extends Controller
             'status' => 'required|boolean',
             'minimum_kids' => 'nullable|string|max:255',
             'duration' => 'nullable|string|max:255',
-            'weekday_rate' => 'nullable|numeric|min:0',
-            'weekend_rate' => 'nullable|numeric|min:0',
+            'weekday_rate' => 'nullable|string|max:1000',
+            'weekend_rate' => 'nullable|string|max:1000',
 
             // SEO Validation
             'meta_title' => 'nullable|string',
@@ -307,8 +307,8 @@ class BirthdayPackageController extends Controller
 
             'minimum_kids' => 'nullable|string|max:255',
             'duration' => 'nullable|string|max:255',
-            'weekday_rate' => 'nullable|numeric|min:0',
-            'weekend_rate' => 'nullable|numeric|min:0',
+            'weekday_rate' => 'nullable|string|max:1000',
+            'weekend_rate' => 'nullable|string|max:1000',
 
             // SEO Validation
             'remove_og_image' => 'nullable|boolean',

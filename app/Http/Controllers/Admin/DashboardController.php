@@ -8,6 +8,7 @@ use App\Models\Branch;
 use App\Models\Booking;
 use App\Models\CakeEnquiry;
 use App\Models\ContactEnquiry;
+use App\Models\RentalEnquiry;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -26,6 +27,7 @@ class DashboardController extends Controller
             'total_kids' => $total_kids,
             'contact_enquiries_count' => ContactEnquiry::count(),
             'cake_enquiries_count' => CakeEnquiry::count(),
+            'rental_enquiries_count' => RentalEnquiry::count(),
         ];
 
         // Fetch recent paid bookings

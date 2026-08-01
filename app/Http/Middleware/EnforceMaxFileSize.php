@@ -15,6 +15,9 @@ class EnforceMaxFileSize
     public function handle(Request $request, Closure $next): Response
     {
         foreach ($request->allFiles() as $key => $file) {
+            if ($key === 'rental_items_pdf') {
+                continue;
+            }
             if (is_array($file)) {
                 $this->checkFiles($key, $file);
             } else {

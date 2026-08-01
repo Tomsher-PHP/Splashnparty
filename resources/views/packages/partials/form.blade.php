@@ -1,6 +1,6 @@
 <div class="row g-3">
     {{-- TITLE --}}
-    <div class="col-md-12">
+    <div class="col-md-6">
         <label class="form-label fw-semibold">
             Title
         </label>
@@ -10,6 +10,25 @@
             class="form-control form-control-sm"
             value="{{ old('title', $isEdit ? $package->title : '') }}"
             required>
+    </div>
+
+    {{-- IMAGE --}}
+    <div class="col-md-6">
+        <label class="form-label fw-semibold">
+            Image
+        </label>
+
+        <input type="file"
+            name="image"
+            class="form-control form-control-sm">
+
+        @if($isEdit && !empty($package->image))
+            <div class="mt-2">
+                <img src="{{ asset($package->image) }}"
+                    width="120"
+                    class="rounded border">
+            </div>
+        @endif
     </div>
 
     {{-- BRANCH --}}
@@ -232,4 +251,57 @@
         </select>
     </div>
 
+    {{-- DESCRIPTION --}}
+    <div class="col-md-12">
+        <label class="form-label fw-semibold">
+            Description
+        </label>
+        <div class="quill-editor-wrapper">
+            <div class="quill-editor" data-input="description">
+                {!! old('description', $isEdit ? $package->description : '') !!}
+            </div>
+            <textarea name="description" id="description" class="d-none">{{ old('description', $isEdit ? $package->description : '') }}</textarea>
+        </div>
+    </div>
+
 </div>
+
+@section('script')
+<script>
+    $(document).ready(function() {
+        // Initialize Quill Editors for wysiwyg fields
+        $('.quill-editor').each(function() {
+            const editor = this;
+            if (editor.dataset.quillInit) return;
+            
+            const inputId = $(editor).data('input');
+            const textarea = document.getElementById(inputId);
+            
+            const quill = new Quill(editor, {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ font: [] }, { header: [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ color: [] }, { background: [] }],
+                        
+                        ['blockquote', 'code-block'],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        [{ indent: '-1' }, { indent: '+1' }],
+                        [{ align: [] }],
+                        ['clean']
+                    ]
+                }
+            });
+
+            quill.on('text-change', function() {
+                if (textarea) {
+                    textarea.value = quill.root.innerHTML;
+                }
+            });
+            
+            editor.dataset.quillInit = "1";
+        });
+    });
+</script>
+@endsection

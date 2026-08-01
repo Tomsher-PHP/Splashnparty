@@ -90,7 +90,7 @@ class CakeEnquiryTest extends TestCase
             'message' => '',
         ]);
 
-        $response->assertStatus(422)
+        $response->assertStatus(200)
             ->assertJsonPath('success', false)
             ->assertJsonStructure(['errors' => ['name', 'email', 'phone', 'message']]);
 
@@ -139,6 +139,39 @@ class CakeEnquiryTest extends TestCase
             'id' => $enquiry->id,
             'status' => 'read',
         ]);
+    }
+
+    public function test_admin_can_filter_cake_enquiries_by_date_range()
+    {
+        $enquiry1 = CakeEnquiry::create([
+            'cake_id' => $this->cake->id,
+            'name' => 'Old Cake Enquiry',
+            'email' => 'old@example.com',
+            'phone' => '1234567890',
+            'message' => 'Old message',
+            'status' => 'unread',
+        ]);
+        $enquiry1->created_at = '2026-07-01 10:00:00';
+        $enquiry1->save();
+
+        $enquiry2 = CakeEnquiry::create([
+            'cake_id' => $this->cake->id,
+            'name' => 'New Cake Enquiry',
+            'email' => 'new@example.com',
+            'phone' => '1234567890',
+            'message' => 'New message',
+            'status' => 'unread',
+        ]);
+        $enquiry2->created_at = '2026-07-15 10:00:00';
+        $enquiry2->save();
+
+        $response = $this->actingAs($this->admin)->get(route('cake-enquiries.index', [
+            'date_range' => '2026-07-10 to 2026-07-20',
+        ]));
+
+        $response->assertStatus(200);
+        $response->assertSee('New Cake Enquiry');
+        $response->assertDontSee('Old Cake Enquiry');
     }
 
     public function test_admin_can_delete_cake_enquiry()

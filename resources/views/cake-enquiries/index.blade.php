@@ -23,15 +23,26 @@
     <div class="card-body p-20">
         <form method="GET" action="{{ route('cake-enquiries.index') }}">
             <div class="row align-items-center g-3">
-                <div class="col-md-5">
+                <div class="col-md-3">
                     <div class="position-relative">
                         <input type="text" name="search" class="form-control" 
-                               placeholder="Search Name, Email, Phone, Message or Cake..." 
+                               placeholder="Search Name, Email, Phone, Message..." 
                                value="{{ request('search') }}">
                     </div>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
+                    <select name="cake_id" class="form-select select2">
+                        <option value="">All Cakes</option>
+                        @foreach($cakes as $cake)
+                            <option value="{{ $cake->id }}" {{ request('cake_id') == $cake->id ? 'selected' : '' }}>
+                                {{ $cake->title }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-2">
                     <select name="status" class="form-select">
                         <option value="">All Statuses</option>
                         <option value="unread" {{ request('status') === 'unread' ? 'selected' : '' }}>Unread</option>
@@ -39,7 +50,12 @@
                     </select>
                 </div>
 
-                <div class="col-md-4 d-flex gap-2">
+                <div class="col-md-3">
+                    <input type="text" name="date_range" class="form-control flatpickr-range bg-white" 
+                           placeholder="Select Date Range" value="{{ request('date_range') }}" readonly>
+                </div>
+
+                <div class="col-md-2 d-flex gap-2">
                     <button class="btn btn-primary-600 btn-sm d-inline-flex align-items-center gap-2 flex-grow-1 justify-content-center">
                         <i class="ri-search-line"></i> Filter
                     </button>
@@ -168,6 +184,7 @@
         @endif
     </div>
 </div>
+@endsection
 
 <style>
     .pulse-dot {
@@ -187,10 +204,83 @@
             opacity: 0.7;
         }
     }
+
+    /* Select2 overrides to match template's form controls */
+    .select2-container--default .select2-selection--single {
+        background-color: var(--white) !important;
+        border: 1px solid var(--input-form-light) !important;
+        border-radius: 8px !important;
+        height: 2.75rem !important; /* matches template form-control/form-select height */
+        padding: 0.25rem 1.25rem !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: var(--text-primary-light) !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        font-size: 0.875rem !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 100% !important;
+        top: 0 !important;
+        right: 1.25rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .select2-container--open .select2-dropdown {
+        background-color: var(--white) !important;
+        border-color: var(--input-form-light) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+        z-index: 1050 !important;
+    }
+
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        background-color: var(--bg-color) !important;
+        border: 1px solid var(--input-form-light) !important;
+        color: var(--text-primary-light) !important;
+        border-radius: 6px !important;
+        padding: 6px 12px !important;
+    }
+
+    .select2-container--default .select2-results__option {
+        color: var(--text-primary-light) !important;
+        padding: 8px 16px !important;
+        font-size: 0.875rem !important;
+    }
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: var(--primary-600) !important;
+        color: #ffffff !important;
+    }
+
+    .select2-container--default .select2-results__option[aria-selected=true] {
+        background-color: var(--neutral-100) !important;
+        color: var(--text-primary-light) !important;
+    }
 </style>
 
+@section('script')
+<script src="{{ asset('assets/js/flatpickr.js') }}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // Initialize Flatpickr Date Range Picker
+        flatpickr(".flatpickr-range", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+            allowInput: false,
+        });
+
+        // Initialize Select2
+        $('.select2').select2({
+            width: '100%'
+        });
+
         const filtersCard = document.getElementById('enquiryFiltersCard');
         if (filtersCard) {
             filtersCard.style.opacity = '1';

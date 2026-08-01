@@ -353,6 +353,23 @@
                 </div>
             </a>
         </div>
+
+        <!-- KPI: Rental Enquiries -->
+        <div class="col-xxl col-lg-6 col-sm-6 col-12">
+            <a href="{{ route('rental-enquiries.index') }}" class="card glass-card kpi-card-rental h-100 border-0 text-decoration-none">
+                <div class="card-body p-24 d-flex flex-column justify-content-between h-100">
+                    <div>
+                        <div class="d-flex align-items-center justify-content-between mb-16">
+                            <span class="text-xs fw-semibold text-secondary-light dark:text-neutral-300">Rental Enquiries</span>
+                            <div class="w-36-px h-36-px rounded-circle d-flex justify-content-center align-items-center bg-info-50 dark:bg-info-950 text-info-main">
+                                <iconify-icon icon="solar:building-bold-duotone" class="text-lg"></iconify-icon>
+                            </div>
+                        </div>
+                        <span  class="fw-bold text-xl mb-4 text-neutral-900 dark:text-white">{{ number_format($stats['rental_enquiries_count']) }}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
 
     <!-- Operations Hub & Quick Actions Grid -->

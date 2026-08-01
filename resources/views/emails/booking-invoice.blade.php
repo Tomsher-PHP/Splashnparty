@@ -22,39 +22,23 @@
             max-width: 600px;
             margin: 0 auto;
             background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.025);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
             overflow: hidden;
             border: 1px solid #e2e8f0;
         }
         .header {
-            background-color: #1e293b;
-            background-image: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            padding: 35px 30px;
+            background: linear-gradient(90deg, #E1005C 0%, #1D4ED8 100%);
+            padding: 15px 25px;
             text-align: center;
-            border-bottom: 3px solid #ff4060;
         }
-        .header h1 {
-            color: #ffffff;
-            font-size: 24px;
-            margin: 0;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        .header p {
-            color: #94a3b8;
-            font-size: 14px;
-            margin: 10px 0 0 0;
+        .header img {
+            max-height: 120px;
+            display: block;
+            margin: 0 auto;
         }
         .content {
-            padding: 35px 30px;
-        }
-        .welcome-text {
-            font-size: 16px;
-            line-height: 1.6;
-            margin-top: 0;
-            margin-bottom: 25px;
-            color: #1e293b;
+            padding: 40px 35px;
         }
         .badge {
             display: inline-block;
@@ -135,25 +119,98 @@
             color: #1d4ed8;
             line-height: 1.5;
         }
-        .footer {
-            background-color: #f1f5f9;
-            padding: 25px 30px;
-            text-align: center;
-            border-top: 1px solid #e2e8f0;
+        
+        /* Rule styles matching design reference */
+        .rule-divider {
+            border-top: 2px solid #E1005C;
+            margin: 30px 0 15px 0;
         }
-        .footer p {
-            font-size: 12px;
-            color: #64748b;
-            margin: 0 0 10px 0;
-            line-height: 1.5;
+        .rule-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1d4ed8; /* deep blue */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0;
+            margin-bottom: 12px;
         }
-        .footer p:last-child {
+        .rule-box {
+            background-color: #fff5f7; /* light pink/base tint */
+            border: 1px solid #fecdd3; /* soft pink border */
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 25px;
+        }
+        .rule-box p {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.6;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .rule-box p:last-child {
             margin-bottom: 0;
         }
-        .footer a {
-            color: #ff4060;
-            text-decoration: none;
-            font-weight: 500;
+        .rule-box ul, .rule-box ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .rule-box li {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        .rule-box li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Footer styles matching thankyou mails */
+        .footer {
+            background: linear-gradient(90deg, #E1005C 0%, #1D4ED8 100%);
+            padding: 35px 30px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .social-icons {
+            margin-bottom: 25px;
+        }
+        .social-link {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+            background-color: #ffffff;
+            text-align: center;
+            margin: 0 6px;
+            vertical-align: middle;
+        }
+        .social-link img {
+            margin-top: 9px;
+            border: 0;
+            display: inline-block;
+        }
+        .footer-address {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+            max-width: 480px;
+            margin: 0 auto 10px auto;
+        }
+        .footer-contact {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+            margin: 0 auto;
+        }
+        .footer-contact a {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+        .footer-copyright {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -163,12 +220,14 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>BOOKING CONFIRMED</h1>
-            <p>Reference: {{ $booking->booking_reference }}</p>
+            <img src="{{ $message->embed($logoPath) }}" alt="Splash N Party Logo">
         </div>
 
         <!-- Content -->
         <div class="content">
+            <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin-top: 0; margin-bottom: 8px; text-align: center; text-transform: uppercase; letter-spacing: 0.5px;">Booking Confirmed</h2>
+            <p style="font-size: 14px; color: #64748b; margin-top: 0; margin-bottom: 25px; text-align: center; font-weight: 500;">Reference: {{ $booking->booking_reference }}</p>
+
             <div class="badge">Payment Successful</div>
             
             <p class="welcome-text">
@@ -241,24 +300,64 @@
                     </tr>
                 </table>
             </div>
+
+            <!-- Venue Rules List -->
+            @if(!empty($rules) && $rules->count() > 0)
+                @foreach($rules as $rule)
+                    <div class="rule-divider"></div>
+                    <h3 class="rule-title">{{ $rule->title }}</h3>
+                    <div class="rule-box">
+                        {!! $rule->content !!}
+                    </div>
+                @endforeach
+            @endif
             
-            <p style="font-size: 13px; line-height: 1.5; color: #475569; margin-bottom: 0;">
+            <p style="font-size: 13px; line-height: 1.5; color: #475569; margin-top: 30px; margin-bottom: 0;">
                 If you have any questions or need to make changes to your booking, please don't hesitate to reach out to our support team.
             </p>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            <p>
+            <div class="social-icons">
+                @php
+                    $iconMap = [
+                        'facebook' => 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png',
+                        'twitter' => 'https://cdn-icons-png.flaticon.com/512/3256/3256013.png',
+                        'x' => 'https://cdn-icons-png.flaticon.com/512/3256/3256013.png',
+                        'instagram' => 'https://cdn-icons-png.flaticon.com/512/174/174855.png',
+                        'youtube' => 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png',
+                        'whatsapp' => 'https://cdn-icons-png.flaticon.com/512/733/733585.png',
+                        'tiktok' => 'https://cdn-icons-png.flaticon.com/512/3046/3046124.png',
+                        'linkedin' => 'https://cdn-icons-png.flaticon.com/512/174/174857.png',
+                    ];
+                @endphp
+                @if(!empty($socialLinks))
+                    @foreach($socialLinks as $link)
+                        @php
+                            $nameLower = strtolower($link['name'] ?? '');
+                            $iconUrl = $iconMap[$nameLower] ?? 'https://cdn-icons-png.flaticon.com/512/1006/1006771.png';
+                        @endphp
+                        @if(!empty($link['link']))
+                            <a href="{{ $link['link'] }}" class="social-link" target="_blank">
+                                <img src="{{ $iconUrl }}" width="18" height="18" alt="{{ $link['name'] ?? 'Social Link' }}">
+                            </a>
+                        @endif
+                    @endforeach
+                @endif
+            </div>
+            
+            <p class="footer-address">
                 <strong>{{ $generalSettings->site_name ?? 'Splash N Party' }}</strong><br>
                 {!! nl2br(e($generalSettings->address ?? "Al Safa 2, Street 8A, Villa 24\nJumeirah, Dubai, UAE")) !!}
             </p>
-            <p>
+            <p class="footer-contact">
                 Phone: {{ $generalSettings->phone ?? '+971 4 388 3008' }} | Email: <a href="mailto:{{ $generalSettings->email ?? 'info@splashnparty.ae' }}">{{ $generalSettings->email ?? 'info@splashnparty.ae' }}</a>
             </p>
-            <p style="font-size: 10px; color: #94a3b8; margin-top: 15px;">
+            
+            <div class="footer-copyright">
                 &copy; {{ date('Y') }} {{ $generalSettings->site_name ?? 'Splash N Party' }}. All rights reserved.
-            </p>
+            </div>
         </div>
     </div>
 </div>

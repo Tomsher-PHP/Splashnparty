@@ -50,6 +50,9 @@ class AppServiceProvider extends ServiceProvider
         // Dynamically cap file upload validation max rules to 500 KB globally
         \Illuminate\Support\Facades\Validator::resolver(function($translator, $data, $rules, $messages, $customAttributes) {
             foreach ($rules as $attribute => &$attributeRules) {
+                if ($attribute === 'rental_items_pdf') {
+                    continue;
+                }
                 $hasFile = false;
                 $value = data_get($data, $attribute);
                 if ($value instanceof \Illuminate\Http\UploadedFile) {

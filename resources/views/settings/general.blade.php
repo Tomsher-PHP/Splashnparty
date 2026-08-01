@@ -49,9 +49,18 @@
                                         @elseif ($type === 'file')
                                             @if (!empty($settingValues[$key]))
                                                 <div class="settings-current-media mb-12">
-                                                    <img src="{{ asset('storage/' . $settingValues[$key]) }}"
-                                                        alt="{{ $field['label'] }}">
-                                                    {{-- <span class="text-secondary-light small">{{ $settingValues[$key] }}</span> --}}
+                                                    @php
+                                                        $ext = pathinfo($settingValues[$key], PATHINFO_EXTENSION);
+                                                        $isImg = in_array(strtolower($ext), ['png', 'jpg', 'jpeg', 'webp', 'svg', 'ico']);
+                                                    @endphp
+                                                    @if($isImg)
+                                                        <img src="{{ asset('storage/' . $settingValues[$key]) }}"
+                                                            alt="{{ $field['label'] }}">
+                                                    @else
+                                                        <a href="{{ asset('storage/' . $settingValues[$key]) }}" target="_blank" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
+                                                            <i class="ri-file-pdf-line text-lg"></i> View Current PDF
+                                                        </a>
+                                                    @endif
                                                 </div>
                                             @endif
                                             <div class="settings-file-upload @error($key) is-invalid @enderror">
