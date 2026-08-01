@@ -23,5 +23,13 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The uploaded file is too large. Please increase your server upload limits.'
+                ], 413);
+            }
+            return back()->withInput()->with('error', 'The uploaded file is too large for the server. Please upload a smaller file or update server settings.');
+        });
     })->create();

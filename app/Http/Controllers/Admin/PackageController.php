@@ -60,6 +60,8 @@ class PackageController extends Controller
         $request->validate([
             'branch_id' => 'nullable|exists:branches,id',
             'title' => 'required|max:255',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'description' => 'nullable|string',
             // 'food_type' => 'nullable|in:with_food,without_food',
 
             // With Food Prices
@@ -85,9 +87,22 @@ class PackageController extends Controller
             'sort_order' => 'nullable|integer',
         ]);
 
+        $image = null;
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store(
+                'uploads/packages',
+                'public'
+            );
+
+            $image = 'storage/' . $path;
+        }
+
         Package::create([
             'branch_id' => $request->branch_id,
             'title' => $request->title,
+            'image' => $image,
+            'description' => $request->description,
             // 'food_type' => $request->food_type,
 
             // With Food Prices
@@ -137,6 +152,8 @@ class PackageController extends Controller
         $request->validate([
             'branch_id' => 'nullable|exists:branches,id',
             'title' => 'required|max:255',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'description' => 'nullable|string',
             // 'food_type' => 'nullable|in:with_food,without_food',
 
             // With Food Prices
@@ -162,9 +179,26 @@ class PackageController extends Controller
             'sort_order' => 'nullable|integer',
         ]);
 
+        $image = $package->image;
+
+        if ($request->hasFile('image')) {
+            if ($package->image && file_exists(public_path($package->image))) {
+                unlink(public_path($package->image));
+            }
+
+            $path = $request->file('image')->store(
+                'uploads/packages',
+                'public'
+            );
+
+            $image = 'storage/' . $path;
+        }
+
         $package->update([
             'branch_id' => $request->branch_id,
             'title' => $request->title,
+            'image' => $image,
+            'description' => $request->description,
             // 'food_type' => $request->food_type,
 
             // With Food Prices
@@ -199,6 +233,10 @@ class PackageController extends Controller
     {
         $this->authorizePackagePermission('delete_packages');
 
+        if ($package->image && file_exists(public_path($package->image))) {
+            unlink(public_path($package->image));
+        }
+
         $package->delete();
 
         return back()->with('success', 'Deleted successfully');
@@ -220,6 +258,18 @@ class PackageController extends Controller
         }
 
         $newPackage->title = $title;
+
+        // Copy file to avoid shared reference when unlinking
+        if ($package->image && file_exists(public_path($package->image))) {
+            $originalPath = public_path($package->image);
+            $pathInfo = pathinfo($originalPath);
+            $newFilename = $pathInfo['filename'] . '_copy_' . time() . '.' . ($pathInfo['extension'] ?? 'jpg');
+            $newPath = $pathInfo['dirname'] . '/' . $newFilename;
+            if (copy($originalPath, $newPath)) {
+                $newPackage->image = str_replace($pathInfo['basename'], $newFilename, $package->image);
+            }
+        }
+
         $newPackage->save();
 
         return redirect()

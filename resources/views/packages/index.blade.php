@@ -69,8 +69,10 @@
                 <thead class="bg-light">
                     <tr>
                         <th>#</th>
+                        <th>Image</th>
                         <th>Title</th>
                         <th>Branch</th>
+                        <th>Days</th>
                         <th>Status</th>
                         @if (auth()->user()?->can('create_packages') || auth()->user()?->can('edit_packages') || auth()->user()?->can('delete_packages'))
                         <th class="text-center pe-4">Action</th>
@@ -82,8 +84,28 @@
                     @foreach($packages as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
+                        <td>
+                            @if($item->image)
+                                <img src="{{ asset($item->image) }}"
+                                    width="50" height="50"
+                                    class="rounded object-fit-cover">
+                            @else
+                                <span class="text-muted">-</span>
+                            @endif
+                        </td>
                         <td>{{ $item->title }}</td>
                         <td>{{ $item->branch->title ?? '' }}</td>
+                        <td>
+                            @if(is_array($item->days) && !empty($item->days))
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach($item->days as $day)
+                                        <span class="bg-neutral-100 text-neutral-600 px-12 py-4 rounded-pill fw-bold text-xs">{{ substr($day, 0, 3) }}</span>
+                                    @endforeach
+                                </div>
+                            @else
+                                <span class="bg-success-focus text-success-600 px-12 py-4 rounded-pill fw-bold text-xs">All Days</span>
+                            @endif
+                        </td>
                         <td>
                             {{ $item->status ? 'Active' : 'Inactive' }}
                         </td>
@@ -93,10 +115,12 @@
                                 @can('create_packages')
                                 <form method="POST"
                                     action="{{ route('packages.copy', $item->id) }}"
-                                    class="d-inline">
+                                    class="d-inline copy-form">
                                     @csrf
                                     <button type="submit"
                                         class="item-icon-btn bg-primary-focus bg-hover-primary-200 text-primary-600 fw-medium w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle border-0"
+                                        data-confirm-title="Copy Package"
+                                        data-confirm-message="Are you sure you want to copy this Package?"
                                         title="Copy Package">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                                     </button>
@@ -171,6 +195,23 @@
         });
     });
 });
+
+    document.querySelectorAll('.copy-form button[type="submit"]').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const form = button.closest('form');
+
+            window.openAppConfirm({
+                title: button.dataset.confirmTitle || 'Copy Package',
+                message: button.dataset.confirmMessage || 'Are you sure you want to copy this package?',
+                buttonText: 'Yes, Copy',
+                buttonClass: 'btn btn-sm btn-primary',
+                onConfirm: function() {
+                    form.submit();
+                }
+            });
+        });
+    });
 
 </script>
 @endsection

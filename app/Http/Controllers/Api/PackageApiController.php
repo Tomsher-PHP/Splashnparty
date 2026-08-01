@@ -22,6 +22,23 @@ class PackageApiController extends Controller
             $query->where('food_type', $request->food_type);
         }
 
+        if ($request->date) {
+            $bookingDate = \Carbon\Carbon::parse($request->date);
+            $dayName = $bookingDate->format('l');
+
+            $query->where(function ($q) use ($request) {
+                $q->whereNull('start_date')
+                  ->orWhere('start_date', '<=', $request->date);
+            })->where(function ($q) use ($request) {
+                $q->whereNull('end_date')
+                  ->orWhere('end_date', '>=', $request->date);
+            })->where(function ($q) use ($dayName) {
+                $q->whereNull('days')
+                  ->orWhere('days', '[]')
+                  ->orWhereJsonContains('days', $dayName);
+            });
+        }
+
         $packages = $query->orderBy('sort_order')
             ->get()
             ->map(function ($package) {
@@ -169,7 +186,7 @@ class PackageApiController extends Controller
             throw new \Exception("Package is not available on {$dayName}");
         }
 
-        $isWeekend = in_array($dayName, ['Saturday','Sunday']);
+        $isWeekend = in_array($dayName, ['Friday','Saturday','Sunday']);
 
         if ($data['food_type'] === 'with_food') {
 

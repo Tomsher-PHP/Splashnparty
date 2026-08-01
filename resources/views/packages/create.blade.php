@@ -32,10 +32,10 @@
             <button class="btn btn-sm btn-primary">
                 Submit
             </button>
-            <button type="reset"
-                    class="btn btn-sm btn-outline-secondary">
+            <a href="{{ route('packages.index') }}"
+               class="btn btn-sm btn-outline-secondary">
                 Cancel
-            </button>
+            </a>
         </div>
     </div>
 </form>

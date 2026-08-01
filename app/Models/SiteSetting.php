@@ -13,4 +13,13 @@ class SiteSetting extends Model
         'type',
         'sort_order',
     ];
+
+    public static function getCcEmailsByKey(string $key): array
+    {
+        $value = self::where('key', $key)->value('value');
+        if (empty($value)) {
+            return [];
+        }
+        return array_filter(array_map('trim', explode(',', $value)));
+    }
 }
