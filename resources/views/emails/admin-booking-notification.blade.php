@@ -197,12 +197,12 @@
                     <div class="field-value">AED {{ number_format($booking->total_amount, 2) }} (VAT: AED {{ number_format($booking->vat, 2) }})</div>
                 </div>
 
-                @if(!empty($booking->remarks))
+                {{-- @if(!empty($booking->remarks))
                     <div class="message-box">
                         <h4>Remarks / Special Requests</h4>
                         <p>{{ $booking->remarks }}</p>
                     </div>
-                @endif
+                @endif --}}
             </div>
             
             <div class="footer">

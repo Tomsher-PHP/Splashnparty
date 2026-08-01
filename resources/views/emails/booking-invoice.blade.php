@@ -235,11 +235,11 @@
                 Thank you for choosing us! Your booking is confirmed, and your payment has been processed successfully. Please find the details of your upcoming visit below.
             </p>
 
-            <div class="alert-box">
+            {{-- <div class="alert-box">
                 <p>
                     <strong>Note:</strong> Your official Tax Invoice has been generated and attached to this email as a PDF. Please keep it for your records.
                 </p>
-            </div>
+            </div> --}}
 
             <!-- Booking Details Card -->
             <div class="card">
