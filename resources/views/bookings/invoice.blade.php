@@ -330,8 +330,9 @@
                     <span class="value">{{ optional($booking->branch)->title ?? 'N/A' }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="label">Address:</span>
-                    <span class="value">{{ $booking->address ?? 'N/A' }}{{ $booking->emirate ? ', ' . $booking->emirate : '' }}</span>
+                    <span class="label">Emirate:</span>
+                    <span class="value">{{ $booking->emirate ?? 'N/A' }}
+                    </span>
                 </div>
             </td>
         </tr>

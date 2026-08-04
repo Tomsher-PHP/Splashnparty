@@ -203,7 +203,12 @@ class BookingController extends Controller
 
                 $adminEmail = \App\Models\SiteSetting::where('key', 'notification_email')->value('value');
                 if ($adminEmail) {
-                    \Illuminate\Support\Facades\Mail::to($adminEmail)->send(new \App\Mail\BookingInvoiceMail($booking));
+                    $mail = \Illuminate\Support\Facades\Mail::to($adminEmail);
+                    $ccEmails = \App\Models\SiteSetting::getCcEmailsByKey('notification_cc_emails');
+                    if (!empty($ccEmails)) {
+                        $mail->cc($ccEmails);
+                    }
+                    $mail->send(new \App\Mail\AdminBookingNotificationMail($booking));
                 }
             } catch (\Exception $e) {
                 \Illuminate\Support\Facades\Log::error('Error sending manual booking confirmation emails: ' . $e->getMessage());

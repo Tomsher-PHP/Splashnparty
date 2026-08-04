@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AttractionController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CakeEnquiryController;
+use App\Http\Controllers\Admin\RentalEnquiryController;
 use App\Http\Controllers\Admin\BalloonDecorationController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BirthdayPackageController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\Admin\FoodMenuController;
 use App\Http\Controllers\Admin\GeneralAccessController;
 use App\Http\Controllers\Admin\GeneralSettingController;
 use App\Http\Controllers\Admin\HeaderMenuController;
+use App\Http\Controllers\Admin\RuleController;
 use App\Http\Controllers\Admin\ImageGalleryController;
 use App\Http\Controllers\Admin\NewsletterSubscriptionController;
 use App\Http\Controllers\Admin\NewsUpdateController;
@@ -65,6 +67,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('general-settings', [GeneralSettingController::class, 'edit'])->name('general-settings.edit');
     Route::put('general-settings', [GeneralSettingController::class, 'update'])->name('general-settings.update');
+
+    Route::patch('rules/{rule}/status', [RuleController::class, 'updateStatus'])->name('rules.update-status');
+    Route::resource('rules', RuleController::class)->except(['show']);
 
     // FAQ MODULE
     Route::resource('faqs', FaqController::class)->parameters(['faqs' => 'faq'])->except(['show']);
@@ -118,6 +123,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('packages', PackageController::class);
     Route::resource('contact-enquiries', ContactEnquiryController::class)->only(['index', 'show', 'destroy']);
     Route::resource('cake-enquiries', CakeEnquiryController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('rental-enquiries', RentalEnquiryController::class)->only(['index', 'show', 'destroy']);
 
     Route::patch('attractions/{attraction}/status', [AttractionController::class, 'updateStatus'])->name('attractions.update-status');
     Route::resource('attractions', AttractionController::class);
@@ -163,8 +169,4 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::post('/clear-cache', [DashboardController::class, 'clearCache'])->name('admin.clear-cache');
 
-    // Admin Fallback Route to catch all undefined admin paths with any HTTP method
-    Route::any('{any}', function () {
-        abort(404);
-    })->where('any', '.*');
 });

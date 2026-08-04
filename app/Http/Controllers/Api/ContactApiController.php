@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
 use App\Mail\ContactEnquiry;
+use App\Mail\ContactEnquiryThankYouMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -49,22 +50,32 @@ class ContactApiController extends Controller
         }
 
         try {
-            Mail::to($recipient)->send(new ContactEnquiry($validated));
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Your enquiry has been successfully submitted.'
-            ], 200);
+            $mail = Mail::to($recipient);
+            $ccEmails = SiteSetting::getCcEmailsByKey('enquiry_cc_emails');
+            if (!empty($ccEmails)) {
+                $mail->cc($ccEmails);
+            }
+            $mail->send(new ContactEnquiry($validated));
         } catch (\Exception $e) {
             logger()->error('Failed forwarding website contact enquiry: ' . $e->getMessage(), [
                 'recipient' => $recipient,
                 'payload' => $validated
             ]);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Enquiry captured, but email forwarding encountered a server issue.'
-            ], 200);
         }
+
+        // Send thank-you email to user
+        try {
+            Mail::to($validated['email'])->send(new ContactEnquiryThankYouMail($validated));
+        } catch (\Exception $e) {
+            logger()->error('Failed sending contact enquiry thank you email: ' . $e->getMessage(), [
+                'recipient' => $validated['email'],
+                'payload' => $validated
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Your enquiry has been successfully submitted.'
+        ], 200);
     }
 }

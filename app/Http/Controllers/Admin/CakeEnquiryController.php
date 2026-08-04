@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cake;
 use App\Models\CakeEnquiry;
 use Illuminate\Http\Request;
 
@@ -45,6 +46,21 @@ class CakeEnquiryController extends Controller
             $query->where('status', $request->input('status'));
         }
 
+        // Filter by Cake
+        if ($request->filled('cake_id')) {
+            $query->where('cake_id', $request->input('cake_id'));
+        }
+
+        // Filter by Date Range (Flatpickr range: YYYY-MM-DD to YYYY-MM-DD)
+        if ($request->filled('date_range')) {
+            $dates = explode(' to ', $request->input('date_range'));
+            if (count($dates) === 2) {
+                $query->whereBetween('created_at', [$dates[0] . ' 00:00:00', $dates[1] . ' 23:59:59']);
+            } elseif (count($dates) === 1) {
+                $query->whereDate('created_at', $dates[0]);
+            }
+        }
+
         // Sort by unread first, then latest
         $enquiries = $query->orderByRaw("CASE WHEN status = 'unread' THEN 0 ELSE 1 END")
                            ->latest()
@@ -54,7 +70,9 @@ class CakeEnquiryController extends Controller
         $totalCount = CakeEnquiry::count();
         $unreadCount = CakeEnquiry::where('status', 'unread')->count();
 
-        return view('cake-enquiries.index', compact('enquiries', 'totalCount', 'unreadCount'));
+        $cakes = Cake::orderBy('title')->get();
+
+        return view('cake-enquiries.index', compact('enquiries', 'totalCount', 'unreadCount', 'cakes'));
     }
 
     /**

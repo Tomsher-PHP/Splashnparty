@@ -69,10 +69,10 @@
                 <th>Emirate</th>
                 <td>{{ $booking->emirate ?? 'N/A' }}</td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <th>Address</th>
                 <td>{{ $booking->address ?? 'N/A' }}</td>
-            </tr>
+            </tr> --}}
             <tr>
                 <th>Booking Date</th>
                 <td>{{ $booking->booking_date ? $booking->booking_date->format('Y-m-d') : 'N/A' }}</td>
