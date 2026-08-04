@@ -23,10 +23,21 @@
             class="form-control form-control-sm">
 
         @if($isEdit && !empty($package->image))
-            <div class="mt-2">
+            <div class="mt-2 d-flex align-items-center gap-3">
                 <img src="{{ asset($package->image) }}"
                     width="120"
                     class="rounded border">
+                <div class="form-check d-flex gap-1 align-items-center mb-0">
+                    <input class="form-check-input"
+                        type="checkbox"
+                        name="remove_image"
+                        id="remove_image"
+                        value="1">
+                    <label class="form-check-label text-danger mx-4"
+                        for="remove_image">
+                        Remove Image
+                    </label>
+                </div>
             </div>
         @endif
     </div>
