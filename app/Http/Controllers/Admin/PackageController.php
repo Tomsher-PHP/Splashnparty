@@ -192,6 +192,11 @@ class PackageController extends Controller
             );
 
             $image = 'storage/' . $path;
+        } elseif ($request->boolean('remove_image')) {
+            if ($package->image && file_exists(public_path($package->image))) {
+                unlink(public_path($package->image));
+            }
+            $image = null;
         }
 
         $package->update([
