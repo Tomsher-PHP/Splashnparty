@@ -1824,6 +1824,13 @@ return [
                         'rules' => ['nullable', 'string', 'max:255'],
                     ],
                     [
+                        'name' => 'price_description',
+                        'label' => 'Pricing Highlight Description',
+                        'type' => 'textarea',
+                        'placeholder' => 'Enter pricing highlight description',
+                        'rules' => ['nullable', 'string'],
+                    ],
+                    [
                         'name' => 'price_sub_heading',
                         'label' => 'Pricing Highlight Sub-Heading',
                         'type' => 'text',
