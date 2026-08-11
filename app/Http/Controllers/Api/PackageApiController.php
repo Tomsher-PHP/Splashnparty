@@ -47,6 +47,7 @@ class PackageApiController extends Controller
                     'id' => $package->id,
                     'branch_id' => $package->branch_id,
                     'title' => $package->title,
+                    'description' => $package->description ?? '',
                     'food_type' => $package->food_type,
                     'image' => $package->image ? asset($package->image) : null,
                     'prices' => [
@@ -94,6 +95,8 @@ class PackageApiController extends Controller
                 'id' => $package->id,
                 'branch_id' => $package->branch_id,
                 'title' => $package->title,
+                'description' => $package->description ?? '',
+                'image' => $package->image ? asset($package->image) : null,
                 'food_type' => $package->food_type,
 
                 'prices' => [

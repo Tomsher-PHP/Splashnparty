@@ -395,6 +395,14 @@ class PageApiController extends Controller
 
         unset($siteSettings['enquiry_email']);
 
+        $birthdayLink = \App\Models\Page::getPageContent('book-a-trip');
+
+        if ($birthdayLink) {
+            $blink = $birthdayLink['birthday_booking_link'] ?? null;
+        }
+
+        $siteSettings['birthday_booking_link'] = $blink ?? null;
+
         $locations = Branch::where('status', 1)
             ->orderBy('sort_order', 'asc')
             ->get(['id','title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
