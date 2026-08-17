@@ -256,7 +256,7 @@
                     <div class="detail-label">Date of Visit:</div>
                     <div class="detail-value">
                         <strong>
-                            {{ $booking->booking_date ? $booking->booking_date->format('l, F j, Y h:i A') : 'N/A' }}
+                            {{ $booking->booking_date ? $booking->booking_date->format('l, F j, Y') : 'N/A' }}
                         </strong>
                     </div>
                 </div>

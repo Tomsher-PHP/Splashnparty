@@ -75,7 +75,7 @@
             </tr> --}}
             <tr>
                 <th>Booking Date</th>
-                <td>{{ $booking->booking_date ? $booking->booking_date->format('Y-m-d h:i A') : 'N/A' }}</td>
+                <td>{{ $booking->booking_date ? $booking->booking_date->format('Y-m-d') : 'N/A' }}</td>
             </tr>
             <tr>
                 <th>Adults</th>
@@ -124,6 +124,10 @@
                         <span class="badge bg-danger">Unpaid</span>
                     @endif
                 </td>
+            </tr>
+            <tr>
+                <th>Date of Issue</th>
+                <td>{{ $booking->created_at ? $booking->created_at->format('Y-m-d h:i A') : date('Y-m-d h:i A') }}</td>
             </tr>
             {{-- <tr>
                 <th>Remarks</th>
