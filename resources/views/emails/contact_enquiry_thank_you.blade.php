@@ -161,7 +161,7 @@
                     Note: Please do not reply to this email. This is an automated system notification.
                 </div>
                 <div class="footer-copyright">
-                    &copy; {{ date('Y') }} Splash 'n' Party. All rights reserved.
+                    &copy; {{ date('Y') }} Splash N Party. All rights reserved.
                 </div>
             </div>
         </div>
