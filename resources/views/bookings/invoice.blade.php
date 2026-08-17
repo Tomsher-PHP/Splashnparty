@@ -269,17 +269,17 @@
                     {!! nl2br(e($generalSettings->address ?? "")) !!}<br>
                     <strong>Phone:</strong> {{ $generalSettings->phone ?? '' }}<br>
                     <strong>Email:</strong> {{ $generalSettings->email ?? '' }}<br>
-                    <strong>TRN:</strong> {{ $generalSettings->trn ?? '' }}
+                    {{-- <strong>TRN:</strong> {{ $generalSettings->trn ?? '' }} --}}
                 </div>
             </td>
 
             <!-- Right: Tax Invoice title & Metadata -->
             <td class="invoice-title-section">
-                <h1 class="invoice-title">TAX INVOICE</h1>
+                <h1 class="invoice-title">RECEIPT </h1>
                 
                 <table class="meta-details-table">
                     <tr>
-                        <td class="label">Invoice No:</td>
+                        <td class="label">RECEIPT No:</td>
                         <td class="value">{{ $booking->booking_reference }}</td>
                     </tr>
                     <tr>
@@ -424,13 +424,13 @@
     <div class="summary-wrapper">
         <table class="summary-table">
             <tr>
-                <td class="label">Gross Subtotal (Excl. VAT):</td>
-                <td class="value">AED {{ number_format($booking->subtotal, 2) }}</td>
+                <td class="label">Gross Subtotal (Incl. VAT):</td>
+                <td class="value">AED {{ number_format(($booking->subtotal+$booking->vat), 2) }}</td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td class="label">VAT Amount ({{ $vatPercentage }}%):</td>
                 <td class="value">AED {{ number_format($booking->vat, 2) }}</td>
-            </tr>
+            </tr> --}}
             <tr class="total-row">
                 <td class="label" style="background-color:#0f172a; color:#fff;">Total Amount Payable:</td>
                 <td class="value">AED {{ number_format($booking->total_amount, 2) }}</td>
@@ -443,7 +443,8 @@
     <div class="footer-section">
         <div class="footer-thanks">Thank you for booking with us!</div>
         <div>This is a computer-generated Tax Invoice and does not require a physical signature.</div>
-        <div style="margin-top: 5px;">Splash N Party | TRN: {{ $generalSettings->trn ?? '100346387000003' }}</div>
+        <div style="margin-top: 5px;">Splash N Party Recreational Playground LLC</div>
+        {{-- <div style="margin-top: 5px;">Splash N Party | TRN: {{ $generalSettings->trn ?? '100346387000003' }}</div> --}}
     </div>
 </div>
 

@@ -37,11 +37,11 @@
             Price
         </label>
 
-        <input type="number"
-            step="0.01"
+        <input type="text"
             name="price"
             class="form-control form-control-sm"
-            value="{{ old('price', $isEdit ? $cake->price : '') }}">
+            value="{{ old('price', $isEdit ? $cake->price : '') }}"
+            placeholder="e.g. 150 - 250">
 
     </div>
 

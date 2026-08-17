@@ -232,7 +232,14 @@
             
             <p class="welcome-text">
                 Dear <strong>{{ $booking->contact_name }}</strong>,<br><br>
-                Thank you for choosing us! Your booking is confirmed, and your payment has been processed successfully. Please find the details of your upcoming visit below.
+                Thank you for choosing us! 
+                <br>
+                We are pleased to inform you that your booking is confirmed, and your payment has been processed successfully.
+                <br>
+                Please find the details of your upcoming visit below:
+                <br>
+                If you have any questions or need to make changes to your booking, please feel free to contact our support team. 
+
             </p>
 
             {{-- <div class="alert-box">
@@ -287,15 +294,15 @@
                 <h3 class="card-title">Payment Summary</h3>
                 <table class="price-table">
                     <tr>
-                        <td>Gross Subtotal (Excl. VAT):</td>
-                        <td style="text-align: right;">AED {{ number_format($booking->subtotal, 2) }}</td>
+                        <td>Gross Subtotal (Incl. VAT):</td>
+                        <td style="text-align: right;">AED {{ number_format(($booking->subtotal+$booking->vat), 2) }}</td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td>VAT Amount:</td>
                         <td style="text-align: right;">AED {{ number_format($booking->vat, 2) }}</td>
-                    </tr>
+                    </tr> --}}
                     <tr class="total-row">
-                        <td>Total Paid (Incl. VAT):</td>
+                        <td>Total Amount Payable:</td>
                         <td style="text-align: right;">AED {{ number_format($booking->total_amount, 2) }}</td>
                     </tr>
                 </table>

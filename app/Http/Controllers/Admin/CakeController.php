@@ -64,7 +64,7 @@ class CakeController extends Controller
             'thumbnail_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'description' => 'nullable|string',
-            'price' => 'nullable|numeric|min:0',
+            'price' => 'nullable|string|max:255',
             'sort_order' => 'nullable|integer',
             'status' => 'required|boolean',
         ]);
@@ -123,7 +123,7 @@ class CakeController extends Controller
             'thumbnail_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'description' => 'nullable|string',
-            'price' => 'nullable|numeric|min:0',
+            'price' => 'nullable|string|max:255',
             'sort_order' => 'nullable|integer',
             'status' => 'required|boolean',
         ]);
