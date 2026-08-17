@@ -131,7 +131,7 @@
             font-weight: bold;
             color: #64748b;
             display: inline-block;
-            width: 120px;
+            width: 110px;
         }
 
         .info-row span.value {
