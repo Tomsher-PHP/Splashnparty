@@ -69,7 +69,7 @@
 
         /* Meta details table (Invoice #, Date, TRN) */
         .meta-details-table {
-            width: 250px;
+            width: 300px;
             float: right;
             border-collapse: collapse;
             margin-top: 5px;
@@ -131,7 +131,7 @@
             font-weight: bold;
             color: #64748b;
             display: inline-block;
-            width: 90px;
+            width: 120px;
         }
 
         .info-row span.value {
