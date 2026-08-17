@@ -233,11 +233,11 @@
             <p class="welcome-text">
                 Dear <strong>{{ $booking->contact_name }}</strong>,<br><br>
                 Thank you for choosing us! 
-                <br>
+                <br><br>
                 We are pleased to inform you that your booking is confirmed, and your payment has been processed successfully.
-                <br>
+                <br><br>
                 Please find the details of your upcoming visit below:
-                <br>
+                <br><br>
                 If you have any questions or need to make changes to your booking, please feel free to contact our support team. 
 
             </p>
