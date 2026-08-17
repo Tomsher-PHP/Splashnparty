@@ -75,7 +75,7 @@
             </tr> --}}
             <tr>
                 <th>Booking Date</th>
-                <td>{{ $booking->booking_date ? $booking->booking_date->format('Y-m-d') : 'N/A' }}</td>
+                <td>{{ $booking->booking_date ? $booking->booking_date->format('Y-m-d h:i A') : 'N/A' }}</td>
             </tr>
             <tr>
                 <th>Adults</th>

@@ -284,7 +284,7 @@
                     </tr>
                     <tr>
                         <td class="label">Date of Issue:</td>
-                        <td class="value">{{ $booking->created_at ? $booking->created_at->format('Y-m-d') : date('Y-m-d') }}</td>
+                        <td class="value">{{ $booking->created_at ? $booking->created_at->format('Y-m-d h:i A') : date('Y-m-d h:i A') }}</td>
                     </tr>
                     <tr>
                         <td class="label">Booking Date:</td>
