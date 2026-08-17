@@ -116,7 +116,10 @@
             <div class="content">
                 <div class="salutation">Hi {{ $enquiry->name }}!</div>
                 <div class="intro-text">
-                    Thank you for contacting us! Your cake enquiry has been received. Our team is excited to help you celebrate your special occasion and will get back to you soon.
+                    Thank you for reaching out to us! 
+                    <br>
+                    We have received your cake enquiry. Our team is delighted to help you celebrate your special occasion and will get in touch with you shortly.
+
                 </div>
                 
                 <div class="highlight-bar">
