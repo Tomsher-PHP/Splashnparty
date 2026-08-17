@@ -331,8 +331,11 @@
                 </div>
                 <div class="info-row">
                     <span class="label">Emirate:</span>
-                    <span class="value">{{ $booking->emirate ?? 'N/A' }}
-                    </span>
+                    <span class="value">{{ $booking->emirate ?? 'N/A' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Payment Method:</span>
+                    <span class="value">Card</span>
                 </div>
             </td>
         </tr>

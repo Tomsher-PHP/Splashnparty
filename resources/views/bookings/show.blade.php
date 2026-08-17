@@ -112,6 +112,10 @@
                 <td>{{ ucfirst($booking->status) }}</td>
             </tr>
             <tr>
+                <th>Payment Method</th>
+                <td>Card</td>
+            </tr>
+            <tr>
                 <th>Payment Status</th>
                 <td style="font-size:16px !important;"> 
                     @if ($booking->payment_status === 'paid')

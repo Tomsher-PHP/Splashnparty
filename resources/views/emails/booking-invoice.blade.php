@@ -287,6 +287,11 @@
                         {{ $booking->adult_count }} Adult(s), {{ $booking->child_count }} Child(ren)
                     </div>
                 </div>
+
+                <div class="detail-row">
+                    <div class="detail-label">Payment Method:</div>
+                    <div class="detail-value">Card</div>
+                </div>
             </div>
 
             <!-- Price Card -->
