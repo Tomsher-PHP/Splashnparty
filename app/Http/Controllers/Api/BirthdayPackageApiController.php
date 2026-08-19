@@ -69,7 +69,7 @@ class BirthdayPackageApiController extends Controller
 
         $locations = Branch::where('status', 1)
                                 ->orderBy('sort_order', 'asc')
-                                ->get(['id','title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
+                                ->get(['id','title', 'description', 'image','location_link', 'embedded_link', 'address', 'phone', 'email','working_hours'])
                                 ->map(function ($client) {
                                     return [
                                         'id' => $client->id,
@@ -77,6 +77,7 @@ class BirthdayPackageApiController extends Controller
                                         'description' => $client->description,
                                         'image' => $client->image ? asset($client->image) : null,
                                         'location_link' => $client->location_link,
+                                        'embedded_link' => $client->embedded_link,
                                         'address' => $client->address,
                                         'phone' => $client->phone,
                                         'email' => $client->email,

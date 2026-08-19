@@ -70,7 +70,7 @@ class PageApiController extends Controller
 
          $data['locations'] = Branch::where('status', 1)
             ->orderBy('sort_order', 'asc')
-            ->get(['id','title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
+            ->get(['id','title', 'description', 'image','location_link', 'embedded_link', 'address', 'phone', 'email','working_hours'])
             ->map(function ($client) {
                 return [
                     'id' => $client->id,
@@ -78,6 +78,7 @@ class PageApiController extends Controller
                     'description' => $client->description,
                     'image' => $client->image ? asset($client->image) : null,
                     'location_link' => $client->location_link,
+                    'embedded_link' => $client->embedded_link,
                     'address' => $client->address,
                     'phone' => $client->phone,
                     'email' => $client->email,
@@ -107,7 +108,7 @@ class PageApiController extends Controller
 
         $data['locations'] = Branch::where('status', 1)
             ->orderBy('sort_order', 'asc')
-            ->get(['id','title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
+            ->get(['id','title', 'description', 'image','location_link', 'embedded_link', 'address', 'phone', 'email','working_hours'])
             ->map(function ($client) {
                 return [
                     'id' => $client->id,
@@ -115,6 +116,7 @@ class PageApiController extends Controller
                     'description' => $client->description,
                     'image' => $client->image ? asset($client->image) : null,
                     'location_link' => $client->location_link,
+                    'embedded_link' => $client->embedded_link,
                     'address' => $client->address,
                     'phone' => $client->phone,
                     'email' => $client->email,
@@ -222,9 +224,9 @@ class PageApiController extends Controller
             ], 200);
         }
 
-         $data['locations'] = Branch::where('status', 1)
+          $data['locations'] = Branch::where('status', 1)
                                     ->orderBy('sort_order', 'asc')
-                                    ->get(['id','title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
+                                    ->get(['id','title', 'description', 'image','location_link', 'embedded_link', 'address', 'phone', 'email','working_hours'])
                                     ->map(function ($client) {
                                         return [
                                             'id' => $client->id,
@@ -232,6 +234,7 @@ class PageApiController extends Controller
                                             'description' => $client->description,
                                             'image' => $client->image ? asset($client->image) : null,
                                             'location_link' => $client->location_link,
+                                            'embedded_link' => $client->embedded_link,
                                             'address' => $client->address,
                                             'phone' => $client->phone,
                                             'email' => $client->email,
@@ -303,6 +306,7 @@ class PageApiController extends Controller
                     'description' => $branch->description,
                     'image' => $branch->image ? asset($branch->image) : null,
                     'location_link' => $branch->location_link,
+                    'embedded_link' => $branch->embedded_link,
                     'address' => $branch->address,
                     'phone' => $branch->phone,
                     'email' => $branch->email,
@@ -405,7 +409,7 @@ class PageApiController extends Controller
 
         $locations = Branch::where('status', 1)
             ->orderBy('sort_order', 'asc')
-            ->get(['id','title', 'description', 'image','location_link', 'address', 'phone', 'email','working_hours'])
+            ->get(['id','title', 'description', 'image','location_link', 'embedded_link', 'address', 'phone', 'email','working_hours'])
             ->map(function ($client) {
                 return [
                     'id' => $client->id,
@@ -413,6 +417,7 @@ class PageApiController extends Controller
                     'description' => $client->description,
                     'image' => $client->image ? asset($client->image) : null,
                     'location_link' => $client->location_link,
+                    'embedded_link' => $client->embedded_link,
                     'address' => $client->address,
                     'phone' => $client->phone,
                     'email' => $client->email,

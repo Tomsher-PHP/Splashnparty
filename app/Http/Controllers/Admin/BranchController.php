@@ -64,6 +64,7 @@ class BranchController extends Controller
             'description'   => 'nullable|string',
             'image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'location_link' => 'nullable|url',
+            'embedded_link' => 'nullable|string',
             'address'       => 'nullable|string',
             'phone' => [
                 'required',
@@ -91,6 +92,7 @@ class BranchController extends Controller
             'description'   => $request->description,
             'image'         => $image,
             'location_link' => $request->location_link,
+            'embedded_link' => $request->embedded_link,
             'address'       => $request->address,
             'phone'         => $request->phone,
             'email'         => $request->email,
@@ -140,6 +142,7 @@ class BranchController extends Controller
             'email'         => 'nullable|email|max:255',
             'working_hours' => 'nullable|string',
             'location_link' => 'nullable|url',
+            'embedded_link' => 'nullable|string',
             'sort_order'    => 'nullable|integer',
             'status'        => 'required|boolean',
         ]);
@@ -175,6 +178,7 @@ class BranchController extends Controller
             'email'         => $request->email,
             'working_hours' => $request->working_hours,
             'location_link' => $request->location_link,
+            'embedded_link' => $request->embedded_link,
             'sort_order'    => $request->sort_order ?? 0,
             'status'        => $request->status,
         ]);

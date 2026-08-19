@@ -12,6 +12,7 @@ class Branch extends Model
         'description',
         'image',
         'location_link',
+        'embedded_link',
         'address',
         'phone',
         'email',

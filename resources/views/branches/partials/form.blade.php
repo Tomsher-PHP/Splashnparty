@@ -16,7 +16,7 @@
 
     <div class="card-body">
         <div class="row">
-            <div class="col-md-6 mb-20">
+            <div class="col-md-4 mb-20">
                 <label class="form-label fw-semibold">
                     Title
                 </label>
@@ -26,7 +26,7 @@
                        value="{{ old('title', $model->title ?? '') }}">
             </div>
 
-            <div class="col-md-6 mb-20">
+            <div class="col-md-4 mb-20">
                 <label class="form-label fw-semibold">
                     Sort Order
                 </label>
@@ -36,17 +36,7 @@
                        value="{{ old('sort_order', $model->sort_order ?? 0) }}">
             </div>
 
-            <div class="col-md-6 mb-20">
-                <label class="form-label fw-semibold">
-                    Location Link
-                </label>
-                <input type="url"
-                       name="location_link"
-                       class="form-control form-control-sm"
-                       value="{{ old('location_link', $model->location_link ?? '') }}">
-            </div>
-
-            <div class="col-md-6 mb-20">
+            <div class="col-md-4 mb-20">
                 <label class="form-label fw-semibold">
                     Status
                 </label>
@@ -61,6 +51,26 @@
                         Inactive
                     </option>
                 </select>
+            </div>
+
+            <div class="col-md-6 mb-20">
+                <label class="form-label fw-semibold">
+                    Location Link
+                </label>
+                <input type="url"
+                       name="location_link"
+                       class="form-control form-control-sm"
+                       value="{{ old('location_link', $model->location_link ?? '') }}">
+            </div>
+
+            <div class="col-md-6 mb-20">
+                <label class="form-label fw-semibold">
+                    Embedded Link
+                </label>
+                <input type="text"
+                       name="embedded_link"
+                       class="form-control form-control-sm"
+                       value="{{ old('embedded_link', $model->embedded_link ?? '') }}">
             </div>
 
             <div class="col-md-12 mb-20">

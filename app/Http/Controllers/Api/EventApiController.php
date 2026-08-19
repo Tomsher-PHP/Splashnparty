@@ -48,7 +48,7 @@ class EventApiController extends Controller
             ->firstOrFail();
 
         $query = EventBranchDetail::with([
-            'branch:id,title,description,image,location_link,address,phone,email,working_hours',
+            'branch:id,title,description,image,location_link,embedded_link,address,phone,email,working_hours',
             'features' => function ($q) {
                 $q->where('status', 1)->orderBy('sort_order');
             },
