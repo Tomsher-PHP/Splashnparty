@@ -99,12 +99,12 @@
                 <th>Subtotal</th>
                 <td>{{ number_format($booking->subtotal, 2) }}</td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <th>VAT</th>
                 <td>{{ number_format($booking->vat, 2) }}</td>
-            </tr>
+            </tr> --}}
             <tr>
-                <th>Total Amount</th>
+                <th>Total Amount (Incl. VAT)</th>
                 <td>{{ number_format($booking->total_amount, 2) }}</td>
             </tr>
             <tr>

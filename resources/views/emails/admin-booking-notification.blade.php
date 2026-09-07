@@ -193,8 +193,10 @@
                 </div>
 
                 <div class="field-row">
-                    <div class="field-label">Total Amount Paid</div>
-                    <div class="field-value">AED {{ number_format($booking->total_amount, 2) }} (VAT: AED {{ number_format($booking->vat, 2) }})</div>
+                    <div class="field-label">Total Amount Paid (Incl. VAT)</div>
+                    <div class="field-value">AED {{ number_format($booking->total_amount, 2) }} @if($booking->vat > 0) (VAT: AED {{ number_format($booking->vat, 2) }}) @endif
+
+                    </div>
                 </div>
 
                 {{-- @if(!empty($booking->remarks))
