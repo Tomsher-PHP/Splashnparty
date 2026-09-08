@@ -391,13 +391,20 @@ class PageApiController extends Controller
         }
 
         $data['popup_settings'] = [
-            'popup_status' => ($siteSettings['popup_status']) ? true : false,
+            'popup_status' => !empty($siteSettings['popup_status']),
             'popup_image' => !empty($siteSettings['popup_image']) ? asset($siteSettings['popup_image']) : null,
             'popup_button_text' => $siteSettings['popup_button_text'] ?? '',
             'popup_button_link' => $siteSettings['popup_button_link'] ?? '',
         ];
 
-        unset($siteSettings['enquiry_email']);
+        unset(
+            $siteSettings['enquiry_email'],
+            $siteSettings['enquiry_cc_emails'],
+            $siteSettings['notification_email'],
+            $siteSettings['notification_cc_emails'],
+            $siteSettings['report_notification_email'],
+            $siteSettings['report_cc_emails']
+        );
 
         $birthdayLink = \App\Models\Page::getPageContent('book-a-trip');
 

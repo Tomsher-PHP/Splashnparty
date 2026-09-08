@@ -237,6 +237,39 @@ class GeneralSettingController extends Controller
                 'sort_order' => 98,
             ],
             [
+                'group' => 'report_email_settings',
+                'group_title' => 'Report Notification Email Settings',
+                'key' => 'report_notification_email',
+                'label' => 'To Email (<small>Enter email where daily/monthly booking reports should be sent. Defaults to Booking Notification Email if empty.</small>)',
+                'type' => 'email',
+                'placeholder' => 'Enter email where daily/monthly booking reports should be sent',
+                'rules' => ['nullable', 'email', 'max:255'],
+                'sort_order' => 99,
+            ],
+            [
+                'group' => 'report_email_settings',
+                'group_title' => 'Report Notification Email Settings',
+                'key' => 'report_cc_emails',
+                'label' => 'CC Emails (<small>Enter multiple CC emails separated by commas for report notifications.</small>)',
+                'type' => 'text',
+                'placeholder' => 'cc1@example.com, cc2@example.com',
+                'rules' => [
+                    'nullable',
+                    'string',
+                    'max:1000',
+                    function ($attribute, $value, $fail) {
+                        if (empty(trim($value))) return;
+                        $emails = array_map('trim', explode(',', $value));
+                        foreach ($emails as $email) {
+                            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                                $fail("The $attribute must be a comma-separated list of valid email addresses. '$email' is invalid.");
+                            }
+                        }
+                    }
+                ],
+                'sort_order' => 100,
+            ],
+            [
                 'group' => 'contact',
                 'group_title' => 'Contact Details',
                 'key' => 'phone',
