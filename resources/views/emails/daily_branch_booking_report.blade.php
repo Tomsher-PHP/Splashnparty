@@ -186,18 +186,22 @@
             color: #ffffff;
         }
         .social-icons {
-            margin-bottom: 15px;
+            margin-bottom: 25px;
         }
         .social-link {
             display: inline-block;
-            width: 32px;
-            height: 32px;
-            margin: 0 4px;
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+            background-color: #ffffff;
+            text-align: center;
+            margin: 0 6px;
             vertical-align: middle;
         }
         .social-link img {
-            width: 100%;
-            height: 100%;
+            margin-top: 9px;
+            border: 0;
+            display: inline-block;
         }
         .footer p {
             font-size: 12px;
@@ -333,39 +337,40 @@
 
             <!-- Footer -->
             <div class="footer">
-                @php
-                    $iconMap = [
-                        'facebook' => 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png',
-                        'twitter' => 'https://cdn-icons-png.flaticon.com/512/3256/3256013.png',
-                        'x' => 'https://cdn-icons-png.flaticon.com/512/3256/3256013.png',
-                        'instagram' => 'https://cdn-icons-png.flaticon.com/512/174/174855.png',
-                        'youtube' => 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png',
-                        'whatsapp' => 'https://cdn-icons-png.flaticon.com/512/733/733585.png',
-                        'tiktok' => 'https://cdn-icons-png.flaticon.com/512/3046/3046124.png',
-                        'linkedin' => 'https://cdn-icons-png.flaticon.com/512/174/174857.png',
-                    ];
-                @endphp
-                @if(!empty($socialLinks) && is_iterable($socialLinks))
-                    <div class="social-icons">
+                <div class="social-icons">
+                    @php
+                        $iconMap = [
+                            'facebook' => 'https://cdn-icons-png.flaticon.com/512/5968/5968764.png',
+                            'twitter' => 'https://cdn-icons-png.flaticon.com/512/3256/3256013.png',
+                            'x' => 'https://cdn-icons-png.flaticon.com/512/3256/3256013.png',
+                            'instagram' => 'https://cdn-icons-png.flaticon.com/512/174/174855.png',
+                            'youtube' => 'https://cdn-icons-png.flaticon.com/512/1384/1384060.png',
+                            'whatsapp' => 'https://cdn-icons-png.flaticon.com/512/733/733585.png',
+                            'tiktok' => 'https://cdn-icons-png.flaticon.com/512/3046/3046124.png',
+                            'linkedin' => 'https://cdn-icons-png.flaticon.com/512/174/174857.png',
+                        ];
+                    @endphp
+                    @if(!empty($socialLinks))
                         @foreach($socialLinks as $link)
-                            @if(is_array($link) && !empty($link['link']))
-                                @php
-                                    $nameLower = strtolower($link['name'] ?? '');
-                                    $iconUrl = $iconMap[$nameLower] ?? 'https://cdn-icons-png.flaticon.com/512/1006/1006771.png';
-                                @endphp
-                                <a href="{{ $link['link'] }}" target="_blank" class="social-link">
-                                    <img src="{{ $iconUrl }}" alt="{{ $link['name'] ?? 'Social Link' }}">
-                                </a>
-                            @elseif(is_string($link) && !empty($link))
-                                <a href="{{ $link }}" target="_blank" class="social-link">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" alt="Social Link">
+                            @php
+                                $nameLower = strtolower($link['name'] ?? '');
+                                $iconUrl = $iconMap[$nameLower] ?? 'https://cdn-icons-png.flaticon.com/512/1006/1006771.png';
+                            @endphp
+                            @if(!empty($link['link']))
+                                <a href="{{ $link['link'] }}" class="social-link" target="_blank">
+                                    <img src="{{ $iconUrl }}" width="18" height="18" alt="{{ $link['name'] ?? 'Social Link' }}">
                                 </a>
                             @endif
                         @endforeach
-                    </div>
-                @endif
-                <p>&copy; {{ date('Y') }} Splash 'n' Party. All rights reserved.</p>
-                <p style="font-size:11px; opacity:0.8;">Automated Daily Branchwise Booking Report</p>
+                    @endif
+                </div>
+                
+                <div class="footer-note">
+                    Note: Please do not reply to this email. This is an automated system notification.
+                </div>
+                <div class="footer-copyright">
+                    &copy; {{ date('Y') }} Splash N Party. All rights reserved.
+                </div>
             </div>
         </div>
     </div>
