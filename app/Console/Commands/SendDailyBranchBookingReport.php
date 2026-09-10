@@ -56,6 +56,7 @@ class SendDailyBranchBookingReport extends Command
             // Bookings for this branch reserved for target date or created on target date
             $bookings = Booking::with('package')
                 ->where('branch_id', $branch->id)
+                ->where('payment_status', 'paid')
                 ->where(function ($q) use ($dateFormatted) {
                     $q->whereDate('booking_date', $dateFormatted)
                       ->orWhereDate('created_at', $dateFormatted);
@@ -63,8 +64,8 @@ class SendDailyBranchBookingReport extends Command
                 ->orderBy('created_at', 'desc')
                 ->get();
 
-            $paidBookings = $bookings->where('payment_status', 'paid');
-            $unpaidBookings = $bookings->where('payment_status', '!=', 'paid');
+            $paidBookings = $bookings;
+            $unpaidBookings = collect();
 
             $revenue = $paidBookings->sum('total_amount');
             $kids = $bookings->sum('child_count');
@@ -75,7 +76,7 @@ class SendDailyBranchBookingReport extends Command
                 'bookings' => $bookings,
                 'total_count' => $bookings->count(),
                 'paid_count' => $paidBookings->count(),
-                'unpaid_count' => $unpaidBookings->count(),
+                'unpaid_count' => 0,
                 'total_revenue' => $revenue,
                 'total_kids' => $kids,
                 'total_adults' => $adults,
@@ -83,7 +84,7 @@ class SendDailyBranchBookingReport extends Command
 
             $grandTotals['total_bookings'] += $bookings->count();
             $grandTotals['paid_bookings'] += $paidBookings->count();
-            $grandTotals['unpaid_bookings'] += $unpaidBookings->count();
+            $grandTotals['unpaid_bookings'] += 0;
             $grandTotals['total_revenue'] += $revenue;
             $grandTotals['total_kids'] += $kids;
             $grandTotals['total_adults'] += $adults;
