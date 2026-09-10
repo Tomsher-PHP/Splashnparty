@@ -142,8 +142,7 @@ class SendMonthlyBranchBookingReport extends Command
         $excelContent = BookingReportExportService::generateBranchwiseXlsx($branchData);
 
         // Get recipients
-        $recipientEmail = SiteSetting::where('key', 'report_notification_email')->value('value')
-            ?: SiteSetting::where('key', 'notification_email')->value('value');
+        $recipientEmail = SiteSetting::where('key', 'report_notification_email')->value('value');
 
         if (!$recipientEmail) {
             $this->error('No recipient notification email configured in SiteSettings.');
@@ -152,10 +151,7 @@ class SendMonthlyBranchBookingReport extends Command
         }
 
         $ccEmails = SiteSetting::getCcEmailsByKey('report_cc_emails');
-        if (empty($ccEmails)) {
-            $ccEmails = SiteSetting::getCcEmailsByKey('notification_cc_emails');
-        }
-
+        
         try {
             $mailable = new MonthlyBranchBookingReportMail($monthDisplay, $branchData, $grandTotals, $pdfContent, $excelContent);
             $mail = Mail::to($recipientEmail);
