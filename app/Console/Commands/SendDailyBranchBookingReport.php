@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 /**
- * Test cron Using below command with a previous date
+ * Test cron using a specific booking date:
+ *
  * php artisan reports:send-daily-branch-bookings --date=2026-09-21
  */
 class SendDailyBranchBookingReport extends Command
@@ -23,30 +24,48 @@ class SendDailyBranchBookingReport extends Command
      *
      * @var string
      */
-    protected $signature = 'reports:send-daily-branch-bookings {--date= : Target date YYYY-MM-DD (defaults to previous day)}';
+    protected $signature = 'reports:send-daily-branch-bookings
+                            {--date= : Target booking date YYYY-MM-DD (defaults to previous day)}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Send the completed previous-day branchwise booking summary email with multi-sheet XLSX attachment.';
+    protected $description = 'Send the previous day branchwise booking report based on booking date with multi-sheet XLSX attachment.';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $dateInput = $this->option('date');
-
         /*
          * If a date is provided manually using --date,
          * use that date.
          *
-         * Otherwise, use yesterday because the automatic
-         * report runs shortly after midnight and should
-         * contain the complete previous day's bookings.
+         * Otherwise, use yesterday.
+         *
+         * The automatic cron runs at 12:05 AM and therefore
+         * should generate the report for the previous
+         * completed calendar day's booking_date.
+         *
+         * Example:
+         *
+         * Cron:
+         * 2026-09-26 12:05 AM
+         *
+         * Report date:
+         * 2026-09-25
+         *
+         * Booking:
+         * created_at   = 2026-09-21
+         * booking_date = 2026-09-25
+         *
+         * This booking will be included in the
+         * 25 Sep report.
          */
+        $dateInput = $this->option('date');
+
         $targetDate = $dateInput
             ? Carbon::parse($dateInput)
             : Carbon::yesterday();
@@ -54,11 +73,19 @@ class SendDailyBranchBookingReport extends Command
         $dateFormatted = $targetDate->format('Y-m-d');
         $dateDisplay = $targetDate->format('d M Y (l)');
 
-        $this->info("Generating Daily Branchwise Booking Report for {$dateDisplay}...");
+        $this->info(
+            "Generating Daily Branchwise Booking Report for {$dateDisplay}..."
+        );
 
-        $branches = Branch::where('status', 1)->orderBy('title')->get();
+        /*
+         * Get active branches.
+         */
+        $branches = Branch::where('status', 1)
+            ->orderBy('title')
+            ->get();
 
         $branchData = [];
+
         $grandTotals = [
             'total_bookings' => 0,
             'paid_bookings' => 0,
@@ -69,22 +96,33 @@ class SendDailyBranchBookingReport extends Command
         ];
 
         foreach ($branches as $branch) {
+
             /*
-             * Get bookings for the target date.
+             * Get bookings for the target BOOKING DATE.
              *
-             * Existing business logic is preserved:
-             * a booking is included when either its booking_date
-             * OR its created_at date matches the report date.
+             * IMPORTANT:
+             * The report is based only on booking_date.
+             *
+             * Do NOT use created_at to determine whether
+             * a booking belongs to this report.
+             *
+             * Example:
+             *
+             * created_at   = 2026-09-21
+             * booking_date = 2026-09-25
+             *
+             * This booking belongs to the 25 Sep report,
+             * regardless of when it was created.
              */
             $bookings = Booking::with('package')
                 ->where('branch_id', $branch->id)
-                ->where(function ($q) use ($dateFormatted) {
-                    $q->whereDate('booking_date', $dateFormatted)
-                      ->orWhereDate('created_at', $dateFormatted);
-                })
+                ->whereDate('booking_date', $dateFormatted)
                 ->orderBy('created_at', 'desc')
                 ->get();
 
+            /*
+             * Separate paid and unpaid bookings.
+             */
             $paidBookings = $bookings->where(
                 'payment_status',
                 'paid'
@@ -96,6 +134,9 @@ class SendDailyBranchBookingReport extends Command
                 'paid'
             );
 
+            /*
+             * Calculate branch totals.
+             */
             $revenue = $paidBookings->sum('total_amount');
             $kids = $bookings->sum('child_count');
             $adults = $bookings->sum('adult_count');
@@ -111,6 +152,9 @@ class SendDailyBranchBookingReport extends Command
                 'total_adults' => $adults,
             ];
 
+            /*
+             * Update grand totals.
+             */
             $grandTotals['total_bookings'] += $bookings->count();
             $grandTotals['paid_bookings'] += $paidBookings->count();
             $grandTotals['unpaid_bookings'] += $unpaidBookings->count();
@@ -120,8 +164,9 @@ class SendDailyBranchBookingReport extends Command
         }
 
         /*
-         * Generate Multi-Sheet XLSX.
-         * Each branch will have its own sheet.
+         * Generate multi-sheet XLSX.
+         *
+         * Each active branch will have its own sheet.
          */
         $excelContent = BookingReportExportService::generateBranchwiseXlsx(
             $branchData
@@ -129,8 +174,14 @@ class SendDailyBranchBookingReport extends Command
 
         /*
          * Get recipient email.
+         *
+         * First use report_notification_email.
+         * If it is not configured, fall back to notification_email.
          */
-        $recipientEmail = SiteSetting::where('key', 'report_notification_email')->value('value')
+        $recipientEmail = SiteSetting::where(
+            'key',
+            'report_notification_email'
+        )->value('value')
             ?: SiteSetting::where(
                 'key',
                 'notification_email'
@@ -150,6 +201,9 @@ class SendDailyBranchBookingReport extends Command
 
         /*
          * Get CC emails.
+         *
+         * First use report_cc_emails.
+         * If none are configured, fall back to notification_cc_emails.
          */
         $ccEmails = SiteSetting::getCcEmailsByKey(
             'report_cc_emails'
@@ -163,10 +217,15 @@ class SendDailyBranchBookingReport extends Command
 
         try {
             /*
-             * Pass the report date to the Mailable.
+             * Pass the booking date to the Mailable.
              *
-             * This ensures the email subject/body can use
-             * the same date as the report data.
+             * This ensures the email subject and body
+             * use the same booking date as the report data.
+             *
+             * Example:
+             *
+             * Daily Branch wise Booking Details -
+             * 25 Sep 2026 (Friday)
              */
             $mailable = new DailyBranchBookingReportMail(
                 $dateDisplay,
@@ -181,6 +240,9 @@ class SendDailyBranchBookingReport extends Command
                 $mail->cc($ccEmails);
             }
 
+            /*
+             * Send the report.
+             */
             $mail->send($mailable);
 
             $this->info(
@@ -190,7 +252,7 @@ class SendDailyBranchBookingReport extends Command
 
             Log::info(
                 "Daily branchwise booking report sent to {$recipientEmail} "
-                . "for date {$dateFormatted}."
+                . "for booking date {$dateFormatted}."
             );
 
             return Command::SUCCESS;
@@ -205,6 +267,7 @@ class SendDailyBranchBookingReport extends Command
                 . $e->getMessage(),
                 [
                     'exception' => $e,
+                    'booking_date' => $dateFormatted,
                 ]
             );
 
