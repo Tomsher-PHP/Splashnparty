@@ -62,6 +62,7 @@ class SendMonthlyBranchBookingReport extends Command
         foreach ($branches as $branch) {
             $bookings = Booking::with('package')
                 ->where('branch_id', $branch->id)
+                ->where('payment_status', 'paid')
                 ->where(function ($q) use ($startDate, $endDate) {
                     $q->whereBetween('booking_date', [substr($startDate, 0, 10), substr($endDate, 0, 10)])
                       ->orWhereBetween('created_at', [$startDate, $endDate]);
@@ -69,8 +70,8 @@ class SendMonthlyBranchBookingReport extends Command
                 ->orderBy('created_at', 'desc')
                 ->get();
 
-            $paidBookings = $bookings->where('payment_status', 'paid');
-            $unpaidBookings = $bookings->where('payment_status', '!=', 'paid');
+            $paidBookings = $bookings;
+            $unpaidBookings = collect();
 
             $revenue = $paidBookings->sum('total_amount');
             $kids = $bookings->sum('child_count');
@@ -96,7 +97,7 @@ class SendMonthlyBranchBookingReport extends Command
                 'package_breakdown' => $packageBreakdown,
                 'total_count' => $bookings->count(),
                 'paid_count' => $paidBookings->count(),
-                'unpaid_count' => $unpaidBookings->count(),
+                'unpaid_count' => 0,
                 'total_revenue' => $revenue,
                 'total_kids' => $kids,
                 'total_adults' => $adults,
@@ -104,7 +105,7 @@ class SendMonthlyBranchBookingReport extends Command
 
             $grandTotals['total_bookings'] += $bookings->count();
             $grandTotals['paid_bookings'] += $paidBookings->count();
-            $grandTotals['unpaid_bookings'] += $unpaidBookings->count();
+            $grandTotals['unpaid_bookings'] += 0;
             $grandTotals['total_revenue'] += $revenue;
             $grandTotals['total_kids'] += $kids;
             $grandTotals['total_adults'] += $adults;
@@ -142,8 +143,7 @@ class SendMonthlyBranchBookingReport extends Command
         $excelContent = BookingReportExportService::generateBranchwiseXlsx($branchData);
 
         // Get recipients
-        $recipientEmail = SiteSetting::where('key', 'report_notification_email')->value('value')
-            ?: SiteSetting::where('key', 'notification_email')->value('value');
+        $recipientEmail = SiteSetting::where('key', 'report_notification_email')->value('value');
 
         if (!$recipientEmail) {
             $this->error('No recipient notification email configured in SiteSettings.');
@@ -152,10 +152,7 @@ class SendMonthlyBranchBookingReport extends Command
         }
 
         $ccEmails = SiteSetting::getCcEmailsByKey('report_cc_emails');
-        if (empty($ccEmails)) {
-            $ccEmails = SiteSetting::getCcEmailsByKey('notification_cc_emails');
-        }
-
+        
         try {
             $mailable = new MonthlyBranchBookingReportMail($monthDisplay, $branchData, $grandTotals, $pdfContent, $excelContent);
             $mail = Mail::to($recipientEmail);
